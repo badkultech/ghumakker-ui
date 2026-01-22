@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Facebook, Twitter, Instagram, Youtube } from "lucide-react"
 import Image from "next/image"
 import { ROUTES } from "@/lib/utils"
+import { LOGO_IMAGES, APP_BRANDING } from "@/lib/constants/assets";
 
 export function Footer() {
   return (
@@ -11,7 +12,7 @@ export function Footer() {
           {/* Logo & Description */}
           <div className="md:col-span-2">
             <Link href={ROUTES.COMMON.HOME} className="text-2xl font-bold text-primary">
-              <Image src="/logo.png" alt="Logo" width={100} height={100} className=" h-11 w-auto" />
+              <Image src={LOGO_IMAGES} alt={APP_BRANDING} width={100} height={100} className=" h-11 w-auto" />
             </Link>
             <p className="mt-4 text-sm text-muted-foreground">
               Join group trips and meet like-minded travelers from around the world.
@@ -78,7 +79,7 @@ export function Footer() {
 
       </div>
       <div className="border-t flex justify-between border-muted-foreground/20 bg-[linear-gradient(90deg,#FEA901_0%,#FD6E34_33%,#FE336A_66%,#FD401A_100%)] py-6 px-20 text-center text-sm text-white">
-        <p>&copy; {new Date().getFullYear()} ghumakker. All rights reserved.</p>
+        <p>&copy; {new Date().getFullYear()} {APP_BRANDING}. All rights reserved.</p>
         <div className="flex gap-4">
           <Link href="#" className="hover:text-primary transition-colors">
             <Facebook className="w-5 h-5" />

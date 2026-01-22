@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Grid3X3, Plus, User } from "lucide-react";
+import { LOGO_IMAGES, APP_BRANDING } from "@/lib/constants/assets";
 
 type NavItem = {
   label: string;
@@ -30,7 +31,7 @@ export function Sidebar() {
       {/* Logo */}
       <div className="p-6 border-b border-gray-100">
         <div className="flex items-center">
-          <img src="/logo.png" alt="ghumakker" className="h-8 mr-2" />
+          <img src={LOGO_IMAGES} alt={APP_BRANDING} className="h-8 mr-2" />
         </div>
       </div>
 

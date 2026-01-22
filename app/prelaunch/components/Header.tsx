@@ -5,6 +5,7 @@ import React from "react";
 import Image from "next/image";
 import styles from "../prelaunch.module.css";
 import { MoveRight } from 'lucide-react';
+import { LOGO_SVG, APP_BRANDING } from "@/lib/constants/assets";
 
 /**
  * Header Component
@@ -17,10 +18,10 @@ export default function Header({ button }: { button: { text: string, link: strin
       <nav className="flex justify-between items-center">
         <Link href="/" className="font-bold">
           <Image
-            src="/prelaunch-page-imgs/logo-ghumakker.svg"
+            src={LOGO_SVG}
             width={100}
             height={100}
-            alt="Logo"
+            alt={APP_BRANDING}
             className="block"
           />
         </Link>

@@ -1,5 +1,6 @@
 import React from "react";
 import { Facebook, Linkedin, Instagram } from "lucide-react";
+import { APP_BRANDING } from "@/lib/constants/assets";
 
 export default function Footer(): React.JSX.Element {
   const LINKEDIN_URL = "https://www.linkedin.com/company/ghumakker/";
@@ -15,7 +16,7 @@ export default function Footer(): React.JSX.Element {
         <a
           href={LINKEDIN_URL}
           aria-label="Follow us on LinkedIn"
-          title="LinkedIn — ghumakker"
+          title={`LinkedIn — ${APP_BRANDING}`}
           target="_blank"
           rel="noopener noreferrer"
           className="hover:scale-110 transition-transform duration-200"
@@ -26,7 +27,7 @@ export default function Footer(): React.JSX.Element {
         <a
           href={FACEBOOK_URL}
           aria-label="Follow us on Facebook"
-          title="Facebook — ghumakker"
+          title={`Facebook — ${APP_BRANDING}`}
           target="_blank"
           rel="noopener noreferrer"
           className="hover:scale-110 transition-transform duration-200"
@@ -37,7 +38,7 @@ export default function Footer(): React.JSX.Element {
         <a
           href={INSTAGRAM_URL}
           aria-label="Follow us on Instagram"
-          title="Instagram — ghumakker"
+          title={`Instagram — ${APP_BRANDING}`}
           target="_blank"
           rel="noopener noreferrer"
           className="hover:scale-110 transition-transform duration-200"

@@ -1,5 +1,7 @@
 "use client";
 
+import { LOGO_IMAGES } from "@/lib/constants/assets";
+
 import { Menu, ArrowLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -14,7 +16,7 @@ export function MainHeader({
   notifications: propNotifications = [],
   onUpdateNotifications = () => { },
   logoText = "",
-  logoSrc = "/logo.png",
+  logoSrc = LOGO_IMAGES,
   isLoggedIn: propIsLoggedIn,
   onLoginClick = () => { },
   variant = "edge",

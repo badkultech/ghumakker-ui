@@ -1,4 +1,5 @@
 "use client"
+import { LOGO_IMAGES, APP_BRANDING } from "@/lib/constants/assets";
 
 import Image from "next/image"
 
@@ -11,7 +12,7 @@ export function Footer() {
           {/* Brand */}
           <div className="max-w-xs">
             <h2 className="text-2xl font-bold text-[#ff6b35] italic mb-4">
-              <Image src="/logo.png" alt="ghumakker" width={96} height={36.98} className="w-[96px] h-[36.98px]" />
+              <Image src={LOGO_IMAGES} alt={APP_BRANDING} width={96} height={36.98} className="w-[96px] h-[36.98px]" />
             </h2>
             <p className="text-sm text-[#6b6b6b] leading-relaxed">
               An all-in-one platform to plan, book, and share your adventures

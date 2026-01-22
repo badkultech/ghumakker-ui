@@ -16,6 +16,7 @@ import { ManagerNotificationDropdown } from "./notificationDropdowns/managerNoti
 import { DefaultNotificationDropdown } from "./notificationDropdowns/defaultNotificationDropdown";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useRouter } from "next/navigation";
+import { LOGO_IMAGES, APP_BRANDING } from "@/lib/constants/assets";
 
 type AppHeaderProps = {
   title?: string;
@@ -77,7 +78,7 @@ export function AppHeader({
         {/* Logo (optional, shown if showLogo=true) */}
         {showLogo && (
           <div className="flex items-center">
-            <img src="/logo.png" alt="ghumakker" className="h-8" />
+            <img src={LOGO_IMAGES} alt={APP_BRANDING} className="h-8" />
           </div>
         )}
 

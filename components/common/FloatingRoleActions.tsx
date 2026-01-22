@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
+import { LOGO_SVG, APP_BRANDING, LOGO_IMAGES } from "@/lib/constants/assets";
 
 /* ================= TYPES ================= */
 
@@ -110,10 +111,10 @@ export function FloatingRoleActions({
                     title="Actions"
                 >
                     <Image
-                        src="/prelaunch-page-imgs/mobileLogo.svg"
-                        alt="Actions"
-                        width={22}
-                        height={22}
+                        src="/icon.png"
+                        alt={`${APP_BRANDING} Actions`}
+                        width={44}
+                        height={44}
                     />
                 </button>
             </div>

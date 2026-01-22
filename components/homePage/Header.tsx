@@ -6,6 +6,7 @@ import Image from "next/image";
 import { MoveRight } from "lucide-react";
 import { GradientButton } from "../gradient-button";
 import { ROUTES } from "@/lib/utils";
+import { LOGO_SVG, APP_BRANDING } from "@/lib/constants/assets";
 
 /**
  * Header Component
@@ -20,10 +21,10 @@ export default function Header(): React.JSX.Element {
       <nav className="flex justify-between items-center">
         <Link href={ROUTES.COMMON.HOME} className="font-bold">
           <Image
-            src="/prelaunch-page-imgs/logo-ghumakker.svg"
+            src={LOGO_SVG}
             width={100}
             height={100}
-            alt="Logo"
+            alt={APP_BRANDING}
             className="block"
           />
         </Link>

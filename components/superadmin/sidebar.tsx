@@ -1,4 +1,5 @@
 "use client";
+import { LOGO_IMAGES, APP_BRANDING } from "@/lib/constants/assets";
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -115,7 +116,7 @@ export function Sidebar({ showLogo = true, isOpen, onClose }: SidebarProps) {
       >
         {/* Header section */}
         <div className="flex items-center justify-between p-4 md:hidden">
-          {showLogo && <img src="/logo.png" alt="ghumakker" className="h-8 cursor-pointer" onClick={() => router.push("/home")} />}
+          {showLogo && <img src={LOGO_IMAGES} alt={APP_BRANDING} className="h-8 cursor-pointer" onClick={() => router.push("/home")} />}
           <button
             onClick={onClose}
             className="p-2 rounded-md hover:bg-gray-100"
@@ -126,7 +127,7 @@ export function Sidebar({ showLogo = true, isOpen, onClose }: SidebarProps) {
 
         {showLogo && (
           <div className="hidden md:block p-6 border-b border-gray-100">
-            <img src="/logo.png" alt="ghumakker" className="h-8 cursor-pointer" onClick={() => router.push("/home")} />
+            <img src={LOGO_IMAGES} alt={APP_BRANDING} className="h-8 cursor-pointer" onClick={() => router.push("/home")} />
           </div>
         )}
 

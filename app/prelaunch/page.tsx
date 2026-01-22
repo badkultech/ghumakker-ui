@@ -11,6 +11,7 @@ import Tile from "./components/why_choose_ghumakker/Tile";
 import styles from "./prelaunch.module.css"
 import { MoveRight } from "lucide-react";
 import Link from "next/link";
+import { APP_BRANDING } from "@/lib/constants/assets";
 
 /**
  * Home Page Component
@@ -45,8 +46,8 @@ export default function Home() {
               heading="Savings On Marketing Cost"
               img="/prelaunch-page-imgs/savings.png"
               listItems={[
-                "Save costs on marketing let ghumakker bring the audience to you.",
-                "Boost your appearance with ghumakker's advanced search filters.",
+                `Save costs on marketing let ${APP_BRANDING} bring the audience to you.`,
+                `Boost your appearance with ${APP_BRANDING}'s advanced search filters.`,
                 "Stand out with reviews and community presence that builds trust."
               ]}
             />
@@ -82,7 +83,7 @@ export default function Home() {
               </div>
               <Content Heading="Convert" content="View leads and convert them into confirmed bookings" direction="right" optional="order-6" />
               {/* Step 4 */}
-              <Content Heading="Grow" content="Use ghumakker Analytics for smarter group trip planning" direction="left" optional="order-7 max-sm:order-8" />
+              <Content Heading="Grow" content={`Use ${APP_BRANDING} Analytics for smarter group trip planning`} direction="left" optional="order-7 max-sm:order-8" />
               <div className="md:px-6 order-8 max-sm:order-7">
                 <Image src="/prelaunch-page-imgs/hiw-4.png" alt="How It Works Image" width={2000} height={1000} className="w-full" />
               </div>
@@ -94,8 +95,8 @@ export default function Home() {
 
 
         {/* More About ghumakker */}
-        <Section heading={<>More About <span className={styles.grad_txt}>ghumakker</span>
-          <p className="text-[1.5rem] md:text-[2rem] barlow font-[550] italic text-center text-[#575757] mt-2"> ghumakker is the only one in India! That...</p>
+        <Section heading={<>More About <span className={styles.grad_txt}>{APP_BRANDING}</span>
+          <p className="text-[1.5rem] md:text-[2rem] barlow font-[550] italic text-center text-[#575757] mt-2"> {APP_BRANDING} is the only one in India! That...</p>
         </>} child={
           <>
 
@@ -117,10 +118,10 @@ export default function Home() {
         } />
 
         {/* Why Travelers Choose ghumakker */}
-        <Section heading={<>Why Travelers Choose <span className={styles.grad_txt}>ghumakker</span></>} child={
+        <Section heading={<>Why Travelers Choose <span className={styles.grad_txt}>{APP_BRANDING}</span></>} child={
           <>
             <div className="max-md:p-0 grid grid-cols-1 md:grid-cols-[2fr_3fr] gap-8">
-              <Image src="/prelaunch-page-imgs/travellers-ghumakker.webp" alt="Why Travelers Choose ghumakker" width={2000} height={1000} className=" max-md:mx-auto md:w-full" />
+              <Image src="/prelaunch-page-imgs/travellers-ghumakker.webp" alt={`Why Travelers Choose ${APP_BRANDING}`} width={2000} height={1000} className=" max-md:mx-auto md:w-full" />
               <div className="flex flex-col justify-center">
                 <Tile img="/prelaunch-page-imgs/wcr-search.png" title="Simple, clutter-free search to find the right group trips" />
                 <Tile img="/prelaunch-page-imgs/wcr-fitler.png" title="Filter by destination, moods, budget and duration" />
@@ -134,7 +135,7 @@ export default function Home() {
         } />
 
         {/* When travelers choose ghumakker, they choose you! Banner section*/}
-        <Section heading={<>When travelers choose <span className={styles.grad_txt}>ghumakker</span>, they <br /><span className="grad_txt">choose you!</span></>} child={
+        <Section heading={<>When travelers choose <span className={styles.grad_txt}>{APP_BRANDING}</span>, they <br /><span className="grad_txt">choose you!</span></>} child={
           <div className="banner_section md:mt-[1.5rem] w-full min-h-[450px] flex max-md:justify-center align-center items-center rounded-[2rem] md:rounded-[3rem] p-6 md:p-8 bg-[url('/prelaunch-page-imgs/banner.jpg')] bg-cover bg-center">
             <div className="w-full max-md:mx-auto md:w-[60%] rounded-[1.5rem] md:rounded-[2rem] border border-white p-6 md:py-6 md:px-8 h-[calc(100%-4rem)] bg-[rgba(0,0,0,0.3)] backdrop-blur-[5px]">
               <h1 className={`${styles.barlow} text-[3.5rem] md:text-[4rem] font-[700] text-white`}>

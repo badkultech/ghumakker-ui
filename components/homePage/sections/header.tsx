@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Menu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ROUTES } from "@/lib/utils"
+import { APP_BRANDING } from "@/lib/constants/assets";
 
 export function Header() {
   return (
@@ -10,7 +11,7 @@ export function Header() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link href={ROUTES.COMMON.HOME} className="flex items-center gap-2">
-            <span className="text-2xl font-bold text-primary">ghumakker</span>
+            <span className="text-2xl font-bold text-primary">{APP_BRANDING}</span>
           </Link>
 
           {/* Desktop Navigation */}

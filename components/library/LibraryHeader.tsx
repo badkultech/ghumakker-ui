@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { GradientButton } from "@/components/gradient-button";
+import { APP_BRANDING } from "@/lib/constants/assets";
 
 type LibraryHeaderProps = {
   backHref?: string;
@@ -25,7 +26,7 @@ type LibraryHeaderProps = {
 
 export function LibraryHeader({
   backHref = "/organizer/library",
-  title = "ghumakker Library",
+  title = `${APP_BRANDING} Library`,
   description = "Manage your travel content and organize into custom collections",
   hideBackBtn = false,
   buttonLabel,

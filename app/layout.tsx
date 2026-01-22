@@ -6,12 +6,13 @@ import { Toaster } from "@/components/ui/toaster";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AuthGuardProvider } from "@/context/AuthGuardContext";
+import { APP_BRANDING } from "@/lib/constants/assets";
 
 // app/layout.tsx
 export const metadata = {
   title: {
-    default: "ghumakker",
-    template: "ghumakker - %s",
+    default: APP_BRANDING,
+    template: `${APP_BRANDING} - %s`,
   },
   description: "Travel platform for discovering and managing trips",
 };
