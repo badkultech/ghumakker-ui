@@ -183,7 +183,7 @@ export default function DashboardMainContent() {
                   query: { month: "current" },
                 }}
               >
-                <Button size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
+                <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                   View all
                 </Button>
               </Link>
@@ -222,7 +222,7 @@ export default function DashboardMainContent() {
                   query: { month: "next" },
                 }}
               >
-                <Button size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
+                <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
                   View all
                 </Button>
               </Link>

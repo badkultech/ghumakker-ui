@@ -7,6 +7,7 @@ import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { AuthGuardProvider } from "@/context/AuthGuardContext";
 import { APP_BRANDING } from "@/lib/constants/assets";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 // app/layout.tsx
 export const metadata = {
@@ -41,10 +42,12 @@ export default function RootLayout({
         <ReduxProvider>
           <HydratedAuth>
             <AuthGuardProvider>
-              {children}
-              <Analytics />
-              <SpeedInsights />
-              <Toaster />
+              <ThemeProvider>
+                {children}
+                <Analytics />
+                <SpeedInsights />
+                <Toaster />
+              </ThemeProvider>
             </AuthGuardProvider>
           </HydratedAuth>
         </ReduxProvider>

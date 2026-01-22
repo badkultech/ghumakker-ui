@@ -178,7 +178,7 @@ export function OrganizerSidebar({
                   className={[
                     'flex items-center justify-between rounded-[8px] cursor-pointer select-none',
                     active
-                      ? 'bg-gray-900 text-white shadow-sm'
+                      ? 'bg-primary text-primary-foreground shadow-sm'
                       : 'text-gray-700 hover:bg-gray-50',
                   ].join(' ')}
                 >

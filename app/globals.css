@@ -209,3 +209,26 @@
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+[data-theme="organizer"] {
+  /* Organizer Theme - Cool Blues/Teals/Purples to distinguish from User/Traveler Orange */
+
+  /* Primary - Deep Blue/Indigo */
+  --primary: oklch(0.6 0.15 250);
+  /* Vivid Blue */
+  --primary-foreground: oklch(0.985 0 0);
+
+  /* Brand Colors Override for Gradient */
+  --color-brand-yellow: #4CC9F0;
+  /* Light Blue */
+  --color-brand-orange: #4361EE;
+  /* Blue */
+  --color-brand-pink: #3A0CA3;
+  /* Indigo */
+  --color-brand-red: #7209B7;
+  /* Purple */
+
+  /* Error might stay consistent or change */
+  --color-error-orange: #EF476F;
+  /* Pinkish Red */
+}

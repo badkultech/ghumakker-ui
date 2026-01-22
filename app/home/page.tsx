@@ -61,7 +61,6 @@ export default function Home() {
       <CategoriesSection />
       <PartnersSection />
       <RegionsSection />
-      <TripLeadersSection />
       <Footer />
 
       <SidebarMenu

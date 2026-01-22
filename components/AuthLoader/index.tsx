@@ -86,8 +86,7 @@ export default function HydratedAuth({ children }: { children: React.ReactNode }
       // Exact match
       if (pathname === r) return true;
 
-      // Allow /prelaunch/* and /home/* patterns
-      if (r === ROUTES.COMMON.PRELAUNCH && pathname.startsWith(`${ROUTES.COMMON.PRELAUNCH}/`)) return true;
+      // Allow /home/* patterns
       if (r === ROUTES.COMMON.HOME_NAV && pathname.startsWith(`${ROUTES.COMMON.HOME_NAV}/`)) return true;
 
       return false;
@@ -131,7 +130,6 @@ export default function HydratedAuth({ children }: { children: React.ReactNode }
   const isLogin = pathname === ROUTES.COMMON.HOME || pathname.includes(ROUTES.COMMON.LOGIN);
   const isPublicRoute = PublicRoutes.some((r) => {
     if (pathname === r) return true;
-    if (r === ROUTES.COMMON.PRELAUNCH && pathname.startsWith(`${ROUTES.COMMON.PRELAUNCH}/`)) return true;
     if (r === ROUTES.COMMON.HOME_NAV && pathname.startsWith(`${ROUTES.COMMON.HOME_NAV}/`)) return true;
     return false;
   });
