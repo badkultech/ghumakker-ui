@@ -17,6 +17,7 @@ import { DefaultNotificationDropdown } from "./notificationDropdowns/defaultNoti
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useRouter } from "next/navigation";
 import { LOGO_IMAGES, APP_BRANDING } from "@/lib/constants/assets";
+import { ThemeToggle } from "./ThemeToggle"
 
 type AppHeaderProps = {
   title?: string;
@@ -117,6 +118,10 @@ export function AppHeader({
           ) : (
             <DefaultNotificationDropdown />
           )}
+
+          {/* Theme Toggle Button */}
+          <ThemeToggle />
+
           <ProfileDropdown />
         </div>
       )}
