@@ -405,7 +405,7 @@ export default function RichTextEditor({
   }, []);
 
   return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden focus-within:border-orange-400 transition">
+    <div className="border border-gray-200 rounded-xl overflow-hidden focus-within:border-primary transition">
       <div className="flex items-center flex-wrap gap-2 px-3 py-2 border-b border-gray-100 text-gray-600 text-sm bg-white">
         <ToolbarButton
           active={activeFormats.bold}
@@ -460,7 +460,7 @@ export default function RichTextEditor({
           className="w-full px-3 py-3 text-sm text-gray-800 focus:outline-none min-h-[120px] max-h-[250px] overflow-y-auto prose prose-sm max-w-none"
           data-placeholder={placeholder}
         />
-        <span className="absolute bottom-2 right-3 text-xs text-orange-500">
+        <span className="absolute bottom-2 right-3 text-xs text-primary">
           {wordCount}/{maxWords} Words
         </span>
       </div>
@@ -552,7 +552,7 @@ function ToolbarButton({
       type="button"
       onClick={onClick}
       className={`p-1.5 rounded-md transition-colors ${active
-        ? "bg-orange-100 text-orange-600"
+        ? "bg-primary/10 text-primary"
         : "hover:bg-gray-100 active:bg-gray-200 text-gray-600"
         }`}
     >

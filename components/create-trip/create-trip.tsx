@@ -794,7 +794,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                       addCityTag();
                     }
                   }}
-                  className='w-full'
+                  className='w-full focus:ring-2 focus:ring-primary border-gray-300'
                 />
                 {cityTags.length > 0 && (
                   <div className="flex justify-end mt-2">
@@ -855,13 +855,13 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                           className={`
                 inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm cursor-pointer border transition-all select-none
                 ${isSelected
-                              ? 'bg-orange-50 border-orange-500 text-orange-500'
+                              ? 'bg-primary/5 border-primary text-primary'
                               : 'bg-gray-50 border-gray-200 text-gray-500 hover:bg-gray-100'
                             }
               `}
                         >
                           <Pin
-                            className={`w-3.5 h-3.5 ${isSelected ? 'fill-orange-500' : 'fill-gray-400'} rotate-45`}
+                            className={`w-3.5 h-3.5 ${isSelected ? 'fill-primary' : 'fill-gray-400'} rotate-45`}
                           />
                           <span className="font-medium">{tag}</span>
                           <button
@@ -909,7 +909,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
               <div className='flex gap-3'>
                 <Button
                   onClick={() => dispatch(setLeaderModalOpen(true))}
-                  className='border border-orange-500 bg-white text-orange-500 px-5 py-2 rounded-md font-medium hover:bg-orange-50 transition-all flex items-center gap-2'
+                  className='border border-primary/50 bg-white text-primary px-5 py-2 rounded-md font-medium hover:bg-primary/5 transition-all flex items-center gap-2'
                 >
                   <span className='text-lg leading-none'>+</span> Add Leader
                 </Button>
@@ -917,7 +917,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                   onClick={() => {
                     dispatch(setChooseModalOpen(true));
                   }}
-                  className='bg-gradient-to-r from-orange-400 to-pink-500 text-white px-6 py-2 rounded-md font-medium shadow hover:from-orange-500 hover:to-pink-600 transition-all'
+                  className='bg-brand-gradient text-white px-6 py-2 rounded-md font-medium shadow hover:opacity-90 transition-opacity'
                 >
                   Choose from Library
                 </Button>
@@ -1007,11 +1007,11 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
               disabled={tripSaving || createTripLoading || updateTripLoading}
               className={`
                           px-8 py-2 rounded-full font-medium text-white 
-                          bg-gradient-to-r from-orange-400 to-pink-500 shadow
+                          bg-brand-gradient shadow
                           flex items-center gap-2 transition
                           ${tripSaving || createTripLoading || updateTripLoading
                   ? "opacity-50 cursor-not-allowed"
-                  : "hover:from-orange-500 hover:to-pink-600"
+                  : "hover:opacity-90"
                 }
                         `}
             >

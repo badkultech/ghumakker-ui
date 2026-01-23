@@ -109,14 +109,14 @@ export function AddTripLeaderForm({
       {/* Name */}
       <div>
         <label className="block text-[0.95rem] font-medium mb-2">Name <RequiredStar /></label>
-        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter name" maxLength={50} />
+        <Input value={name} onChange={(e) => setName(e.target.value)} placeholder="Enter name" maxLength={50} className="focus-visible:ring-primary" />
         {errors.name && <p className="text-xs text-red-500 mt-1">{errors.name}</p>}
       </div>
 
       {/* Tagline */}
       <div>
         <label className="block text-[0.95rem] font-medium mb-2">Tagline</label>
-        <Input value={tagline} onChange={(e) => setTagline(e.target.value)} placeholder="Enter tagline" />
+        <Input value={tagline} onChange={(e) => setTagline(e.target.value)} placeholder="Enter tagline" className="focus-visible:ring-primary" />
       </div>
 
       {/* Bio */}
