@@ -95,8 +95,8 @@ export default function QueryList({
                 {statusFilter === "all"
                   ? "All Status"
                   : statusFilter === "OPEN"
-                  ? "Open"
-                  : "Responded"}
+                    ? "Open"
+                    : "Responded"}
                 <ChevronDown className="w-4 h-4" />
               </Button>
             </DropdownMenuTrigger>
@@ -111,11 +111,10 @@ export default function QueryList({
                 <DropdownMenuItem
                   key={opt.key}
                   onClick={() => setStatusFilter(opt.key as any)}
-                  className={`${
-                    String(statusFilter) === String(opt.key)
-                      ? "bg-orange-50 text-orange-600"
+                  className={`${String(statusFilter) === String(opt.key)
+                      ? "bg-primary/10 text-primary"
                       : ""
-                  } cursor-pointer`}
+                    } cursor-pointer`}
                 >
                   {opt.label}
                 </DropdownMenuItem>
@@ -139,17 +138,15 @@ export default function QueryList({
               <DropdownMenuSeparator />
               <DropdownMenuItem
                 onClick={() => setSortOrder("newest")}
-                className={`${
-                  sortOrder === "newest" ? "bg-orange-50 text-orange-600" : ""
-                } cursor-pointer`}
+                className={`${sortOrder === "newest" ? "bg-primary/10 text-primary" : ""
+                  } cursor-pointer`}
               >
                 Newest to Oldest
               </DropdownMenuItem>
               <DropdownMenuItem
                 onClick={() => setSortOrder("oldest")}
-                className={`${
-                  sortOrder === "oldest" ? "bg-orange-50 text-orange-600" : ""
-                } cursor-pointer`}
+                className={`${sortOrder === "oldest" ? "bg-primary/10 text-primary" : ""
+                  } cursor-pointer`}
               >
                 Oldest to Newest
               </DropdownMenuItem>
@@ -169,11 +166,10 @@ export default function QueryList({
                 setTab(t as any);
                 setStatusFilter("all"); // reset dropdown when tab is used
               }}
-              className={`px-4 py-2 rounded-lg text-sm font-medium ${
-                isActive
-                  ? "bg-transparent border border-[#F97316] text-[#F97316]"
+              className={`px-4 py-2 rounded-lg text-sm font-medium ${isActive
+                  ? "bg-transparent border border-primary text-primary"
                   : "bg-white border text-gray-600"
-              }`}
+                }`}
             >
               {t === "all"
                 ? "All"

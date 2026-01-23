@@ -326,7 +326,7 @@ export default function ItineraryPage() {
                 const itemsForDay = dayItemsMap[d.day] ?? null;
                 return (
                   <div key={d.day} className="mb-4">
-                    <div className="rounded-lg bg-orange-50 px-4 py-2 font-semibold text-orange-700 mb-2 text-[15px]">
+                    <div className="rounded-lg bg-primary/10 px-4 py-2 font-semibold text-primary mb-2 text-[15px]">
                       Day {d.day} <span className="text-gray-400 font-normal ml-2">{d.date}</span>
                     </div>
 
@@ -372,7 +372,7 @@ export default function ItineraryPage() {
                     )}
 
                     {!showDetails[dayIdx] ? (
-                      <button className="rounded-full px-5 py-1.5 mt-2 text-white bg-gradient-to-r from-orange-400 to-pink-500 font-medium shadow" onClick={() => handleAddDetailsClick(dayIdx)}>
+                      <button className="rounded-full px-5 py-1.5 mt-2 text-white bg-brand-secondary font-medium shadow hover:opacity-90 transition-opacity" onClick={() => handleAddDetailsClick(dayIdx)}>
                         + Add Details
                       </button>
                     ) : (

@@ -181,7 +181,7 @@ export function ViewTicketModal({
                             <Button
                                 onClick={handleAddComment}
                                 disabled={!newComment.trim() || isSubmitting}
-                                className="h-[60px] px-4 bg-orange-500 hover:bg-orange-600 text-white flex items-center gap-1"
+                                className="h-[60px] px-4 bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-1"
                             >
                                 <Send className="w-4 h-4" />
                                 Send

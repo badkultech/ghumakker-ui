@@ -389,13 +389,14 @@ export default function PricingPage() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 
                     {/* Simple Pricing */}
+                    {/* Simple Pricing */}
                     <div
                       onClick={() => setMode("simple")}
                       className={`
       flex flex-col items-center justify-center gap-3
       px-6 py-4 rounded-xl border cursor-pointer transition-all
       ${mode === "simple"
-                          ? "border-orange-400 bg-orange-50 shadow-sm"
+                          ? "border-primary bg-primary/5 shadow-sm"
                           : "border-gray-200 bg-white"
                         }
     `}
@@ -409,7 +410,7 @@ export default function PricingPage() {
                               border: "2px solid transparent",
                               background: `
             linear-gradient(white, white) padding-box,
-            linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A) border-box
+            var(--brand-gradient) border-box
           `,
                             }
                             : {
@@ -420,11 +421,7 @@ export default function PricingPage() {
                       >
                         {mode === "simple" && (
                           <div
-                            className="w-2.5 h-2.5 rounded-full"
-                            style={{
-                              background:
-                                "linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A)",
-                            }}
+                            className="w-2.5 h-2.5 rounded-full bg-brand-gradient"
                           ></div>
                         )}
                       </div>
@@ -446,7 +443,7 @@ export default function PricingPage() {
       flex flex-col items-center justify-center gap-3
       px-6 py-4 rounded-xl border cursor-pointer transition-all
       ${mode === "dynamic"
-                          ? "border-orange-400 bg-orange-50 shadow-sm"
+                          ? "border-primary bg-primary/5 shadow-sm"
                           : "border-gray-200 bg-white"
                         }
     `}
@@ -460,7 +457,7 @@ export default function PricingPage() {
                               border: "2px solid transparent",
                               background: `
             linear-gradient(white, white) padding-box,
-            linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A) border-box
+            var(--brand-gradient) border-box
           `,
                             }
                             : {
@@ -470,11 +467,7 @@ export default function PricingPage() {
                       >
                         {mode === "dynamic" && (
                           <div
-                            className="w-2.5 h-2.5 rounded-full"
-                            style={{
-                              background:
-                                "linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A)",
-                            }}
+                            className="w-2.5 h-2.5 rounded-full bg-brand-gradient"
                           ></div>
                         )}
                       </div>
@@ -572,7 +565,7 @@ export default function PricingPage() {
                       ))}
                       <Button
                         variant="outline"
-                        className="w-full border-orange-200 text-orange-500 hover:text-orange-600 hover:bg-orange-50"
+                        className="w-full border-primary/20 text-primary hover:text-primary hover:bg-primary/5"
                         onClick={addCategory}
                       >
                         <Plus className="w-4 h-4 mr-2" />

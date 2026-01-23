@@ -117,7 +117,7 @@ export default function DashboardMainContent() {
           {/* Top 4 Cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {/* Create Trip Card */}
-            <Card className="bg-orange-500 text-white hover:bg-orange-600 transition cursor-pointer">
+            <Card className="bg-primary text-primary-foreground hover:bg-primary/90 transition cursor-pointer">
               <CardContent
                 className="flex flex-col items-center justify-center h-32 space-y-2"
                 onClick={() => setOpenModal(true)}

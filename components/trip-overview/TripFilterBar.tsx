@@ -68,24 +68,24 @@ export default function TripFilterBar({
   const formattedRange =
     dateRange.start && dateRange.end
       ? `${format(new Date(dateRange.start), "dd MMM yyyy")} - ${format(
-          new Date(dateRange.end),
-          "dd MMM yyyy"
-        )}`
+        new Date(dateRange.end),
+        "dd MMM yyyy"
+      )}`
       : "Date Range";
 
   /** ---------------- SORT OPTIONS (mapped to backend) ---------------- */
   const sortOptions: { label: string; sortBy: string; sortDir: "ASC" | "DESC" }[] =
     tab === "upcoming"
       ? [
-          { label: "First to Last Trip", sortBy: "startDate", sortDir: "ASC" },
-          { label: "Last to First Trip", sortBy: "startDate", sortDir: "DESC" },
-        ]
+        { label: "First to Last Trip", sortBy: "startDate", sortDir: "ASC" },
+        { label: "Last to First Trip", sortBy: "startDate", sortDir: "DESC" },
+      ]
       : tab === "past"
-      ? [
+        ? [
           { label: "Most Viewed", sortBy: "views", sortDir: "DESC" },
           { label: "Recent First", sortBy: "startDate", sortDir: "DESC" },
         ]
-      : [
+        : [
           { label: "Newest to Oldest", sortBy: "createdAt", sortDir: "DESC" },
           { label: "Oldest to Newest", sortBy: "createdAt", sortDir: "ASC" },
         ];
@@ -128,9 +128,9 @@ export default function TripFilterBar({
                 selected={
                   dateRange.start && dateRange.end
                     ? {
-                        from: new Date(dateRange.start),
-                        to: new Date(dateRange.end),
-                      }
+                      from: new Date(dateRange.start),
+                      to: new Date(dateRange.end),
+                    }
                     : undefined
                 }
                 onSelect={(range) => {
@@ -157,7 +157,7 @@ export default function TripFilterBar({
                 </Button>
                 <Button
                   size="sm"
-                  className="bg-[#FF6B00] hover:bg-[#e66000]"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground"
                   onClick={() => setCalendarOpen(false)}
                 >
                   Apply
@@ -189,14 +189,14 @@ export default function TripFilterBar({
             <DropdownMenuItem onClick={() => setStatusFilter("PUBLISHED")}>
               Published
               {statusFilter === "PUBLISHED" && (
-                <Check className="w-4 h-4 text-orange-500 ml-auto" />
+                <Check className="w-4 h-4 text-primary ml-auto" />
               )}
             </DropdownMenuItem>
 
             <DropdownMenuItem onClick={() => setStatusFilter("UNDER_REVIEW")}>
               Under Review
               {statusFilter === "UNDER_REVIEW" && (
-                <Check className="w-4 h-4 text-orange-500 ml-auto" />
+                <Check className="w-4 h-4 text-primary ml-auto" />
               )}
             </DropdownMenuItem>
 
@@ -205,7 +205,7 @@ export default function TripFilterBar({
             >
               Requires Modification
               {statusFilter === "REQUIRES_MODIFICATION" && (
-                <Check className="w-4 h-4 text-orange-500 ml-auto" />
+                <Check className="w-4 h-4 text-primary ml-auto" />
               )}
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -236,7 +236,7 @@ export default function TripFilterBar({
             >
               {opt.label}
               {currentSort === opt.label && (
-                <Check className="w-4 h-4 text-orange-500" />
+                <Check className="w-4 h-4 text-primary" />
               )}
             </DropdownMenuItem>
           ))}

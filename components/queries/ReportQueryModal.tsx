@@ -96,7 +96,7 @@ export default function ReportQueryModal({ open, onClose }: any) {
             Cancel
           </Button>
           <Button
-            className="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground text-sm px-4 py-2"
           >
             Yes, Report
           </Button>

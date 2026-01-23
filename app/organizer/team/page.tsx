@@ -70,7 +70,7 @@ export default function TeamMembersPage() {
           {/* Header */}
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-semibold">Team Members</h1>
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white flex items-center gap-2 rounded-md">
+            <Button className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2 rounded-md">
               <Plus className="w-4 h-4" /> Add Team Member
             </Button>
           </div>
@@ -99,7 +99,7 @@ export default function TeamMembersPage() {
                 </SelectContent>
               </Select>
               <Button
-                className="bg-orange-500 hover:bg-orange-600 text-white px-6"
+                className="bg-primary hover:bg-primary/90 text-primary-foreground px-6"
                 onClick={handleInvite}
               >
                 Send Invite
@@ -123,7 +123,7 @@ export default function TeamMembersPage() {
                 >
                   {/* Left - avatar and info */}
                   <div className="flex items-center gap-3">
-                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-orange-500 text-white font-semibold">
+                    <div className="flex items-center justify-center w-10 h-10 rounded-full bg-primary text-primary-foreground font-semibold">
                       {member.name
                         .split(" ")
                         .map((n) => n[0])
@@ -176,7 +176,7 @@ export default function TeamMembersPage() {
           </Card>
 
           {/* Role Permissions */}
-          <Card className="border border-orange-200 bg-orange-50 rounded-xl">
+          <Card className="border border-primary/20 bg-primary/5 rounded-xl">
             <CardHeader>
               <CardTitle className="text-base font-semibold">Role Permissions</CardTitle>
             </CardHeader>

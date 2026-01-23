@@ -74,10 +74,11 @@ export default function LibraryOverviewPage() {
                      w-full max-w-[180px] sm:max-w-[200px] md:max-w-[220px] 
                      h-[120px] sm:h-[130px] md:h-[140px] 
                      px-2 py-2 gap-3
-                     bg-[rgba(255,128,76,0.06)] border border-[#FF804C] rounded-lg
-                     transition hover:shadow-md hover:border-[#ff662a]"
+                     px-2 py-2 gap-3
+                     bg-primary/5 border border-primary/50 rounded-lg
+                     transition hover:shadow-md hover:border-primary"
               >
-                <Icon className="h-8 w-8 text-[#FF804C]" />
+                <Icon className="h-8 w-8 text-primary" />
                 <span className="text-sm sm:text-base font-medium text-gray-900 text-center">
                   {label}
                 </span>

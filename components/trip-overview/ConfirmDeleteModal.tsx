@@ -68,7 +68,8 @@ export default function ConfirmDeleteModal({
           <Button
             onClick={handleDelete}
             disabled={isLoading}
-            className="bg-[#FF3B00] hover:bg-[#e63500] text-white rounded-lg px-5 py-2 text-sm font-medium"
+            variant="destructive"
+            className="rounded-lg px-5 py-2 text-sm font-medium"
           >
             {isLoading ? "Deleting..." : "Delete"}
           </Button>

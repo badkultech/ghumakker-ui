@@ -29,11 +29,10 @@ export const CategorySelectStep: React.FC<Props> = ({
           <button
             key={label}
             onClick={() => setSelected({ label, icon: Icon, step })}
-            className={`flex flex-col justify-center items-center p-6 h-24 rounded-xl border transition ${
-              selected?.label === label
-                ? "border-orange-500 shadow-md"
-                : "border-gray-200 hover:border-orange-400"
-            }`}
+            className={`flex flex-col justify-center items-center p-6 h-24 rounded-xl border transition ${selected?.label === label
+                ? "border-primary shadow-md"
+                : "border-gray-200 hover:border-primary/50"
+              }`}
           >
             <Icon className="h-6 w-6 text-gray-600 mb-2" />
             <span className="text-sm font-medium text-gray-700">{label}</span>
@@ -50,11 +49,10 @@ export const CategorySelectStep: React.FC<Props> = ({
               step: "faq",
             })
           }
-          className={`flex flex-col justify-center items-center w-full p-6 h-20 rounded-xl border transition ${
-            selected?.label === "FAQs"
-              ? "border-orange-500 shadow-md"
-              : "border-gray-200 hover:border-orange-400"
-          }`}
+          className={`flex flex-col justify-center items-center w-full p-6 h-20 rounded-xl border transition ${selected?.label === "FAQs"
+              ? "border-primary shadow-md"
+              : "border-gray-200 hover:border-primary/50"
+            }`}
         >
           <HelpCircle className="h-6 w-6 text-gray-600 mb-2" />
           <span className="text-sm font-medium text-gray-700">FAQs</span>
@@ -70,7 +68,7 @@ export const CategorySelectStep: React.FC<Props> = ({
         <Button
           onClick={handleNext}
           disabled={!selected}
-          className="rounded-full px-6 bg-gradient-to-r from-orange-400 to-pink-500 text-white"
+          className="rounded-full px-6 bg-brand-gradient text-white"
         >
           Next
         </Button>

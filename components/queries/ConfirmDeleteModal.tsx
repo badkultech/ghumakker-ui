@@ -53,7 +53,7 @@ export default function ConfirmDeleteModal({
           </Button>
           <Button
             onClick={onConfirm}
-            className="bg-[#F97316] hover:bg-[#ea6d14] text-white px-6 py-2.5 text-sm font-medium rounded-lg"
+            className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-2.5 text-sm font-medium rounded-lg"
           >
             Delete
           </Button>

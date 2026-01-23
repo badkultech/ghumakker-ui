@@ -388,7 +388,7 @@ export default function SettingsPage() {
                                 <Button
                                     onClick={handleUpdateProfile}
                                     disabled={isUpdating}
-                                    className="bg-orange-500 hover:bg-orange-600 text-white"
+                                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
                                 >
                                     {isUpdating ? "Saving..." : "Save Changes"}
                                 </Button>
@@ -597,7 +597,7 @@ export default function SettingsPage() {
                                         <div className="mt-4 space-y-1">
                                             <div className="flex items-center text-sm">
                                                 {rules.length ? (
-                                                    <CheckCircle2 className="text-[#FF804C] mr-2" size={16} />
+                                                    <CheckCircle2 className="text-primary mr-2" size={16} />
                                                 ) : (
                                                     <XCircle className="text-gray-400 mr-2" size={16} />
                                                 )}
@@ -605,7 +605,7 @@ export default function SettingsPage() {
                                             </div>
                                             <div className="flex items-center text-sm">
                                                 {rules.uppercase ? (
-                                                    <CheckCircle2 className="text-[#FF804C] mr-2" size={16} />
+                                                    <CheckCircle2 className="text-primary mr-2" size={16} />
                                                 ) : (
                                                     <XCircle className="text-gray-400 mr-2" size={16} />
                                                 )}
@@ -613,7 +613,7 @@ export default function SettingsPage() {
                                             </div>
                                             <div className="flex items-center text-sm">
                                                 {rules.number ? (
-                                                    <CheckCircle2 className="text-[#FF804C] mr-2" size={16} />
+                                                    <CheckCircle2 className="text-primary mr-2" size={16} />
                                                 ) : (
                                                     <XCircle className="text-gray-400 mr-2" size={16} />
                                                 )}
@@ -621,7 +621,7 @@ export default function SettingsPage() {
                                             </div>
                                             <div className="flex items-center text-sm">
                                                 {rules.special ? (
-                                                    <CheckCircle2 className="text-[#FF804C] mr-2" size={16} />
+                                                    <CheckCircle2 className="text-primary mr-2" size={16} />
                                                 ) : (
                                                     <XCircle className="text-gray-400 mr-2" size={16} />
                                                 )}
@@ -677,7 +677,7 @@ export default function SettingsPage() {
                                     onClick={handlePasswordUpdate}
                                     disabled={!allValid || isLoading}
                                     className={`${allValid
-                                        ? "bg-orange-500 hover:bg-orange-600 text-white"
+                                        ? "bg-primary hover:bg-primary/90 text-primary-foreground"
                                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
                                         }`}
                                 >

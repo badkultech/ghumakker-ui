@@ -52,7 +52,7 @@ export default function QueryResponseForm({
         <Button
           onClick={handleSend}
           disabled={sending}
-          className="bg-orange-500 hover:bg-orange-600 text-white flex items-center px-5"
+          className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center px-5"
         >
           {sending ? "Sending..." : "Send Response"}
         </Button>

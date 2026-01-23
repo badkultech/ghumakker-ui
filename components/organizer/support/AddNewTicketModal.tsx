@@ -100,7 +100,7 @@ export function AddNewTicketModal({ open, onClose }: AddNewTicketModalProps) {
                   maxLength={70}
                   className="mt-1"
                 />
-                <span className="absolute right-2 bottom-2 text-xs text-orange-500">
+                <span className="absolute right-2 bottom-2 text-xs text-primary">
                   {subject.length}/70 Characters
                 </span>
               </div>
@@ -143,7 +143,7 @@ export function AddNewTicketModal({ open, onClose }: AddNewTicketModalProps) {
                   placeholder="Please provide detailed description of your issue"
                   className="mt-1 min-h-[100px]"
                 />
-                <span className="absolute right-2 bottom-2 text-xs text-orange-500">
+                <span className="absolute right-2 bottom-2 text-xs text-primary">
                   {description.split(" ").filter(Boolean).length}/800 Words
                 </span>
               </div>
@@ -177,7 +177,7 @@ export function AddNewTicketModal({ open, onClose }: AddNewTicketModalProps) {
                 type="submit"
                 disabled={!isValid}
                 className={`rounded-full text-white ${isValid
-                  ? "bg-gradient-to-r from-orange-500 to-pink-500 hover:opacity-90"
+                  ? "bg-brand-gradient hover:opacity-90"
                   : "bg-gray-300 cursor-not-allowed"
                   }`}
               >

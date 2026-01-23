@@ -46,7 +46,7 @@ export default function SupportCenter() {
           <div className="flex items-center justify-between">
             <h1 className="text-xl font-semibold text-gray-800">Support Center</h1>
             <Button
-              className="bg-orange-500 hover:bg-orange-600 text-white flex items-center gap-2 rounded-lg"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2 rounded-lg"
               onClick={() => setIsModalOpen(true)}
             >
               <PlusCircle className="w-4 h-4" />
@@ -57,14 +57,14 @@ export default function SupportCenter() {
           {/* Summary Cards - Redesigned */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {/* Total Tickets - Orange Background */}
-            <Card className="bg-orange-500 border-none">
+            <Card className="bg-primary border-none">
               <CardContent className="p-4 flex items-center gap-3">
                 <div className="bg-white/20 p-2 rounded-lg">
                   <TicketIcon />
                 </div>
                 <div>
-                  <p className="text-sm font-medium text-orange-100">Total Tickets</p>
-                  <h2 className="text-2xl font-bold text-white">{String(total).padStart(2, "0")}</h2>
+                  <p className="text-sm font-medium text-primary-foreground/80">Total Tickets</p>
+                  <h2 className="text-2xl font-bold text-primary-foreground">{String(total).padStart(2, "0")}</h2>
                 </div>
               </CardContent>
             </Card>
@@ -120,7 +120,7 @@ export default function SupportCenter() {
                   size="sm"
                   onClick={() => setFilter(tab as any)}
                   className={`rounded-full px-4 py-1 text-sm font-medium transition-colors ${isActive
-                    ? "bg-orange-500 text-white border-orange-500 hover:bg-orange-600 hover:text-white"
+                    ? "bg-primary text-primary-foreground border-primary hover:bg-primary/90 hover:text-white"
                     : "bg-white text-gray-600 border-gray-300 hover:bg-gray-50"
                     }`}
                 >

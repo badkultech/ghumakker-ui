@@ -113,7 +113,7 @@ export default function LeadsPage() {
             </h1>
             <Button
               asChild
-              className="bg-orange-500 hover:bg-orange-600 text-white rounded-md px-5 py-2"
+              className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-md px-5 py-2"
             >
               <Link href={ROUTES.ORGANIZER.LEADS_ALL}>View All Leads</Link>
             </Button>
@@ -238,7 +238,7 @@ export default function LeadsPage() {
                             setSelectedLead(lead.id.toString());
                             setShowModal(true);
                           }}
-                          className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2 text-sm shadow"
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 py-2 text-sm shadow"
                         >
                           Mark as Converted
                         </Button>

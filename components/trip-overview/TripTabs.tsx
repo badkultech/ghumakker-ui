@@ -27,7 +27,7 @@ export default function TripTabs({ activeTab, setActiveTab }: any) {
                 className={clsx(
                   "h-12 px-5 text-sm font-medium rounded-lg border",
                   isActive
-                    ? "bg-[#FF6B00] text-white border-[#FF6B00]"
+                    ? "bg-primary text-primary-foreground border-primary"
                     : "bg-white text-gray-700 border-gray-300 hover:bg-gray-100"
                 )}
               >
@@ -38,7 +38,7 @@ export default function TripTabs({ activeTab, setActiveTab }: any) {
         </div>
 
         <Link href={ROUTES.ORGANIZER.CREATE_TRIP}>
-          <button className="flex items-center gap-2 px-5 h-12 rounded-lg bg-[#FF6B00]/10 text-[#FF6B00] border border-[#FF6B00] hover:bg-[#FF6B00] hover:text-white">
+          <button className="flex items-center gap-2 px-5 h-12 rounded-lg bg-primary/10 text-primary border border-primary hover:bg-primary hover:text-primary-foreground">
             <Plus size={16} />
             Create Trip
           </button>

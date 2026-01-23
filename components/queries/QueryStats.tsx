@@ -28,8 +28,8 @@ export default function QueryStats({ queries = [] }: { queries: any[] }) {
                 {stat.value}
               </p>
             </div>
-            <div className="bg-orange-50 p-3 rounded-lg">
-              <MessageSquare className="w-5 h-5 text-[#F97316]" />
+            <div className="bg-primary/10 p-3 rounded-lg">
+              <MessageSquare className="w-5 h-5 text-primary" />
             </div>
           </CardContent>
         </Card>

@@ -71,17 +71,17 @@ export default function BillingPage() {
           <h1 className="text-2xl font-semibold">Subscription & Billing</h1>
 
           {/* Trial Card */}
-          <div className="bg-orange-500 text-white p-6 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between">
+          <div className="bg-primary text-primary-foreground p-6 rounded-xl flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h2 className="text-lg font-semibold">Free Trial Active</h2>
-              <p className="text-sm text-white/90">
+              <p className="text-sm text-primary-foreground/90">
                 Your free trial will end in 14 days
               </p>
               <div className="mt-3 w-full sm:w-72">
                 <Progress value={70} className="bg-white/20" />
               </div>
             </div>
-            <Button className="bg-white text-orange-600 hover:bg-gray-100 mt-4 sm:mt-0">
+            <Button className="bg-white text-primary hover:bg-gray-100 mt-4 sm:mt-0">
               Upgrade Now
             </Button>
           </div>
@@ -125,11 +125,10 @@ export default function BillingPage() {
             {plans.map((plan) => (
               <Card
                 key={plan.name}
-                className={`rounded-xl ${
-                  plan.highlight
-                    ? "border-2 border-orange-500 shadow-md"
-                    : "border border-gray-200"
-                }`}
+                className={`rounded-xl ${plan.highlight
+                  ? "border-2 border-primary shadow-md"
+                  : "border border-gray-200"
+                  }`}
               >
                 <CardHeader>
                   <CardTitle className="text-lg font-semibold">
@@ -146,17 +145,16 @@ export default function BillingPage() {
                   <ul className="text-sm text-gray-700 space-y-2">
                     {plan.features.map((f, i) => (
                       <li key={i} className="flex items-start gap-2">
-                        <span className="text-orange-500 font-bold">✓</span>
+                        <span className="text-primary font-bold">✓</span>
                         {f}
                       </li>
                     ))}
                   </ul>
                   <Button
-                    className={`w-full mt-2 ${
-                      plan.highlight
-                        ? "bg-orange-500 hover:bg-orange-600 text-white"
-                        : "bg-gray-100 hover:bg-gray-200 text-gray-800"
-                    }`}
+                    className={`w-full mt-2 ${plan.highlight
+                      ? "bg-primary hover:bg-primary/90 text-primary-foreground"
+                      : "bg-gray-100 hover:bg-gray-200 text-gray-800"
+                      }`}
                   >
                     Select Plan
                   </Button>

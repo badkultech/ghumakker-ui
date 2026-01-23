@@ -166,7 +166,7 @@ export default function AllLeadsPage() {
                               Converted
                             </Badge>
                           ) : lead.tripLeadsStatus === TripLeadsStatus.IN_PROGRESS ? (
-                            <Badge className="bg-orange-100 text-orange-700 px-3 py-1 rounded-full text-sm">
+                            <Badge className="bg-primary/10 text-primary px-3 py-1 rounded-full text-sm">
                               In Progress
                             </Badge>
                           ) : (
@@ -223,7 +223,7 @@ export default function AllLeadsPage() {
                             setSelectedLeadTripPublicId(lead.tripPublicId);
                             setShowModal(true);
                           }}
-                          className="bg-orange-500 hover:bg-orange-600 text-white rounded-full px-6 py-2 text-sm shadow"
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 py-2 text-sm shadow"
                         >
                           Mark as Converted
                         </Button>

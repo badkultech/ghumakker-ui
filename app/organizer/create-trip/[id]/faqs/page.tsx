@@ -214,9 +214,9 @@ export default function FAQsPage() {
                     }}
                     className={`
                 flex items-start gap-3 p-3 rounded-md border bg-white
-                hover:bg-orange-50 hover:shadow-sm transition cursor-pointer
+                hover:bg-primary/5 hover:shadow-sm transition cursor-pointer
                 ${selectedFaq?.id === faq.id
-                        ? 'border-orange-500 bg-orange-50'
+                        ? 'border-primary bg-primary/5'
                         : ''
                       }
               `}
@@ -253,7 +253,7 @@ export default function FAQsPage() {
                   if (selectedFaq) handleAddFromLibrary(selectedFaq);
                   setChooseFromLibrary(false);
                 }}
-                className='bg-gradient-to-r from-orange-400 to-pink-500 shadow hover:from-orange-500 hover:to-pink-600 text-white'
+                className='bg-brand-gradient shadow hover:opacity-90 text-white'
               >
                 Select
               </Button>
@@ -366,7 +366,7 @@ export default function FAQsPage() {
             <div className='flex gap-2'>
               <Button
                 variant='outline'
-                className='px-8 py-2 text-orange-500 border-orange-400'
+                className='px-8 py-2 text-primary border-primary/50 hover:bg-primary/5'
                 onClick={handleAddFaq}
               >
                 + Add Question
@@ -376,7 +376,7 @@ export default function FAQsPage() {
                 onClick={() => {
                   setChooseFromLibrary(true);
                 }}
-                className='px-8 py-2 text-white bg-gradient-to-r from-orange-400 to-pink-500'
+                className='px-8 py-2 text-white bg-brand-gradient'
               >
                 Choose from Library
               </Button>

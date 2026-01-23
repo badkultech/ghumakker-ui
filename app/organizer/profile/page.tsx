@@ -80,7 +80,7 @@ export default function OrganizerProfilePage() {
   if (profileLoading)
     return (
       <div className='flex items-center justify-center min-h-screen bg-white'>
-        <div className='animate-spin rounded-full h-12 w-12 border-t-4 border-orange-500 border-solid'></div>
+        <div className='animate-spin rounded-full h-12 w-12 border-t-4 border-primary border-solid'></div>
       </div>
     );
 
@@ -119,7 +119,7 @@ export default function OrganizerProfilePage() {
                 </p>
 
                 <Link href='/organizer/profile/edit'>
-                  <Button className='rounded-full px-6 py-2 bg-[linear-gradient(90deg,#FEA901_0%,#FD6E34_33%,#FE336A_66%,#FD401A_100%)] hover:opacity-90 text-white'>
+                  <Button className='rounded-full px-6 py-2 bg-brand-gradient hover:opacity-90 text-white'>
                     Add Details +
                   </Button>
                 </Link>
@@ -207,7 +207,7 @@ export default function OrganizerProfilePage() {
                       </h2>
 
                       {testimonialScreenshotFile ? (
-                        <div className='border-l-4 bg-white rounded-lg border-orange-400 p-4 mb-6'>
+                        <div className='border-l-4 bg-white rounded-lg border-primary p-4 mb-6'>
                           {testimonialScreenshotFile.url ? (
                             <img
                               src={testimonialScreenshotFile.url}
@@ -227,7 +227,7 @@ export default function OrganizerProfilePage() {
                       )}
 
                       {profile.testimonials ? (
-                        <div className='border-l-4 bg-white rounded-lg border-orange-400 p-4 mb-6'>
+                        <div className='border-l-4 bg-white rounded-lg border-primary p-4 mb-6'>
                           <p className=' text-gray-700'>
                             “{profile.testimonials}”
                           </p>
@@ -269,7 +269,7 @@ export default function OrganizerProfilePage() {
                                 key={idx}
                                 className='border border-gray-100 rounded-md p-3 bg-gray-50 hover:bg-gray-100 transition'
                               >
-                                <Button className='bg-[#FF804C]'>
+                                <Button className='bg-primary/90 hover:bg-primary'>
                                   <Certificate />
                                 </Button>
                                 <p className='font-medium text-gray-800'>

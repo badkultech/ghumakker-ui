@@ -56,7 +56,7 @@ export function TripCard({
                 {/* Tags */}
                 <div className="relative text-sm text-muted-foreground">
                     <div className="flex items-center gap-1 h-5 overflow-hidden">
-                        <MapPin className="w-4 h-4 text-orange-500 shrink-0" />
+                        <MapPin className="w-4 h-4 text-primary shrink-0" />
 
                         {visibleTags.join(", ")}
 
@@ -66,7 +66,7 @@ export function TripCard({
                                     e.stopPropagation();
                                     setShowAllTags((v) => !v);
                                 }}
-                                className="ml-1 text-orange-500 cursor-pointer whitespace-nowrap"
+                                className="ml-1 text-primary cursor-pointer whitespace-nowrap"
                             >
                                 +{remainingCount} more
                             </span>
@@ -94,7 +94,7 @@ export function TripCard({
                         <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg border hover:bg-gray-100 transition">
                             <Users className="w-4 h-4 text-gray-600" />
                             <span className="text-gray-800">Leads</span>
-                            <span className="ml-auto font-semibold text-orange-500">
+                            <span className="ml-auto font-semibold text-primary">
                                 {leads}
                             </span>
                         </div>
@@ -109,7 +109,7 @@ export function TripCard({
                         <div className="flex items-center gap-2 bg-gray-50 px-3 py-2 rounded-lg border hover:bg-gray-100 transition">
                             <MessageSquare className="w-4 h-4 text-gray-600" />
                             <span className="text-gray-800">Queries</span>
-                            <span className="ml-auto font-semibold text-orange-500">
+                            <span className="ml-auto font-semibold text-primary">
                                 {queries}
                             </span>
                         </div>

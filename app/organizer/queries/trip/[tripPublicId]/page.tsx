@@ -113,7 +113,7 @@ export default function QueriesPage() {
                 </h2>
 
                 <Link href={`/organizer/queries/all`}>
-                  <Button className="bg-[#F97316] hover:bg-[#ea6d14] text-white px-6 rounded-lg">
+                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 rounded-lg">
                     View All Queries
                   </Button>
                 </Link>

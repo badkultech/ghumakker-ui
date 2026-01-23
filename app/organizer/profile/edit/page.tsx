@@ -32,7 +32,7 @@ import { useOrganizationId } from '@/hooks/useOrganizationId';
 export default function OrganizerProfileEditPage() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const focusedOrgPublicId=useOrganizationId();
+  const focusedOrgPublicId = useOrganizationId();
 
   const state = useSelector(organizerState);
 
@@ -194,7 +194,7 @@ export default function OrganizerProfileEditPage() {
   if (profileLoading)
     return (
       <div className='flex items-center justify-center min-h-screen bg-white'>
-        <div className='animate-spin rounded-full h-12 w-12 border-t-4 border-orange-500 border-solid'></div>
+        <div className='animate-spin rounded-full h-12 w-12 border-t-4 border-primary border-solid'></div>
       </div>
     );
   return (
@@ -645,7 +645,7 @@ export default function OrganizerProfileEditPage() {
             </Button>
             <Button
               onClick={handleSaveProfile}
-              className='bg-gradient-to-r from-orange-500 to-pink-500 text-white rounded-2xl'
+              className='bg-brand-gradient text-white rounded-2xl'
               disabled={isLoading}
             >
               {isLoading ? 'Saving...' : 'Save Profile'}
