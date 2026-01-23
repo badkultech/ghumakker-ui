@@ -165,7 +165,7 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                     <TooltipProvider delayDuration={100}>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <button className="text-gray-400 hover:text-orange-500 transition">
+                                <button className="text-gray-400 hover:text-primary transition">
                                     <Info className="w-4 h-4" />
                                 </button>
                             </TooltipTrigger>
@@ -177,7 +177,7 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                                 className="max-w-xs bg-white text-gray-700 shadow-xl rounded-xl p-4 border"
                             >
                                 <div className="space-y-1">
-                                    <p> <Info className="w-4 h-4 text-orange-500 mt-1" /></p>
+                                    <p> <Info className="w-4 h-4 text-primary mt-1" /></p>
                                     <p className="text-sm leading-relaxed">
                                         Allows you to create flexible pricing options based on
                                         different categories. Each category can have multiple
@@ -231,7 +231,7 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                             className={cn(
                                 "relative flex flex-col gap-2 rounded-lg border-2 p-4 cursor-pointer hover:bg-gray-50 transition-all",
                                 category.type === 'single'
-                                    ? "border-orange-300 bg-orange-50/40"
+                                    ? "border-primary/50 bg-primary/10"
                                     : "border-gray-200 bg-white"
                             )}
                             style={{ alignItems: "flex-start" }}
@@ -251,7 +251,7 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                             className={cn(
                                 "relative flex flex-col gap-2 rounded-lg border-2 p-4 cursor-pointer hover:bg-gray-50 transition-all",
                                 category.type === 'multi'
-                                    ? "border-orange-300 bg-orange-50/40"
+                                    ? "border-primary/50 bg-primary/10"
                                     : "border-gray-200 bg-white"
                             )}
                             style={{ alignItems: "flex-start" }}
@@ -272,7 +272,7 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                 {/* Bulk Action */}
                 {category.type === 'multi' && (
                     <div className="space-y-3 pt-2">
-                        <div className="flex items-center gap-2 text-orange-500 font-medium text-sm">
+                        <div className="flex items-center gap-2 text-primary font-medium text-sm">
                             <Tag className="w-4 h-4" />
                             <span>Apply Discount to All</span>
                         </div>
@@ -291,7 +291,7 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                             </div>
 
                             <Button
-                                className="bg-[#FF7A00] hover:bg-[#E06900] text-white h-11 px-6 rounded-lg font-medium"
+                                className="bg-brand-gradient text-white h-11 px-6 rounded-lg font-medium hover:opacity-90 transition-opacity"
                                 onClick={() => {
                                     if (!bulkDiscount) return;
                                     const newOptions = category.options.map(o => ({

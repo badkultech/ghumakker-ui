@@ -20,33 +20,30 @@ export function TripStepperHeader({ activeStep = 1 }) {
             <div className="flex flex-col items-center">
               <div
                 className={`w-12 h-12 rounded-full flex items-center justify-center font-semibold text-lg
-                  ${
-                    isActive
-                      ? "bg-orange-500 text-white border-4 border-orange-200"
-                      : isCompleted
-                      ? "bg-orange-200 text-orange-700"
+                  ${isActive
+                    ? "bg-primary text-primary-foreground border-4 border-primary/20"
+                    : isCompleted
+                      ? "bg-primary/20 text-primary"
                       : "bg-gray-200 text-gray-400"
                   }`}
               >
                 {`0${stepNumber}`}
               </div>
               <span
-                className={`mt-2 text-sm font-medium ${
-                  isActive
+                className={`mt-2 text-sm font-medium ${isActive
                     ? "text-black"
                     : isCompleted
-                    ? "text-black"
-                    : "text-gray-400"
-                }`}
+                      ? "text-black"
+                      : "text-gray-400"
+                  }`}
               >
                 {step.label}
               </span>
             </div>
             {idx !== steps.length - 1 && (
               <div
-                className={`flex-1 h-px mx-2 ${
-                  isCompleted ? "bg-orange-200" : "bg-gray-200"
-                }`}
+                className={`flex-1 h-px mx-2 ${isCompleted ? "bg-primary/20" : "bg-gray-200"
+                  }`}
               ></div>
             )}
           </div>
@@ -55,3 +52,4 @@ export function TripStepperHeader({ activeStep = 1 }) {
     </div>
   );
 }
+

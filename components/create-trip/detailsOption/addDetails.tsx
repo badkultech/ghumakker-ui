@@ -193,7 +193,7 @@ export function DetailsOptions({
             btn.type === "event" && hasDayDescription ? true : false;
 
           const colorMap: any = {
-            event: "from-orange-100 to-orange-50 border-orange-400",
+            event: "from-primary/20 to-primary/5 border-primary",
             transit: "from-blue-100 to-blue-50 border-blue-400",
             stay: "from-green-100 to-green-50 border-green-400",
             meal: "from-rose-100 to-rose-50 border-rose-400",
@@ -244,7 +244,7 @@ export function DetailsOptions({
 
           {items.map((item, index) => {
             const colorMap: any = {
-              DAY_DESCRIPTION: "border-orange-400 bg-orange-50",
+              DAY_DESCRIPTION: "border-primary/50 bg-primary/5",
               TRANSIT: "border-blue-400 bg-blue-50",
               STAY: "border-green-400 bg-green-50",
               MEAL: "border-rose-400 bg-rose-50",
@@ -252,7 +252,7 @@ export function DetailsOptions({
             };
 
             const iconMap: any = {
-              DAY_DESCRIPTION: <Calendar className="text-orange-500" size={20} />,
+              DAY_DESCRIPTION: <Calendar className="text-primary" size={20} />,
               TRANSIT: <Car className="text-blue-500" size={20} />,
               STAY: <Home className="text-green-500" size={20} />,
               MEAL: <Utensils className="text-rose-500" size={20} />,

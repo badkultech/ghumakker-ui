@@ -29,7 +29,7 @@ export function CreditOptions({
       <label
         onClick={() => handleSelect("emi")}
         className={`flex items-center gap-2 rounded-md border p-3 cursor-pointer transition 
-          hover:border-orange-300 ${value.emi ? "bg-orange-50 border-orange-200" : "bg-white"
+          hover:border-primary/50 ${value.emi ? "bg-primary/10 border-primary/20" : "bg-white"
           }`}
       >
         <div
@@ -40,7 +40,7 @@ export function CreditOptions({
             value.emi
               ? {
                 background:
-                  "linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A)",
+                  "linear-gradient(90deg, var(--color-brand-yellow), var(--color-brand-orange), var(--color-brand-pink), var(--color-brand-red))",
               }
               : {}
           }

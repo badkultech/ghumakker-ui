@@ -113,7 +113,7 @@ export function MainHeader({
               <button
                 onClick={onLoginClick}
                 className="px-4 py-1.5 rounded-full text-white font-medium 
-                           bg-gradient-to-r from-orange-400 to-pink-500 
+                           bg-brand-gradient
                            hover:opacity-90 transition"
               >
                 SignIn / SignUp

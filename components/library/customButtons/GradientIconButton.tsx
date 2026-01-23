@@ -28,10 +28,9 @@ export const GradientIconButton = ({
       style={style}
       onClick={onClick}
       className={`relative w-[170px] h-[45px] rounded-[100px] overflow-hidden font-semibold flex items-center justify-center gap-2 px-4 transition-all duration-300
-        ${
-          selected
-            ? `border-[3px]  bg-gradient-to-r from-white to-white text-${iconColor}-500 border-orange-300`
-            : `border-[3px] border-gray-200 bg-white text-${iconColor}-700`
+        ${selected
+          ? `border-[3px] bg-gradient-to-r from-white to-white text-primary border-primary`
+          : `border-[3px] border-gray-200 bg-white text-gray-700`
         }
         ${className}`}
     >

@@ -467,11 +467,11 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                       clearError("tripTitle");
                     }
                   }}
-                  className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500'
+                  className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary'
                 />
 
 
-                <span className='absolute right-4 top-1/2 -translate-y-1/2 text-sm text-orange-500'>
+                <span className='absolute right-4 top-1/2 -translate-y-1/2 text-sm text-primary'>
                   {formData.tripTitle.length}/70 Characters
                 </span>
 
@@ -522,7 +522,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                       if (isNaN(val) || val < 0) val = 0;
                       handleInputChange('totalDays', val);
                     }}
-                    className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-orange-500'
+                    className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary'
                   />
                   <span className="absolute right-10 top-1/2 -translate-y-1/2 text-gray-400 text-sm">
                     Days
@@ -744,7 +744,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                   <GradientIconButton
                     key={tag.id}
                     label={tag.label}
-                    className={` hover:border-orange-300`}
+                    className={` hover:border-primary`}
                     Icon={tag.icon}
                     selected={selectedTags.includes(tag.id)} // ✅ highlight selected
                     onClick={() => {
@@ -753,10 +753,10 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                     }}
 
                     iconColor={
-                      selectedTags.includes(tag.id) ? 'Orange' : 'black'
+                      selectedTags.includes(tag.id) ? 'var(--primary)' : 'black'
                     }
                     labelColor={
-                      selectedTags.includes(tag.id) ? 'Orange' : 'black'
+                      selectedTags.includes(tag.id) ? 'var(--primary)' : 'black'
                     }
                   />
                 ))}

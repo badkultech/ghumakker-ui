@@ -95,9 +95,9 @@ export function SuperAdminNotificationDropdown({
         <Button
           variant="ghost"
           size="sm"
-          className="relative rounded-full h-10 w-10 flex items-center justify-center bg-orange-50 hover:bg-orange-100 transition"
+          className="relative rounded-full h-10 w-10 flex items-center justify-center bg-primary/10 hover:bg-primary/20 transition"
         >
-          <Bell className="h-5 w-5 text-orange-600" />
+          <Bell className="h-5 w-5 text-primary" />
           {!isLoading && data.unreadCount > 0 && (
             <Badge className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 text-xs bg-red-500 text-white">
               {data.unreadCount}
@@ -117,7 +117,7 @@ export function SuperAdminNotificationDropdown({
           </h3>
           <button
             onClick={handleMarkAllAsRead}
-            className="text-sm font-medium text-orange-500 hover:text-orange-600 flex items-center gap-1"
+            className="text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1"
           >
             ✓ Mark all as read
           </button>
@@ -190,7 +190,7 @@ export function SuperAdminNotificationDropdown({
         {data.notifications.length > 0 && (
           <div className="px-4 py-3 border-t border-gray-100 text-center">
             <button
-              className="text-sm font-medium text-orange-500 hover:text-orange-600 transition"
+              className="text-sm font-medium text-primary hover:text-primary/80 transition"
               onClick={handleShowMore}
             >
               Show More

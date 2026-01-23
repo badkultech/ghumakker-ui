@@ -28,7 +28,7 @@ export function InputWithUnitToggle({
     return (
         <div
             className={cn(
-                'flex items-center border rounded-md px-3 h-10 bg-white w-full focus-within:ring-2 focus-within:ring-orange-500 focus-within:border-transparent transition-all',
+                'flex items-center border rounded-md px-3 h-10 bg-white w-full focus-within:ring-2 focus-within:ring-primary focus-within:border-transparent transition-all',
                 className
             )}
         >

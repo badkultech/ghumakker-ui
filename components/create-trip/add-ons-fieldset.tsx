@@ -45,7 +45,7 @@ export function AddOnsFieldset({
           variant="outline"
           size="sm"
           onClick={addRow}
-          className="text-orange-500 border-orange-400 hover:text-orange-600 hover:border-orange-600 hover:bg-orange-50"
+          className="text-primary border-primary/50 hover:text-primary hover:border-primary hover:bg-primary/10"
         >
           + Add Ons
         </Button>

@@ -32,10 +32,9 @@ export function PillCheckboxGroup({
             <div
               onClick={() => toggle(label)}
               className={`w-5 h-5 rounded border flex items-center justify-center transition-all duration-200 overflow-hidden
-                ${
-                  active
-                    ? "bg-gradient-to-r from-orange-400 to-pink-500 text-white border-transparent"
-                    : "border-gray-300 bg-white"
+                ${active
+                  ? "bg-brand-gradient text-white border-transparent"
+                  : "border-gray-300 bg-white"
                 }`}
             >
               {active && (

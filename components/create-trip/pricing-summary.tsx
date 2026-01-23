@@ -174,8 +174,8 @@ export function PricingSummary({
             <div className="flex items-center justify-between">
               <span className="text-gray-500">Payment Options</span>
               <div className="flex gap-1">
-                {creditOptions.card && <Badge variant="outline" className="text-xs bg-orange-50 text-orange-600 border-orange-200 font-normal">Card</Badge>}
-                {creditOptions.emi && <Badge variant="outline" className="text-xs bg-orange-50 text-orange-600 border-orange-200 font-normal">EMI</Badge>}
+                {creditOptions.card && <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/20 font-normal">Card</Badge>}
+                {creditOptions.emi && <Badge variant="outline" className="text-xs bg-primary/10 text-primary border-primary/20 font-normal">EMI</Badge>}
                 {!creditOptions.card && !creditOptions.emi && <span className="text-xs text-gray-400">None</span>}
               </div>
             </div>

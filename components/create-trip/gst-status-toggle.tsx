@@ -29,7 +29,7 @@ export function GstStatusToggle({
             onClick={() => onChange(opt.key)}
             className={cn(
               "rounded-md border items-center justify-center px-3 py-2 text-left transition-all",
-              active ? "border-orange-300 bg-orange-50" : "border-border"
+              active ? "border-primary/50 bg-primary/5" : "border-border"
             )}
           >
             <div className="flex items-center gap-3">
@@ -38,16 +38,16 @@ export function GstStatusToggle({
                 style={
                   active
                     ? {
-                        border: "2px solid transparent",
-                        background: `
+                      border: "2px solid transparent",
+                      background: `
                           linear-gradient(white, white) padding-box,
-                          linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A) border-box
+                          linear-gradient(90deg, var(--color-brand-yellow), var(--color-brand-orange), var(--color-brand-pink), var(--color-brand-red)) border-box
                         `,
-                      }
+                    }
                     : {
-                        border: "2px solid #D1D5DB",
-                        background: "white",
-                      }
+                      border: "2px solid #D1D5DB",
+                      background: "white",
+                    }
                 }
               >
                 {active && (
@@ -55,7 +55,7 @@ export function GstStatusToggle({
                     className="w-2.5 h-2.5 rounded-full"
                     style={{
                       background:
-                        "linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A)",
+                        "linear-gradient(90deg, var(--color-brand-yellow), var(--color-brand-orange), var(--color-brand-pink), var(--color-brand-red))",
                     }}
                   ></div>
                 )}

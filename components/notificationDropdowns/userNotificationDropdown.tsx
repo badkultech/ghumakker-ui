@@ -111,7 +111,7 @@ export function UserNotificationDropdown({
           </div>
 
           {data.unreadCount > 0 && (
-            <button className="text-xs font-medium text-orange-500 hover:underline">
+            <button className="text-xs font-medium text-primary hover:underline">
               Mark all as read
             </button>
           )}
@@ -137,7 +137,7 @@ export function UserNotificationDropdown({
                 key={n.id}
                 onClick={() => handleMarkAsSeen(n.id)}
                 className={`flex gap-3 px-4 py-3 cursor-pointer transition
-            ${n.isSeen ? "bg-white" : "bg-orange-50 hover:bg-orange-100"}
+            ${n.isSeen ? "bg-white" : "bg-primary/5 hover:bg-primary/10"}
           `}
               >
                 {/* Icon / Avatar */}
@@ -165,7 +165,7 @@ export function UserNotificationDropdown({
 
                 {/* Unread dot */}
                 {!n.isSeen && (
-                  <span className="mt-2 h-2 w-2 rounded-full bg-orange-500 flex-shrink-0" />
+                  <span className="mt-2 h-2 w-2 rounded-full bg-primary flex-shrink-0" />
                 )}
               </div>
             ))}
@@ -181,7 +181,7 @@ export function UserNotificationDropdown({
         <div className="sticky bottom-0 bg-white border-t px-4 py-2 text-center">
           <button
             onClick={handleViewAll}
-            className="text-sm font-medium text-orange-500 hover:underline"
+            className="text-sm font-medium text-primary hover:underline"
           >
             Show more
           </button>

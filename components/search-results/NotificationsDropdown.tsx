@@ -68,7 +68,7 @@ export function NotificationsDropdown({
 
                         <button
                             onClick={markAllAsRead}
-                            className="text-xs text-[#ff7043] hover:text-[#ff5722] font-normal flex items-center gap-1.5 mt-0.5"
+                            className="text-xs text-primary hover:text-primary/80 font-normal flex items-center gap-1.5 mt-0.5"
                         >
                             <Check className="w-3.5 h-3.5" />
                             Mark all as read
@@ -87,7 +87,7 @@ export function NotificationsDropdown({
                                     onUpdateNotifications(updated);
                                 }}
                                 className={`relative px-4 py-3.5 flex items-start gap-3 cursor-pointer transition-all hover:bg-gray-50
-                                        ${!n.read ? "bg-[#fff5f2]" : "bg-white"}
+                                        ${!n.read ? "bg-primary/5" : "bg-white"}
                                         ${index !== notifications.length - 1 ? "border-b border-gray-200" : ""}
                                     `}
                             >
@@ -110,7 +110,7 @@ export function NotificationsDropdown({
                                 {/* UNREAD DOT */}
                                 {!n.read && (
                                     <div className="flex-shrink-0 mt-2">
-                                        <span className="block w-2.5 h-2.5 bg-[#ff7043] rounded-full"></span>
+                                        <span className="block w-2.5 h-2.5 bg-primary rounded-full"></span>
                                     </div>
                                 )}
                             </div>
@@ -120,7 +120,7 @@ export function NotificationsDropdown({
 
                     {/* Footer */}
                     <div className="px-4 py-2.5 border-t border-gray-100 bg-white">
-                        <button className="w-full text-center text-sm text-[#ff7043] hover:text-[#ff5722] font-normal">
+                        <button className="w-full text-center text-sm text-primary hover:text-primary/80 font-normal">
                             Show More
                         </button>
                     </div>
