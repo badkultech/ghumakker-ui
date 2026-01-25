@@ -28,7 +28,7 @@ import { selectAuthState } from "@/lib/slices/auth"
 import { useGetUserQueriesQuery } from "@/lib/services/user"
 import { AuthModals } from "@/components/auth/auth/AuthModals"
 import { Overlay } from "@/components/common/Overlay"
-import { SearchTripsCard } from "@/components/homePage/shared/search-trips-card"
+import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop"
 import ConversationModal from "@/components/modals/ConversationModal"
 
 type QuestionStatus = "responded" | "pending"

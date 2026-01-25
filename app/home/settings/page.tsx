@@ -22,7 +22,7 @@ import { useUserId } from "@/hooks/useUserId";
 import { toast } from "@/hooks/use-toast";
 import { showSuccess } from "@/lib/utils/toastHelpers";
 import { Overlay } from "@/components/common/Overlay";
-import { SearchTripsCard } from "@/components/homePage/shared/search-trips-card";
+import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 

@@ -33,7 +33,7 @@ import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
 import { Overlay } from "@/components/common/Overlay";
-import { SearchTripsCard } from "@/components/homePage/shared/search-trips-card";
+import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { useRouter } from "next/navigation";
 import ScreenLoader from "@/components/common/ScreenLoader";
 import { AuthModals } from "@/components/auth/auth/AuthModals";

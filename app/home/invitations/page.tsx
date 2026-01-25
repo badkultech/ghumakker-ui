@@ -11,7 +11,7 @@ import { menuItems, notificationsData, userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { Overlay } from "@/components/common/Overlay"
-import { SearchTripsCard } from "@/components/homePage/shared/search-trips-card"
+import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop"
 import { useSelector } from "react-redux"
 import { selectAuthState } from "@/lib/slices/auth"
 

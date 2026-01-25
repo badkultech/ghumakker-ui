@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { SearchTripsCard } from "../shared/search-trips-card";
+import { SearchTripsCard } from "../shared/SearchTripsCardDesktop";
+import { SearchTripsCardMobile } from "../shared/SearchTripsCardMobile";
 
 export function HeroSection() {
   return (
@@ -14,12 +15,7 @@ export function HeroSection() {
           priority
           className="object-cover object-center"
         />
-
-        {/* Depth overlay */}
-        <div
-          className="absolute inset-0 bg-gradient-to-r 
-                     from-black/30 via-black/10 to-transparent"
-        />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/10 to-transparent" />
       </div>
 
       {/* Content */}
@@ -27,7 +23,7 @@ export function HeroSection() {
         <div className="container mx-auto px-6 lg:px-20">
           <div className="grid lg:grid-cols-2 gap-10 items-start">
 
-            {/* LEFT TEXT */}
+            {/* LEFT COLUMN */}
             <div className="max-w-xl">
               <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-black drop-shadow-sm">
                 Travel Together.
@@ -41,9 +37,19 @@ export function HeroSection() {
               </p>
             </div>
 
-            {/* RIGHT CARD */}
-            <div className="flex justify-center lg:justify-end lg:-mt-16">
-              <SearchTripsCard />
+            {/* RIGHT COLUMN (single grid cell) */}
+            <div className="flex justify-center lg:justify-end">
+
+              {/* Desktop card */}
+              <div className="hidden lg:block lg:-mt-16">
+                <SearchTripsCard />
+              </div>
+
+              {/* Mobile card */}
+              <div className="block lg:hidden w-full mt-6">
+                <SearchTripsCardMobile />
+              </div>
+
             </div>
 
           </div>

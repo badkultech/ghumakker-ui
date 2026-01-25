@@ -17,7 +17,7 @@ import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
 import { Overlay } from "@/components/common/Overlay";
-import { SearchTripsCard } from "@/components/homePage/shared/search-trips-card";
+import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { FloatingCompareBadge } from "@/components/homePage/shared/FloatingCompareBadge";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";

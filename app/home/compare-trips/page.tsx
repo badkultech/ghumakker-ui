@@ -17,7 +17,7 @@ import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
 import { selectAuthState } from "@/lib/slices/auth";
 import { Overlay } from "@/components/common/Overlay";
-import { SearchTripsCard } from "@/components/homePage/shared/search-trips-card";
+import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
 
 interface TripData {
