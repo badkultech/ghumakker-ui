@@ -182,7 +182,7 @@ export function MonthYearSelector({
                   px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border
                   transition-all duration-200
                   ${isSelected
-                                        ? 'bg-gradient-to-r from-[#FF804C] to-[#FF4B88] text-white border-transparent shadow-md scale-[1.03]'
+                                        ? 'bg-brand-gradient text-white border-transparent shadow-md scale-[1.03]'
                                         : 'bg-white text-[#6b6b6b] border-[#e0e0e0] hover:bg-[#fafafa] hover:border-[#c0c0c0]'
                                     }
                   ${isPast ? 'opacity-40 cursor-not-allowed hover:bg-white hover:border-[#e0e0e0]' : ''}

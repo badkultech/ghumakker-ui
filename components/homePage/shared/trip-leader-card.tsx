@@ -41,7 +41,7 @@ export function TripLeaderCard({
           </div>
           <div className="flex flex-col">
             <h3 className="text-xl font-bold text-gray-900 leading-tight">{name}</h3>
-            <span className="text-[#FF804C] font-medium text-sm mt-0.5">{organization}</span>
+            <span className="text-brand-orange font-medium text-sm mt-0.5">{organization}</span>
           </div>
         </div>
 
@@ -75,7 +75,7 @@ export function TripLeaderCard({
         {/* Text Content */}
         <div className="flex flex-col gap-1">
           <h3 className="text-xl font-bold text-gray-900">{name}</h3>
-          <span className="text-[#FF804C] font-semibold text-xs">{organization}</span>
+          <span className="text-brand-orange font-semibold text-xs">{organization}</span>
           <p className="text-gray-500 text-xs leading-relaxed mt-2 line-clamp-3">
             "{quote}"
           </p>
@@ -102,7 +102,7 @@ export function TripLeaderCard({
       {/* Text content */}
       <div className="flex flex-col gap-0.5 min-w-0">
         <span className="font-medium font-poppins text-gray-900 text-[16px]">{name}</span>
-        <span className="text-orange-500 font-poppins text-[12px]">{organization}</span>
+        <span className="text-brand-orange font-poppins text-[12px]">{organization}</span>
         <p className="text-gray-500 font-poppins leading-tight line-clamp-2 mt-1 text-[12px]">
           "{quote}"
         </p>

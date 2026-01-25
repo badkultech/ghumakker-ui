@@ -78,7 +78,7 @@ export function Footer() {
 
 
       </div>
-      <div className="border-t flex justify-between border-muted-foreground/20 bg-[linear-gradient(90deg,#FEA901_0%,#FD6E34_33%,#FE336A_66%,#FD401A_100%)] py-6 px-20 text-center text-sm text-white">
+      <div className="border-t flex justify-between border-muted-foreground/20 bg-brand-gradient py-6 px-20 text-center text-sm text-white">
         <p>&copy; {new Date().getFullYear()} {APP_BRANDING}. All rights reserved.</p>
         <div className="flex gap-4">
           <Link href="#" className="hover:text-primary transition-colors">

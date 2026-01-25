@@ -52,11 +52,9 @@ function Section({ heading, items }: SectionProps): React.JSX.Element {
             type="button"
             className="flex items-center gap-4 group text-left"
             aria-label={it.title}
-            // onClick={() => {
-            //   if (it.href) window.location.href = it.href;
-            // }}
+          // }}
           >
-            <div className="w-12 h-12 rounded-md flex items-center justify-center bg-orange-400 shadow-[0_0_18px_rgba(0,0,0,0.08)] overflow-hidden">
+            <div className="w-12 h-12 rounded-md flex items-center justify-center bg-brand-orange shadow-[0_0_18px_rgba(0,0,0,0.08)] overflow-hidden">
               <Image
                 src={it.icon}
                 alt={`${it.title} icon`}

@@ -128,7 +128,7 @@ export function SearchTripsCard({ onClose, defaultTab }: SearchTripsCardProps) {
             className={cn(
               "flex-1 py-2.5 px-2 md:px-4 rounded-full text-sm font-medium transition-all",
               activeTab === "destination"
-                ? "bg-[rgba(255,128,76,1)] text-white"
+                ? "bg-brand-gradient text-white"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
@@ -139,7 +139,7 @@ export function SearchTripsCard({ onClose, defaultTab }: SearchTripsCardProps) {
             className={cn(
               "flex-1 py-2.5 px-2 md:px-4 rounded-full text-sm font-medium transition-all",
               activeTab === "moods"
-                ? "bg-[rgba(255,128,76,1)] text-white"
+                ? "bg-brand-gradient text-white"
                 : "text-muted-foreground hover:text-foreground",
             )}
           >
@@ -179,7 +179,7 @@ export function SearchTripsCard({ onClose, defaultTab }: SearchTripsCardProps) {
                   className={cn(
                     "p-2 md:p-3 rounded-xl border-2 transition-all flex flex-col items-start gap-2",
                     selectedRegion === "domestic"
-                      ? "border-orange-500 bg-primary/5"
+                      ? "border-brand-orange bg-brand-orange/5"
                       : "border-gray-200 hover:border-gray-300",
                   )}
                 >
@@ -198,7 +198,7 @@ export function SearchTripsCard({ onClose, defaultTab }: SearchTripsCardProps) {
                   className={cn(
                     "p-2 md:p-3 rounded-xl border-2 transition-all flex flex-col items-start gap-2",
                     selectedRegion === "international"
-                      ? "border-orange-500 bg-primary/5"
+                      ? "border-brand-orange bg-brand-orange/5"
                       : "border-gray-200 hover:border-gray-300",
                   )}
                 >

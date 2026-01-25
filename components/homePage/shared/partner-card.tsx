@@ -27,8 +27,8 @@ export function PartnerCard({ id, name, logo }: PartnerCardProps) {
         <span className="font-medium text-gray-900">{name}</span>
       </div>
       <div className="flex items-center gap-2">
-        <span className="text-orange-500 text-sm">View Full Profile</span>
-        <ChevronRight className="w-4 h-4 text-orange-500" />
+        <span className="text-brand-orange text-sm">View Full Profile</span>
+        <ChevronRight className="w-4 h-4 text-brand-orange" />
       </div>
     </Link>
   );

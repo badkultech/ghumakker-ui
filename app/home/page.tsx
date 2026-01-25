@@ -58,9 +58,6 @@ export default function Home() {
       />
 
       <HeroSection />
-      <CategoriesSection />
-      <PartnersSection />
-      <RegionsSection />
       <Footer />
 
       <SidebarMenu
