@@ -109,7 +109,7 @@ export function GroupLeaders() {
         <h2 className="text-xl font-semibold text-gray-900">Group Leaders</h2>
         <GradientButton
           onClick={() => setIsModalOpen(true)}
-          className="hover:from-orange-600 hover:to-red-600 text-white"
+          className="text-white"
         >
           + Add New Leader
         </GradientButton>
@@ -124,7 +124,7 @@ export function GroupLeaders() {
             <div
               key={leader.id}
               onClick={() => toggleLeaderSelection(leader.id)}
-              className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${isSelected ? "border-orange-500 bg-orange-50" : "border-gray-200 bg-gray-50 hover:border-gray-300"
+              className={`p-4 rounded-lg border-2 cursor-pointer transition-all ${isSelected ? "border-brand-orange bg-brand-orange/10" : "border-gray-200 bg-gray-50 hover:border-gray-300"
                 }`}
             >
               <div className="flex items-center gap-3">
@@ -144,7 +144,7 @@ export function GroupLeaders() {
       </div>
 
       {leaders.length > 2 && (
-        <button onClick={() => setShowAll(!showAll)} className="text-orange-500 hover:text-orange-600 font-medium">
+        <button onClick={() => setShowAll(!showAll)} className="text-brand-orange hover:text-brand-orange/80 font-medium">
           {showAll ? "View Less" : "View More"}
         </button>
       )}
@@ -195,7 +195,7 @@ export function GroupLeaders() {
                   placeholder="Enter leader's name"
                   value={newLeader.name}
                   onChange={(e) => setNewLeader((prev) => ({ ...prev, name: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 />
               </div>
 
@@ -207,7 +207,7 @@ export function GroupLeaders() {
                   placeholder="eg. Adventure is out there!"
                   value={newLeader.motto}
                   onChange={(e) => setNewLeader((prev) => ({ ...prev, motto: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-brand-orange"
                 />
               </div>
 
@@ -262,12 +262,12 @@ export function GroupLeaders() {
                   placeholder="Type here"
                   value={newLeader.description}
                   onChange={(e) => setNewLeader((prev) => ({ ...prev, description: e.target.value }))}
-                  className="w-full px-3 py-2 border-l border-r border-b border-gray-300 rounded-b-md focus:outline-none focus:ring-2 focus:ring-orange-500 min-h-[100px] resize-none"
+                  className="w-full px-3 py-2 border-l border-r border-b border-gray-300 rounded-b-md focus:outline-none focus:ring-2 focus:ring-brand-orange min-h-[100px] resize-none"
                   maxLength={500}
                 />
 
                 <div className="text-right mt-1">
-                  <span className="text-sm text-orange-500">{newLeader.description.length}/500 Characters</span>
+                  <span className="text-sm text-brand-orange">{newLeader.description.length}/500 Characters</span>
                 </div>
               </div>
 
@@ -281,7 +281,7 @@ export function GroupLeaders() {
                 </button>
                 <button
                   onClick={handleSaveLeader}
-                  className="flex-1 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-500 text-white rounded-md hover:from-orange-600 hover:to-red-600"
+                  className="flex-1 px-4 py-2 bg-brand-gradient text-white rounded-md hover:opacity-90"
                 >
                   Save Leader
                 </button>

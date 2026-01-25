@@ -124,10 +124,10 @@ export default function AdminRegister() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled
-              className="w-full bg-gray-100 cursor-not-allowed rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
+              className="w-full bg-gray-100 cursor-not-allowed rounded-md border border-gray-300 px-3 py-2 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange"
             />
             {email.length > 0 && !emailValid && (
-              <p className="text-[#FF804C] text-sm mt-1">
+              <p className="text-brand-orange text-sm mt-1">
                 Enter valid email address
               </p>
             )}
@@ -147,7 +147,7 @@ export default function AdminRegister() {
                 onFocus={() => setShowInstructions(true)}
                 onBlur={() => setShowInstructions(false)}
                 maxLength={20}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange"
               />
               <button
                 type="button"
@@ -157,13 +157,13 @@ export default function AdminRegister() {
                 {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
               </button>
             </div>
-            {showInstructions && <p className="text-[#FF804C] text-sm mt-1">For a strong password, includes:</p>}
+            {showInstructions && <p className="text-brand-orange text-sm mt-1">For a strong password, includes:</p>}
             {/* Password Strength */}
             {showInstructions && (
               <div className="mt-4 space-y-1">
                 <div className="flex items-center text-sm">
                   {rules.length ? (
-                    <CheckCircle2 className="text-[#FF804C] mr-2" size={16} />
+                    <CheckCircle2 className="text-brand-orange mr-2" size={16} />
                   ) : (
                     <XCircle className="text-gray-400 mr-2" size={16} />
                   )}
@@ -171,7 +171,7 @@ export default function AdminRegister() {
                 </div>
                 <div className="flex items-center text-sm">
                   {rules.uppercase ? (
-                    <CheckCircle2 className="text-[#FF804C] mr-2" size={16} />
+                    <CheckCircle2 className="text-brand-orange mr-2" size={16} />
                   ) : (
                     <XCircle className="text-gray-400 mr-2" size={16} />
                   )}
@@ -179,7 +179,7 @@ export default function AdminRegister() {
                 </div>
                 <div className="flex items-center text-sm">
                   {rules.number ? (
-                    <CheckCircle2 className="text-[#FF804C] mr-2" size={16} />
+                    <CheckCircle2 className="text-brand-orange mr-2" size={16} />
                   ) : (
                     <XCircle className="text-gray-400 mr-2" size={16} />
                   )}
@@ -187,7 +187,7 @@ export default function AdminRegister() {
                 </div>
                 <div className="flex items-center text-sm">
                   {rules.special ? (
-                    <CheckCircle2 className="text-[#FF804C] mr-2" size={16} />
+                    <CheckCircle2 className="text-brand-orange mr-2" size={16} />
                   ) : (
                     <XCircle className="text-gray-400 mr-2" size={16} />
                   )}
@@ -208,7 +208,7 @@ export default function AdminRegister() {
                 placeholder="Confirm your password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-orange-400"
+                className="w-full rounded-md border border-gray-300 px-3 py-2 pr-10 text-gray-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-brand-orange focus:border-brand-orange"
               />
               <button
                 type="button"
@@ -219,7 +219,7 @@ export default function AdminRegister() {
               </button>
             </div>
             {confirmPassword && confirmPassword !== password && (
-              <p className="text-[#FF804C] text-sm mt-1">
+              <p className="text-brand-orange text-sm mt-1">
                 Password didn't match
               </p>
             )}

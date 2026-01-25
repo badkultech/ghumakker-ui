@@ -20,15 +20,15 @@ export function ChooseFromLibraryButton({
     align === "right"
       ? "justify-end"
       : align === "center"
-      ? "justify-center"
-      : "justify-start";
+        ? "justify-center"
+        : "justify-start";
 
   return (
     <div className={`flex ${alignmentClass}`}>
       <Button
         variant="outline"
         disabled={disabled}
-        className={`text-orange-500 border-orange-500 hover:bg-orange-50 ${className}`}
+        className={`text-brand-orange border-brand-orange hover:bg-brand-orange/10 ${className}`}
         onClick={onClick}
       >
         Choose from Library

@@ -253,11 +253,7 @@ export default function RegisterOrganizer() {
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="w-full h-10 text-sm font-medium text-white rounded-full shadow hover:shadow-md transition disabled:opacity-60"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #FEA901 0%, #FD6E34 25%, #FE336A 75%, #FD401A 100%)",
-                  }}
+                  className="w-full h-10 text-sm font-medium text-white rounded-full shadow hover:shadow-md transition disabled:opacity-60 bg-brand-gradient"
                 >
                   Register Organizer
                 </button>

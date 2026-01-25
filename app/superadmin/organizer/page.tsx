@@ -196,11 +196,7 @@ export default function OrganizationsPage() {
                 </p>
                 <Link
                   href={ROUTES.SUPER_ADMIN.ADD_ORGANIZER}
-                  className="inline-flex items-center justify-center px-6 py-2 rounded-full font-medium text-white shadow hover:shadow-md transition"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #FEA901 0%, #FD6E34 25%, #FE336A 75%, #FD401A 100%)",
-                  }}
+                  className="inline-flex items-center justify-center px-6 py-2 rounded-full font-medium text-white shadow hover:shadow-md transition bg-brand-gradient"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Organizer

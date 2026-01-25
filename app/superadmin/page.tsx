@@ -39,8 +39,8 @@ export default function Dashboard() {
                   href: ROUTES.SUPER_ADMIN.ADMINS,
                   label: "Pending Admins",
                   value: tenantStatsData?.pendingAdmins ?? 0,
-                  icon: <Clock className="w-5 h-5 text-orange-600" />,
-                  bg: "bg-orange-100",
+                  icon: <Clock className="w-5 h-5 text-brand-orange" />,
+                  bg: "bg-brand-orange/10",
                 },
                 {
                   role: "organizers",
@@ -90,12 +90,7 @@ export default function Dashboard() {
                 </p>
                 <Link
                   href={ROUTES.SUPER_ADMIN.ADD_ADMIN}
-                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm font-medium shadow hover:shadow-md transition"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #FEA901 0%, #FD6E34 25%, #FE336A 75%, #FD401A 100%)",
-                    color: "white",
-                  }}
+                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm font-medium shadow hover:shadow-md transition bg-brand-gradient text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Admin
@@ -115,12 +110,7 @@ export default function Dashboard() {
                 </p>
                 <Link
                   href={ROUTES.SUPER_ADMIN.ADD_ORGANIZER}
-                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm font-medium shadow hover:shadow-md transition"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #FEA901 0%, #FD6E34 25%, #FE336A 75%, #FD401A 100%)",
-                    color: "white",
-                  }}
+                  className="inline-flex items-center justify-center px-5 sm:px-6 py-2 sm:py-2.5 rounded-full text-sm font-medium shadow hover:shadow-md transition bg-brand-gradient text-white"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Organizer

@@ -101,13 +101,13 @@ export default function ForgotPasswordPage() {
                     placeholder="Enter your email address"
                     className={[
                       "w-full rounded-2xl border-0 bg-blue-50 px-5 py-4 text-base text-gray-900 placeholder-gray-500",
-                      "focus:outline-none focus:ring-2 focus:ring-orange-400",
-                      emailError ? "ring-2 ring-[#FF804C]" : "",
+                      "focus:outline-none focus:ring-2 focus:ring-brand-orange",
+                      emailError ? "ring-2 ring-brand-orange" : "",
                     ].join(" ")}
                     disabled={isLoading}
                   />
                   {emailError && (
-                    <p className="text-[#FF804C] text-sm">
+                    <p className="text-brand-orange text-sm">
                       {emailError}
                     </p>
                   )}
@@ -125,7 +125,7 @@ export default function ForgotPasswordPage() {
                     Remember your password?{" "}
                     <Link
                       href={ROUTES.SUPER_ADMIN.LOGIN}
-                      className="text-[#FD6E34] hover:underline font-medium"
+                      className="text-brand-orange hover:underline font-medium"
                     >
                       Sign in here
                     </Link>
@@ -152,7 +152,7 @@ export default function ForgotPasswordPage() {
                   setIsSubmitted(false);
                   setEmail("");
                 }}
-                className="text-[#FF804C] hover:underline font-medium text-sm"
+                className="text-brand-orange hover:underline font-medium text-sm"
               >
                 Try again with different email
               </button>

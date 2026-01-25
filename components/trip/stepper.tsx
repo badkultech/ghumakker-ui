@@ -18,10 +18,10 @@ export function Stepper() {
               <div
                 className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-medium
                   ${isActive
-                    ? "bg-orange-500 text-white"
+                    ? "bg-brand-orange text-white"
                     : isCompleted
-                    ? "bg-green-500 text-white"
-                    : "bg-gray-300 text-gray-600"}
+                      ? "bg-green-500 text-white"
+                      : "bg-gray-300 text-gray-600"}
                 `}
               >
                 {step.id}
@@ -30,9 +30,8 @@ export function Stepper() {
             </div>
             {index < tripSteps.length - 1 && (
               <div
-                className={`w-16 h-px mx-4 mt-[-20px] ${
-                  isCompleted ? "bg-orange-500" : "bg-gray-300"
-                }`}
+                className={`w-16 h-px mx-4 mt-[-20px] ${isCompleted ? "bg-brand-orange" : "bg-gray-300"
+                  }`}
               />
             )}
           </div>

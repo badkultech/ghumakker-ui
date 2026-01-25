@@ -20,7 +20,7 @@ export function UserProfileDropdown() {
       <DropdownMenuTrigger asChild>
         <div className="relative w-10 h-10 group">
           {/* Gradient ring */}
-          <div className="absolute -inset-0.5 rounded-full bg-gradient-to-tr from-[#FEA901] via-[#FD6E34] to-[#FD401A] opacity-0 group-hover:opacity-100 transition-opacity"></div>
+          <div className="absolute -inset-0.5 rounded-full bg-brand-gradient opacity-0 group-hover:opacity-100 transition-opacity"></div>
 
           {/* Avatar with white background to cover inner gradient */}
           <div className="relative w-full h-full rounded-full bg-white overflow-hidden">

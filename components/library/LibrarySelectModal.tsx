@@ -177,8 +177,8 @@ export function LibrarySelectModal({
                         onClose();
                       }}
                       className={`flex items-center gap-3 rounded-xl border p-4 text-left transition ${selected === item.id
-                        ? "border-orange-500 shadow"
-                        : "border-gray-200 hover:border-orange-400"
+                        ? "border-brand-orange shadow bg-brand-orange/5"
+                        : "border-gray-200 hover:border-brand-orange"
                         }`}
                     >
                       <LazyImage
@@ -210,8 +210,8 @@ export function LibrarySelectModal({
                         onClose();
                       }}
                       className={`flex flex-col items-start gap-1 rounded-xl border p-4 text-left transition ${selected === item.id
-                        ? "border-orange-500 shadow"
-                        : "border-gray-200 hover:border-orange-400"
+                        ? "border-brand-orange shadow bg-brand-orange/5"
+                        : "border-gray-200 hover:border-brand-orange"
                         }`}
                     >
                       <div className="font-medium text-gray-900">{item.title}</div>
@@ -254,12 +254,12 @@ export function LibrarySelectModal({
           <Button
             onClick={handleSelect}
             disabled={!selected}
-            className="rounded-full px-6 bg-gradient-to-r from-orange-400 to-pink-500 text-white"
+            className="rounded-full px-6 bg-brand-gradient text-white"
           >
             Select
           </Button>
         </DialogFooter>
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 }

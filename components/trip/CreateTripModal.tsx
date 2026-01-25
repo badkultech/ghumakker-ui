@@ -55,7 +55,7 @@ export function CreateTripModal({
             "
               onClick={onStartFromScratch}
             >
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-orange-500 text-white flex-shrink-0">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-brand-orange text-white flex-shrink-0">
                 <Plus className="w-6 h-6" />
               </div>
               <div className="flex flex-col items-start">
@@ -81,7 +81,7 @@ export function CreateTripModal({
             "
               onClick={onUseSimilarTrip}
             >
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-orange-100 text-orange-600 flex-shrink-0">
+              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-brand-orange/10 text-brand-orange flex-shrink-0">
                 <Copy className="w-6 h-6" />
               </div>
               <div className="flex flex-col items-start">

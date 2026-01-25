@@ -257,8 +257,8 @@ export default function Dashboard() {
           }
           disabled={isActive || isPending}
           className={`transition-colors ${isActive || isPending
-              ? "text-gray-400 cursor-not-allowed"
-              : "text-green-600 hover:text-green-900 cursor-pointer"
+            ? "text-gray-400 cursor-not-allowed"
+            : "text-green-600 hover:text-green-900 cursor-pointer"
             }`}
           title={
             isActive
@@ -281,8 +281,8 @@ export default function Dashboard() {
           }
           disabled={!isActive}
           className={`transition-colors ${!isActive
-              ? "text-gray-400 cursor-not-allowed"
-              : "text-red-600 hover:text-red-900 cursor-pointer"
+            ? "text-gray-400 cursor-not-allowed"
+            : "text-red-600 hover:text-red-900 cursor-pointer"
             }`}
           title={
             !isActive
@@ -303,8 +303,8 @@ export default function Dashboard() {
           }
           disabled={!isPending}
           className={`transition-colors ${!isPending
-              ? "text-gray-400 cursor-not-allowed"
-              : "text-blue-600 hover:text-blue-900 cursor-pointer"
+            ? "text-gray-400 cursor-not-allowed"
+            : "text-blue-600 hover:text-blue-900 cursor-pointer"
             }`}
           title={
             !isPending
@@ -426,11 +426,7 @@ export default function Dashboard() {
 
                 <Link
                   href={ROUTES.SUPER_ADMIN.ADD_ADMIN}
-                  className="inline-flex items-center justify-center px-8 py-3 rounded-full font-medium border-2 border-white shadow-lg text-white hover:shadow-xl transition-shadow"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, #FEA901 0%, #FD6E34 25%, #FE336A 75%, #FD401A 100%)",
-                  }}
+                  className="inline-flex items-center justify-center px-8 py-3 rounded-full font-medium border-2 border-white shadow-lg text-white hover:shadow-xl transition-shadow bg-brand-gradient"
                 >
                   <Plus className="w-4 h-4 mr-2" />
                   Add Admin
@@ -486,11 +482,7 @@ export default function Dashboard() {
                   </p>
                   <Link
                     href={ROUTES.SUPER_ADMIN.ADD_ADMIN}
-                    className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium text-white shadow-lg"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, #FEA901 0%, #FD6E34 25%, #FE336A 75%, #FD401A 100%)",
-                    }}
+                    className="inline-flex items-center justify-center px-6 py-3 rounded-lg font-medium text-white shadow-lg bg-brand-gradient"
                   >
                     <Plus className="w-5 h-5 mr-2" />
                     Add First Admin
@@ -529,7 +521,7 @@ export default function Dashboard() {
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="flex items-center">
                               <div className="flex-shrink-0 h-10 w-10">
-                                <div className="h-10 w-10 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center">
+                                <div className="h-10 w-10 rounded-full bg-brand-gradient flex items-center justify-center">
                                   <span className="text-sm font-medium text-white">
                                     {admin.firstName.charAt(0)}
                                     {admin.lastName.charAt(0)}

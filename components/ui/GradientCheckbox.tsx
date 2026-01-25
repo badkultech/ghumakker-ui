@@ -14,10 +14,9 @@ export default function GradientCheckbox({
       id={id}
       onClick={onChange}
       className={`w-5 h-5 rounded border cursor-pointer flex items-center justify-center transition-all duration-200
-        ${
-          checked
-            ? "bg-gradient-to-r from-orange-400 to-pink-500 text-white border-transparent"
-            : "border-gray-300 bg-white"
+        ${checked
+          ? "bg-brand-gradient text-white border-transparent"
+          : "border-gray-300 bg-white"
         }`}
     >
       {checked && (

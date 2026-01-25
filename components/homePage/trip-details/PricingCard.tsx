@@ -12,7 +12,7 @@ export default function PricingCard({ onPricing, onAsk }: any) {
 
       <button
         onClick={onAsk}
-        className="w-full border-2 border-orange-500 text-orange-500 p-3 rounded-lg"
+        className="w-full border-2 border-brand-orange text-brand-orange p-3 rounded-lg"
       >
         <MessageCircle className="inline w-4 h-4 mr-2" />
         Send Query

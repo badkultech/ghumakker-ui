@@ -142,11 +142,7 @@ export default function SwitchOrganization() {
             <Button
               onClick={handleApply}
               disabled={!selectedOrg}
-              className='mt-6 w-full py-3 rounded-lg text-white font-medium disabled:bg-gray-400'
-              style={{
-                background:
-                  'linear-gradient(135deg, #FEA901 0%, #FD6E34 25%, #FE336A 75%, #FD401A 100%)',
-              }}
+              className='mt-6 w-full py-3 rounded-lg text-white font-medium disabled:bg-gray-400 bg-brand-gradient'
             >
               Apply
             </Button>

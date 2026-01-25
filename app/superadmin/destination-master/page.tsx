@@ -153,7 +153,7 @@ export default function DestinationMasterPage() {
                         <div className="mt-8 flex justify-end">
                             <button
                                 onClick={handleSubmit}
-                                className="px-6 py-3 bg-black text-white rounded-lg hover:bg-gray-900"
+                                className="px-6 py-3 bg-brand-gradient text-white rounded-lg hover:opacity-90 transition-opacity"
                             >
                                 Save Destination
                             </button>
