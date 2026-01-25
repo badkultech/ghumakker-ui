@@ -71,80 +71,42 @@ export function MainHeader({
   };
 
   return (
-    <header className="w-full sticky top-0 z-30 bg-white border-b border-gray-200">
+    <header className="w-full sticky top-0 z-30 bg-white border-b border-gray-200 h-14">
       <div
         className={
           variant === "center"
-            ? "max-w-[1400px] mx-auto px-4 md:px-20 py-3 flex items-center"
-            : "w-full px-3 md:px-6 py-2 flex items-center"
+            ? "max-w-[1400px] mx-auto px-4 md:px-20 h-full flex items-center"
+            : "w-full px-3 md:px-6 h-full flex items-center"
         }
       >
         {/* LEFT */}
         <div className="flex items-center gap-2">
-          {logoText ? (
-            <>
-              <button
-                onClick={() => router.back()}
-                className="p-1 text-black/80 hover:text-black"
-              >
-                <ArrowLeft className="w-5 h-5" />
-              </button>
-
-              <h3 className="text-lg md:text-xl font-semibold text-black">
-                {logoText}
-              </h3>
-            </>
-          ) : (
-            <Image
-              src={logoSrc}
-              alt="Logo"
-              width={96}
-              height={37}
-              className="w-[120px] h-[30px] cursor-pointer"
-              onClick={() => router.push("/home")}
-            />
-          )}
+          <Image
+            src={logoSrc}
+            alt="Logo"
+            width={96}
+            height={28}
+            className="w-[110px] h-[28px] cursor-pointer"
+            onClick={() => router.push("/home")}
+          />
         </div>
 
         {/* RIGHT */}
-        <div className="ml-auto flex items-center gap-4">
-          {!isLoggedIn ? (
-            <>
-              <button
-                onClick={onLoginClick}
-                className="px-4 py-1.5 rounded-full text-white font-medium 
-                           bg-brand-gradient
-                           hover:opacity-90 transition"
-              >
-                SignIn / SignUp
-              </button>
-            </>
-          ) : (
-            <>
-              <button className="p-2 hidden md:block text-black/80 hover:text-black">
-                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                  <path
-                    d="M18 0H2C0.897 0 0 0.897 0 2V14C0 15.103 0.897 16 2 16H5V19.767L11.277 16H18C19.103 16 20 15.103 20 14V2C20 0.897 19.103 0 18 0Z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </button>
+        <div className="ml-auto flex items-center gap-3">
+          <NotificationsDropdown
+            notifications={displayNotifications}
+            onUpdateNotifications={handleUpdateNotifications}
+          />
 
-              <NotificationsDropdown
-                notifications={displayNotifications}
-                onUpdateNotifications={handleUpdateNotifications}
-              />
-
-              <button
-                onClick={onMenuOpen}
-                className="p-2 text-black/80 hover:text-black"
-              >
-                <Menu className="w-6 h-6" />
-              </button>
-            </>
-          )}
+          <button
+            onClick={onMenuOpen}
+            className="p-1.5 text-black/80 hover:text-black"
+          >
+            <Menu className="w-6 h-6" />
+          </button>
         </div>
       </div>
     </header>
+
   );
 }

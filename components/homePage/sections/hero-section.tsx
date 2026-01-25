@@ -1,36 +1,51 @@
-import { SearchTripsCard } from "@/components/homePage/shared/search-trips-card";
 import Image from "next/image";
+import { SearchTripsCard } from "../shared/search-trips-card";
 
 export function HeroSection() {
   return (
-    <section className="relative min-h-[700px] bg-white overflow-visible max-w-full">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-20 py-8 md:py-16">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          {/* Left content */}
-          <div className="space-y-6">
-            <h1 className="text-2xl sm:text-3xl md:text-5xl lg:text-[3.5rem] font-bold text-foreground leading-[1.2] md:leading-[1.1] tracking-tight">
-              Join Group Trips. Meet Like Minded Travelers. Around the World!
-            </h1>
-            <p className="hidden md:block text-muted-foreground text-base max-w-md leading-relaxed">
-              An all-in-one platform to discover the most incredible group
-              trips, connect with like-minded travelers and be part of a
-              thriving community that shares your passion for exploration and
-              connection.
-            </p>
+    <section className="relative w-full overflow-hidden">
 
-            <div className="pt-4 hidden lg:block">
-              <Image
-                alt=""
-                width={240}
-                height={120}
-                src={"./hero-images-dummy.png"}
-                className="w-full h-auto rounded-lg object-cover"
-              />
+      {/* Background layer */}
+      <div className="absolute inset-0 z-0">
+        <Image
+          src="/hero-bg.png"
+          alt="Group travel"
+          fill
+          priority
+          className="object-cover object-center"
+        />
+
+        {/* Depth overlay */}
+        <div
+          className="absolute inset-0 bg-gradient-to-r 
+                     from-black/30 via-black/10 to-transparent"
+        />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-20 py-12 lg:py-16">
+        <div className="container mx-auto px-6 lg:px-20">
+          <div className="grid lg:grid-cols-2 gap-10 items-start">
+
+            {/* LEFT TEXT */}
+            <div className="max-w-xl">
+              <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-black drop-shadow-sm">
+                Travel Together.
+                <br />
+                Build Real Connections.
+              </h1>
+
+              <p className="mt-4 text-sm text-gray-800 max-w-md drop-shadow-sm">
+                Discover curated group trips and connect with travelers who
+                share your mindset.
+              </p>
             </div>
-          </div>
 
-          <div className="flex justify-center lg:justify-end w-full overflow-visible">
-            <SearchTripsCard />
+            {/* RIGHT CARD */}
+            <div className="flex justify-center lg:justify-end lg:-mt-16">
+              <SearchTripsCard />
+            </div>
+
           </div>
         </div>
       </div>

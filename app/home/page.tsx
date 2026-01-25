@@ -47,7 +47,7 @@ export default function Home() {
 
 
   return (
-    <main className="min-h-screen relative">
+    <main className="h-screen flex flex-col overflow-hidden bg-white">
       <MainHeader
         isLoggedIn={isLoggedIn}
         onLoginClick={() => setAuthStep("PHONE")}
@@ -57,7 +57,10 @@ export default function Home() {
         variant="center"
       />
 
-      <HeroSection />
+      <div className="flex-1 overflow-hidden">
+        <HeroSection />
+      </div>
+
       <Footer />
 
       <SidebarMenu
