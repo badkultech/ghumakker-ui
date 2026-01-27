@@ -19,9 +19,10 @@ const PREDEFINED_MOODS = [
 interface SearchTripsCardMobileProps {
     onClose?: () => void;
     defaultTab?: "destination" | "moods";
+    className?: string;
 }
 
-export function SearchTripsCardMobile({ onClose, defaultTab }: SearchTripsCardMobileProps) {
+export function SearchTripsCardMobile({ onClose, defaultTab, className }: SearchTripsCardMobileProps) {
     const router = useRouter();
 
     const [activeTab, setActiveTab] = useState<"destination" | "moods">(defaultTab || "destination");
@@ -60,7 +61,7 @@ export function SearchTripsCardMobile({ onClose, defaultTab }: SearchTripsCardMo
     };
 
     return (
-        <div className="bg-white rounded-2xl shadow-lg p-3 w-full overflow-hidden">
+        <div className={cn("bg-white rounded-2xl shadow-lg p-3 w-full overflow-hidden", className)}>
 
             {/* Header */}
             <h2 className="text-sm font-semibold mb-2 text-center text-foreground/80">

@@ -4,6 +4,7 @@ import { useState } from "react";
 import { LazyImage } from "@/components/ui/lazyImage";
 import { moodMap } from "@/components/search-results/mood-tag";
 import { useRouter } from "next/navigation";
+import { Search } from "lucide-react";
 
 type ExploreDestination = {
   title: string;
@@ -58,8 +59,8 @@ export default function NoTripsFound() {
     <div className="w-full flex flex-col items-center justify-center py-16">
 
       {/* Search Icon Circle */}
-      <div className="w-16 h-16 rounded-full bg-[#fff4ec] flex items-center justify-center mb-4">
-        <LazyImage src="/vector.png" alt="search" width={28} height={28} />
+      <div className="w-16 h-16 rounded-full bg-primary/10 flex items-center justify-center mb-4">
+        <Search className="w-8 h-8 text-primary" />
       </div>
 
       <h2 className="text-lg md:text-xl font-semibold text-[#2d2d2d]">

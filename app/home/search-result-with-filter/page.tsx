@@ -18,6 +18,7 @@ import { selectAuthState } from "@/lib/slices/auth";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
 import { Overlay } from "@/components/common/Overlay";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
+import { SearchTripsCardMobile } from "@/components/homePage/shared/SearchTripsCardMobile";
 import { FloatingCompareBadge } from "@/components/homePage/shared/FloatingCompareBadge";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";
@@ -468,8 +469,17 @@ export default function SearchResultsWithFilters() {
         open={showSearchOverlay}
         onClose={() => setShowSearchOverlay(false)}
       >
-        <SearchTripsCard defaultTab={searchTab}
-          onClose={() => setShowSearchOverlay(false)} />
+        <div className="block lg:hidden w-[85vw] max-w-[360px]">
+          <SearchTripsCardMobile
+            defaultTab={searchTab}
+            onClose={() => setShowSearchOverlay(false)}
+            className="shadow-none border-none p-1"
+          />
+        </div>
+        <div className="hidden lg:block">
+          <SearchTripsCard defaultTab={searchTab}
+            onClose={() => setShowSearchOverlay(false)} />
+        </div>
       </Overlay>
       <FloatingCompareBadge />
       <AuthModals authStep={authStep} setAuthStep={setAuthStep} />

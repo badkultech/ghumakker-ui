@@ -89,6 +89,7 @@ export default function Home() {
           <SearchTripsCardMobile
             defaultTab={searchTab}
             onClose={() => setShowSearchOverlay(false)}
+            className="shadow-none border-none"
           />
         </div>
       </Overlay>

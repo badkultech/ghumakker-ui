@@ -146,7 +146,7 @@ export function SearchTripsCard({ onClose, defaultTab }: SearchTripsCardProps) {
                   className={cn(
                     "p-2 rounded-lg border flex items-center gap-2 text-sm",
                     selectedRegion === region
-                      ? "border-brand-orange bg-brand-orange/5"
+                      ? "border-primary bg-primary/10"
                       : "border-gray-200"
                   )}
                 >

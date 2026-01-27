@@ -99,7 +99,7 @@ export function DesktopFilterBar({
         )}
 
         {/* Filter Tags */}
-        <div className="flex-1 flex items-center justify-between bg-[#fff6f2] rounded-xl px-4 py-3">
+        <div className="flex-1 flex items-center justify-between bg-gradient-to-r from-primary/5 to-primary/10 rounded-xl px-4 py-3">
 
           <div className="flex items-center gap-3 flex-wrap">
             <span className="text-sm text-[#6b6b6b]">Showing results for:</span>
