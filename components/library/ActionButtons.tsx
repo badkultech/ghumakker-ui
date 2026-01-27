@@ -17,7 +17,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
         <div className="flex justify-end gap-3 text-gray-500 mt-3">
             {onEdit && (
                 <button
-                    className="hover:text-brand-orange"
+                    className="hover:text-primary"
                     onClick={onEdit}
                     title="Edit"
                 >
@@ -27,7 +27,7 @@ export const ActionButtons: React.FC<ActionButtonsProps> = ({
 
             {onView && (
                 <button
-                    className="hover:text-brand-orange"
+                    className="hover:text-primary"
                     onClick={onView}
                     title="View"
                 >

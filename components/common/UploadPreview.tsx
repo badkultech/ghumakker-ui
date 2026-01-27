@@ -50,7 +50,7 @@ export function UploadPreview({
       if (prevDoc.url?.startsWith("blob:")) {
         try {
           URL.revokeObjectURL(prevDoc.url);
-        } catch {}
+        } catch { }
       }
 
       const blobUrl = URL.createObjectURL(file);
@@ -104,9 +104,8 @@ export function UploadPreview({
       </label>
 
       <label
-        className={`flex flex-col items-center justify-center w-full h-28 rounded-xl border-2 border-dashed border-gray-300 cursor-pointer hover:border-orange-400 transition ${
-          availableSlots === 0 && !isSingle ? "opacity-60 cursor-not-allowed" : ""
-        }`}
+        className={`flex flex-col items-center justify-center w-full h-28 rounded-xl border-2 border-dashed border-gray-300 cursor-pointer hover:border-primary transition ${availableSlots === 0 && !isSingle ? "opacity-60 cursor-not-allowed" : ""
+          }`}
       >
         <Upload className="w-6 h-6 text-gray-400 mb-2" />
         <span className="text-sm text-gray-600">

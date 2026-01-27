@@ -241,7 +241,7 @@ export function AddMealForm({
         {errors.title && (
           <p className="text-xs text-red-500 mt-1">{errors.title}</p>
         )}
-        <p className="text-xs text-right text-orange-500 mt-1">
+        <p className="text-xs text-right text-primary mt-1">
           {title.length}/70 Characters
         </p>
       </div>
@@ -345,7 +345,7 @@ export function AddMealForm({
               type="checkbox"
               checked={saveInLibrary}
               onChange={(e) => setSaveInLibrary(e.target.checked)}
-              className="appearance-none w-5 h-5 border-2 rounded-sm checked:bg-orange-500 checked:border-orange-500 flex items-center justify-center cursor-pointer"
+              className="appearance-none w-5 h-5 border-2 rounded-sm checked:bg-primary checked:border-primary flex items-center justify-center cursor-pointer"
               style={{
                 backgroundImage: saveInLibrary
                   ? "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M6.003 10.803l-2.85-2.849L1.3 9.808l4.703 4.704L14.7 5.815l-1.854-1.854z'/%3E%3C/svg%3E\")"
@@ -364,7 +364,7 @@ export function AddMealForm({
 
       {isSaving && header === "Add Meal" && (
         <div className="w-full flex justify-center my-2">
-          <p className="text-sm text-orange-500 font-medium">
+          <p className="text-sm text-primary font-medium">
             Saving...
           </p>
         </div>

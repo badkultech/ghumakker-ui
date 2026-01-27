@@ -222,18 +222,15 @@ export function AddStayForm({
       {/* Title */}
       <div>
         <label className="block text-sm font-medium text-gray-700 mb-1">Title <RequiredStar /></label>
-        <div className="relative">
-          <Input
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            placeholder="Enter title"
-            maxLength={70}
-            className="pr-20"
-          />
-          <span className="absolute right-4 top-1/2 -translate-y-1/2 text-xs text-brand-orange">
-            {title.length}/70 Characters
-          </span>
-        </div>
+        <Input
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Enter title"
+          maxLength={70}
+        />
+        <p className="text-xs text-right text-primary mt-1">
+          {title.length}/70 Characters
+        </p>
         {errors.title && <p className="text-xs text-red-500 mt-1">{errors.title}</p>}
       </div>
 
@@ -299,7 +296,7 @@ export function AddStayForm({
               type="checkbox"
               checked={saveInLibrary}
               onChange={(e) => setSaveInLibrary(e.target.checked)}
-              className="appearance-none w-5 h-5 border-2 rounded-sm checked:bg-brand-orange checked:border-brand-orange flex items-center justify-center cursor-pointer"
+              className="appearance-none w-5 h-5 border-2 rounded-sm checked:bg-primary checked:border-primary flex items-center justify-center cursor-pointer"
               style={{
                 backgroundImage: saveInLibrary
                   ? "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='white'%3E%3Cpath d='M6.003 10.803l-2.85-2.849L1.3 9.808l4.703 4.704L14.7 5.815l-1.854-1.854z'/%3E%3C/svg%3E\")"
@@ -316,7 +313,7 @@ export function AddStayForm({
 
       {isSaving && header === "Add Stay" && (
         <div className="w-full flex justify-center my-2">
-          <p className="text-sm text-brand-orange font-medium">
+          <p className="text-sm text-primary font-medium">
             Saving...
           </p>
         </div>

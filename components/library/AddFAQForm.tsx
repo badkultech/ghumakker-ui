@@ -68,7 +68,7 @@ export function AddFAQForm({
         {errors.question && (
           <p className="text-xs text-red-500 mt-1">{errors.question}</p>
         )}
-        <p className="text-xs text-right text-orange-500 mt-1">
+        <p className="text-xs text-right text-primary mt-1">
           {question.length}/200 Characters
         </p>
       </div>
