@@ -30,42 +30,29 @@ export default function SwitchOrganization() {
     phone: '',
   });
 
+  // Applied filters state (triggers API call)
+  const [appliedFilters, setAppliedFilters] = useState<{
+    orgName?: string;
+    orgId?: string;
+    startDate?: string;
+    endDate?: string;
+    email?: string;
+    phone?: string;
+  }>({});
+
   // Load initial selected org from local storage
   const [selectedOrgId, setSelectedOrgId] = useState<string | null>(
     () => getValueFromLocalStorage('focusedOrganizationId') as string | null
   );
 
   // Fetch organizations from API
-  const { data, isLoading } = useGetOrganizationsQuery({ page: 0, size: 200 });
-  const organizations = data?.content || [];
-
-  // Filter logic
-  const filteredOrgs = organizations.filter((org) => {
-    const matchesName = filters.orgName
-      ? org.entityName.toLowerCase().includes(filters.orgName.toLowerCase())
-      : true;
-    const matchesId = filters.orgId
-      ? org.publicId === filters.orgId
-      : true;
-    const matchesEmail = filters.email
-      ? org.email === filters.email
-      : true;
-    const matchesPhone = filters.phone
-      ? org.primaryPhone === filters.phone
-      : true;
-
-    let matchesStartDate = true;
-    if (filters.startDate && org.dateOfEstablishment) {
-      matchesStartDate = new Date(org.dateOfEstablishment) >= new Date(filters.startDate);
-    }
-
-    let matchesEndDate = true;
-    if (filters.endDate && org.dateOfEstablishment) {
-      matchesEndDate = new Date(org.dateOfEstablishment) <= new Date(filters.endDate);
-    }
-
-    return matchesName && matchesId && matchesEmail && matchesPhone && matchesStartDate && matchesEndDate;
+  const { data, isLoading, refetch } = useGetOrganizationsQuery({
+    page: 0,
+    size: 200,
+    filters: appliedFilters
   });
+  const organizations = data?.content || [];
+  const filteredOrgs = organizations; // Server-side filtered now
 
   const handleApplyOrg = () => {
     if (!selectedOrgId) return;
@@ -201,12 +188,16 @@ export default function SwitchOrganization() {
             </div>
 
             {/* APPLY FILTERS BUTTON */}
-            {/* Note: In this implementation, filters are applied reactively. The button could be used to trigger a re-fetch if this was server-side, 
-                or just to signal the user "Yes, I'm done typing". For now, since it's client-side, we can just leave it or make it do nothing/clear.
-                Or strictly speaking, we could only filter when clicked. But reactive is better UX. 
-                I'll keep it as a UI element as requested, maybe just logs or no-op since state flows automatically. 
-             */}
-            <Button className="mb-6 w-full md:w-auto">Apply Filters</Button>
+            {/* APPLY FILTERS BUTTON */}
+            <Button
+              className="mb-6 w-full md:w-auto"
+              onClick={() => {
+                console.log("Applying filters:", filters);
+                setAppliedFilters({ ...filters });
+              }}
+            >
+              Apply Filters
+            </Button>
 
             {/* TABLE */}
             <div className="overflow-x-auto border rounded-xl">
@@ -269,7 +260,7 @@ export default function SwitchOrganization() {
               onClick={handleApplyOrg}
               disabled={!selectedOrgId}
               className="mt-6 w-full py-3 text-white font-medium bg-brand-gradient hover:bg-brand-gradient-2 cursor-pointer"
-              
+
             >
               Apply
             </Button>

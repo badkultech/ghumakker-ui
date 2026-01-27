@@ -76,8 +76,8 @@ export const ENDPOINTS = {
 
   // organization
   CREATE_ORGANIZATION: '/tenant/create-organization',
-  GET_ALL_ORGANIZATIONS: (page: number, size: number) =>
-    `/tenant/all-organizations?page=${page}&size=${size}`,
+  GET_ALL_ORGANIZATIONS: (page: number, size: number, queryParams?: string) =>
+    `/tenant/all-organizations?page=${page}&size=${size}${queryParams ? `&${queryParams}` : ''}`,
   ORGANIZATION_ACTIVATE: (publicId: string) => `/org/${publicId}/activate`,
   ORGANIZATION_SUSPEND: (publicId: string) => `/org/${publicId}/deactivate`,
   ORGANIZATION_RESEND_INVITE: (publicId: string) =>

@@ -91,4 +91,8 @@ export interface UserFilter {
     lastName?: string;
     employeeNumber?: string;
     status?: string;
+    email?: string;
+    publicId?: string;
+    startDate?: string;
+    endDate?: string;
 }

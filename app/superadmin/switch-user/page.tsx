@@ -30,43 +30,34 @@ export default function SwitchUser() {
         phone: '',
     });
 
+    // Applied filters state (triggers API call)
+    const [appliedFilters, setAppliedFilters] = useState<{
+        name?: string;
+        userId?: string;
+        startDate?: string;
+        endDate?: string;
+        email?: string;
+        phone?: string;
+    }>({});
+
     // Load initial selected user from local storage
     const [selectedUserId, setSelectedUserId] = useState<string | null>(
         () => getValueFromLocalStorage('focusedUserId') as string | null
     );
 
     // Fetch users from API
-    const { data, isLoading } = useGetUsersQuery({ page: 0, size: 200 });
-    const users = data?.content || [];
-
-    // Filter logic
-    const filteredUsers = users.filter((user) => {
-        const fullName = `${user.firstName} ${user.lastName}`.trim();
-        const matchesName = filters.name
-            ? fullName.toLowerCase().includes(filters.name.toLowerCase())
-            : true;
-        const matchesId = filters.userId
-            ? user.publicId === filters.userId
-            : true;
-        const matchesEmail = filters.email
-            ? user.email === filters.email
-            : true;
-        const matchesPhone = filters.phone
-            ? user.mobileNumber === filters.phone
-            : true;
-
-        let matchesStartDate = true;
-        if (filters.startDate && user.createdDate) {
-            matchesStartDate = new Date(user.createdDate) >= new Date(filters.startDate);
-        }
-
-        let matchesEndDate = true;
-        if (filters.endDate && user.createdDate) {
-            matchesEndDate = new Date(user.createdDate) <= new Date(filters.endDate);
-        }
-
-        return matchesName && matchesId && matchesEmail && matchesPhone && matchesStartDate && matchesEndDate;
+    const { data, isLoading } = useGetUsersQuery({
+        page: 0,
+        size: 200,
+        firstName: appliedFilters.name,
+        publicId: appliedFilters.userId,
+        email: appliedFilters.email,
+        mobileNumber: appliedFilters.phone,
+        startDate: appliedFilters.startDate ? new Date(appliedFilters.startDate).toISOString() : undefined,
+        endDate: appliedFilters.endDate ? new Date(appliedFilters.endDate).toISOString() : undefined,
     });
+    const users = data?.content || [];
+    const filteredUsers = users; // Server-side filtered now
 
     const handleApplyUser = () => {
         if (!selectedUserId) return;
@@ -202,7 +193,15 @@ export default function SwitchUser() {
                         </div>
 
                         {/* APPLY FILTERS BUTTON */}
-                        <Button className="mb-6 w-full md:w-auto">Apply Filters</Button>
+                        <Button
+                            className="mb-6 w-full md:w-auto"
+                            onClick={() => {
+                                console.log("Applying user filters:", filters);
+                                setAppliedFilters({ ...filters });
+                            }}
+                        >
+                            Apply Filters
+                        </Button>
 
                         {/* TABLE */}
                         <div className="overflow-x-auto border rounded-xl">

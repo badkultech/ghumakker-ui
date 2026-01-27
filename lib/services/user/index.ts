@@ -192,6 +192,10 @@ export const userAPI = baseAPI.injectEndpoints({
           lastName: params.lastName,
           employeeNumber: params.employeeNumber,
           status: params.status,
+          email: params.email,
+          publicId: params.publicId,
+          startDate: params.startDate,
+          endDate: params.endDate,
         },
       }),
       transformResponse: (response: ApiResponse<PageResponse<User>>) =>
