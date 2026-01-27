@@ -242,52 +242,6 @@ export default function OrganizerProfilePage() {
                       )}
                     </div>
                   </div>
-
-                  {/* Right column */}
-                  <div className='space-y-6'>
-                    {/* Certifications */}
-                    <div className='font-[Poppins] font-normal text-base leading-[1.4] tracking-[0.005em] rounded-lg bg-[#F7F7F7] p-6 text[#757575]  border border-[#E4E4E4]'>
-                      {/* Verified badge */}
-                      <div className='bg-green-200 text-green-700 border border-green-400 rounded-lg  flex items-center space-x-2'>
-                        <span className='text-green-600 p-1'>
-                          <Check size={18} />
-                        </span>
-                        <span className=''>Verified Organizer</span>
-                      </div>
-
-                      <h2 className='text-xl mt-6 font-semibold mb-4'>
-                        Certifications
-                      </h2>
-
-                      {state.certificationsDocuments.filter((doc) => doc.id)
-                        ?.length ? (
-                        <div className='space-y-3'>
-                          {state.certificationsDocuments
-                            .filter((doc) => doc.id)
-                            .map((doc, idx) => (
-                              <div
-                                key={idx}
-                                className='border border-gray-100 rounded-md p-3 bg-gray-50 hover:bg-gray-100 transition'
-                              >
-                                <Button className='bg-primary/90 hover:bg-primary'>
-                                  <Certificate />
-                                </Button>
-                                <p className='font-medium text-gray-800'>
-                                  {'Certificate'}
-                                </p>
-                                <p className='text-sm text-gray-500'>
-                                  Uploaded on {'N/A'}
-                                </p>
-                              </div>
-                            ))}
-                        </div>
-                      ) : (
-                        <p className='text-gray-500'>
-                          No certifications uploaded yet.
-                        </p>
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
             )}
