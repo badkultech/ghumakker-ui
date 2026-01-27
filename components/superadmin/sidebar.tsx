@@ -59,6 +59,11 @@ const nav: NavItem[] = [
     icon: Shuffle
   },
   {
+    label: "Switch User",
+    href: "/superadmin/switch-user",
+    icon: Shuffle
+  },
+  {
     label: "Locations",
     href: "/superadmin/destination-master",
     icon: MapPinPlusInside
@@ -81,12 +86,12 @@ export function Sidebar({ showLogo = true, isOpen, onClose }: SidebarProps) {
   const [open, setOpen] = useState<Record<string, boolean>>({});
   const router = useRouter();
 
-  const isActive = (href?: string) =>
-    href
-      ? href === "/superadmin"
-        ? pathname === href
-        : pathname.startsWith(href)
-      : false;
+  const isActive = (href?: string) => {
+    if (!href) return false;
+    if (href === "/superadmin") return pathname === href;
+    // Ensure exact match or sub-route (e.g. /a matches /a/b but /a-b does not match /a)
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
 
   useEffect(() => {
     nav.forEach((item) => {

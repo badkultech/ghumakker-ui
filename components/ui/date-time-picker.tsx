@@ -1,7 +1,5 @@
-"use client"
-
 import { useEffect, useRef, useState } from "react"
-import { Calendar, ChevronLeft, ChevronRight, ChevronDown } from "lucide-react"
+import { Calendar, ChevronLeft, ChevronRight, ChevronDown, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 
 interface Props {
@@ -82,8 +80,8 @@ export function CustomDateTimePicker({
 
   useEffect(() => {
     const p = parseToLocalParts(value)
+    setSelectedDate(p.dateStr) // Always match prop
     if (p.dateStr) {
-      setSelectedDate(p.dateStr)
       setCurrentMonth(new Date(p.year, p.month - 1, 1))
     }
     setSelectedHour(pad(p.hour))
@@ -236,6 +234,11 @@ export function CustomDateTimePicker({
     return dateStr <= minDateOnly
   }
 
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onChange("")
+  }
+
   return (
     <div ref={wrapperRef} className={`relative ${className} ${disabled ? "opacity-50 pointer-events-none" : ""}`}>
       <div className="relative flex items-center">
@@ -245,9 +248,16 @@ export function CustomDateTimePicker({
           placeholder={placeholder}
           readOnly
           disabled={disabled}
-          className="w-full pr-10 cursor-pointer bg-background"
+          className={`w-full ${value ? "pr-16" : "pr-10"} cursor-pointer bg-background`}
           onClick={() => !disabled && setOpen((s) => !s)}
         />
+        {value && !disabled && (
+          <X
+            size={16}
+            className="absolute right-9 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer z-10"
+            onClick={handleClear}
+          />
+        )}
         <Calendar
           size={18}
           className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"

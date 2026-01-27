@@ -4,7 +4,8 @@ type LocalStorageKey =
   | 'organizationId'
   | 'accessToken'
   | 'refreshToken'
-  | 'focusedOrganizationId';
+  | 'focusedOrganizationId'
+  | 'focusedUserId';
 
 export function useLocalStorage() {
   const getValueFromLocalStorage = <T = any>(key: LocalStorageKey): T | null => {
@@ -29,10 +30,10 @@ export function useLocalStorage() {
     localStorage.removeItem(key);
   };
 
-   const removeAllValue = () => {
+  const removeAllValue = () => {
     if (typeof window === 'undefined') return;
     localStorage.clear();
   };
 
-  return { getValueFromLocalStorage: getValueFromLocalStorage, setValueInLocalStorage: setValueInLocalStorage, removeValue , removeAllValue} as const;
+  return { getValueFromLocalStorage: getValueFromLocalStorage, setValueInLocalStorage: setValueInLocalStorage, removeValue, removeAllValue } as const;
 }

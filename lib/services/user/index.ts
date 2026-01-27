@@ -1,12 +1,16 @@
 // services/user.ts
-import { ApiResponse } from "../common-types";
+import { ApiResponse, PageResponse } from "../common-types";
 import { ENDPOINTS } from "@/lib/utils";
 import { baseAPI } from "..";
 import {
+  UserDetails,
+  Profile,
   TravelerProfileResponse,
   TravelerProfileUpdateRequest,
+  TripQueryLastResponse,
   TripQuery,
-  UserDetails,
+  User,
+  UserFilter,
 } from "./types";
 import { TAGS } from "../tags";
 import { Tags } from "lucide-react";
@@ -173,6 +177,28 @@ export const userAPI = baseAPI.injectEndpoints({
       providesTags: [TAGS.UserQueries],
     }),
 
+    getUsers: builder.query<
+      PageResponse<User>,
+      UserFilter
+    >({
+      query: (params) => ({
+        url: `/tenant/all-users`,
+        method: "GET",
+        params: {
+          page: params.page ?? 0,
+          size: params.size ?? 10,
+          mobileNumber: params.mobileNumber,
+          firstName: params.firstName,
+          lastName: params.lastName,
+          employeeNumber: params.employeeNumber,
+          status: params.status,
+        },
+      }),
+      transformResponse: (response: ApiResponse<PageResponse<User>>) =>
+        response.data,
+      providesTags: [TAGS.user],
+    }),
+
   }),
 });
 
@@ -185,4 +211,5 @@ export const {
   useDeactivateUserMutation,
   useDeleteUserMutation,
   useGetUserQueriesQuery,
+  useGetUsersQuery,
 } = userAPI;

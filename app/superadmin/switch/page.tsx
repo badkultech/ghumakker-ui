@@ -1,170 +1,304 @@
-// Updated SwitchOrganization component with layout/CSS matching OrganizationsPage
-
 'use client';
 
 import { useState } from 'react';
-import { ArrowLeftRight, Building2, ChevronDown } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useGetOrganizationsQuery } from '@/lib/services/superadmin/organizations';
-import { showSuccess } from '@/lib/utils/toastHelpers';
+import { ArrowLeftRight, Building2 } from 'lucide-react';
 import { Sidebar } from '@/components/superadmin/sidebar';
 import { AppHeader } from '@/components/app-header';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { OrganizationDTO } from '@/lib/services/superadmin/organizations/types';
-import { json } from 'stream/consumers';
+import { Input } from '@/components/ui/input';
 import { useDispatch } from 'react-redux';
 import { setFocusedOrganizationId } from '@/lib/slices/auth';
-import { useOrganizationId } from '@/hooks/useOrganizationId';
+import { showSuccess } from '@/lib/utils/toastHelpers';
+import { useGetOrganizationsQuery } from '@/lib/services/superadmin/organizations';
+import { useRouter } from 'next/navigation';
+import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { CustomDateTimePicker } from '@/components/ui/date-time-picker';
 
 export default function SwitchOrganization() {
   const dispatch = useDispatch();
-  const { getValueFromLocalStorage: getValue, setValueInLocalStorage: setValue } = useLocalStorage();
   const router = useRouter();
+  const { getValueFromLocalStorage, setValueInLocalStorage } = useLocalStorage();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [selectedOrg, setSelectedOrg] = useState<OrganizationDTO | null>(
-    getValue('focusedOrganizationId'),
+
+  // Filters state
+  const [filters, setFilters] = useState({
+    orgName: '',
+    orgId: '',
+    startDate: '',
+    endDate: '',
+    email: '',
+    phone: '',
+  });
+
+  // Load initial selected org from local storage
+  const [selectedOrgId, setSelectedOrgId] = useState<string | null>(
+    () => getValueFromLocalStorage('focusedOrganizationId') as string | null
   );
 
+  // Fetch organizations from API
   const { data, isLoading } = useGetOrganizationsQuery({ page: 0, size: 200 });
   const organizations = data?.content || [];
-  const [searchTerm, setSearchTerm] = useState("");
 
-  const filteredOrgs = organizations.filter((org) =>
-    org.entityName.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  // Filter logic
+  const filteredOrgs = organizations.filter((org) => {
+    const matchesName = filters.orgName
+      ? org.entityName.toLowerCase().includes(filters.orgName.toLowerCase())
+      : true;
+    const matchesId = filters.orgId
+      ? org.publicId === filters.orgId
+      : true;
+    const matchesEmail = filters.email
+      ? org.email === filters.email
+      : true;
+    const matchesPhone = filters.phone
+      ? org.primaryPhone === filters.phone
+      : true;
 
-
-  const handleApply = () => {
-    if (!selectedOrg) return;
-    if (selectedOrg) {
-      dispatch(setFocusedOrganizationId(selectedOrg.publicId));
-      setValue('focusedOrganizationId', selectedOrg.publicId);
-      showSuccess(`Organization switched to ${selectedOrg?.entityName}`);
+    let matchesStartDate = true;
+    if (filters.startDate && org.dateOfEstablishment) {
+      matchesStartDate = new Date(org.dateOfEstablishment) >= new Date(filters.startDate);
     }
+
+    let matchesEndDate = true;
+    if (filters.endDate && org.dateOfEstablishment) {
+      matchesEndDate = new Date(org.dateOfEstablishment) <= new Date(filters.endDate);
+    }
+
+    return matchesName && matchesId && matchesEmail && matchesPhone && matchesStartDate && matchesEndDate;
+  });
+
+  const handleApplyOrg = () => {
+    if (!selectedOrgId) return;
+
+    const selectedOrg = organizations.find((o) => o.publicId === selectedOrgId);
+
+    dispatch(setFocusedOrganizationId(selectedOrgId));
+    setValueInLocalStorage('focusedOrganizationId', selectedOrgId);
+
+    if (selectedOrg) {
+      showSuccess(`Organization switched to ${selectedOrg.entityName}`);
+    } else {
+      showSuccess(`Organization switched successfully`);
+    }
+
     router.replace("/organizer/dashboard");
   };
 
+  // Current selected org details for display
+  const currentOrgDetails = organizations.find((o) => o.publicId === selectedOrgId);
+
   return (
-    <div className='flex h-screen overflow-hidden bg-gray-50'>
+    <div className="flex h-screen overflow-hidden bg-gray-50">
       {/* Sidebar */}
       <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
 
-      {/* Main Layout */}
-      <div className='flex flex-col flex-1'>
-        {/* Header */}
+      {/* Main Section */}
+      <div className="flex flex-col flex-1">
         <AppHeader
-          title='Switch Organization'
+          title="Switch Organization"
           onMenuClick={() => setSidebarOpen(true)}
         />
 
-        {/* Content */}
-        <main className='flex-1 overflow-y-auto p-4 sm:p-6 lg:p-8'>
-          <div className='bg-white shadow-sm rounded-xl w-full max-w-3xl p-8 mx-auto'>
-            {/* Title */}
-            <div className='flex items-center space-x-3 mb-6'>
-              <div className='p-4 bg-blue-100 rounded-full'>
-                <ArrowLeftRight className='w-7 h-7 text-blue-700' />
+        <main className="flex-1 overflow-y-auto p-6">
+          <div className="bg-white shadow-sm rounded-xl p-8 max-w-6xl mx-auto">
+
+            {/* Header Logo + Title */}
+            <div className="flex items-center space-x-3 mb-6">
+              <div className="p-4 bg-blue-100 rounded-full">
+                <ArrowLeftRight className="w-7 h-7 text-blue-700" />
               </div>
-              <h1 className='text-2xl font-semibold text-gray-900'>
+              <h1 className="text-2xl font-semibold text-gray-900">
                 Switch Organization
               </h1>
             </div>
 
-            {/* Dropdown */}
-            <label className='block text-sm font-medium text-gray-700 mb-2'>
-              Select Organization
-            </label>
+            {/* FILTERS BLOCK */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-6">
 
-            {/* Dropdown with Search */}
-            {isLoading ? (
-              <div className='animate-pulse w-full h-12 bg-gray-200 rounded-lg' />
-            ) : (
-              <DropdownMenu
-                modal={false}
-                onOpenChange={(open) => {
-                  setSearchTerm("");
-                }}
-              >
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant='outline'
-                    className='w-full border flex justify-between border-gray-300 rounded-lg px-3 py-3 focus:ring-2 focus:ring-blue-500'
-                  >
-                    {selectedOrg?.entityName ?? 'Select Organization'}
-                    <ChevronDown className='w-4 h-4' />
-                  </Button>
-                </DropdownMenuTrigger>
+              {/* Organization Name */}
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Organization Name (LIKE)
+                </label>
+                <Input
+                  placeholder="Enter partial name"
+                  value={filters.orgName}
+                  onChange={(e) =>
+                    setFilters({ ...filters, orgName: e.target.value })
+                  }
+                />
+              </div>
 
-                <DropdownMenuContent align='end' className='w-[600px] max-h-[350px] overflow-y-auto'
-                  onFocusCapture={(e) => e.stopPropagation()}>
+              {/* Organization ID */}
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Organization ID (EQUALS)
+                </label>
+                <Input
+                  placeholder="Enter ID"
+                  value={filters.orgId}
+                  onChange={(e) =>
+                    setFilters({ ...filters, orgId: e.target.value })
+                  }
+                />
+              </div>
 
-                  <div className='p-2 sticky top-0 bg-white border-b'>
-                    <input
-                      type='text'
-                      placeholder='Search organization...'
-                      className='w-full border rounded-md px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500'
-                      value={searchTerm}
-                      onChange={(e) => setSearchTerm(e.target.value)}
-                      onKeyDown={(e) => e.stopPropagation()}
-                    />
-                  </div>
+              {/* Start Date */}
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Onboarding Date (Start)
+                </label>
+                <CustomDateTimePicker
+                  mode="date"
+                  value={filters.startDate}
+                  onChange={(value) =>
+                    setFilters({ ...filters, startDate: value })
+                  }
+                />
+              </div>
 
-                  <DropdownMenuLabel>Select Organization</DropdownMenuLabel>
-                  <DropdownMenuSeparator />
+              {/* End Date */}
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Onboarding Date (End)
+                </label>
+                <CustomDateTimePicker
+                  mode="date"
+                  value={filters.endDate}
+                  onChange={(value) =>
+                    setFilters({ ...filters, endDate: value })
+                  }
+                />
+              </div>
 
-                  {/* FILTERED LIST */}
-                  {filteredOrgs.length > 0 ? (
-                    filteredOrgs.map((org) => (
-                      <DropdownMenuItem
-                        key={org.publicId}
-                        onClick={() => setSelectedOrg(org)}
-                      >
-                        {org.entityName} ({org.status})
-                      </DropdownMenuItem>
-                    ))
-                  ) : (
-                    <div className="p-3 text-gray-500 text-sm">No results found.</div>
+              {/* Email equals */}
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Email (EQUALS)
+                </label>
+                <Input
+                  placeholder="Enter email"
+                  value={filters.email}
+                  onChange={(e) =>
+                    setFilters({ ...filters, email: e.target.value })
+                  }
+                />
+              </div>
+
+              {/* Phone equals */}
+              <div>
+                <label className="text-sm font-medium text-gray-700">
+                  Phone (EQUALS)
+                </label>
+                <Input
+                  placeholder="Enter phone"
+                  value={filters.phone}
+                  onChange={(e) =>
+                    setFilters({ ...filters, phone: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+
+            {/* APPLY FILTERS BUTTON */}
+            {/* Note: In this implementation, filters are applied reactively. The button could be used to trigger a re-fetch if this was server-side, 
+                or just to signal the user "Yes, I'm done typing". For now, since it's client-side, we can just leave it or make it do nothing/clear.
+                Or strictly speaking, we could only filter when clicked. But reactive is better UX. 
+                I'll keep it as a UI element as requested, maybe just logs or no-op since state flows automatically. 
+             */}
+            <Button className="mb-6 w-full md:w-auto">Apply Filters</Button>
+
+            {/* TABLE */}
+            <div className="overflow-x-auto border rounded-xl">
+              <table className="w-full text-sm">
+                <thead className="bg-gray-100 text-gray-700">
+                  <tr>
+                    <th className="p-3 text-left">Select</th>
+                    <th className="p-3 text-left">Organization</th>
+                    <th className="p-3 text-left">Email</th>
+                    <th className="p-3 text-left">Phone</th>
+                    <th className="p-3 text-left">Onboarding Date</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  {isLoading && (
+                    <tr>
+                      <td colSpan={5} className="p-8 text-center text-gray-500">
+                        Loading organizations...
+                      </td>
+                    </tr>
                   )}
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
-            <div></div>
-            {/* Apply Button */}
+                  {!isLoading && filteredOrgs.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="p-8 text-center text-gray-500">
+                        No organizations found.
+                      </td>
+                    </tr>
+                  )}
+                  {!isLoading && filteredOrgs.map((org) => (
+                    <tr key={org.publicId} className="border-t hover:bg-gray-50 transition-colors">
+                      <td className="p-3">
+                        <input
+                          type="radio"
+                          name="selectedOrg"
+                          checked={selectedOrgId === org.publicId}
+                          onChange={() => setSelectedOrgId(org.publicId)}
+                          className="w-4 h-4 text-blue-600 focus:ring-blue-500 border-gray-300"
+                        />
+                      </td>
+                      <td className="p-3 font-medium">{org.entityName}</td>
+                      <td className="p-3">{org.email}</td>
+                      <td className="p-3">{org.primaryPhone}</td>
+                      <td className="p-3">{org.dateOfEstablishment}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {/* PAGINATION */}
+            <div className="flex justify-between items-center mt-4">
+              <Button variant="outline" disabled>Previous</Button>
+              <p className="text-sm text-gray-600">Showing {filteredOrgs.length} results</p>
+              <Button variant="outline" disabled>Next</Button>
+            </div>
+
+            {/* APPLY BTN */}
             <Button
-              onClick={handleApply}
-              disabled={!selectedOrg}
-              className='mt-6 w-full py-3 rounded-lg text-white font-medium disabled:bg-gray-400 bg-brand-gradient'
+              onClick={handleApplyOrg}
+              disabled={!selectedOrgId}
+              className="mt-6 w-full py-3 text-white font-medium"
+              style={{
+                background:
+                  'linear-gradient(135deg, #FEA901 0%, #FD6E34 25%, #FE336A 75%, #FD401A 100%)',
+              }}
             >
               Apply
             </Button>
 
-            {/* Current Focused Org */}
-            <div className='mt-8 p-5 bg-gray-50 rounded-xl border'>
-              <h3 className='text-sm font-semibold text-gray-700 mb-3'>
+            {/* Current Organization */}
+            <div className="mt-8 p-5 bg-gray-50 rounded-xl border">
+              <h3 className="text-sm font-semibold text-gray-700 mb-3">
                 Current Focused Organization
               </h3>
-              <div className='flex items-center space-x-3'>
-                <Building2 className='w-6 h-6 text-gray-700' />
+              <div className="flex items-center space-x-3">
+                <Building2 className="w-6 h-6 text-gray-700" />
                 <div>
-                  <p className='font-semibold text-gray-800'>
-                    {selectedOrg?.entityName}
+                  <p className="font-semibold text-gray-800">
+                    {currentOrgDetails?.entityName || selectedOrgId || 'None Selected'}
                   </p>
-                  <p className='text-sm text-gray-600'>{selectedOrg?.email}</p>
+                  <p className="text-sm text-gray-600">
+                    {currentOrgDetails?.email || '---'}
+                  </p>
                 </div>
               </div>
             </div>
+
           </div>
         </main>
       </div>
     </div>
   );
 }
+
