@@ -17,6 +17,7 @@ interface MonthYearSelectorProps {
     minYear?: number; // default: current year
     maxYear?: number;
     className?: string;
+    compact?: boolean;
 }
 
 export function MonthYearSelector({
@@ -26,6 +27,7 @@ export function MonthYearSelector({
     minYear = CURRENT_YEAR,
     maxYear,
     className = '',
+    compact = false,
 }: MonthYearSelectorProps) {
     const scrollRef = useRef<HTMLDivElement | null>(null);
 
@@ -124,10 +126,10 @@ export function MonthYearSelector({
     return (
         <Card className={`border-0 shadow-none bg-transparent p-0 ${className}`}>
             <CardContent className="p-0">
-                <p className="text-sm text-muted-foreground mb-3">When do you want to go?</p>
+                {!compact && <p className="text-sm text-muted-foreground mb-3">When do you want to go?</p>}
 
                 {/* Year selector – arrows on far ends */}
-                <div className="flex items-center justify-between mb-4">
+                <div className={`flex items-center justify-between ${compact ? 'mb-2' : 'mb-4'}`}>
                     <Button
                         type="button"
                         variant="ghost"

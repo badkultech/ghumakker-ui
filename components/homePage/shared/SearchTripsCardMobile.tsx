@@ -5,6 +5,7 @@ import { Search } from "lucide-react";
 import { GradientButton } from "@/components/gradient-button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/navigation";
+import { MonthYearSelector } from "@/components/search-results/MonthYearSelector";
 
 const PREDEFINED_MOODS = [
     "Mountain",
@@ -15,13 +16,19 @@ const PREDEFINED_MOODS = [
     "Women-Only",
 ];
 
-export function SearchTripsCardMobile() {
+interface SearchTripsCardMobileProps {
+    onClose?: () => void;
+    defaultTab?: "destination" | "moods";
+}
+
+export function SearchTripsCardMobile({ onClose, defaultTab }: SearchTripsCardMobileProps) {
     const router = useRouter();
 
-    const [activeTab, setActiveTab] = useState<"destination" | "moods">("destination");
+    const [activeTab, setActiveTab] = useState<"destination" | "moods">(defaultTab || "destination");
     const [destination, setDestination] = useState("");
     const [selectedMood, setSelectedMood] = useState<string | null>(null);
-    const [month, setMonth] = useState(""); // yyyy-mm
+    const [selectedMonth, setSelectedMonth] = useState("Jan");
+    const [year, setYear] = useState(2026);
 
     const handleSearch = () => {
         const params = new URLSearchParams();
@@ -40,32 +47,35 @@ export function SearchTripsCardMobile() {
             );
         }
 
-        if (month) {
-            const [year, monthNum] = month.split("-");
-            params.append("year", year);
-            params.append("month", String(Number(monthNum)));
-        }
+        const monthIndexMap: any = {
+            Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6,
+            Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12,
+        };
+
+        params.append("month", String(monthIndexMap[selectedMonth]));
+        params.append("year", String(year));
 
         router.push(`/home/search-result-with-filter?${params.toString()}`);
+        onClose?.();
     };
 
     return (
-        <div className="bg-white rounded-2xl shadow-lg p-4 w-full">
+        <div className="bg-white rounded-2xl shadow-lg p-3 w-full overflow-hidden">
 
             {/* Header */}
-            <h2 className="text-base font-semibold mb-3 text-center">
+            <h2 className="text-sm font-semibold mb-2 text-center text-foreground/80">
                 Find your next trip
             </h2>
 
             {/* Tabs */}
-            <div className="flex bg-gray-100 rounded-full p-1 mb-4">
+            <div className="flex bg-gray-100/80 rounded-full p-1 mb-2">
                 <button
                     onClick={() => setActiveTab("destination")}
                     className={cn(
-                        "flex-1 py-2 rounded-full text-sm font-medium transition",
+                        "flex-1 py-1.5 rounded-full text-xs font-medium transition",
                         activeTab === "destination"
-                            ? "bg-white shadow text-foreground"
-                            : "text-muted-foreground"
+                            ? "bg-white shadow-sm text-foreground"
+                            : "text-muted-foreground hover:text-foreground/70"
                     )}
                 >
                     Destination
@@ -74,10 +84,10 @@ export function SearchTripsCardMobile() {
                 <button
                     onClick={() => setActiveTab("moods")}
                     className={cn(
-                        "flex-1 py-2 rounded-full text-sm font-medium transition",
+                        "flex-1 py-1.5 rounded-full text-xs font-medium transition",
                         activeTab === "moods"
-                            ? "bg-white shadow text-foreground"
-                            : "text-muted-foreground"
+                            ? "bg-white shadow-sm text-foreground"
+                            : "text-muted-foreground hover:text-foreground/70"
                     )}
                 >
                     Moods
@@ -91,27 +101,23 @@ export function SearchTripsCardMobile() {
                     value={destination}
                     onChange={(e) => setDestination(e.target.value)}
                     placeholder="Where do you want to go?"
-                    className="w-full border rounded-lg px-4 py-3 text-sm mb-3 focus:outline-none focus:ring-2 focus:ring-primary/30"
+                    className="w-full border rounded-lg px-3 py-2.5 text-sm mb-2 focus:outline-none focus:ring-1 focus:ring-primary/50 bg-gray-50/50"
                 />
             )}
 
             {/* Mood selection */}
             {activeTab === "moods" && (
                 <>
-                    <p className="text-xs text-muted-foreground mb-2">
-                        Popular moods
-                    </p>
-
-                    <div className="flex flex-wrap gap-2 mb-3">
+                    <div className="flex flex-wrap gap-1.5 mb-2">
                         {PREDEFINED_MOODS.map((mood) => (
                             <button
                                 key={mood}
                                 onClick={() => setSelectedMood(mood)}
                                 className={cn(
-                                    "px-3 py-1.5 rounded-full text-xs border transition",
+                                    "px-2.5 py-1.5 rounded-full text-[11px] border transition",
                                     selectedMood === mood
-                                        ? "bg-brand-gradient text-white border-transparent"
-                                        : "bg-white text-foreground border-gray-200"
+                                        ? "bg-brand-gradient text-white border-transparent shadow-sm"
+                                        : "bg-white text-foreground border-gray-200 hover:border-gray-300"
                                 )}
                             >
                                 {mood}
@@ -122,25 +128,27 @@ export function SearchTripsCardMobile() {
             )}
 
             {/* Month selector */}
-            <label className="block text-xs text-muted-foreground mb-1">
-                Select month
-            </label>
-
-            <input
-                type="month"
-                value={month}
-                onChange={(e) => setMonth(e.target.value)}
-                className="w-full border rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-primary/30"
-            />
+            <div className="mt-1 w-full overflow-hidden">
+                <MonthYearSelector
+                    year={year}
+                    month={selectedMonth}
+                    onChange={({ year, month }) => {
+                        setYear(year);
+                        setSelectedMonth(month);
+                    }}
+                    className="w-full"
+                    compact={true}
+                />
+            </div>
 
 
             {/* Search Button */}
             <GradientButton
-                className="w-full rounded-full py-2.5"
+                className="w-full rounded-full py-2 mt-2 shadow-md"
                 onClick={handleSearch}
             >
-                <span className="flex items-center justify-center gap-2">
-                    <Search className="w-4 h-4" />
+                <span className="flex items-center justify-center gap-2 text-sm font-medium">
+                    <Search className="w-3.5 h-3.5" />
                     <span>Search</span>
                 </span>
             </GradientButton>

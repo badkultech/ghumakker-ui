@@ -16,6 +16,7 @@ import { selectAuthState } from "@/lib/slices/auth";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
 import { Overlay } from "@/components/common/Overlay";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
+import { SearchTripsCardMobile } from "@/components/homePage/shared/SearchTripsCardMobile";
 
 
 export default function Home() {
@@ -78,8 +79,18 @@ export default function Home() {
 
       />
       <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
-        <SearchTripsCard defaultTab={searchTab}
-          onClose={() => setShowSearchOverlay(false)} />
+        <div className="hidden lg:block">
+          <SearchTripsCard
+            defaultTab={searchTab}
+            onClose={() => setShowSearchOverlay(false)}
+          />
+        </div>
+        <div className="block lg:hidden w-[85vw] max-w-[360px]">
+          <SearchTripsCardMobile
+            defaultTab={searchTab}
+            onClose={() => setShowSearchOverlay(false)}
+          />
+        </div>
       </Overlay>
       <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
     </main>

@@ -19,13 +19,13 @@ export function HeroSection() {
       </div>
 
       {/* Content */}
-      <div className="relative z-20 py-12 lg:py-16">
-        <div className="container mx-auto px-6 lg:px-20">
-          <div className="grid lg:grid-cols-2 gap-10 items-start">
+      <div className="relative z-20 py-8 lg:py-16">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-20">
+          <div className="flex flex-col lg:grid lg:grid-cols-2 gap-8 lg:gap-10 items-start">
 
             {/* LEFT COLUMN */}
-            <div className="max-w-xl">
-              <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-black drop-shadow-sm">
+            <div className="max-w-xl w-full">
+              <h1 className="text-3xl lg:text-5xl font-bold leading-tight text-black drop-shadow-sm">
                 Travel Together.
                 <br />
                 Build Real Connections.
@@ -37,16 +37,16 @@ export function HeroSection() {
               </p>
             </div>
 
-            {/* RIGHT COLUMN (single grid cell) */}
-            <div className="flex justify-center lg:justify-end">
+            {/* RIGHT COLUMN */}
+            <div className="w-full flex justify-center lg:justify-end">
 
               {/* Desktop card */}
-              <div className="hidden lg:block lg:-mt-16">
+              <div className="hidden lg:block lg:-mt-16 w-full max-w-[560px]">
                 <SearchTripsCard />
               </div>
 
               {/* Mobile card */}
-              <div className="block lg:hidden w-full mt-6">
+              <div className="block lg:hidden w-full max-w-md mt-4 mx-auto">
                 <SearchTripsCardMobile />
               </div>
 
