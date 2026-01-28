@@ -128,7 +128,7 @@ export default function PreferencesTab() {
             >
               {opt}
               {opt === value && (
-                <Check className="w-4 h-4 text-orange-500" />
+                <Check className="w-4 h-4 text-primary" />
               )}
             </button>
           ))}
@@ -197,7 +197,7 @@ export default function PreferencesTab() {
             onClick={savePreferences}
             disabled={!hasChanges || isSaving}
             className={`w-full mt-6 px-6 py-3 rounded-xl font-medium transition-all ${hasChanges && !isSaving
-              ? "bg-orange-500 hover:bg-orange-600 text-white shadow-md hover:shadow-lg"
+              ? "bg-primary hover:bg-primary/90 text-white shadow-md hover:shadow-lg"
               : "bg-gray-200 text-gray-400 cursor-not-allowed"
               }`}
           >

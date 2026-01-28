@@ -9,7 +9,7 @@ export default function DeleteModal({ open, onClose, onConfirm, }: { open: boole
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center p-4 z-50">
       <div className="bg-white p-8 rounded-2xl w-full max-w-md text-center shadow-xl">
         <div className="w-16 h-16 mx-auto rounded-full  flex items-center justify-center mb-4">
-          <Trash2 className="w-8 h-8 text-[#FF4B4B]" />
+          <Trash2 className="w-8 h-8 text-red-500" />
         </div>
         <h3 className="text-xl font-semibold text-foreground mb-2">
           Delete Account?
@@ -29,7 +29,7 @@ export default function DeleteModal({ open, onClose, onConfirm, }: { open: boole
           {/* DELETE BUTTON */}
           <button
             onClick={onConfirm}
-            className="flex-1 py-3 rounded-lg bg-[#FF4B4B] text-white font-medium flex items-center justify-center gap-2 hover:bg-[#e04343] transition"
+            className="flex-1 py-3 rounded-lg bg-red-500 text-white font-medium flex items-center justify-center gap-2 hover:bg-red-600 transition"
           >
             <Trash2 className="w-4 h-4" />
             Delete

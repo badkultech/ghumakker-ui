@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
+import { GradientButton } from "@/components/gradient-button";
 import { useCreateUserNotificationPreferenceMutation } from "@/lib/services/user-notification-preference";
 import { NOTIFICATION_CATEGORIES, NOTIFICATION_CHANNELS } from "@/lib/services/user-notification-preference/types";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
@@ -167,7 +168,7 @@ export default function CommunicationsTab() {
                 <span className="text-sm font-medium">{label}</span>
 
                 <Switch
-                  className="data-[state=checked]:bg-[#FF7A45]"
+                  className="data-[state=checked]:bg-primary"
                   checked={communications[key as keyof CommunicationPreferences]}
                   onCheckedChange={(checked) => handleToggle(key as keyof CommunicationPreferences, checked)}
                 />
@@ -191,7 +192,7 @@ export default function CommunicationsTab() {
                 <span className="text-sm font-medium">{label}</span>
 
                 <Switch
-                  className="data-[state=checked]:bg-[#FF7A45]"
+                  className="data-[state=checked]:bg-primary"
                   checked={communications[key as keyof CommunicationPreferences]}
                   onCheckedChange={(checked) => handleToggle(key as keyof CommunicationPreferences, checked)}
                 />
@@ -204,23 +205,20 @@ export default function CommunicationsTab() {
             <span className="text-sm font-medium">Browser Notifications</span>
 
             <Switch
-              className="data-[state=checked]:bg-[#FF7A45]"
+              className="data-[state=checked]:bg-primary"
               checked={communications.browserNotifications}
               onCheckedChange={(checked) => handleToggle("browserNotifications", checked)}
             />
           </div>
 
           {/* Save Button */}
-          <button
+          <GradientButton
             onClick={savePreferences}
             disabled={!hasChanges || isSaving}
-            className={`w-full mt-6 px-6 py-3 rounded-xl font-medium transition-all ${hasChanges && !isSaving
-              ? "bg-orange-500 hover:bg-orange-600 text-white shadow-md hover:shadow-lg"
-              : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
+            className={`w-full mt-6 ${!hasChanges && !isSaving ? "bg-gray-200 text-gray-400 opacity-100" : ""}`}
           >
             {isSaving ? "Saving..." : "Save Preferences"}
-          </button>
+          </GradientButton>
         </div>
       </div>
     </div>

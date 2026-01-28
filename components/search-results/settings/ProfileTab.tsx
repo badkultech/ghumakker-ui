@@ -126,7 +126,7 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
               name="gender"
               value={formData.gender}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg"
+              className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
             >
               <option value="">Select gender</option>
               <option value="MALE">Male</option>
@@ -149,7 +149,7 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
                 value={formData.dateOfBirth}
                 onChange={handleChange}
                 placeholder="dd/mm/yyyy"
-                className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg"
+                className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
               />
               <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 text-muted-foreground" />
             </div>
@@ -169,7 +169,7 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
               maxLength={500}
               value={formData.bio}
               onChange={handleChange}
-              className="w-full px-4 py-3 bg-white border border-[#E4E4E4] rounded-lg resize-none"
+              className="w-full px-4 py-3 bg-white border border-[#E4E4E4] rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
             />
 
             <span className="absolute bottom-3 right-3 text-xs text-primary">
@@ -200,7 +200,7 @@ function InputField({
   value,
   onChange,
   label,
-  readOnly= false,
+  readOnly = false,
 }: {
   name: string;
   value: string;
@@ -218,7 +218,7 @@ function InputField({
         value={value}
         onChange={onChange}
         readOnly={readOnly}
-        className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg"
+        className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
       />
     </div>
   );

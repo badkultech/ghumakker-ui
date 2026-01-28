@@ -15,11 +15,10 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
-            className={`p-3 rounded-lg ${
-              activeTab === item.id
-                ? "bg-black text-white"
-                : "text-gray-500 hover:bg-gray-100"
-            }`}
+            className={`p-3 rounded-lg ${activeTab === item.id
+              ? "bg-primary text-primary-foreground"
+              : "text-gray-500 hover:bg-gray-100"
+              }`}
           >
             <item.icon className="w-5 h-5" />
           </button>
@@ -35,17 +34,16 @@ export default function Sidebar({ activeTab, setActiveTab }: SidebarProps) {
               <button
                 key={item.id}
                 onClick={() => setActiveTab(item.id)}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
-                  ${isActive 
-                    ? "bg-black text-white shadow-sm" 
-                    : "text-gray-700 hover:bg-gray-200"
+                className={`group flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all
+                  ${isActive
+                    ? "bg-primary text-primary-foreground shadow-sm"
+                    : "text-gray-700 hover:bg-primary/10 hover:text-primary"
                   }
                 `}
               >
                 <item.icon
-                  className={`w-5 h-5 ${
-                    isActive ? "text-white" : "text-gray-600"
-                  }`}
+                  className={`w-5 h-5 transition-colors ${isActive ? "text-primary-foreground" : "text-gray-600 group-hover:text-primary"
+                    }`}
                 />
                 {item.label}
               </button>

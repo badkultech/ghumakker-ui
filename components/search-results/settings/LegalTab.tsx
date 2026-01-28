@@ -27,7 +27,7 @@ export default function LegalTab() {
                   bg-white 
                   border border-border 
                   rounded-xl 
-                  hover:bg-muted transition
+                  hover:bg-primary/5 hover:border-primary/30 transition
                 "
               >
                 <span className="text-sm font-medium">{label}</span>

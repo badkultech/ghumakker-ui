@@ -34,7 +34,7 @@ export default function SecurityTab({
           <h3 className="text-base font-semibold">Account Management</h3>
 
           {/* DEACTIVATE */}
-          <div className="flex items-center justify-between p-4 rounded-xl bg-[#FFF9E6] border">
+          <div className="flex items-center justify-between p-4 rounded-xl bg-primary/5 border">
             <div>
               <h4 className="font-semibold text-sm">Deactivate Account</h4>
               <p className="text-xs text-muted-foreground">
@@ -43,7 +43,7 @@ export default function SecurityTab({
             </div>
             <button
               onClick={() => setShowDeactivateModal(true)}
-              className="px-4 py-2 border rounded-lg bg-white"
+              className="px-4 py-2 rounded-lg bg-white border border-primary text-primary hover:bg-primary hover:text-primary-foreground transition"
             >
               Deactivate
             </button>

@@ -12,8 +12,8 @@ export default function DeactivateModal({ open, onClose, onConfirm }: {
   return (
     <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center p-4 z-50">
       <div className="bg-white rounded-2xl p-8 w-full max-w-md text-center shadow-xl">
-        <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4">
-          <TemporaryUserIcon size={36} color="#FF804C" />
+        <div className="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-4 text-primary bg-primary/10">
+          <TemporaryUserIcon size={36} color="currentColor" />
         </div>
         <h3 className="text-xl font-semibold text-[#1A1A1A] mb-2">
           Deactivate Account?
@@ -44,7 +44,7 @@ export default function DeactivateModal({ open, onClose, onConfirm }: {
               rounded-lg 
               text-sm font-medium 
               text-white 
-              bg-[#F57C41] hover:bg-[#E96E33] transition
+              bg-primary hover:bg-primary/90 transition
               flex items-center justify-center gap-2
             "
           >
