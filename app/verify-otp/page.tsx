@@ -136,12 +136,12 @@ export default function VerifyOTPPage() {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-orange-200 via-pink-200 to-red-200"
+      className="min-h-screen login-page-bg"
       style={{
-        backgroundImage: "url(/bg.jpg)",
+        // backgroundImage: "url(/bg.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundBlendMode: "overlay",
+        // backgroundBlendMode: "overlay",
       }}
     >
       <AppHeader showAvatar={false} showLogo={true} />
@@ -175,7 +175,7 @@ export default function VerifyOTPPage() {
                       value={digit}
                       onChange={(e) => handleOtpChange(index, e.target.value)}
                       onKeyDown={(e) => handleKeyDown(index, e)}
-                      className="w-10 sm:w-12 h-12 text-center text-lg font-semibold border border-gray-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent"
+                      className="w-10 sm:w-12 h-12 text-center text-lg font-semibold border border-gray-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                       maxLength={1}
                     />
                   ))}
@@ -191,7 +191,7 @@ export default function VerifyOTPPage() {
                   </p>
                 ) : (
                   <button
-                    className="text-orange-500 font-semibold hover:underline"
+                    className="text-primary font-semibold hover:underline"
                     onClick={handleResendOtp}
                   >
                     Resend OTP
