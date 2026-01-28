@@ -163,7 +163,7 @@ export function OTPVerificationModal({ phone, onBack, onClose, onNewUser, }: Pro
                             maxLength={1}
                             inputMode="numeric"
                             autoComplete="one-time-code"
-                            className="w-12 h-12 text-center text-lg border rounded-xl focus:ring-2 focus:ring-orange-400"
+                            className="w-12 h-12 text-center text-lg border rounded-xl focus:ring-2 focus:ring-primary"
                         />
                     ))}
                 </div>
@@ -177,7 +177,7 @@ export function OTPVerificationModal({ phone, onBack, onClose, onNewUser, }: Pro
                         <button
                             onClick={handleResendOtp}
                             disabled={isResending}
-                            className="text-orange-500 font-semibold hover:underline"
+                            className="text-primary font-semibold hover:underline"
                         >
                             Resend OTP
                         </button>
@@ -187,7 +187,7 @@ export function OTPVerificationModal({ phone, onBack, onClose, onNewUser, }: Pro
                 <div className="flex gap-3">
                     <button
                         onClick={onBack}
-                        className="flex-1 border border-orange-400 text-orange-500 rounded-xl py-3"
+                        className="flex-1 border border-primary text-primary rounded-xl py-3"
                     >
                         ← Back
                     </button>

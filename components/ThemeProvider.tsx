@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { selectAuthState } from "@/lib/slices/auth";
 import { ROLES } from "@/lib/utils";
 
-type Theme = "default" | "organizer";
+type Theme = "traveler" | "organizer";
 
 interface ThemeContextType {
     theme: Theme;
@@ -19,16 +19,18 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
     const { userData } = useSelector(selectAuthState);
     const pathname = usePathname();
-    const [theme, setThemeState] = useState<Theme>("default");
+    const [theme, setThemeState] = useState<Theme>("organizer");
     const [hasMounted, setHasMounted] = useState(false);
 
     // Initial logic to determine theme
     useEffect(() => {
         setHasMounted(true);
-        const savedTheme = localStorage.getItem("app-theme") as Theme;
+        const savedTheme = localStorage.getItem("ui-theme");
 
-        if (savedTheme) {
-            setThemeState(savedTheme);
+        if (savedTheme === "traveler") {
+            setThemeState("traveler");
+        } else if (savedTheme === "organizer") {
+            setThemeState("organizer");
         } else {
             // Fallback to auto-detection if no preference saved
             const userType = userData?.userType;
@@ -38,7 +40,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
             if (isOrganizerUser || isOrganizerRoute) {
                 setThemeState("organizer");
             } else {
-                setThemeState("default");
+                // Default to organizer (Blue) as requested "filhal"
+                setThemeState("organizer");
             }
         }
     }, [userData, pathname]); // Re-run if user/path changes AND no saved preference (handled inside)
@@ -48,16 +51,17 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         if (!hasMounted) return;
 
         const root = document.documentElement;
-        if (theme === "organizer") {
-            root.setAttribute("data-theme", "organizer");
+        if (theme === "traveler") {
+            root.setAttribute("data-theme", "traveler");
         } else {
-            root.removeAttribute("data-theme");
+            // Organizer is Blue, which matches :root now, or explicit organizer theme
+            root.setAttribute("data-theme", "organizer");
         }
-        localStorage.setItem("app-theme", theme);
+        localStorage.setItem("ui-theme", theme);
     }, [theme, hasMounted]);
 
     const toggleTheme = () => {
-        setThemeState((prev) => (prev === "default" ? "organizer" : "default"));
+        setThemeState((prev) => (prev === "organizer" ? "traveler" : "organizer"));
     };
 
     const setTheme = (newTheme: Theme) => {

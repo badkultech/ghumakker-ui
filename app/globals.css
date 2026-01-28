@@ -44,11 +44,11 @@
 
   /* Custom */
   /* Custom */
-  --color-error-orange: #FF804C;
-  --color-brand-yellow: #FEA901;
-  --color-brand-orange: #FD6E34;
-  --color-brand-pink: #FE336A;
-  --color-brand-red: #FD401A;
+  --color-error-orange: #EF476F;
+  --color-brand-yellow: #4CC9F0;
+  --color-brand-orange: #4361EE;
+  --color-brand-pink: #3A0CA3;
+  --color-brand-red: #7209B7;
 
   --font-poppins: var(--font-poppins), sans-serif;
   --font-barlow: var(--font-barlow), sans-serif;
@@ -93,7 +93,7 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.7361 0.1685 41.9);
+  --primary: oklch(0.6 0.15 250);
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -120,6 +120,10 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+  /* Login Page Background Gradient (Blue Default) */
+  --login-bg-from: #BFDBFE;
+  --login-bg-via: #C7D2FE;
+  --login-bg-to: #E9D5FF;
 }
 
 .dark {
@@ -168,6 +172,10 @@
 }
 
 /* Custom Utilities */
+.login-page-bg {
+  background: linear-gradient(135deg, var(--login-bg-from) 0%, var(--login-bg-via) 50%, var(--login-bg-to) 100%);
+}
+
 .admin-register * {
   font-family: 'Poppins', sans-serif !important;
 }
@@ -243,4 +251,26 @@
   /* Error might stay consistent or change */
   --color-error-orange: #EF476F;
   /* Pinkish Red */
+
+  /* Login Page Background Gradient (Blue) */
+  --login-bg-from: #BFDBFE;
+  --login-bg-via: #C7D2FE;
+  --login-bg-to: #E9D5FF;
+}
+
+[data-theme="traveler"] {
+  /* Traveler Theme (Original Orange) */
+  --primary: oklch(0.7361 0.1685 41.9);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --color-brand-yellow: #FEA901;
+  --color-brand-orange: #FD6E34;
+  --color-brand-pink: #FE336A;
+  --color-brand-red: #FD401A;
+  --color-error-orange: #FF804C;
+
+  /* Login Page Background Gradient (Orange) */
+  --login-bg-from: #FED7AA;
+  --login-bg-via: #FBCFE8;
+  --login-bg-to: #FECACA;
 }

@@ -84,12 +84,12 @@ export default function PhoneEntryPage() {
 
   return (
     <div
-      className="min-h-screen bg-gradient-to-br from-orange-200 via-pink-200 to-red-200"
+      className="min-h-screen login-page-bg"
       style={{
-        backgroundImage: "url(/bg.jpg)",
+        // backgroundImage: "url(/bg.jpg)",
         backgroundSize: "cover",
         backgroundPosition: "center",
-        backgroundBlendMode: "overlay",
+        // backgroundBlendMode: "overlay",
       }}
     >
       <AppHeader showAvatar={false} showLogo={true} />
@@ -125,7 +125,7 @@ export default function PhoneEntryPage() {
                     maxLength={13}
                     pattern="^\+?\d{1,13}$"
                     inputMode="tel"
-                    className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent text-lg"
+                    className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
                   />
                 </div>
               </div>

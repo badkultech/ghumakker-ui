@@ -11,6 +11,8 @@ import { selectAuthState } from "@/lib/slices/auth";
 import { useGetUserNotificationsQuery, useMarkNotificationAsSeenMutation } from "@/lib/services/superadmin/notification";
 import { formatDistanceToNow } from "date-fns";
 
+import { Button } from "@/components/ui/button";
+
 export function MainHeader({
   onMenuOpen = () => { },
   notifications: propNotifications = [],
@@ -93,20 +95,31 @@ export function MainHeader({
 
         {/* RIGHT */}
         <div className="ml-auto flex items-center gap-3">
-          <NotificationsDropdown
-            notifications={displayNotifications}
-            onUpdateNotifications={handleUpdateNotifications}
-          />
+          {isLoggedIn ? (
+            <NotificationsDropdown
+              notifications={displayNotifications}
+              onUpdateNotifications={handleUpdateNotifications}
+            />
+          ) : (
+            <Button
 
-          <button
-            onClick={onMenuOpen}
-            className="p-1.5 text-black/80 hover:text-black"
-          >
-            <Menu className="w-6 h-6" />
-          </button>
+              onClick={onLoginClick}
+              className="font-semibold text-white hover:text-primary hover:bg-transparent px-2"
+            >
+              Sign In / Sign Up
+            </Button>
+          )}
+
+          {isLoggedIn && (
+            <button
+              onClick={onMenuOpen}
+              className="p-1.5 text-black/80 hover:text-black"
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+          )}
         </div>
       </div>
     </header>
-
   );
 }
