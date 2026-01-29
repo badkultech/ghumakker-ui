@@ -6,7 +6,7 @@ import { AppHeader } from "@/components/app-header";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/slices/store";
 import { useTripDetailsQuery } from "@/lib/services/trip-search";
-import { Star, X } from "lucide-react";
+import { Star, X, Scale, Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { clearCompare, removeFromCompare } from "@/lib/slices/compareSlice";
 import { useRouter } from "next/navigation";
@@ -160,6 +160,23 @@ export default function CompareTripsPage() {
             <main className="max-w-6xl mx-auto p-4 md:p-6 overflow-x-auto">
                 {isLoading ? (
                     <p className="text-center">Loading...</p>
+                ) : tripsToCompare.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center py-20 text-center">
+                        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
+                            <Scale className="w-8 h-8 text-gray-400" />
+                        </div>
+                        <h3 className="text-xl font-semibold text-gray-900 mb-2">No trips to compare</h3>
+                        <p className="text-gray-500 mb-6 max-w-sm">
+                            Add trips to your comparison list to see how they stack up against each other.
+                        </p>
+                        <button
+                            onClick={() => router.push("/home/search-result-with-filter")}
+                            className="flex items-center gap-2 px-6 py-3 bg-[#FF804C] text-white rounded-full hover:bg-[#e67344] transition-colors font-medium"
+                        >
+                            <Plus className="w-5 h-5" />
+                            Add Trips to Compare
+                        </button>
+                    </div>
                 ) : (
                     <div className="min-w-[600px]">
                         <table className="w-full border-collapse table-fixed">
