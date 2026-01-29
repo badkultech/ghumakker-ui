@@ -33,9 +33,10 @@ const moods = [
 interface SearchTripsCardProps {
   onClose?: () => void
   defaultTab?: "destination" | "moods"
+  className?: string
 }
 
-export function SearchTripsCard({ onClose, defaultTab }: SearchTripsCardProps) {
+export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsCardProps) {
   const [activeTab, setActiveTab] = useState<"destination" | "moods">(defaultTab || "destination")
   const [selectedMoods, setSelectedMoods] = useState<string[]>(["Mountain", "Wellness", "Women-Only"])
   const [selectedMonth, setSelectedMonth] = useState("Jan")
@@ -86,13 +87,10 @@ export function SearchTripsCard({ onClose, defaultTab }: SearchTripsCardProps) {
 
   return (
     <div
-      className="
-        bg-white rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.12)]
-        p-3 md:p-4
-        w-full max-w-[560px]
-        max-h-[85vh]
-        flex flex-col
-      "
+      className={cn(
+        "bg-white rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.12)] p-3 md:p-4 w-full max-w-[560px] max-h-[80vh] flex flex-col",
+        className
+      )}
     >
       {/* Header */}
       <h2 className="text-lg font-semibold text-center mb-2">
@@ -118,7 +116,7 @@ export function SearchTripsCard({ onClose, defaultTab }: SearchTripsCardProps) {
       </div>
 
       {/* Scroll-safe content */}
-      <div className="flex-1 pr-1 space-y-3">
+      <div className="flex-1 pr-1 space-y-3 overflow-y-auto min-h-0">
 
         {activeTab === "destination" ? (
           <>

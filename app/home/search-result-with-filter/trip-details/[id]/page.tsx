@@ -99,12 +99,6 @@ export default function TripDetailsPage() {
   const { requireAuth } = useAuthGuard(isLoggedIn);
   const { data, isLoading, error } = useTripDetailsQuery(id as string);
 
-
-
-
-  // Wishlist hooks
-
-
   // Check if trip is in wishlist
   const { data: isInWishlist } = useCheckTripInWishlistQuery(
     { organizationId, userId, tripId: id as string },
@@ -467,8 +461,20 @@ export default function TripDetailsPage() {
         open={showSearchOverlay}
         onClose={() => setShowSearchOverlay(false)}
       >
-        <SearchTripsCard defaultTab={searchTab}
-          onClose={() => setShowSearchOverlay(false)} />
+        <div className="block lg:hidden w-[85vw] max-w-[360px]">
+          <SearchTripsCard
+            defaultTab={searchTab}
+            onClose={() => setShowSearchOverlay(false)}
+            className="shadow-none border-none p-1"
+          />
+        </div>
+        <div className="hidden lg:block">
+          <SearchTripsCard
+            defaultTab={searchTab}
+            onClose={() => setShowSearchOverlay(false)}
+            className="shadow-none"
+          />
+        </div>
       </Overlay>
       <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
 

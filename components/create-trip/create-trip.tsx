@@ -517,6 +517,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                     value={formData.totalDays}
                     type="number"
                     min={1}
+                    disabled={!!tripId}
                     onChange={(e) => {
                       let val = parseInt(e.target.value);
                       if (isNaN(val) || val < 0) val = 0;
