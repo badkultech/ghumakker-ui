@@ -15,14 +15,6 @@ interface LinkMenuItem extends BaseMenuItem {
   action?: never;
 }
 
-interface ActionMenuItem extends BaseMenuItem {
-  action: "OPEN_SEARCH";
-  href?: never;
-  tab: "destination" | "moods";
-}
-
-type MenuItem = LinkMenuItem | ActionMenuItem;
-
 interface User {
   name: string;
   email: string;
@@ -35,21 +27,17 @@ type UserMenuItem = LinkMenuItem;
 export function SidebarMenu({
   isOpen,
   onClose,
-  menuItems,
   userMenuItems,
   onLogout,
   isLoggedIn,
   user,
-  onOpenSearchOverlay,
 }: {
   isOpen: boolean;
   onClose: () => void;
-  menuItems: readonly MenuItem[];
   userMenuItems: readonly UserMenuItem[];
   onLogout: () => void;
   isLoggedIn: boolean;
   user?: User;
-  onOpenSearchOverlay?: (tab: "destination" | "moods") => void;
 }) {
   return (
     <div
@@ -76,33 +64,7 @@ export function SidebarMenu({
 
         {/* Body */}
         <div className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-70px)]">
-          {/* Main Menu */}
-          {menuItems.map((item) => (
-            <button
-              key={item.label}
-              onClick={() => {
-                if (item.action === "OPEN_SEARCH") {
-                  onOpenSearchOverlay?.(item.tab); // 🔥 overlay open
-                  onClose();               // sidebar close
-                  return;
-                }
 
-                if (item.href) {
-                  window.location.href = item.href;
-                  onClose();
-                }
-              }}
-              className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted transition-colors group text-left"
-            >
-              <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
-              <span className="text-sm font-medium text-foreground">
-                {item.label}
-              </span>
-            </button>
-          ))}
-
-
-          <div className="my-4 border-t border-border" />
 
           {/* Only show user profile & user menu when logged in */}
           {isLoggedIn && (
@@ -156,7 +118,7 @@ export function SidebarMenu({
             <button
               onClick={() => {
                 onClose();
-                window.location.href = "/phone-entry";
+                window.location.href = "/login";
               }}
               className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
             >

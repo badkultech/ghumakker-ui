@@ -1,32 +1,13 @@
 import {
-    Bell, Bookmark, Gift, Heart, MapPin, MessageCircleQuestion,
-    Scale, Search, Settings, Users
+    Bell, Bookmark, MessageCircleQuestion,
+    Scale, Settings
 } from "lucide-react";
-
-export const menuItems = [
-    {
-        icon: Search,
-        label: "Search by Mood",
-        action: "OPEN_SEARCH",
-        tab: "moods"
-    },
-    {
-        icon: MapPin,
-        label: "Search by Destinations",
-        action: "OPEN_SEARCH",
-        tab: "destination"
-    },
-    { icon: Users, label: "About us", href: "/home/about" },
-    { icon: Heart, label: "Popular Trips", href: "/home/popular-trips" },
-    { icon: Gift, label: "Biggest Discounts", href: "/home/discounts" },
-    { icon: Scale, label: "Compare Trips", href: "/home/compare-trips" },
-    { icon: Bookmark, label: "Wishlist", href: "/home//wishlist" },
-] as const;
 
 export const userMenuItems = [
     { icon: Bell, label: "Trip Invitations Sent", href: "/home/invitations" },
     { icon: MessageCircleQuestion, label: "My Queries", href: "/home/my-queries" },
-    { icon: Bookmark, label: "Saved Trips", href: "/saved" },
+    { icon: Bookmark, label: "Saved Trips", href: "/home/wishlist" },
+    { icon: Scale, label: "Compare Trips", href: "/home/compare-trips" },
     { icon: Settings, label: "Settings", href: "/home/settings" },
 ] as const;
 

@@ -6,7 +6,7 @@ import { MainHeader } from "@/components/search-results/MainHeader";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { HeroSection } from "@/components/homePage/sections/hero-section";
 import { Footer } from "@/components/homePage/sections/footer";
-import { menuItems, userMenuItems, notificationsData } from "./constants";
+import { userMenuItems, notificationsData } from "./constants";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
@@ -62,16 +62,10 @@ export default function Home() {
       <SidebarMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        menuItems={menuItems}
         userMenuItems={userMenuItems}
         onLogout={onLogout}
         isLoggedIn={isLoggedIn}
         user={user}
-        onOpenSearchOverlay={(tab) => {
-          setSearchTab(tab);
-          setShowSearchOverlay(true);
-        }}
-
       />
       <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
         <div className="hidden lg:block">
