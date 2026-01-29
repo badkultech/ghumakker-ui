@@ -6,7 +6,7 @@ import { ChevronLeft, Menu, Scale, Bell, Info, Send, X, Clock } from "lucide-rea
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useRouter } from "next/navigation"
 import { MainHeader } from "@/components/search-results/MainHeader"
-import { menuItems, notificationsData, userMenuItems } from "../constants";
+import { notificationsData, userMenuItems } from "../constants";
 
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
@@ -238,14 +238,9 @@ export default function TripInvitationsPage() {
       <SidebarMenu
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
-        menuItems={menuItems}
         userMenuItems={userMenuItems}
         onLogout={onLogout}
         isLoggedIn={isLoggedIn}
-        onOpenSearchOverlay={(tab) => {
-          setSearchTab(tab);
-          setShowSearchOverlay(true);
-        }}
       />
       <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
         <SearchTripsCard defaultTab={searchTab}

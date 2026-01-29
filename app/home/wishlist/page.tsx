@@ -9,7 +9,7 @@ import { useOrganizationId } from "@/hooks/useOrganizationId"
 import { useUserId } from "@/hooks/useUserId"
 import { useAuthActions } from "@/hooks/useAuthActions"
 import { useState } from "react"
-import { menuItems, notificationsData, userMenuItems } from "../constants"
+import { notificationsData, userMenuItems } from "../constants"
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { AuthModals } from "@/components/auth/auth/AuthModals"
 import { useSelector } from "react-redux"
@@ -187,15 +187,10 @@ export default function WishlistPage() {
             <SidebarMenu
                 isOpen={isSidebarOpen}
                 onClose={() => setSidebarOpen(false)}
-                menuItems={menuItems}
                 userMenuItems={userMenuItems}
                 onLogout={onLogout}
                 isLoggedIn={isLoggedIn}
                 user={user}
-                onOpenSearchOverlay={(tab) => {
-                    setSearchTab(tab);
-                    setShowSearchOverlay(true);
-                }}
             />
             <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
                 <SearchTripsCard defaultTab={searchTab}

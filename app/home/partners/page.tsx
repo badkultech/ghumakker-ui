@@ -8,7 +8,7 @@ import { MainHeader } from "@/components/search-results/MainHeader";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
-import { menuItems, notificationsData, userMenuItems } from "../constants";
+import { notificationsData, userMenuItems } from "../constants";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { Overlay } from "@/components/common/Overlay";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
@@ -88,15 +88,10 @@ export default function PartnersPage() {
       <SidebarMenu
         isOpen={isSidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        menuItems={menuItems}
         userMenuItems={userMenuItems}
         onLogout={handleLogout}
         isLoggedIn={isLoggedIn}
         user={user}
-        onOpenSearchOverlay={(tab) => {
-          setSearchTab(tab);
-          setShowSearchOverlay(true);
-        }}
       />
       <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
         <SearchTripsCard defaultTab={searchTab}

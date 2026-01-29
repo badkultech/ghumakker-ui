@@ -19,7 +19,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import GradientCheckbox from "@/components/ui/GradientCheckbox"
 import { MainHeader } from "@/components/search-results/MainHeader"
-import { menuItems, notificationsData, userMenuItems } from "../constants";
+import { notificationsData, userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useOrganizationId } from "@/hooks/useOrganizationId"
@@ -418,15 +418,10 @@ export default function MyQueriesPage() {
             <SidebarMenu
                 isOpen={isSidebarOpen}
                 onClose={() => setSidebarOpen(false)}
-                menuItems={menuItems}
                 userMenuItems={userMenuItems}
                 onLogout={onLogout}
                 isLoggedIn={isLoggedIn}
                 user={user}
-                onOpenSearchOverlay={(tab) => {
-                    setSearchTab(tab);
-                    setShowSearchOverlay(true);
-                }}
             />
             <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
                 <SearchTripsCard defaultTab={searchTab}

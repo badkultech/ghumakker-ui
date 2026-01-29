@@ -6,7 +6,7 @@ import { CheckCircle } from "lucide-react";
 import { Footer } from "@/components/homePage/sections/footer";
 import { MainHeader } from "@/components/search-results/MainHeader";
 import { use, useState } from "react";
-import { menuItems, notificationsData, userMenuItems } from "../../constants";
+import { notificationsData, userMenuItems } from "../../constants";
 
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 
@@ -241,15 +241,10 @@ export default function PartnerDetailPage({
       <SidebarMenu
         isOpen={isSidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        menuItems={menuItems}
         userMenuItems={userMenuItems}
         onLogout={onLogout}
         isLoggedIn={isLoggedIn}
         user={user}
-        onOpenSearchOverlay={(tab) => {
-          setSearchTab(tab);
-          setShowSearchOverlay(true);
-        }}
       />
       <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
         <SearchTripsCard defaultTab={searchTab}

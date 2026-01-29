@@ -10,7 +10,7 @@ import { MobileBottomBar } from "@/components/search-results/mobile-bottom-bar";
 import NoTripsFound from "@/components/search-results/NoTripsFound";
 import { useSearchPublicTripsQuery } from "@/lib/services/trip-search";
 import { MainHeader } from "@/components/search-results/MainHeader";
-import { menuItems, userMenuItems, notificationsData } from "../constants"
+import { userMenuItems, notificationsData } from "../constants"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { useSelector } from "react-redux";
@@ -446,16 +446,10 @@ export default function SearchResultsWithFilters() {
       <SidebarMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        menuItems={menuItems}
         userMenuItems={userMenuItems}
         onLogout={handleLogout}
         isLoggedIn={isLoggedIn}
         user={user}
-        onOpenSearchOverlay={(tab) => {
-          setSearchTab(tab);
-          setShowSearchOverlay(true);
-        }}
-
       />
       <FloatingRoleActions
         isLoggedIn={isLoggedIn}

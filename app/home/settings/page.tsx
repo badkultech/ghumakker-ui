@@ -12,7 +12,7 @@ import { LogoutModal } from "@/components/organizer/LogoutModal";
 import DeactivateModal from "@/components/search-results/settings/DeactivateModal";
 import DeleteModal from "@/components/search-results/settings/DeleteModal";
 import { MainHeader } from "@/components/search-results/MainHeader";
-import { menuItems, notificationsData, userMenuItems } from "../constants";
+import { notificationsData, userMenuItems } from "../constants";
 
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { useAuthActions } from "@/hooks/useAuthActions";
@@ -305,14 +305,9 @@ export default function SettingsPage() {
       <SidebarMenu
         isOpen={isSidebarOpen}
         onClose={() => setSidebarOpen(false)}
-        menuItems={menuItems}
         userMenuItems={userMenuItems}
         onLogout={onLogout}
         isLoggedIn={isLoggedIn}
-        onOpenSearchOverlay={(tab) => {
-          setSearchTab(tab);
-          setShowSearchOverlay(true);
-        }}
       />
       <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
         <SearchTripsCard defaultTab={searchTab}

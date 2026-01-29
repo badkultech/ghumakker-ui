@@ -25,7 +25,7 @@ import OrganizerProfileModal from "@/components/homePage/trip-details/modal/Orga
 import InviteFriendsModal from "@/components/homePage/trip-details/modal/InviteFriendsModal";
 import SendInvitationModal from "@/components/homePage/trip-details/modal/SendInvitationModal";
 import { useAuthActions } from "@/hooks/useAuthActions";
-import { menuItems, notificationsData, userMenuItems } from "@/app/home/constants";
+import { notificationsData, userMenuItems } from "@/app/home/constants";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { FullImageGalleryModal } from "@/components/library/FullImageGalleryModal";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
@@ -437,15 +437,10 @@ export default function TripDetailsPage() {
       <SidebarMenu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        menuItems={menuItems}
         userMenuItems={userMenuItems}
         onLogout={handleLogout}
         isLoggedIn={isLoggedIn}
         user={user}
-        onOpenSearchOverlay={(tab) => {
-          setSearchTab(tab);
-          setShowSearchOverlay(true);
-        }}
       />
       <FloatingRoleActions
         isLoggedIn={isLoggedIn}

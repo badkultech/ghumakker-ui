@@ -12,7 +12,7 @@ import { clearCompare, removeFromCompare } from "@/lib/slices/compareSlice";
 import { useRouter } from "next/navigation";
 import { MainHeader } from "@/components/search-results/MainHeader";
 import { useAuthActions } from "@/hooks/useAuthActions";
-import { menuItems, notificationsData, userMenuItems } from "../constants";
+import { notificationsData, userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
 import { selectAuthState } from "@/lib/slices/auth";
@@ -267,12 +267,10 @@ export default function CompareTripsPage() {
             <SidebarMenu
                 isOpen={isMenuOpen}
                 onClose={() => setIsMenuOpen(false)}
-                menuItems={menuItems}
                 userMenuItems={userMenuItems}
                 onLogout={onLogout}
                 isLoggedIn={isLoggedIn}
                 user={user}
-                onOpenSearchOverlay={() => setShowSearchOverlay(true)}
             />
             <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
             <FloatingRoleActions

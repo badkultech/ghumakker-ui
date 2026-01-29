@@ -5,7 +5,7 @@ import { ChevronLeft } from "lucide-react"
 import { TripLeaderCard } from "@/components/homePage/shared/trip-leader-card"
 import { TripLeaderModal } from "@/components/homePage/shared/trip-leader-modal"
 import { MainHeader } from "@/components/search-results/MainHeader"
-import { menuItems, notificationsData, userMenuItems } from "../constants";
+import { notificationsData, userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useSelector } from "react-redux"
@@ -164,15 +164,10 @@ export default function TripLeadersPage() {
             <SidebarMenu
                 isOpen={isSidebarOpen}
                 onClose={() => setIsSidebarOpen(false)}
-                menuItems={menuItems}
                 userMenuItems={userMenuItems}
                 onLogout={onLogout}
                 isLoggedIn={isLoggedIn}
                 user={user}
-                onOpenSearchOverlay={(tab) => {
-                    setSearchTab(tab);
-                    setShowSearchOverlay(true);
-                }}
             />
             <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
                 <SearchTripsCard defaultTab={searchTab}
