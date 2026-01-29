@@ -35,6 +35,7 @@ type QuestionStatus = "responded" | "pending"
 
 interface Question {
     id: string
+    tripPublicId: string
     tripName: string
     question: string
     status: QuestionStatus
@@ -47,38 +48,6 @@ interface Question {
     }
     warningMessage?: string
 }
-
-// const mockQuestions: Question[] = [
-//     {
-//         id: "1",
-//         question: "Is camping equipment provided?",
-//         status: "responded",
-//         askedDate: "25-08-2025",
-//         response: {
-//             author: "ghumakker Team",
-//             respondedDate: "25-08-2025",
-//             text: "Yes, all camping equipment including tents, sleeping bags, and mats are provided.",
-//         },
-//     },
-//     {
-//         id: "2",
-//         question: "What is the difficulty level?",
-//         status: "responded",
-//         askedDate: "25-08-2025",
-//         response: {
-//             author: "ghumakker Team",
-//             respondedDate: "25-08-2025",
-//             text: "The trek is considered moderate difficulty, suitable for beginners with basic fitness.",
-//         },
-//     },
-//     {
-//         id: "3",
-//         question: "Are meals included in the package?",
-//         status: "pending",
-//         askedDate: "24-08-2025",
-//         warningMessage: "Our team will get back to you soon!",
-//     },
-// ]
 
 export default function MyQueriesPage() {
     const [expandedQuestions, setExpandedQuestions] = useState<string[]>([])
@@ -130,6 +99,7 @@ export default function MyQueriesPage() {
     const mappedQuestions: Question[] =
         queries?.map((q) => ({
             id: String(q.id),
+            tripPublicId: q.tripPublicId,
             tripName: q.tripName,
             question: q.question,
             status: q.status === "RESPONDED" ? "responded" : "pending",

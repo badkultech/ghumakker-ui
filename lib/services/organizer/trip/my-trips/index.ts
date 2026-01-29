@@ -29,8 +29,16 @@ export const tripAPI = baseAPI.injectEndpoints({
       }),
       invalidatesTags: () => [TAGS.myTrips],
     }),
+    cloneTrip: builder.mutation<any, { organizationId: string; tripId: string }>({
+      query: ({ organizationId, tripId }) => ({
+        url: `/org/${organizationId}/trip/${tripId}/clone`,
+        method: "POST",
+      }),
+      transformResponse: (res: ApiResponse<any>) => res.data,
+      invalidatesTags: [TAGS.myTrips],
+    }),
   }),
 });
 
-export const { useGetFilteredTripsQuery, useUpdateTripStatusMutation } = tripAPI;
+export const { useGetFilteredTripsQuery, useUpdateTripStatusMutation, useCloneTripMutation } = tripAPI;
 export type { TripListItem } from "./types";

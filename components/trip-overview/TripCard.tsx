@@ -15,7 +15,38 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 
+import { useCloneTripMutation } from "@/lib/services/organizer/trip/my-trips";
+import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { useToast } from "@/hooks/use-toast";
+import { useRouter } from "next/navigation";
+
 export default function TripCard({ trip, tab, onArchive, onDelete, onRestore }: any) {
+  const organizationId = useOrganizationId();
+  const { toast } = useToast();
+  const router = useRouter();
+  const [cloneTrip, { isLoading: isCloning }] = useCloneTripMutation();
+
+  const handleCreateSimilarTrip = async () => {
+    if (!organizationId || !trip.id) return;
+    try {
+      const newTrip = await cloneTrip({ organizationId, tripId: trip.id }).unwrap();
+      toast({
+        title: "Success",
+        description: "Trip cloned successfully",
+      });
+
+      const newTripId = newTrip?.publicId || newTrip?.tripPublicId || newTrip?.id;
+      if (newTripId) {
+        router.push(`/organizer/create-trip/${newTripId}`);
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error?.data?.message || "Failed to clone trip",
+      });
+    }
+  };
 
 
 
@@ -28,7 +59,8 @@ export default function TripCard({ trip, tab, onArchive, onDelete, onRestore }: 
             <Button
               variant="outline"
               size="sm"
-              disabled={true}
+              disabled={isCloning}
+              onClick={handleCreateSimilarTrip}
               className="flex items-center justify-center gap-2 border-gray-200 text-gray-800 cursor-not-allowed hover:bg-gray-50 h-10 flex-grow rounded-lg"
             >
               <PlusCircle size={16} />
@@ -70,10 +102,12 @@ export default function TripCard({ trip, tab, onArchive, onDelete, onRestore }: 
             <Button
               variant="outline"
               size="sm"
+              disabled={isCloning}
+              onClick={handleCreateSimilarTrip}
               className="flex items-center justify-center gap-2 border-gray-200 text-gray-800 cursor-pointer hover:bg-gray-50 h-10 flex-grow rounded-lg"
             >
               <PlusCircle size={16} />
-              Create Similar Trip
+              {isCloning ? "Creating..." : "Create Similar Trip"}
             </Button>
             <Button
               variant="outline"
