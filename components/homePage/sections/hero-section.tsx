@@ -4,10 +4,10 @@ import { SearchTripsCardMobile } from "../shared/SearchTripsCardMobile";
 
 export function HeroSection() {
   return (
-    <section className="relative w-full overflow-hidden">
+    <section className="relative w-full overflow-visible lg:overflow-hidden">
 
       {/* Background layer */}
-      <div className="absolute inset-0 z-0">
+      <div className="absolute inset-0 min-h-full z-0">
         <Image
           src="/hero-bg.png"
           alt="Group travel"
@@ -46,7 +46,7 @@ export function HeroSection() {
               </div>
 
               {/* Mobile card */}
-              <div className="block lg:hidden w-full max-w-md mt-4 mx-auto">
+              <div className="block lg:hidden w-full max-w-md mt-4 mx-auto pb-8">
                 <SearchTripsCardMobile />
               </div>
 

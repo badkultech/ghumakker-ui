@@ -88,7 +88,7 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
   return (
     <div
       className={cn(
-        "bg-white rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.12)] p-3 md:p-4 w-full max-w-[560px] max-h-[80vh] flex flex-col",
+        "bg-white rounded-3xl shadow-[0_0_40px_rgba(0,0,0,0.12)] p-3 md:p-4 w-full max-w-[560px] flex flex-col",
         className
       )}
     >
@@ -98,7 +98,7 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
       </h2>
 
       {/* Tabs */}
-      <div className="flex bg-white shadow-md rounded-full p-1 mb-3 shrink-0">
+      <div className="flex bg-white shadow-md rounded-full p-1 mb-3">
         {["destination", "moods"].map(tab => (
           <button
             key={tab}
@@ -116,7 +116,7 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
       </div>
 
       {/* Scroll-safe content */}
-      <div className="flex-1 pr-1 space-y-3 overflow-y-auto min-h-0">
+      <div className="space-y-3">
 
         {activeTab === "destination" ? (
           <>
@@ -176,21 +176,19 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
           </>
         )}
 
+      </div>
 
-
-        {/* Date Selector – always visible, no scroll impact */}
-        <div className="mt-3">
-          <MonthYearSelector
-            year={year}
-            month={selectedMonth}
-            onChange={({ year, month }) => {
-              setYear(year)
-              setSelectedMonth(month)
-            }}
-            className="scale-[0.95] origin-top"
-          />
-        </div>
-
+      {/* Date Selector – outside scroll area, always visible */}
+      <div className="mt-3">
+        <MonthYearSelector
+          year={year}
+          month={selectedMonth}
+          onChange={({ year, month }) => {
+            setYear(year)
+            setSelectedMonth(month)
+          }}
+          className="scale-[0.95] origin-top"
+        />
       </div>
 
       {/* Search Button — unchanged visually */}

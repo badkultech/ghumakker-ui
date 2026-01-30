@@ -10,10 +10,6 @@ import { userMenuItems, notificationsData } from "./constants";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
-import { Overlay } from "@/components/common/Overlay";
-import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
-import { SearchTripsCardMobile } from "@/components/homePage/shared/SearchTripsCardMobile";
-
 
 export default function Home() {
   const { isLoggedIn, handleLogout, router } = useAuthActions();
@@ -22,9 +18,6 @@ export default function Home() {
   const [notificationsList, setNotificationsList] = useState(notificationsData);
 
   const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
-  const [showSearchOverlay, setShowSearchOverlay] = useState(false);
-  const [searchTab, setSearchTab] =
-    useState<"destination" | "moods">("destination");
 
   const onLogout = () => {
     handleLogout(() => setIsMenuOpen(false));
@@ -43,7 +36,7 @@ export default function Home() {
 
 
   return (
-    <main className="h-screen flex flex-col overflow-hidden bg-white">
+    <main className="min-h-screen lg:h-screen flex flex-col overflow-auto lg:overflow-hidden bg-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <MainHeader
         isLoggedIn={isLoggedIn}
         onLoginClick={() => setAuthStep("PHONE")}
@@ -53,7 +46,7 @@ export default function Home() {
         variant="center"
       />
 
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 lg:overflow-hidden">
         <HeroSection />
       </div>
 
@@ -67,21 +60,6 @@ export default function Home() {
         isLoggedIn={isLoggedIn}
         user={user}
       />
-      <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
-        <div className="hidden lg:block">
-          <SearchTripsCard
-            defaultTab={searchTab}
-            onClose={() => setShowSearchOverlay(false)}
-          />
-        </div>
-        <div className="block lg:hidden w-[85vw] max-w-[360px]">
-          <SearchTripsCardMobile
-            defaultTab={searchTab}
-            onClose={() => setShowSearchOverlay(false)}
-            className="shadow-none border-none"
-          />
-        </div>
-      </Overlay>
       <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
     </main>
   );

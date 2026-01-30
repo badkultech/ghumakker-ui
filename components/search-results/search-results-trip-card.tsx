@@ -313,7 +313,7 @@ export function SearchResultsTripCard({
             <div className="flex flex-col">
               <span className="text-[11px] text-gray-500 font-medium mb-[-2px]">Starting from</span>
               {price ? (
-                <h4 className="text-xl font-bold text-gray-900">₹{price.toLocaleString()}</h4>
+                <h4 className="text-xl font-bold text-gray-900">₹{Math.round(price).toLocaleString()}</h4>
               ) : (
                 <span className="text-lg font-bold text-gray-900">Coming Soon</span>
               )}
