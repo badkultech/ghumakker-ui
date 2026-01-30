@@ -93,7 +93,13 @@ export default function MyQueriesPage() {
         error,
     } = useGetUserQueriesQuery(
         { organizationId, userPublicId },
-        { skip: !organizationId || !userPublicId }
+        {
+            skip: !organizationId || !userPublicId,
+            pollingInterval: 30000, // Auto-refetch every 30 seconds
+            skipPollingIfUnfocused: true, // Save battery/bandwidth when tab is not active
+            refetchOnFocus: true, // Refresh when user returns to tab
+            refetchOnReconnect: true, // Refresh after internet reconnects
+        }
     );
 
     const mappedQuestions: Question[] =
