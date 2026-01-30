@@ -80,7 +80,7 @@ export default function PricingDetailsModal({
 
 
   const getFinal = (price: number, discount: number) =>
-    price - (price * discount) / 100;
+    Math.round(price - (price * discount) / 100);
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
@@ -104,7 +104,7 @@ export default function PricingDetailsModal({
                   {TRIP_DETAILS.PRICING_MODAL.BASE_PACKAGE}
                 </p>
                 <p className="text-sm text-gray-500">
-                  {simple.discountPercent
+                  {simple.discountPercent > 0
                     ? `${simple.discountPercent}% OFF`
                     : TRIP_DETAILS.PRICING_MODAL.STANDARD_PRICING}
                 </p>

@@ -33,7 +33,7 @@ export default function DesktopSidebar({
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
 
   const getOptionFinalPrice = (price: number, discount: number) =>
-    price - (price * discount) / 100;
+    Math.round(price - (price * discount) / 100);
 
   // SIMPLE TOTAL
   const simpleFinal = useMemo(() => {
@@ -71,7 +71,7 @@ export default function DesktopSidebar({
 
   const includesGst = pricing?.includesGst === true;
   const applyGst = (amount: number) =>
-    includesGst ? amount + amount * 0.18 : amount;
+    Math.round(includesGst ? amount + amount * 0.18 : amount);
 
 
   const baseTotal =
@@ -165,7 +165,11 @@ export default function DesktopSidebar({
                         <div>
                           <p className="font-semibold text-sm">{opt.name}</p>
                           <p className="text-xs text-gray-500">
-                            ₹{opt.price} — {opt.discount}% OFF
+                            {opt.discount > 0 ? (
+                              <>₹{opt.price} — {opt.discount}% OFF</>
+                            ) : (
+                              <>₹{opt.price}</>
+                            )}
                           </p>
                         </div>
 
@@ -236,7 +240,11 @@ export default function DesktopSidebar({
                               <div>
                                 <p className="font-semibold text-sm">{opt.name}</p>
                                 <p className="text-xs text-gray-500">
-                                  ₹{opt.price} — {opt.discount}% OFF
+                                  {opt.discount > 0 ? (
+                                    <>₹{opt.price} — {opt.discount}% OFF</>
+                                  ) : (
+                                    <>₹{opt.price}</>
+                                  )}
                                 </p>
                               </div>
                             </div>

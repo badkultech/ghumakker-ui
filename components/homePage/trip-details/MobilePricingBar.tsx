@@ -13,7 +13,7 @@ export default function MobilePricingBar({
   const dynamic = pricing?.dynamicPricingRequest;
 
   const getFinal = (price: number, discount: number) =>
-    price - (price * discount) / 100;
+    Math.round(price - (price * discount) / 100);
 
   /* ---------------- BASE PRICE ---------------- */
   let basePrice = 0;

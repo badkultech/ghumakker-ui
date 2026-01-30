@@ -65,15 +65,16 @@ export default function ReviewPage() {
 
   function formatDateDMY(dateStr: string) {
     const d = new Date(dateStr);
-    const day = String(d.getDate()).padStart(2, "0");
-    const month = String(d.getMonth() + 1).padStart(2, "0");
-    const year = d.getFullYear();
+    const day = String(d.getUTCDate()).padStart(2, "0");
+    const month = String(d.getUTCMonth() + 1).padStart(2, "0");
+    const year = d.getUTCFullYear();
     return `${day}-${month}-${year}`;
   }
   function calculateDuration(start: string, end: string) {
     const s = new Date(start);
     const e = new Date(end);
-    const diffDays = Math.ceil((e.getTime() - s.getTime()) / (1000 * 60 * 60 * 24));
+    const diffTime = e.getTime() - s.getTime();
+    const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24)) + 1;
     const nights = diffDays > 0 ? diffDays - 1 : 0;
     return `${diffDays} Days | ${nights} Nights`;
   }

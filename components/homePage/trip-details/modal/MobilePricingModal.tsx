@@ -27,7 +27,7 @@ export default function MobilePricingModal({
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
 
   const getFinal = (price: number, discount: number) =>
-    price - (price * discount) / 100;
+    Math.round(price - (price * discount) / 100);
 
   /* ---------------- SIMPLE TOTAL ---------------- */
   const simpleTotal = useMemo(() => {
@@ -125,7 +125,7 @@ export default function MobilePricingModal({
                   <p className="text-sm font-medium">
                     {TRIP_DETAILS.PRICING_MODAL.BASE_PACKAGE}
                   </p>
-                  {simple?.discountPercent ? (
+                  {simple?.discountPercent > 0 ? (
                     <p className="text-xs text-green-600">
                       {simple.discountPercent}% OFF
                     </p>
