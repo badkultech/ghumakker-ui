@@ -27,6 +27,11 @@ interface FloatingRoleActionsProps {
      * Example: ["PUBLISH"]
      */
     hiddenActions?: ActionKey[];
+
+    /**
+     * Disable publish button (e.g., when trip is already published)
+     */
+    isPublishDisabled?: boolean;
 }
 
 /* ================= COMPONENT ================= */
@@ -38,6 +43,7 @@ export function FloatingRoleActions({
     onPublishTrip,
     onModifySearch,
     hiddenActions = [],
+    isPublishDisabled = false,
 }: FloatingRoleActionsProps) {
     const [open, setOpen] = useState(false);
     const ref = useRef<HTMLDivElement>(null);
@@ -74,7 +80,11 @@ export function FloatingRoleActions({
                                     <ActionButton label="Edit" onClick={onEditTrip} />
                                 )}
                                 {!isHidden("PUBLISH") && (
-                                    <ActionButton label="Publish" onClick={onPublishTrip} />
+                                    <ActionButton
+                                        label="Publish"
+                                        onClick={onPublishTrip}
+                                        disabled={isPublishDisabled}
+                                    />
                                 )}
                                 {!isHidden("SEARCH") && (
                                     <ActionButton label="Search" onClick={onModifySearch} />
@@ -127,18 +137,26 @@ export function FloatingRoleActions({
 function ActionButton({
     label,
     onClick,
+    disabled = false,
 }: {
     label: string;
     onClick?: () => void;
+    disabled?: boolean;
 }) {
     return (
         <button
             onClick={(e) => {
                 e.preventDefault();
                 e.stopPropagation();
-                onClick?.();
+                if (!disabled) {
+                    onClick?.();
+                }
             }}
-            className="px-3 py-1 rounded-full border border-[#e07a5f]/40 text-[#e07a5f] text-xs font-medium hover:bg-[#e07a5f]/10 transition whitespace-nowrap"
+            disabled={disabled}
+            className={`px-3 py-1 rounded-full border text-xs font-medium transition whitespace-nowrap ${disabled
+                    ? "border-gray-300 text-gray-400 cursor-not-allowed opacity-50"
+                    : "border-[#e07a5f]/40 text-[#e07a5f] hover:bg-[#e07a5f]/10"
+                }`}
         >
             {label}
         </button>

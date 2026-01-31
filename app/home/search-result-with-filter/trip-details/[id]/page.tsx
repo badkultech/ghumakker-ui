@@ -44,6 +44,8 @@ import {
   useAddTripToWishlistMutation,
   useRemoveTripFromWishlistMutation
 } from "@/lib/services/wishlist";
+import { useUpdateTripStatusMutation } from "@/lib/services/organizer/trip/my-trips";
+import { useToast } from "@/hooks/use-toast";
 
 
 export default function TripDetailsPage() {
@@ -98,6 +100,8 @@ export default function TripDetailsPage() {
   const userId = useUserId();
   const { requireAuth } = useAuthGuard(isLoggedIn);
   const { data, isLoading, error } = useTripDetailsQuery(id as string);
+  const [updateTripStatus, { isLoading: isPublishing }] = useUpdateTripStatusMutation();
+  const { toast } = useToast();
 
   // Check if trip is in wishlist
   const { data: isInWishlist } = useCheckTripInWishlistQuery(
@@ -144,6 +148,41 @@ export default function TripDetailsPage() {
       setIsFavorite(!isFavorite);
     }
   };
+
+  const handlePublishTrip = async () => {
+    if (!organizationId || !id) {
+      toast({
+        title: "Error",
+        description: "Missing organization or trip information",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      await updateTripStatus({
+        organizationId,
+        tripId: id as string,
+        status: "PUBLISHED"
+      }).unwrap();
+
+      toast({
+        title: "Success",
+        description: "Trip published successfully!",
+      });
+
+      // Refresh to update UI
+      router.refresh();
+    } catch (err: any) {
+      console.error("Failed to publish trip:", err);
+      toast({
+        title: "Error",
+        description: err?.data?.message || "Failed to publish trip. Please try again.",
+        variant: "destructive",
+      });
+    }
+  };
+
 
   if (isLoading) {
     return <ScreenLoader />;
@@ -367,7 +406,7 @@ export default function TripDetailsPage() {
             bio: trip?.groupLeaders?.[0]?.bio,
             tagline: trip?.groupLeaders?.[0]?.tagline,
             imageUrl: trip?.groupLeaders?.[0]?.documents?.[0]?.url,
-           
+
           }}
         />
       )}
@@ -448,6 +487,8 @@ export default function TripDetailsPage() {
         onEditTrip={() =>
           router.push(`/organizer/create-trip/${trip.publicId}`)
         }
+        onPublishTrip={handlePublishTrip}
+        isPublishDisabled={trip?.tripStatus === "PUBLISHED"}
       />
       <Overlay
         open={showSearchOverlay}
