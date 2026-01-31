@@ -23,17 +23,22 @@ export default function OrganizerProfileModal({
                     <X />
                 </button>
 
-                {organizer.bannerImage?.url && (
-                    <div className="relative h-36 w-full">
-                        <Image
-                            src={organizer.bannerImage.url}
-                            alt="Organizer banner"
-                            fill
-                            className="object-cover rounded-t-2xl"
-                        />
-                        <div className="absolute inset-0 bg-black/30 rounded-t-2xl" />
-                    </div>
-                )}
+                {/* Banner - Always show (image or gradient fallback) */}
+                <div className="relative h-36 w-full">
+                    {organizer.bannerImage?.url ? (
+                        <>
+                            <Image
+                                src={organizer.bannerImage.url}
+                                alt="Organizer banner"
+                                fill
+                                className="object-cover rounded-t-2xl"
+                            />
+                            <div className="absolute inset-0 bg-black/30 rounded-t-2xl" />
+                        </>
+                    ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600 rounded-t-2xl" />
+                    )}
+                </div>
 
                 <div className="p-6 space-y-4">
 
@@ -103,35 +108,6 @@ export default function OrganizerProfileModal({
                                 )}
                             </div>
                         )}
-
-                    <div className="border-t pt-4">
-                        <p className="font-semibold mb-2 text-sm">
-                            Certifications
-                        </p>
-
-                        <div className="grid grid-cols-2 gap-2">
-                            {Array.isArray(organizer.certifications) &&
-                                organizer.certifications.length > 0
-                                ? organizer.certifications.slice(0, 2).map((c: any, i: number) => (
-                                    <div
-                                        key={i}
-                                        className="h-20 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-500"
-                                    >
-                                        Certificate {i + 1}
-                                    </div>
-                                ))
-                                : (
-                                    <>
-                                        <div className="h-20 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-400">
-                                            Certificate
-                                        </div>
-                                        <div className="h-20 bg-gray-100 rounded-lg flex items-center justify-center text-xs text-gray-400">
-                                            Certificate
-                                        </div>
-                                    </>
-                                )}
-                        </div>
-                    </div>
 
                 </div>
             </div>

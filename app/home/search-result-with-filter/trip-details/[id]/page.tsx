@@ -367,10 +367,7 @@ export default function TripDetailsPage() {
             bio: trip?.groupLeaders?.[0]?.bio,
             tagline: trip?.groupLeaders?.[0]?.tagline,
             imageUrl: trip?.groupLeaders?.[0]?.documents?.[0]?.url,
-            likes: 1947,
-            years: 12,
-            trips: 300,
-            travelers: 1947,
+           
           }}
         />
       )}

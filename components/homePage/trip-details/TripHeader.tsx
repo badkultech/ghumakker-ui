@@ -190,9 +190,7 @@ export default function TripHeader({
       <div className="hidden md:flex md:mt-12 md:mr-4 gap-2">
         {isLoggedIn && (
           <>
-            <button className="p-2 rounded-full border hover:text-gray-600">
-              <Bookmark className="w-5 h-5" />
-            </button>
+            
             <button
               onClick={onToggleWishlist}
               className="p-2 rounded-full border hover:text-gray-600"
