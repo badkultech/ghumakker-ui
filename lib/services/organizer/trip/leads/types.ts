@@ -30,6 +30,8 @@ export interface PublicTripLeadRequest {
   selectedOptions?: Record<string, boolean>;  // Category -> Selected option
   selectedAddOns?: string[];  // List of selected add-on names
   finalPrice?: number;
+  // Complete pricing object with checked flags
+  pricingDetails?: any;
 }
 
 export enum PreferredCommunication {

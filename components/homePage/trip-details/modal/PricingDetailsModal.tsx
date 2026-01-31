@@ -33,7 +33,58 @@ export default function PricingDetailsModal({
 
   const handleRequestInvite = async () => {
     try {
-      // Build pricing summary message
+      // Build complete pricing object with checked flags
+      let pricingPayload: any = {
+        tripPricingType: pricing?.tripPricingType,
+        includesGst: pricing?.includesGst,
+        depositRequiredPercent: pricing?.depositRequiredPercent,
+        depositRequiredAmount: pricing?.depositRequiredAmount,
+        creditOptions: pricing?.creditOptions,
+        cancellationPolicy: pricing?.cancellationPolicy,
+      };
+
+      // Handle SIMPLE pricing
+      if (pricing?.tripPricingType === "SIMPLE") {
+        pricingPayload.simplePricingRequest = pricing.simplePricingRequest;
+        pricingPayload.dynamicPricingRequest = null;
+        pricingPayload.addOns = null;
+      }
+
+      // Handle DYNAMIC pricing
+      if (pricing?.tripPricingType === "DYNAMIC" && dynamic) {
+        pricingPayload.dynamicPricingRequest = {
+          pricingCategoryDtos: dynamic.pricingCategoryDtos.map((cat: any) => {
+            // For SINGLE type, keep as is
+            if (cat.pricingCategoryType === "SINGLE") {
+              return cat;
+            }
+
+            // For MULTI type, mark selected option as checked
+            const selectedOpt = selectedPricing.options?.[cat.categoryName];
+
+            return {
+              ...cat,
+              pricingCategoryOptionDTOs: cat.pricingCategoryOptionDTOs.map((opt: any) => ({
+                ...opt,
+                checked: selectedOpt && opt.name === selectedOpt.name,
+              })),
+            };
+          }),
+        };
+        pricingPayload.simplePricingRequest = null;
+
+        // Handle add-ons
+        if (addOns && addOns.length > 0) {
+          pricingPayload.addOns = addOns.map((addon: any) => ({
+            ...addon,
+            checked: selectedPricing.addOns.includes(addon.name),
+          }));
+        } else {
+          pricingPayload.addOns = null;
+        }
+      }
+
+      // Build pricing summary message for display
       let pricingDetails = `Final price: ₹${selectedPricing.finalPrice}`;
 
       if (pricing?.tripPricingType === "DYNAMIC") {
@@ -55,6 +106,7 @@ export default function PricingDetailsModal({
         customerName: `${userData?.firstName} ${userData?.lastName ?? ""}`,
         message: pricingDetails,
         tripLeadsStatus: "OPEN" as const,
+        pricingDetails: pricingPayload, // Add complete pricing object
       };
 
       await createLead({
@@ -70,6 +122,7 @@ export default function PricingDetailsModal({
 
       onClose();
     } catch (err: any) {
+      console.error("Failed to send request:", err);
       toast({
         title: "Failed to Send Request ❌",
         description: "Something went wrong. Please try again.",

@@ -75,6 +75,11 @@ export const tripLeadsAPI = baseAPI.injectEndpoints({
         formData.append('message', body.message);
         formData.append('tripLeadsStatus', body.tripLeadsStatus);
 
+        // Add pricing details if available
+        if (body.pricingDetails) {
+          formData.append('pricingDetails', JSON.stringify(body.pricingDetails));
+        }
+
         return {
           url: `${ENDPOINTS.ORGANIZER.TRIP_LEADS(
             organizationId,
