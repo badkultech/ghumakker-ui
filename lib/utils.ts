@@ -260,6 +260,7 @@ export const ROUTES = {
     PROFILE: '/organizer/profile',
     PROFILE_EDIT: '/organizer/profile/edit',
     TRIP_OVERVIEW: '/organizer/trip-overview',
+    ALL_TRIPS: '/organizer/all-trips',
     TRIPS: '/organizer/trips',
     TRIPS_ACTIVITIES: '/organizer/trips/activities',
     LIBRARY: '/organizer/library',
