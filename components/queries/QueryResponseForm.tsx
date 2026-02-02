@@ -7,11 +7,13 @@ import { useState } from "react";
 interface QueryResponseFormProps {
   onSend?: (response: string) => void;
   onCancel?: () => void;
+  isLoading?: boolean;
 }
 
 export default function QueryResponseForm({
   onSend,
   onCancel,
+  isLoading = false,
 }: QueryResponseFormProps) {
   const [response, setResponse] = useState("");
   const [sending, setSending] = useState(false);
@@ -51,10 +53,10 @@ export default function QueryResponseForm({
       <div className="flex gap-3 items-center">
         <Button
           onClick={handleSend}
-          disabled={sending}
+          disabled={sending || isLoading}
           className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center px-5"
         >
-          {sending ? "Sending..." : "Send Response"}
+          {sending || isLoading ? "Sending..." : "Send Response"}
         </Button>
 
         <Button variant="outline" onClick={onCancel}>

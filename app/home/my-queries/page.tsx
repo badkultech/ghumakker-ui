@@ -95,10 +95,10 @@ export default function MyQueriesPage() {
         { organizationId, userPublicId },
         {
             skip: !organizationId || !userPublicId,
-            pollingInterval: 30000, // Auto-refetch every 30 seconds
-            skipPollingIfUnfocused: true, // Save battery/bandwidth when tab is not active
-            refetchOnFocus: true, // Refresh when user returns to tab
-            refetchOnReconnect: true, // Refresh after internet reconnects
+            pollingInterval: 30000,
+            skipPollingIfUnfocused: true,
+            refetchOnFocus: true,
+            refetchOnReconnect: true,
         }
     );
 

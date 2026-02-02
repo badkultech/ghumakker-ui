@@ -1,8 +1,10 @@
 "use client";
 
-import { X, Clock } from "lucide-react";
+import { X, Clock, Loader2 } from "lucide-react";
 import QueryResponseForm from "@/components/queries/QueryResponseForm";
 import { useToast } from "@/hooks/use-toast";
+import { useGetTripQueryCommentsQuery, useCreateTripQueryCommentMutation } from "@/lib/services/organizer/trip/queries";
+import { useOrganizationId } from "@/hooks/useOrganizationId";
 
 interface Question {
     id: string;
@@ -32,17 +34,54 @@ export default function ConversationModal({
     selectedQuery,
 }: ConversationModalProps) {
     const { toast } = useToast();
+    const organizationId = useOrganizationId();
+
+    // Fetch comments for the selected query
+    const { data: comments, isLoading: isLoadingComments, error: commentsError } = useGetTripQueryCommentsQuery(
+        {
+            organizationId,
+            tripPublicId: selectedQuery?.tripPublicId || "",
+            queryId: Number(selectedQuery?.id) || 0,
+        },
+        {
+            skip: !isOpen || !selectedQuery || !organizationId,
+            pollingInterval: 5000, // Auto-refresh every 5 seconds
+            skipPollingIfUnfocused: true,
+        }
+    );
+
+    // Create comment mutation
+    const [createComment, { isLoading: isSendingComment }] = useCreateTripQueryCommentMutation();
 
     const handleSendResponse = async (text: string) => {
-        console.log("Reply text:", text);
-        toast({
-            title: "Success",
-            description: "Reply sent successfully (Demo)",
-        });
-        onClose();
+        if (!selectedQuery || !organizationId) return;
+
+        try {
+            await createComment({
+                organizationId,
+                tripPublicId: selectedQuery.tripPublicId,
+                queryId: Number(selectedQuery.id),
+                comment: text,
+            }).unwrap();
+
+            toast({
+                title: "Success",
+                description: "Reply sent successfully",
+            });
+        } catch (error: any) {
+            toast({
+                variant: "destructive",
+                title: "Error",
+                description: error?.data?.message || "Failed to send reply",
+            });
+        }
     };
 
     const formatDate = (dateStr: string) => {
+        return new Date(dateStr).toLocaleDateString("en-GB");
+    };
+
+    const formatTime = (dateStr: string) => {
         return new Date(dateStr).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
     };
 
@@ -82,22 +121,42 @@ export default function ConversationModal({
                             </div>
                         </div>
 
-                        {/* Response (Left aligned) */}
-                        {selectedQuery.response ? (
-                            <div className="flex flex-col items-start">
-                                <span className="text-xs text-gray-400 mb-1 pointer-events-none">{selectedQuery.response.author} • {selectedQuery.response.respondedDate}</span>
-                                <div className="max-w-[85%] px-5 py-3 rounded-2xl rounded-tl-none bg-white border border-gray-100 text-gray-800 shadow-sm">
-                                    <p className="text-sm leading-relaxed">{selectedQuery.response.text}</p>
+                        {/* Loading Comments */}
+                        {isLoadingComments && (
+                            <div className="flex justify-center my-4">
+                                <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+                            </div>
+                        )}
+
+                        {/* Error Loading Comments */}
+                        {commentsError && (
+                            <div className="flex justify-center my-2">
+                                <div className="bg-red-50 text-red-800 text-xs px-4 py-2 rounded-full border border-red-100">
+                                    Failed to load comments
                                 </div>
                             </div>
-                        ) : (
+                        )}
+
+                        {/* Comments / Responses */}
+                        {!isLoadingComments && comments && comments.length > 0 ? (
+                            comments.map((comment, index) => (
+                                <div key={comment.id} className="flex flex-col items-start">
+                                    <span className="text-xs text-gray-400 mb-1 pointer-events-none">
+                                        {comment.userName} • {formatDate(comment.createdDate)} at {formatTime(comment.createdDate)}
+                                    </span>
+                                    <div className="max-w-[85%] px-5 py-3 rounded-2xl rounded-tl-none bg-white border border-gray-100 text-gray-800 shadow-sm">
+                                        <p className="text-sm leading-relaxed">{comment.comment}</p>
+                                    </div>
+                                </div>
+                            ))
+                        ) : !isLoadingComments && (!comments || comments.length === 0) ? (
                             <div className="flex justify-center my-2">
                                 <div className="bg-yellow-50 text-yellow-800 text-xs px-4 py-2 rounded-full border border-yellow-100 flex items-center gap-2 shadow-sm">
                                     <Clock className="w-3 h-3" />
                                     <span>{selectedQuery.warningMessage || "Awaiting response from organizer"}</span>
                                 </div>
                             </div>
-                        )}
+                        ) : null}
 
                     </div>
                 </div>
@@ -107,6 +166,7 @@ export default function ConversationModal({
                     <QueryResponseForm
                         onSend={handleSendResponse}
                         onCancel={onClose}
+                        isLoading={isSendingComment}
                     />
                 </div>
             </div>
