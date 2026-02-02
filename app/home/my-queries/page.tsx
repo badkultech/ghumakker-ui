@@ -103,28 +103,35 @@ export default function MyQueriesPage() {
     );
 
     const mappedQuestions: Question[] =
-        queries?.map((q) => ({
-            id: String(q.id),
-            tripPublicId: q.tripPublicId,
-            tripName: q.tripName,
-            question: q.question,
-            status: q.status === "RESPONDED" ? "responded" : "pending",
-            category: q.category,
-            askedDate: new Date(q.createdDate).toLocaleDateString("en-GB"),
-            response: q.lastResponse
-                ? {
-                    author: q.lastResponse.userName,
-                    respondedDate: new Date(
-                        q.lastResponse.createdDate
-                    ).toLocaleDateString("en-GB"),
-                    text: q.lastResponse.comment,
-                }
-                : undefined,
-            warningMessage:
-                q.status !== "RESPONDED"
-                    ? "Our team will get back to you soon!"
+        queries?.map((q) => {
+            // Get the last response from the responses array
+            const lastResponse = q.responses && q.responses.length > 0
+                ? q.responses[q.responses.length - 1]
+                : null;
+
+            return {
+                id: String(q.id),
+                tripPublicId: q.tripPublicId,
+                tripName: q.tripName,
+                question: q.question,
+                status: q.status === "RESPONDED" ? "responded" : "pending",
+                category: q.category,
+                askedDate: new Date(q.createdDate).toLocaleDateString("en-GB"),
+                response: lastResponse
+                    ? {
+                        author: lastResponse.userName,
+                        respondedDate: new Date(
+                            lastResponse.createdDate
+                        ).toLocaleDateString("en-GB"),
+                        text: lastResponse.comment,
+                    }
                     : undefined,
-        })) ?? [];
+                warningMessage:
+                    q.status !== "RESPONDED"
+                        ? "Our team will get back to you soon!"
+                        : undefined,
+            };
+        }) ?? [];
 
 
     const totalQueries = mappedQuestions?.length ?? 0;

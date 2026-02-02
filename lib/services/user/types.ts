@@ -62,6 +62,7 @@ export type TripQuery = {
     createdDate: string;
     tripPublicId: string;
     lastResponse?: TripQueryLastResponse | null;
+    responses?: TripQueryLastResponse[];
 };
 
 
