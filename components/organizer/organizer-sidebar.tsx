@@ -48,7 +48,7 @@ const nav: NavItem[] = [
     icon: CircleUser,
   },
   { label: 'Trip', href: ROUTES.ORGANIZER.TRIP_OVERVIEW, icon: TripIcon },
-  { label: 'All Trips', href: ROUTES.ORGANIZER.ALL_TRIPS, icon: Calendar },
+  
   {
     label: 'Library',
     href: ROUTES.ORGANIZER.LIBRARY,

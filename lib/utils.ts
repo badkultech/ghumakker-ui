@@ -250,6 +250,7 @@ export const ROUTES = {
     ADMINS: '/superadmin/admins',
     ORGANIZERS: '/superadmin/organizer',
     TRIP_REPORTS: '/superadmin/trip-reports',
+    ALL_TRIPS: '/superadmin/all-trips',
   },
   ORGANIZER: {
     LOGIN: '/organizer/login',
@@ -260,7 +261,7 @@ export const ROUTES = {
     PROFILE: '/organizer/profile',
     PROFILE_EDIT: '/organizer/profile/edit',
     TRIP_OVERVIEW: '/organizer/trip-overview',
-    ALL_TRIPS: '/organizer/all-trips',
+   
     TRIPS: '/organizer/trips',
     TRIPS_ACTIVITIES: '/organizer/trips/activities',
     LIBRARY: '/organizer/library',

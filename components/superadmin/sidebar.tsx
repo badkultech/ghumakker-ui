@@ -15,9 +15,11 @@ import {
   Group,
   Users,
   FileText,
+  Calendar,
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { LogoutButton } from "../common/LogoutButton";
+import { ROUTES } from "@/lib/utils";
 
 type NavItem = {
   label: string;
@@ -63,6 +65,7 @@ const nav: NavItem[] = [
     href: "/superadmin/switch-user",
     icon: Shuffle
   },
+  { label: 'All Trips', href: ROUTES.SUPER_ADMIN.ALL_TRIPS, icon: Calendar },
   {
     label: "Locations",
     href: "/superadmin/destination-master",
@@ -73,6 +76,7 @@ const nav: NavItem[] = [
     href: "/superadmin/trip-reports",
     icon: FileText
   },
+
 ];
 
 type SidebarProps = {
