@@ -144,7 +144,7 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
             <button
               onClick={handleSubmit}
               disabled={!selected.length}
-              className="flex-1 bg-orange-500 text-white py-3 rounded-full text-sm disabled:opacity-50"
+              className="flex-1 bg-orange-500 text-white py-3 rounded-full text-sm disabled:opacity-50 cursor-pointer"
             >
               {TRIP_DETAILS.REPORT_MODAL.SUBMIT}
             </button>

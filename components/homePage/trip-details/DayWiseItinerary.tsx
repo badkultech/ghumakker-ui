@@ -114,7 +114,7 @@ export default function DayWiseItinerary({
             key={i}
             onClick={() => setActiveDay(i)}
             className={cn(
-              "px-6 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap",
+              "px-6 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap cursor-pointer",
               activeDay === i
                 ? "bg-[#FF7043] text-white"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"

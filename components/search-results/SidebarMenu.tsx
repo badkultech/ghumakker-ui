@@ -41,7 +41,7 @@ export function SidebarMenu({
 }) {
   return (
     <div
-      className={`fixed inset-0 z-50 transition-opacity duration-300 ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+      className={`fixed inset-0 z-50 transition-opacity duration-300  ${isOpen ? "opacity-100" : "opacity-0 pointer-events-none"
         }`}
     >
       {/* Backdrop */}
@@ -56,7 +56,7 @@ export function SidebarMenu({
         <div className="flex items-center justify-end p-4 border-b border-border">
           <button
             onClick={onClose}
-            className="p-2 hover:bg-muted rounded-full transition-colors"
+            className="p-2 hover:bg-muted rounded-full transition-colors cursor-pointer"
           >
             <X className="w-5 h-5 text-foreground" />
           </button>
@@ -95,7 +95,7 @@ export function SidebarMenu({
                   key={item.label}
                   href={item.href}
                   onClick={onClose}
-                  className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted transition-colors group"
+                  className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted transition-colors group cursor-pointer"
                 >
                   <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
                   <span className="text-sm font-medium text-foreground">

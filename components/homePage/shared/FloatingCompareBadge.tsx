@@ -21,7 +21,7 @@ export function FloatingCompareBadge() {
 
     return (
         <div
-            className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex items-center gap-3"
+            className="fixed right-6 top-1/2 -translate-y-1/2 z-50 flex items-center gap-3 "
             onMouseEnter={() => setOpen(true)}
             onMouseLeave={() => setOpen(false)}
         >
@@ -60,7 +60,7 @@ export function FloatingCompareBadge() {
                   bg-black/50 hover:bg-black text-white
                   flex items-center justify-center
                   backdrop-blur-[1px]
-                  transition-colors
+                  transition-colors cursor-pointer
                 "
                                 >
                                     <X size={12} strokeWidth={3} />
@@ -86,7 +86,7 @@ export function FloatingCompareBadge() {
                         hover:bg-red-50 
                         transition
                         text-xs font-medium
-                        border border-red-200
+                        border border-red-200 cursor-pointer
                     "
                 >
                     Clear All
@@ -101,7 +101,7 @@ export function FloatingCompareBadge() {
           bg-[#FF804C] text-white
           px-5 py-3 rounded-full
           shadow-lg hover:opacity-90
-          transition
+          transition cursor-pointer
         "
             >
                 <svg

@@ -94,7 +94,7 @@ export function MainHeader({
         </div>
 
         {/* RIGHT */}
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex items-center gap-3 ">
           {isLoggedIn ? (
             <NotificationsDropdown
               notifications={displayNotifications}
@@ -104,7 +104,7 @@ export function MainHeader({
             <Button
 
               onClick={onLoginClick}
-              className="font-semibold text-white hover:text-primary hover:bg-transparent px-2"
+              className="font-semibold text-white hover:text-primary hover:bg-transparent px-2 cursor-pointer"
             >
               Sign In / Sign Up
             </Button>
@@ -113,7 +113,7 @@ export function MainHeader({
           {isLoggedIn && (
             <button
               onClick={onMenuOpen}
-              className="p-1.5 text-black/80 hover:text-black"
+              className="p-1.5 text-black/80 hover:text-black cursor-pointer"
             >
               <Menu className="w-6 h-6" />
             </button>

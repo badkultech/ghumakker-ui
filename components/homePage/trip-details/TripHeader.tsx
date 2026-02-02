@@ -106,7 +106,7 @@ export default function TripHeader({
               <button
                 key={i}
                 onClick={isShare ? onOpenInviteFriends : isHeart ? onToggleWishlist : undefined}
-                className="p-2 rounded-full border"
+                className="p-2 rounded-full border cursor-pointer"
               >
                 <Icon
                   className={`w-5 h-5 ${isHeart && isFavorite ? 'fill-[#FF5F5E] text-[#FF5F5E]' : ''}`}
@@ -140,7 +140,7 @@ export default function TripHeader({
               <p className="font-semibold">{providerName}</p>
               <button
                 onClick={onOpenOrganizer}
-                className="text-xs text-orange-500"
+                className="text-xs text-orange-500 cursor-pointer "
               >
                 {TRIP_DETAILS.HEADER.MORE_DETAILS}{" "}
                 <ArrowRight className="inline w-3 h-3" />
@@ -163,7 +163,7 @@ export default function TripHeader({
               <p className="font-semibold">{organizerName}</p>
               <button
                 onClick={onOpenLeader}
-                className="text-xs text-orange-500"
+                className="text-xs text-orange-500 cursor-pointer"
               >
                 {TRIP_DETAILS.HEADER.VIEW_PROFILE}{" "}
                 <ArrowRight className="inline w-3 h-3" />

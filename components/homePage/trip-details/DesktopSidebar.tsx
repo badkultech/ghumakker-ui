@@ -348,7 +348,7 @@ export default function DesktopSidebar({
                 finalPrice,
               })
             }
-            className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-medium ${isButtonEnabled
+            className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-medium cursor-pointer ${isButtonEnabled
               ? "bg-orange-500 text-white"
               : "bg-gray-200 text-gray-400 cursor-not-allowed"
               }`}
@@ -359,7 +359,7 @@ export default function DesktopSidebar({
 
           <button
             onClick={onAsk}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-orange-500 text-orange-500 font-medium"
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-orange-500 text-orange-500 font-medium cursor-pointer"
           >
             <MessageCircle className="w-4 h-4" />
             {TRIP_DETAILS.SIDEBAR.SEND_QUERY}

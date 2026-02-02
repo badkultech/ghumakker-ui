@@ -215,7 +215,7 @@ export default function AskQuestionModal({
             <button
               onClick={handleSubmit}
               disabled={isLoading || !form.query.trim()}
-              className="w-full mt-2 bg-orange-500 text-white py-3 rounded-xl font-medium disabled:opacity-50"
+              className="w-full mt-2 bg-orange-500 text-white py-3 rounded-xl font-medium disabled:opacity-50 cursor-pointer"
             >
               {isLoading ? "Sending..." : "Send Query"}
             </button>

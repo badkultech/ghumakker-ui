@@ -92,7 +92,7 @@ export default function SendInvitationModal({
                     <button
                         onClick={handleSendInvite}
                         disabled={isLoading}
-                        className="ml-auto flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-lg disabled:opacity-50"
+                        className="ml-auto flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-lg disabled:opacity-50 cursor-pointer"
                     >
                         <Send className="w-4 h-4" />
                         {isLoading ? "Sending..." : "Send Invite"}

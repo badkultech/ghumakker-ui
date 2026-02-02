@@ -98,13 +98,13 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
       </h2>
 
       {/* Tabs */}
-      <div className="flex bg-white shadow-md rounded-full p-1 mb-3">
+      <div className="flex bg-white shadow-md rounded-full p-1 mb-3 ">
         {["destination", "moods"].map(tab => (
           <button
             key={tab}
             onClick={() => setActiveTab(tab as any)}
             className={cn(
-              "flex-1 py-2 rounded-full text-sm font-medium transition-all",
+              "flex-1 py-2 rounded-full text-sm font-medium transition-all cursor-pointer",
               activeTab === tab
                 ? "bg-brand-gradient text-white"
                 : "text-muted-foreground hover:text-foreground"
@@ -142,7 +142,7 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
                   key={region}
                   onClick={() => setSelectedRegion(region as any)}
                   className={cn(
-                    "p-2 rounded-lg border flex items-center gap-2 text-sm",
+                    "p-2 rounded-lg border flex items-center gap-2 text-sm cursor-pointer",
                     selectedRegion === region
                       ? "border-primary bg-primary/10"
                       : "border-gray-200"
@@ -162,7 +162,7 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
         ) : activeTab === "moods" && (
           <>
 
-            <div className="flex flex-wrap justify-center gap-2">
+            <div className="flex flex-wrap justify-center gap-2 ">
               {moods.map(m => (
                 <MoodTag
                   key={m.name}
@@ -193,7 +193,7 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
 
       {/* Search Button — unchanged visually */}
       <GradientButton
-        className="w-full mt-4 rounded-full py-2.5"
+        className="w-full mt-4 rounded-full py-2.5 cursor-pointer"
         onClick={handleSearch}
         disabled={isSearching}
       >

@@ -276,7 +276,7 @@ export default function PricingDetailsModal({
             <button
               onClick={handleRequestInvite}
               disabled={isLoading}
-              className="flex-1 bg-orange-500 text-white py-3 rounded-lg disabled:opacity-50"
+              className="flex-1 bg-orange-500 text-white py-3 rounded-lg disabled:opacity-50 cursor-pointer"
             >
               {isLoading ? "Requesting..." : TRIP_DETAILS.PRICING_DETAILS_MODAL.REQUEST_INVITE}
             </button>
