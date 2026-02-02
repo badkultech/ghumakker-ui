@@ -67,7 +67,7 @@ export function FloatingRoleActions({
         hiddenActions.includes(key);
 
     return (
-        <div ref={ref} className="fixed bottom-20 right-4 z-40">
+        <div ref={ref} className="fixed bottom-20 right-4 z-40 ">
             <div className="flex items-center">
 
                 {/* EXPANDED ACTIONS */}
@@ -153,7 +153,7 @@ function ActionButton({
                 }
             }}
             disabled={disabled}
-            className={`px-3 py-1 rounded-full border text-xs font-medium transition whitespace-nowrap ${disabled
+            className={`px-3 py-1 rounded-full border text-xs font-medium transition whitespace-nowrap cursor-pointer ${disabled
                     ? "border-gray-300 text-gray-400 cursor-not-allowed opacity-50"
                     : "border-[#e07a5f]/40 text-[#e07a5f] hover:bg-[#e07a5f]/10"
                 }`}

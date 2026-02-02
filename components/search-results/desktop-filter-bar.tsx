@@ -107,7 +107,7 @@ export function DesktopFilterBar({
           </div>
 
           {filters.length > 0 && (
-            <button onClick={onClear} className="text-xs font-medium text-[#e07a5f]">
+            <button onClick={onClear} className="text-xs font-medium text-[#e07a5f] cursor-pointer">
               Clear all filters
             </button>
           )}

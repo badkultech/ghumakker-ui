@@ -193,7 +193,7 @@ export default function TripHeader({
             
             <button
               onClick={onToggleWishlist}
-              className="p-2 rounded-full border hover:text-gray-600"
+              className="p-2 rounded-full border hover:text-gray-600 cursor-pointer"
             >
               <Heart className={`w-5 h-5 ${isFavorite ? 'fill-[#FF5F5E] text-[#FF5F5E]' : ''}`} />
             </button>
@@ -202,7 +202,7 @@ export default function TripHeader({
 
         <button
           onClick={onOpenInviteFriends}
-          className="p-2 rounded-full border hover:text-gray-600"
+          className="p-2 rounded-full border hover:text-gray-600 cursor-pointer"
         >
           <Share2 className="w-5 h-5" />
         </button>
