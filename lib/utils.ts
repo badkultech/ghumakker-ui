@@ -66,6 +66,7 @@ export const ENDPOINTS = {
   SUPER_ADMIN_SUSPEND: (publicId: string) =>
     `/tenant/dashboard/user/${publicId}/suspend`,
   SUPER_ADMIN_STATS: '/tenant/tenantStats',
+  SUPER_ADMIN_ALL_TRIPS: '/tenant/all-trips',
 
 
   // users
@@ -261,7 +262,7 @@ export const ROUTES = {
     PROFILE: '/organizer/profile',
     PROFILE_EDIT: '/organizer/profile/edit',
     TRIP_OVERVIEW: '/organizer/trip-overview',
-   
+
     TRIPS: '/organizer/trips',
     TRIPS_ACTIVITIES: '/organizer/trips/activities',
     LIBRARY: '/organizer/library',

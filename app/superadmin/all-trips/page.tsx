@@ -3,60 +3,48 @@
 import { useState } from "react";
 import { Sidebar } from "@/components/superadmin/sidebar";
 import { AppHeader } from "@/components/app-header";
-import { useOrganizationId } from "@/hooks/useOrganizationId";
-import { useGetFilteredTripsQuery } from "@/lib/services/organizer/trip/my-trips";
+import { useGetAllTripsQuery } from "@/lib/services/superadmin";
 import { Loader2, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
+import { CustomDateTimePicker } from "@/components/ui/date-time-picker";
 
 export default function AllTripsPage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
-    const organizationId = useOrganizationId();
 
     // Filter states
     const [tripNameFilter, setTripNameFilter] = useState("");
-    const [locationFilter, setLocationFilter] = useState("");
+    const [orgNameFilter, setOrgNameFilter] = useState("");
+    const [orgNumberFilter, setOrgNumberFilter] = useState("");
     const [startDateFilter, setStartDateFilter] = useState("");
     const [endDateFilter, setEndDateFilter] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
 
-    // Fetch all trips
-    const { data: trips, isLoading, error } = useGetFilteredTripsQuery(
-        {
-            organizationId,
-            filters: {
-                page: 0,
-                size: 1000,
-            },
-        },
-        { skip: !organizationId }
-    );
+    // Fetch all trips using superadmin API
+    const { data: tripsData, isLoading, error } = useGetAllTripsQuery({
+        page: 0,
+        size: 1000,
+        tripName: tripNameFilter || undefined,
+        orgName: orgNameFilter || undefined,
+        organizationNumber: orgNumberFilter || undefined,
+        startDate: startDateFilter || undefined,
+        endDate: endDateFilter || undefined,
+        status: statusFilter as any || undefined,
+    });
 
-    // Apply filters
-    const filteredTrips = trips?.trips?.filter((trip) => {
-        const matchesName = !tripNameFilter || trip.name?.toLowerCase().includes(tripNameFilter.toLowerCase());
-        const matchesLocation = !locationFilter || trip.location?.toLowerCase().includes(locationFilter.toLowerCase());
-        const matchesStatus = !statusFilter || trip.status?.toLowerCase() === statusFilter.toLowerCase();
-
-        let matchesDateRange = true;
-        if (startDateFilter && trip.startDate) {
-            matchesDateRange = matchesDateRange && new Date(trip.startDate) >= new Date(startDateFilter);
-        }
-        if (endDateFilter && trip.endDate) {
-            matchesDateRange = matchesDateRange && new Date(trip.endDate) <= new Date(endDateFilter);
-        }
-
-        return matchesName && matchesLocation && matchesStatus && matchesDateRange;
-    }) || [];
-
-    const handleApplyFilters = () => {
-        // Filters are applied automatically via filteredTrips
-    };
+    // Get trips from response
+    const trips = tripsData?.content || [];
+    const totalTrips = tripsData?.totalElements || 0;
 
     const formatDate = (dateString?: string) => {
         if (!dateString) return "N/A";
         return new Date(dateString).toLocaleDateString("en-GB");
+    };
+
+    const formatLocation = (cityTags?: string[]) => {
+        if (!cityTags || cityTags.length === 0) return "N/A";
+        return cityTags.join(", ");
     };
 
     return (
@@ -88,15 +76,27 @@ export default function AllTripsPage() {
                                     />
                                 </div>
 
-                                {/* Location Filter */}
+                                {/* Organization Name Filter */}
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Location (LIKE)
+                                        Organization Name (LIKE)
                                     </label>
                                     <Input
-                                        placeholder="Enter location"
-                                        value={locationFilter}
-                                        onChange={(e) => setLocationFilter(e.target.value)}
+                                        placeholder="Enter organization name"
+                                        value={orgNameFilter}
+                                        onChange={(e) => setOrgNameFilter(e.target.value)}
+                                    />
+                                </div>
+
+                                {/* Organization Number Filter */}
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Organization ID (EQUALS)
+                                    </label>
+                                    <Input
+                                        placeholder="Enter organization ID"
+                                        value={orgNumberFilter}
+                                        onChange={(e) => setOrgNumberFilter(e.target.value)}
                                     />
                                 </div>
 
@@ -106,12 +106,11 @@ export default function AllTripsPage() {
                                         Start Date (From)
                                     </label>
                                     <div className="relative">
-                                        <Input
-                                            type="date"
+                                        <CustomDateTimePicker
+                                            mode="date"
                                             value={startDateFilter}
-                                            onChange={(e) => setStartDateFilter(e.target.value)}
+                                            onChange={(e) => setStartDateFilter(e)}
                                         />
-                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
                                     </div>
                                 </div>
 
@@ -121,12 +120,11 @@ export default function AllTripsPage() {
                                         End Date (To)
                                     </label>
                                     <div className="relative">
-                                        <Input
-                                            type="date"
+                                        <CustomDateTimePicker
+                                            mode="date"
                                             value={endDateFilter}
-                                            onChange={(e) => setEndDateFilter(e.target.value)}
+                                            onChange={(e) => setEndDateFilter(e)}
                                         />
-                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400 pointer-events-none" />
                                     </div>
                                 </div>
 
@@ -141,20 +139,13 @@ export default function AllTripsPage() {
                                         onChange={(e) => setStatusFilter(e.target.value)}
                                     >
                                         <option value="">All Status</option>
-                                        <option value="DRAFT">Draft</option>
                                         <option value="PUBLISHED">Published</option>
+                                        <option value="DRAFT">Draft</option>
+                                        <option value="UNDER_REVIEW">Under Review</option>
                                         <option value="ARCHIVED">Archived</option>
+                                        <option value="REQUIRES_MODIFICATION">Requires Modification</option>
                                     </select>
                                 </div>
-                            </div>
-
-                            <div className="flex justify-start">
-                                <Button
-                                    onClick={handleApplyFilters}
-                                    className="bg-blue-600 hover:bg-blue-700 text-white px-6"
-                                >
-                                    Apply Filters
-                                </Button>
                             </div>
                         </div>
 
@@ -192,36 +183,36 @@ export default function AllTripsPage() {
                                                     End Date
                                                 </th>
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                                    Leads
-                                                </th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
-                                                    Queries
+                                                    Group Size
                                                 </th>
                                                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
                                                     Status
                                                 </th>
+                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-700 uppercase tracking-wider">
+                                                    Created Date
+                                                </th>
                                             </tr>
                                         </thead>
                                         <tbody className="bg-white divide-y divide-gray-200">
-                                            {filteredTrips.length === 0 ? (
+                                            {trips.length === 0 ? (
                                                 <tr>
                                                     <td colSpan={7} className="px-6 py-12 text-center text-gray-500">
                                                         No trips found
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                filteredTrips.map((trip) => (
-                                                    <tr key={trip.tripPublicId} className="hover:bg-gray-50">
+                                                trips.map((trip) => (
+                                                    <tr key={trip.publicId} className="hover:bg-gray-50">
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <Link
-                                                                href={`/organizer/trips/${trip.tripPublicId}`}
+                                                                href={`/home/search-result-with-filter/trip-details/${trip.publicId}`}
                                                                 className="text-blue-600 hover:text-blue-800 font-medium"
                                                             >
                                                                 {trip.name || "Untitled Trip"}
                                                             </Link>
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                            {trip.location || "N/A"}
+                                                            {formatLocation(trip.cityTags)}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                                             {formatDate(trip.startDate)}
@@ -230,22 +221,24 @@ export default function AllTripsPage() {
                                                             {formatDate(trip.endDate)}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                            {trip.leadsCount || 0}
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                            {trip.queriesCount || 0}
+                                                            {trip.minGroupSize} - {trip.maxGroupSize}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <span
-                                                                className={`px-2 py-1 text-xs font-medium rounded-full ${trip.status === "PUBLISHED"
-                                                                        ? "bg-green-100 text-green-800"
-                                                                        : trip.status === "DRAFT"
-                                                                            ? "bg-yellow-100 text-yellow-800"
+                                                                className={`px-2 py-1 text-xs font-medium rounded-full ${trip.tripStatus === "PUBLISHED"
+                                                                    ? "bg-green-100 text-green-800"
+                                                                    : trip.tripStatus === "DRAFT"
+                                                                        ? "bg-yellow-100 text-yellow-800"
+                                                                        : trip.tripStatus === "UNDER_REVIEW"
+                                                                            ? "bg-blue-100 text-blue-800"
                                                                             : "bg-gray-100 text-gray-800"
                                                                     }`}
                                                             >
-                                                                {trip.status || "N/A"}
+                                                                {trip.tripStatus || "N/A"}
                                                             </span>
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            {formatDate(trip.createDate)}
                                                         </td>
                                                     </tr>
                                                 ))
@@ -256,7 +249,7 @@ export default function AllTripsPage() {
 
                                 {/* Results Count */}
                                 <div className="px-6 py-3 bg-gray-50 border-t text-sm text-gray-600">
-                                    Showing {filteredTrips.length} of {trips?.totalItems || 0} trips
+                                    Showing {trips.length} of {totalTrips} trips
                                 </div>
                             </div>
                         )}
