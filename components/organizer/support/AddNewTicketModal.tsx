@@ -17,6 +17,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import RequiredStar from "@/components/common/RequiredStar";
 import { MultiUploader } from "@/components/common/UploadFieldShortcuts";
 import { useDocumentsManager } from "@/hooks/useDocumentsManager";
+import { useCreateUserTicketMutation } from "@/lib/services/user-tickets";
+import { toast } from "sonner";
 
 // ✅ Validation Schema
 const ticketSchema = z.object({
@@ -36,14 +38,19 @@ type TicketFormData = z.infer<typeof ticketSchema>;
 interface AddNewTicketModalProps {
   open: boolean;
   onClose: () => void;
+  organizationId: string;
+  userId: string;
 }
 
-export function AddNewTicketModal({ open, onClose }: AddNewTicketModalProps) {
+export function AddNewTicketModal({ open, onClose, organizationId, userId }: AddNewTicketModalProps) {
   const docsManager = useDocumentsManager();
+  const [createTicket, { isLoading }] = useCreateUserTicketMutation();
+
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isValid },
     watch,
   } = useForm<TicketFormData>({
@@ -54,8 +61,27 @@ export function AddNewTicketModal({ open, onClose }: AddNewTicketModalProps) {
   const subject = watch("subject") || "";
   const description = watch("description") || "";
 
-  const onSubmit = (data: TicketFormData) => {
-    onClose();
+  const onSubmit = async (data: TicketFormData) => {
+    try {
+      await createTicket({
+        organizationId,
+        userId,
+        data: {
+          title: data.subject,
+          description: data.description,
+          category: data.category,
+          priority: "Medium",
+          status: "Open",
+        },
+      }).unwrap();
+
+      toast.success("Ticket created successfully!");
+      reset();
+      onClose();
+    } catch (error) {
+      console.error("Failed to create ticket:", error);
+      toast.error("Failed to create ticket. Please try again.");
+    }
   };
 
   return (
@@ -121,10 +147,11 @@ export function AddNewTicketModal({ open, onClose }: AddNewTicketModalProps) {
                   <SelectValue placeholder="Select category" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="technical">Technical Issue</SelectItem>
-                  <SelectItem value="billing">Billing</SelectItem>
-                  <SelectItem value="account">Account</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
+                  <SelectItem value="ISSUE">Issue</SelectItem>
+                  <SelectItem value="ENQUIRY">Enquiry</SelectItem>
+                  <SelectItem value="SUPPORT">Support</SelectItem>
+                  <SelectItem value="COMPLAINT">Complaint</SelectItem>
+                  <SelectItem value="OTHER">Other</SelectItem>
                 </SelectContent>
               </Select>
               {errors.category && (
@@ -170,18 +197,19 @@ export function AddNewTicketModal({ open, onClose }: AddNewTicketModalProps) {
                 variant="outline"
                 onClick={onClose}
                 className="rounded-full"
+                disabled={isLoading}
               >
                 Cancel
               </Button>
               <Button
                 type="submit"
-                disabled={!isValid}
-                className={`rounded-full text-white ${isValid
+                disabled={!isValid || isLoading}
+                className={`rounded-full text-white ${isValid && !isLoading
                   ? "bg-brand-gradient hover:opacity-90"
                   : "bg-gray-300 cursor-not-allowed"
                   }`}
               >
-                Submit Ticket
+                {isLoading ? "Creating..." : "Submit Ticket"}
               </Button>
             </DialogFooter>
           </form>

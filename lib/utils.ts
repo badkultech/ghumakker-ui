@@ -74,19 +74,19 @@ export const ENDPOINTS = {
     `/org/${organizationId}/user/${userId}/profile`,
   TRAVELER_PROFILE: (organizationId: string, userPublicId: string) =>
     `/org/${organizationId}/user/${userPublicId}/travel-profile`,
- USER_LEADS : (organizationId: string, userPublicId: string) =>
-      `/org/${organizationId}/user/${userPublicId}/leads`,
-  
- USER_LEAD_NUDGE : (
-      organizationId: string,
-      userPublicId: string,
-      leadId: number
+  USER_LEADS: (organizationId: string, userPublicId: string) =>
+    `/org/${organizationId}/user/${userPublicId}/leads`,
+
+  USER_LEAD_NUDGE: (
+    organizationId: string,
+    userPublicId: string,
+    leadId: number
   ) => `/org/${organizationId}/user/${userPublicId}/leads/${leadId}/nudge`,
-  
-  USER_LEAD_DELETE : (
-      organizationId: string,
-      userPublicId: string,
-      leadId: number
+
+  USER_LEAD_DELETE: (
+    organizationId: string,
+    userPublicId: string,
+    leadId: number
   ) => `/org/${organizationId}/user/${userPublicId}/leads/${leadId}`,
 
   // organization
