@@ -23,6 +23,7 @@ import { notificationsData, userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useOrganizationId } from "@/hooks/useOrganizationId"
+import { useUserId } from "@/hooks/useUserId"
 import { useSelector } from "react-redux"
 import { selectAuthState } from "@/lib/slices/auth"
 import { useGetUserQueriesQuery } from "@/lib/services/user"
@@ -84,8 +85,8 @@ export default function MyQueriesPage() {
 
 
     const organizationId = useOrganizationId();
-
-    const userPublicId = userData?.userPublicId;
+    // Use useUserId() hook to get focusedUserId (supports user switching)
+    const userPublicId = useUserId();
 
     const {
         data: queries,
