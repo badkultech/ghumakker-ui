@@ -9,6 +9,19 @@ const USER_NOTIFICATION_PREFERENCE = (organizationId: string, userId: string) =>
 
 export const userNotificationPreferenceAPI = baseAPI.injectEndpoints({
     endpoints: (builder) => ({
+        // GET all user notification preferences
+        getAllUserNotificationPreferences: builder.query<
+            UserNotificationPreference[],
+            { organizationId: string; userId: string }
+        >({
+            query: ({ organizationId, userId }) => ({
+                url: USER_NOTIFICATION_PREFERENCE(organizationId, userId),
+                method: "GET",
+            }),
+            transformResponse: (res: ApiResponse<UserNotificationPreference[]>) => res.data,
+            providesTags: [TAGS.UserNotificationPreference],
+        }),
+
         // GET user notification preference for a specific category and channel
         getUserNotificationPreference: builder.query<
             UserNotificationPreference,
@@ -61,6 +74,7 @@ export const userNotificationPreferenceAPI = baseAPI.injectEndpoints({
 });
 
 export const {
+    useGetAllUserNotificationPreferencesQuery,
     useGetUserNotificationPreferenceQuery,
     useCreateUserNotificationPreferenceMutation,
     useCreateBatchUserNotificationPreferenceMutation,

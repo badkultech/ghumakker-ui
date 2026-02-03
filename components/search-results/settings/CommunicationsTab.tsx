@@ -3,7 +3,10 @@
 import { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { GradientButton } from "@/components/gradient-button";
-import { useCreateUserNotificationPreferenceMutation } from "@/lib/services/user-notification-preference";
+import {
+  useGetUserNotificationPreferenceQuery,
+  useCreateUserNotificationPreferenceMutation
+} from "@/lib/services/user-notification-preference";
 import { NOTIFICATION_CATEGORIES, NOTIFICATION_CHANNELS } from "@/lib/services/user-notification-preference/types";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";
@@ -16,7 +19,6 @@ interface CommunicationPreferences {
   marketingWhatsapp: boolean;
   marketingEmails: boolean;
   marketingSms: boolean;
-  browserNotifications: boolean;
 }
 
 export default function CommunicationsTab() {
@@ -31,12 +33,84 @@ export default function CommunicationsTab() {
     marketingWhatsapp: false,
     marketingEmails: false,
     marketingSms: false,
-    browserNotifications: false,
   });
   const [hasChanges, setHasChanges] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
 
+  // Fetch all 6 preferences separately
+  const { data: tripWhatsapp } = useGetUserNotificationPreferenceQuery(
+    {
+      organizationId: organizationId!,
+      userId: userId!,
+      categoryId: NOTIFICATION_CATEGORIES.TRIP_UPDATES.id,
+      channel: NOTIFICATION_CHANNELS.WHATSAPP
+    },
+    { skip: !organizationId || !userId }
+  );
+
+  const { data: tripEmail } = useGetUserNotificationPreferenceQuery(
+    {
+      organizationId: organizationId!,
+      userId: userId!,
+      categoryId: NOTIFICATION_CATEGORIES.TRIP_UPDATES.id,
+      channel: NOTIFICATION_CHANNELS.EMAIL
+    },
+    { skip: !organizationId || !userId }
+  );
+
+  const { data: tripSms } = useGetUserNotificationPreferenceQuery(
+    {
+      organizationId: organizationId!,
+      userId: userId!,
+      categoryId: NOTIFICATION_CATEGORIES.TRIP_UPDATES.id,
+      channel: NOTIFICATION_CHANNELS.SMS
+    },
+    { skip: !organizationId || !userId }
+  );
+
+  const { data: marketingWhatsapp } = useGetUserNotificationPreferenceQuery(
+    {
+      organizationId: organizationId!,
+      userId: userId!,
+      categoryId: NOTIFICATION_CATEGORIES.MARKETING.id,
+      channel: NOTIFICATION_CHANNELS.WHATSAPP
+    },
+    { skip: !organizationId || !userId }
+  );
+
+  const { data: marketingEmail } = useGetUserNotificationPreferenceQuery(
+    {
+      organizationId: organizationId!,
+      userId: userId!,
+      categoryId: NOTIFICATION_CATEGORIES.MARKETING.id,
+      channel: NOTIFICATION_CHANNELS.EMAIL
+    },
+    { skip: !organizationId || !userId }
+  );
+
+  const { data: marketingSms } = useGetUserNotificationPreferenceQuery(
+    {
+      organizationId: organizationId!,
+      userId: userId!,
+      categoryId: NOTIFICATION_CATEGORIES.MARKETING.id,
+      channel: NOTIFICATION_CHANNELS.SMS
+    },
+    { skip: !organizationId || !userId }
+  );
+
   const [createPreference] = useCreateUserNotificationPreferenceMutation();
+
+  // Load fetched preferences into state
+  useEffect(() => {
+    setCommunications({
+      whatsappUpdates: tripWhatsapp?.enabled ?? false,
+      emailNotifications: tripEmail?.enabled ?? false,
+      smsUpdates: tripSms?.enabled ?? false,
+      marketingWhatsapp: marketingWhatsapp?.enabled ?? false,
+      marketingEmails: marketingEmail?.enabled ?? false,
+      marketingSms: marketingSms?.enabled ?? false,
+    });
+  }, [tripWhatsapp, tripEmail, tripSms, marketingWhatsapp, marketingEmail, marketingSms]);
 
   const handleToggle = (key: keyof CommunicationPreferences, checked: boolean) => {
     setCommunications((prev) => ({ ...prev, [key]: checked }));
@@ -102,14 +176,6 @@ export default function CommunicationsTab() {
           categoryName: NOTIFICATION_CATEGORIES.MARKETING.name,
           channel: NOTIFICATION_CHANNELS.SMS,
           enabled: communications.marketingSms,
-        },
-        // Browser Notifications
-        {
-          categoryId: NOTIFICATION_CATEGORIES.BROWSER.id,
-          categoryCode: NOTIFICATION_CATEGORIES.BROWSER.code,
-          categoryName: NOTIFICATION_CATEGORIES.BROWSER.name,
-          channel: NOTIFICATION_CHANNELS.BROWSER,
-          enabled: communications.browserNotifications,
         },
       ];
 
@@ -198,17 +264,6 @@ export default function CommunicationsTab() {
                 />
               </div>
             ))}
-          </div>
-
-          {/* Browser Notifications */}
-          <div className="flex items-center justify-between px-4 py-4 bg-white border border-[#E4E4E4] rounded-xl shadow-sm">
-            <span className="text-sm font-medium">Browser Notifications</span>
-
-            <Switch
-              className="data-[state=checked]:bg-primary"
-              checked={communications.browserNotifications}
-              onCheckedChange={(checked) => handleToggle("browserNotifications", checked)}
-            />
           </div>
 
           {/* Save Button */}
