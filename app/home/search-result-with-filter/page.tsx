@@ -187,9 +187,21 @@ export default function SearchResultsWithFilters() {
     const params = new URLSearchParams(searchParams.toString());
     const label = filterToRemove.label.toLowerCase();
 
-    // mood
-    if (["adventure", "trekking", "wellness", "skygaze", "beach", "spiritual"].some(m => label.includes(m))) {
+    // mood - remove only the specific mood
+    if (["adventure", "trekking", "wellness", "skygaze", "beach", "spiritual", "mountain", "jungle", "desert", "heritage", "camping", "women_only", "women only", "learning", "weekends"].some(m => label.includes(m))) {
+      // Get all current moods
+      const allMoods = params.getAll("moods");
+      // Remove all mood params first
       params.delete("moods");
+      // Add back all moods except the one being removed
+      // Normalize both for comparison (replace spaces, underscores, hyphens)
+      const normalizedLabel = label.replace(/[\s_-]/g, "").toLowerCase();
+      allMoods.forEach(mood => {
+        const normalizedMood = mood.replace(/[\s_-]/g, "").toLowerCase();
+        if (normalizedMood !== normalizedLabel) {
+          params.append("moods", mood);
+        }
+      });
     }
 
     // destination
