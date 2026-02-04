@@ -225,8 +225,24 @@ export function SearchResultsTripCard({
           {/* Organizer */}
           <div className="flex items-center gap-2 mb-4">
             {/* Placeholder Avatar */}
-            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden relative border border-gray-100 shrink-0">
-              <Image src="/adventure-traveler-in-nature.jpg" alt={provider} fill className="object-cover" />
+            <div className="w-6 h-6 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden relative border border-gray-100 shrink-0 flex items-center justify-center">
+              <Image
+                src="/adventure-traveler-in-nature.jpg"
+                alt={provider}
+                fill
+                className="object-cover"
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.style.display = 'none';
+                  const parent = target.parentElement;
+                  if (parent && !parent.querySelector('.fallback-text')) {
+                    const fallback = document.createElement('span');
+                    fallback.className = 'fallback-text text-[8px] text-gray-500 font-medium';
+                    fallback.textContent = 'No Image';
+                    parent.appendChild(fallback);
+                  }
+                }}
+              />
             </div>
             <span className="text-sm text-gray-500 font-medium truncate">{provider}</span>
           </div>

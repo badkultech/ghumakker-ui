@@ -26,14 +26,33 @@ import { useGetMyWishlistQuery } from "@/lib/services/wishlist";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
 
 const calculateDuration = (startDate: string, endDate: string) => {
-  if (!startDate || !endDate) return "-D/-N";
+  if (!startDate || !endDate) return "-DAY/-NIGHT";
   const start = new Date(startDate);
   const end = new Date(endDate);
-  if (isNaN(start.getTime()) || isNaN(end.getTime())) return "-D/-N";
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) return "-DAY/-NIGHT";
 
   const diffTime = Math.abs(end.getTime() - start.getTime());
   const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  return `${nights + 1}D/${nights}N`;
+  return `${nights + 1} DAY/${nights} NIGHT`;
+};
+
+const formatDateRange = (startDate: string, endDate: string) => {
+  if (!startDate || !endDate) return "—";
+
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) return "—";
+
+  const startDay = start.getDate();
+  const startMonth = String(start.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so add 1
+  const startYear = start.getFullYear();
+
+  const endDay = end.getDate();
+  const endMonth = String(end.getMonth() + 1).padStart(2, '0');
+  const endYear = end.getFullYear();
+
+  return `${startDay}-${startMonth}-${startYear} — ${endDay}-${endMonth}-${endYear}`;
 };
 
 export default function SearchResultsWithFilters() {
@@ -335,7 +354,7 @@ export default function SearchResultsWithFilters() {
                       }
                       rating={trip.rating || 4.5}
                       days={calculateDuration(trip.startDate, trip.endDate)}
-                      dates={`${trip.startDate} — ${trip.endDate}`}
+                      dates={formatDateRange(trip.startDate, trip.endDate)}
                       price={trip.startingFrom || 0}
                       image={
                         trip.document?.url ||
