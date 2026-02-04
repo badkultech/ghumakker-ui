@@ -36,7 +36,7 @@ export default function Home() {
 
 
   return (
-    <main className="min-h-screen lg:h-screen flex flex-col overflow-auto lg:overflow-hidden bg-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <main className="min-h-screen flex flex-col overflow-auto bg-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <MainHeader
         isLoggedIn={isLoggedIn}
         onLoginClick={() => setAuthStep("PHONE")}
@@ -46,7 +46,7 @@ export default function Home() {
         variant="center"
       />
 
-      <div className="flex-1 lg:overflow-hidden">
+      <div className="flex-1 overflow-auto">
         <HeroSection />
       </div>
 

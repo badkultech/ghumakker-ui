@@ -182,9 +182,9 @@ export function MonthYearSelector({
                                 onClick={() => handleMonthClick(m)}
                                 className={`
                   px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap border
-                  transition-all duration-200
+                  transition-all duration-200 cursor-pointer
                   ${isSelected
-                                        ? 'bg-brand-gradient text-white border-transparent shadow-md scale-[1.03]'
+                                        ? 'bg-brand-gradient text-white border-transparent shadow-md scale-[1.03] hover:text-white'
                                         : 'bg-white text-[#6b6b6b] border-[#e0e0e0] hover:bg-[#fafafa] hover:border-[#c0c0c0]'
                                     }
                   ${isPast ? 'opacity-40 cursor-not-allowed hover:bg-white hover:border-[#e0e0e0]' : ''}

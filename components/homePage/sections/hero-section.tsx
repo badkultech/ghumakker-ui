@@ -41,7 +41,7 @@ export function HeroSection() {
             <div className="w-full flex justify-center lg:justify-end">
 
               {/* Desktop card */}
-              <div className="hidden lg:block lg:-mt-16 w-full max-w-[560px]">
+              <div className="hidden lg:block lg:mt-8 w-full max-w-[560px]">
                 <SearchTripsCard />
               </div>
 
