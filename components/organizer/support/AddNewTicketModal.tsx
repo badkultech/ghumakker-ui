@@ -70,8 +70,8 @@ export function AddNewTicketModal({ open, onClose, organizationId, userId }: Add
           title: data.subject,
           description: data.description,
           category: data.category,
-          priority: "Medium",
-          status: "Open",
+          priority: "MEDIUM",
+          status: "OPEN",
         },
       }).unwrap();
 
