@@ -188,6 +188,15 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                         </Tooltip>
                     </TooltipProvider>
                 </div>
+
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onRemove}
+                    className="text-muted-foreground hover:text-destructive -mt-1 -mr-2"
+                >
+                    <X className="w-5 h-5" />
+                </Button>
             </div>
 
             <div className="space-y-4">
