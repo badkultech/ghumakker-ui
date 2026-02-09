@@ -37,10 +37,13 @@ interface SearchTripsCardProps {
 }
 
 export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsCardProps) {
+  const today = new Date()
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
   const [activeTab, setActiveTab] = useState<"destination" | "moods">(defaultTab || "destination")
   const [selectedMoods, setSelectedMoods] = useState<string[]>(["Mountain", "Wellness", "Women-Only"])
-  const [selectedMonth, setSelectedMonth] = useState("Jan")
-  const [year, setYear] = useState(2026)
+  const [selectedMonth, setSelectedMonth] = useState(monthNames[today.getMonth()])
+  const [year, setYear] = useState(today.getFullYear())
   const [destinationTags, setDestinationTags] = useState("")
   const [selectedRegion, setSelectedRegion] = useState<"domestic" | "international">("domestic")
   const [isSearching, setIsSearching] = useState(false)
