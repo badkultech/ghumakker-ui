@@ -32,14 +32,28 @@ export default function SupportTicketsView({ onBack }: SupportTicketsViewProps) 
 
     const [filter, setFilter] = useState<"All" | "Open" | "In Progress" | "Resolved">("All");
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const filteredTickets = filter === "All" ? tickets : tickets.filter((t) => t.status === filter);
+
+    // Map filter display values to backend status values
+    const getBackendStatus = (displayStatus: string) => {
+        switch (displayStatus) {
+            case "Open": return "OPEN";
+            case "In Progress": return "IN_PROGRESS";
+            case "Resolved": return "RESOLVED";
+            default: return displayStatus;
+        }
+    };
+
+    const filteredTickets = filter === "All"
+        ? tickets
+        : tickets.filter((t) => t.status === getBackendStatus(filter));
+
     const [selectedTicket, setSelectedTicket] = useState<any>(null);
     const [addComment] = useAddUserTicketCommentMutation();
 
     const total = tickets.length;
-    const open = tickets.filter((t) => t.status === "Open").length;
-    const inProgress = tickets.filter((t) => t.status === "In Progress").length;
-    const resolved = tickets.filter((t) => t.status === "Resolved").length;
+    const open = tickets.filter((t) => t.status === "OPEN").length;
+    const inProgress = tickets.filter((t) => t.status === "IN_PROGRESS").length;
+    const resolved = tickets.filter((t) => t.status === "RESOLVED").length;
 
     return (
         <div className="w-full">

@@ -9,17 +9,16 @@ import { PlusCircle, Ticket, CheckCircle } from "lucide-react"
 import { AddNewTicketModal } from "@/components/organizer/support/AddNewTicketModal"
 import { ViewTicketModal } from "@/components/organizer/support/ViewTicketModal"
 import { getStatusClasses } from "@/lib/utils/getStatusStyles"
-import { useSelector } from "react-redux"
-import { selectAuthState } from "@/lib/slices/auth"
 import { useAddCommentMutation, useGetAllTicketsQuery } from "@/lib/services/organizer/support"
 import { TicketIcon } from "@/components/library/SvgComponents/Icons"
 import { useOrganizationId } from "@/hooks/useOrganizationId"
+import { useUserId } from "@/hooks/useUserId"
 
 export default function SupportCenter() {
   const organizationId = useOrganizationId();
-  const { userData } = useSelector(selectAuthState)
+  const userId = useUserId();
   const { data: tickets = [], isLoading } = useGetAllTicketsQuery({
-    userId: userData?.userPublicId ?? "",
+    userId: userId,
     organizationId: organizationId ?? ""
   })
   const [filter, setFilter] = useState<"All" | "Open" | "In Progress" | "Resolved">("All")
@@ -185,7 +184,7 @@ export default function SupportCenter() {
         </main>
       </div>
 
-      <AddNewTicketModal open={isModalOpen} onClose={() => setIsModalOpen(false)} />
+      <AddNewTicketModal open={isModalOpen} onClose={() => setIsModalOpen(false)} organizationId={organizationId} userId={userId} />
       <ViewTicketModal
         open={!!selectedTicket}
         onClose={() => setSelectedTicket(null)}
