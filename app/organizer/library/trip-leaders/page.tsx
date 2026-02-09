@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import { AppHeader } from "@/components/app-header";
 import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
 import { AddNewItemModal } from "@/components/library/add-new-item/AddNewItemModal";
@@ -17,6 +17,7 @@ import { ActionButtons } from "@/components/library/ActionButtons";
 import { DeleteConfirmDialog } from "@/components/library/DeleteConfirmDialog";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { LazyImage } from "@/components/ui/lazyImage";
+import { showError } from "@/lib/utils/toastHelpers";
 
 export default function TripLeadersPage() {
   const organizationId = useOrganizationId();
@@ -34,9 +35,9 @@ export default function TripLeadersPage() {
 
 
   // Data fetching
-  const { data: leaders = [], isLoading, refetch } =
+  const { data: leaders = [], isLoading, error, refetch } =
     useGetGroupLeadersQuery(organizationId);
-  const { data: selectedLeader, isLoading: isLeaderLoading } =
+  const { data: selectedLeader, isLoading: isLeaderLoading, error: leaderError } =
     useGetGroupLeaderByIdQuery(
       selectedLeaderId && organizationId
         ? { organizationId, leaderId: selectedLeaderId }
@@ -44,6 +45,19 @@ export default function TripLeadersPage() {
     );
 
   const [deleteLeader, { isLoading: isDeleting }] = useDeleteGroupLeaderMutation();
+
+  // Show error toast when GET API fails
+  useEffect(() => {
+    if (error) {
+      showError("Failed to load group leaders");
+    }
+  }, [error]);
+
+  useEffect(() => {
+    if (leaderError) {
+      showError("Failed to load leader details");
+    }
+  }, [leaderError]);
 
   // Debounce search (300ms)
   const debouncedSearch = useDebounce(search, 300);
@@ -72,7 +86,7 @@ export default function TripLeadersPage() {
       refetch();
     } catch (error) {
       console.error("Error deleting leader:", error);
-      alert("Failed to delete leader");
+      showError("Failed to delete leader");
     } finally {
       setDeletingId(null);
       setConfirmOpen(false);
