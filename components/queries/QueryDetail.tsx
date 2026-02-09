@@ -14,7 +14,6 @@ export default function QueryDetail({
   query,
   loggedInUserId,
   onBack,
-  onReport,
 }: any) {
   const organizationId = useOrganizationId();
   const { data: comments = [], isLoading } = useGetTripQueryCommentsQuery({
@@ -123,16 +122,6 @@ export default function QueryDetail({
             </span>
 
             <span className="text-sm text-gray-400">{query.date}</span>
-
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-red-500 border-red-200 hover:bg-red-50"
-              onClick={onReport}
-            >
-              <Flag className="w-4 h-4 mr-2" />
-              Report
-            </Button>
           </div>
         </div>
 

@@ -199,7 +199,6 @@ export default function AllQueriesPage() {
             <QueryDetail
               query={selectedQuery}
               onBack={() => setSelectedQuery(null)}
-              onReport={() => setShowReport(true)}
               onDelete={() => onDeleteClick(selectedQuery)}
             />
           )}
@@ -214,11 +213,6 @@ export default function AllQueriesPage() {
             }}
             onConfirm={() => performDelete(pendingDeleteId)}
             loading={isDeleting}
-          />
-          <ReportQueryModal
-            open={showReport}
-            onClose={() => setShowReport(false)}
-            query={selectedQuery}
           />
         </div>
       </div>
