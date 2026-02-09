@@ -11,6 +11,7 @@ interface Props {
   mode?: "datetime" | "date"
   stepMinutes?: number
   minDate?: string // Format: "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM"
+  maxDate?: string // Format: "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM"
   disabled?: boolean
 }
 
@@ -22,6 +23,7 @@ export function CustomDateTimePicker({
   mode = "datetime",
   stepMinutes = 15,
   minDate,
+  maxDate,
   disabled = false,
 }: Props) {
   const wrapperRef = useRef<HTMLDivElement | null>(null)
@@ -226,13 +228,14 @@ export function CustomDateTimePicker({
   const calendarDays = generateCalendarDays()
 
   const isDateDisabled = (dateStr: string): boolean => {
-    if (!minDate) return false
+    // Extract just the date part from min/max if it contains time
+    const minDateOnly = minDate?.includes("T") ? minDate.split("T")[0] : minDate;
+    const maxDateOnly = maxDate?.includes("T") ? maxDate.split("T")[0] : maxDate;
 
-    // Extract just the date part from minDate if it contains time
-    const minDateOnly = minDate.includes("T") ? minDate.split("T")[0] : minDate
+    if (minDateOnly && dateStr <= minDateOnly) return true;
+    if (maxDateOnly && dateStr > maxDateOnly) return true; // Disable if AFTER maxDate
 
-    // Compare dates as strings (YYYY-MM-DD format sorts correctly)
-    return dateStr <= minDateOnly
+    return false;
   }
 
   const handleClear = (e: React.MouseEvent) => {

@@ -25,6 +25,7 @@ import {
   useUpdatePricingMutation,
   useGetPricingQuery,
 } from '@/lib/services/organizer/trip/pricing';
+import { useGetTripByIdQuery } from '@/lib/services/organizer/trip/create-trip';
 import { useOrganizationId } from '@/hooks/useOrganizationId';
 import { CustomDateTimePicker } from '@/components/ui/date-time-picker';
 import { DynamicCategoryCard, type DynamicCategory } from '@/components/create-trip/dynamic-category-card';
@@ -65,6 +66,7 @@ export default function PricingPage() {
     organizationId,
     tripPublicId: tripId as string,
   });
+  const { data: trip } = useGetTripByIdQuery({ organizationId, tripId: tripId as string });
 
   const [isSavingNext, setIsSavingNext] = useState(false);
   const [draftDisabled, setDraftDisabled] = useState(false);
@@ -203,8 +205,15 @@ export default function PricingPage() {
             const selected = new Date(discountUntil)
             const now = new Date()
 
-            if (selected <= now) {
-              e.discountUntil = "Date must be in the future";
+            if (trip?.data?.startDate) {
+              const startDate = new Date(trip.data.startDate);
+              // reset time to midnight for comparison
+              startDate.setHours(0, 0, 0, 0);
+              selected.setHours(0, 0, 0, 0);
+
+              if (selected > startDate) {
+                e.discountUntil = `Valid until must be on or before trip start (${trip.data.startDate})`;
+              }
             }
           }
         }
@@ -535,6 +544,7 @@ export default function PricingPage() {
                               setDiscountUntil(v)
                               clearFieldError("discountUntil")
                             }}
+                            maxDate={trip?.data?.startDate ? new Date(trip.data.startDate).toISOString().split("T")[0] : undefined}
                             className="h-10"
                           />
 
