@@ -47,20 +47,26 @@ export default function TripOverviewPage() {
 
 
 
+
+  const filterParams = {
+    timeFilter: mapTabToTimeFilter[activeTab],
+    tripStatus: statusFilter,
+    search,
+    // Try both parameter naming conventions
+    startDate: dateRange.start,
+    endDate: dateRange.end,
+    fromDate: dateRange.start,
+    toDate: dateRange.end,
+    sortBy,
+    sortDir,
+    page,
+    size,
+  };
+
   const { data, isFetching } = useGetFilteredTripsQuery(
     {
       organizationId,
-      filters: {
-        timeFilter: mapTabToTimeFilter[activeTab],
-        tripStatus: statusFilter,
-        search,
-        startDate: dateRange.start,
-        endDate: dateRange.end,
-        sortBy,
-        sortDir,
-        page,
-        size,
-      },
+      filters: filterParams,
     },
     { skip: !organizationId }
   );

@@ -63,6 +63,14 @@ export default function TripFilterBar({
   const isPast = tab === "past";
 
   const [calendarOpen, setCalendarOpen] = React.useState(false);
+  const [tempDateRange, setTempDateRange] = React.useState<{ start?: string; end?: string }>({});
+
+  // Sync temp range with actual range when calendar opens
+  React.useEffect(() => {
+    if (calendarOpen) {
+      setTempDateRange(dateRange);
+    }
+  }, [calendarOpen, dateRange]);
 
   // convert UI date → label
   const formattedRange =
@@ -126,39 +134,58 @@ export default function TripFilterBar({
               <Calendar
                 mode="range"
                 selected={
-                  dateRange.start && dateRange.end
+                  tempDateRange.start && tempDateRange.end
                     ? {
-                      from: new Date(dateRange.start),
-                      to: new Date(dateRange.end),
+                      from: new Date(tempDateRange.start),
+                      to: new Date(tempDateRange.end),
                     }
-                    : undefined
+                    : tempDateRange.start
+                      ? {
+                        from: new Date(tempDateRange.start),
+                        to: new Date(tempDateRange.start),
+                      }
+                      : undefined
                 }
                 onSelect={(range) => {
                   if (!range) {
-                    setDateRange({ start: undefined, end: undefined });
+                    setTempDateRange({ start: undefined, end: undefined });
                     return;
                   }
 
-                  setDateRange({
+                  setTempDateRange({
                     start: range.from?.toISOString()?.slice(0, 10),
                     end: range.to?.toISOString()?.slice(0, 10),
                   });
                 }}
+                disabled={
+                  isUpcoming
+                    ? { before: new Date() } // Disable past dates for upcoming trips
+                    : undefined
+                }
               />
-
               <div className="flex justify-between mt-3">
                 <Button
                   variant="outline"
                   size="sm"
                   className="text-gray-700 border-gray-300"
-                  onClick={() => setDateRange({ start: undefined, end: undefined })}
+                  onClick={() => {
+                    setTempDateRange({ start: undefined, end: undefined });
+                    setDateRange({ start: undefined, end: undefined });
+                    setCalendarOpen(false);
+                  }}
                 >
                   Clear
                 </Button>
                 <Button
                   size="sm"
                   className="bg-primary hover:bg-primary/90 text-primary-foreground"
-                  onClick={() => setCalendarOpen(false)}
+                  onClick={() => {
+                    // Only apply if both dates are selected
+                    if (tempDateRange.start && tempDateRange.end) {
+                      setDateRange(tempDateRange);
+                    }
+                    setCalendarOpen(false);
+                  }}
                 >
                   Apply
                 </Button>
