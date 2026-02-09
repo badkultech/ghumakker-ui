@@ -182,9 +182,7 @@ export default function PricingPage() {
         e.price = "Price is required and must be greater than 0";
       }
 
-      if (discount === "") {
-        e.discount = "Discount is required";
-      } else {
+      if (discount !== "") {
         if (discountUnit === "percent") {
           if (Number(discount) < 0 || Number(discount) > 100) {
             e.discount = "Discount must be between 0–100%";
@@ -192,19 +190,23 @@ export default function PricingPage() {
         }
 
         if (discountUnit === "flat") {
-          if (Number(discount) <= 0) {
-            e.discount = "Discount must be greater than 0";
+          if (Number(discount) < 0) {
+            e.discount = "Discount must be positive";
           }
         }
-      }
-      if (discountUntil === "") {
-        e.discountUntil = "Discount date is required";
-      } else {
-        const selected = new Date(discountUntil)
-        const now = new Date()
 
-        if (selected <= now) {
-          e.discountUntil = "Discount must be in the future";
+        // If discount is present and > 0, Valid Until is required
+        if (Number(discount) > 0) {
+          if (discountUntil === "") {
+            e.discountUntil = "Valid until date is required";
+          } else {
+            const selected = new Date(discountUntil)
+            const now = new Date()
+
+            if (selected <= now) {
+              e.discountUntil = "Date must be in the future";
+            }
+          }
         }
       }
 
