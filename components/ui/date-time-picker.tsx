@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { Calendar, ChevronLeft, ChevronRight, ChevronDown, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 
 interface Props {
   value: string
@@ -240,153 +241,163 @@ export function CustomDateTimePicker({
   }
 
   return (
-    <div ref={wrapperRef} className={`relative ${className} ${disabled ? "opacity-50 pointer-events-none" : ""}`}>
-      <div className="relative flex items-center">
-        <Input
-          type="text"
-          value={formatted}
-          placeholder={placeholder}
-          readOnly
-          disabled={disabled}
-          className={`w-full ${value ? "pr-16" : "pr-10"} cursor-pointer bg-background`}
-          onClick={() => !disabled && setOpen((s) => !s)}
-        />
-        {value && !disabled && (
-          <X
-            size={16}
-            className="absolute right-9 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer z-10"
-            onClick={handleClear}
-          />
-        )}
-        <Calendar
-          size={18}
-          className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground cursor-pointer"
-          onClick={() => !disabled && setOpen((s) => !s)}
-        />
-      </div>
-
-      {open && (
-        <div className="absolute z-50 mt-2 bg-background border border-border rounded-lg shadow-lg p-4 w-[320px]">
-          {/* Month Navigation */}
-          <div className="flex items-center justify-between mb-4">
-            <button type="button" onClick={prevMonth} className="p-1 hover:bg-muted rounded-md transition-colors">
-              <ChevronLeft size={20} className="text-muted-foreground" />
-            </button>
-            <span className="font-medium text-foreground">{monthNames[currentMonth.getMonth()]}</span>
-            <button type="button" onClick={nextMonth} className="p-1 hover:bg-muted rounded-md transition-colors">
-              <ChevronRight size={20} className="text-muted-foreground" />
-            </button>
-          </div>
-
-          {/* Day Headers */}
-          <div className="grid grid-cols-7 mb-2">
-            {dayNames.map((day) => (
-              <div key={day} className="text-center text-sm text-muted-foreground py-2">
-                {day}
+    <Popover open={open} onOpenChange={setOpen}>
+      <PopoverTrigger asChild>
+        <div className={`relative ${className} ${disabled ? "opacity-50 pointer-events-none" : ""}`}>
+          <div className="relative flex items-center">
+            <Input
+              type="text"
+              value={formatted}
+              placeholder={placeholder}
+              readOnly
+              disabled={disabled}
+              className={`w-full ${value ? "pr-16" : "pr-10"} cursor-pointer bg-background`}
+            />
+            {value && !disabled && (
+              <div
+                role="button"
+                tabIndex={0}
+                className="absolute right-9 top-1/2 -translate-y-1/2 p-1 hover:bg-muted rounded-full z-10"
+                onClick={handleClear}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    handleClear(e as any)
+                  }
+                }}
+              >
+                <X size={14} className="text-muted-foreground hover:text-foreground" />
               </div>
-            ))}
+            )}
+            <Calendar
+              size={18}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none"
+            />
           </div>
+        </div>
+      </PopoverTrigger>
 
-          {/* Calendar Grid */}
-          <div className="grid grid-cols-7 gap-1">
-            {calendarDays.map((day, idx) => {
-              const isSelected = day.date === selectedDate
-              const isToday =
-                day.date ===
-                `${new Date().getFullYear()}-${pad(new Date().getMonth() + 1)}-${pad(new Date().getDate())}`
-              const isDisabled = isDateDisabled(day.date)
+      <PopoverContent className="w-auto p-4" align="start" side="bottom">
+        {/* Month Navigation */}
+        <div className="flex items-center justify-between mb-4">
+          <button type="button" onClick={prevMonth} className="p-1 hover:bg-muted rounded-md transition-colors">
+            <ChevronLeft size={20} className="text-muted-foreground" />
+          </button>
+          <span className="font-medium text-foreground">
+            {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
+          </span>
+          <button type="button" onClick={nextMonth} className="p-1 hover:bg-muted rounded-md transition-colors">
+            <ChevronRight size={20} className="text-muted-foreground" />
+          </button>
+        </div>
 
-              return (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => !isDisabled && handleDateSelect(day.date)}
-                  disabled={isDisabled}
-                  className={`
-                    h-9 w-full rounded-md text-sm transition-colors
-                    ${!day.isCurrentMonth ? "text-muted-foreground/50" : "text-foreground"}
-                    ${isSelected ? "bg-primary text-primary-foreground" : "hover:bg-muted"}
-                    ${isToday && !isSelected ? "border border-primary" : ""}
-                    ${isDisabled ? "text-muted-foreground/30 cursor-not-allowed hover:bg-transparent" : ""}
+        {/* Day Headers */}
+        <div className="grid grid-cols-7 mb-2">
+          {dayNames.map((day) => (
+            <div key={day} className="text-center text-sm text-muted-foreground py-2 font-medium">
+              {day}
+            </div>
+          ))}
+        </div>
+
+        {/* Calendar Grid */}
+        <div className="grid grid-cols-7 gap-1">
+          {calendarDays.map((day, idx) => {
+            const isSelected = day.date === selectedDate
+            const isToday =
+              day.date ===
+              `${new Date().getFullYear()}-${pad(new Date().getMonth() + 1)}-${pad(new Date().getDate())}`
+            const isDisabled = isDateDisabled(day.date)
+
+            return (
+              <button
+                key={idx}
+                type="button"
+                onClick={() => !isDisabled && handleDateSelect(day.date)}
+                disabled={isDisabled}
+                className={`
+                    h-9 w-9 p-0 rounded-md text-sm transition-all flex items-center justify-center
+                    ${!day.isCurrentMonth ? "text-muted-foreground/30" : "text-foreground"}
+                    ${isSelected ? "bg-primary text-primary-foreground hover:bg-primary/90" : "hover:bg-muted"}
+                    ${isToday && !isSelected ? "border border-primary font-semibold text-primary" : ""}
+                    ${isDisabled ? "opacity-30 cursor-not-allowed hover:bg-transparent" : ""}
                   `}
+              >
+                {day.day}
+              </button>
+            )
+          })}
+        </div>
+
+        {/* Time Selection */}
+        {mode === "datetime" && (
+          <div className="mt-4 pt-4 border-t border-border">
+            <div className="text-sm font-medium text-foreground mb-3">Select Time</div>
+            <div className="flex items-center gap-2">
+              {/* Hour Dropdown */}
+              <div className="relative flex-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHourDropdownOpen(!hourDropdownOpen)
+                    setMinuteDropdownOpen(false)
+                  }}
+                  className="w-full flex items-center justify-between px-3 py-2 border border-border rounded-md bg-background hover:bg-muted transition-colors text-sm"
                 >
-                  {pad(day.day)}
+                  <span className="text-foreground">{selectedHour}</span>
+                  <ChevronDown size={14} className="text-muted-foreground" />
                 </button>
-              )
-            })}
-          </div>
+                {hourDropdownOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-md shadow-md max-h-48 overflow-y-auto z-50">
+                    {hours.map((h) => (
+                      <button
+                        key={h}
+                        type="button"
+                        onClick={() => handleHourSelect(h)}
+                        className={`w-full px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors ${h === selectedHour ? "bg-accent text-accent-foreground font-medium" : ""
+                          }`}
+                      >
+                        {h}
+                      </button>
+                    ))}
+                  </div>
+                )}
+              </div>
 
-          {/* Time Selection */}
-          {mode === "datetime" && (
-            <div className="mt-4 pt-4 border-t border-border">
-              <div className="text-sm font-medium text-foreground mb-3">Select Time</div>
-              <div className="flex items-center gap-2">
-                {/* Hour Dropdown */}
-                <div className="relative flex-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setHourDropdownOpen(!hourDropdownOpen)
-                      setMinuteDropdownOpen(false)
-                    }}
-                    className="w-full flex items-center justify-between px-3 py-2 border border-border rounded-md bg-background hover:bg-muted transition-colors"
-                  >
-                    <span className="text-foreground">{selectedHour}</span>
-                    <ChevronDown size={16} className="text-muted-foreground" />
-                  </button>
-                  {hourDropdownOpen && (
-                    <div className="absolute top-full left-0 right-0 mt-1 bg-background border border-border rounded-md shadow-lg max-h-48 overflow-y-auto z-10">
-                      {hours.map((h) => (
-                        <button
-                          key={h}
-                          type="button"
-                          onClick={() => handleHourSelect(h)}
-                          className={`w-full px-3 py-2 text-left text-sm hover:bg-muted transition-colors ${h === selectedHour ? "bg-muted font-medium" : ""
-                            }`}
-                        >
-                          {h}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+              <span className="text-muted-foreground font-medium">:</span>
 
-                <span className="text-muted-foreground font-medium">:</span>
-
-                {/* Minute Dropdown */}
-                <div className="relative flex-1">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setMinuteDropdownOpen(!minuteDropdownOpen)
-                      setHourDropdownOpen(false)
-                    }}
-                    className="w-full flex items-center justify-between px-3 py-2 border border-border rounded-md bg-background hover:bg-muted transition-colors"
-                  >
-                    <span className="text-foreground">{selectedMinute}</span>
-                    <ChevronDown size={16} className="text-muted-foreground" />
-                  </button>
-                  {minuteDropdownOpen && (
-                    <div className="absolute top-full left-0 right-0 mt-1 bg-background border border-border rounded-md shadow-lg max-h-48 overflow-y-auto z-10">
-                      {minutes.map((m) => (
-                        <button
-                          key={m}
-                          type="button"
-                          onClick={() => handleMinuteSelect(m)}
-                          className={`w-full px-3 py-2 text-left text-sm hover:bg-muted transition-colors ${m === selectedMinute ? "bg-muted font-medium" : ""
-                            }`}
-                        >
-                          {m}
-                        </button>
-                      ))}
-                    </div>
-                  )}
-                </div>
+              {/* Minute Dropdown */}
+              <div className="relative flex-1">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMinuteDropdownOpen(!minuteDropdownOpen)
+                    setHourDropdownOpen(false)
+                  }}
+                  className="w-full flex items-center justify-between px-3 py-2 border border-border rounded-md bg-background hover:bg-muted transition-colors text-sm"
+                >
+                  <span className="text-foreground">{selectedMinute}</span>
+                  <ChevronDown size={14} className="text-muted-foreground" />
+                </button>
+                {minuteDropdownOpen && (
+                  <div className="absolute top-full left-0 right-0 mt-1 bg-popover border border-border rounded-md shadow-md max-h-48 overflow-y-auto z-50">
+                    {minutes.map((m) => (
+                      <button
+                        key={m}
+                        type="button"
+                        onClick={() => handleMinuteSelect(m)}
+                        className={`w-full px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors ${m === selectedMinute ? "bg-accent text-accent-foreground font-medium" : ""
+                          }`}
+                      >
+                        {m}
+                      </button>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
-          )}
-        </div>
-      )}
-    </div>
+          </div>
+        )}
+      </PopoverContent>
+    </Popover>
   )
 }

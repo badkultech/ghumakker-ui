@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { CustomDateTimePicker } from "@/components/ui/date-time-picker";
 
 interface PromoteLeaderModalProps {
     isOpen: boolean;
@@ -50,21 +51,23 @@ export function PromoteLeaderModal({
 
                     <div>
                         <label className="block text-sm font-medium">Start Date</label>
-                        <input
-                            type="date"
+                        <CustomDateTimePicker
+                            mode="date"
                             value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
-                            className="w-full border rounded px-3 py-2"
+                            onChange={(val) => setStartDate(val)}
+                            minDate={new Date().toLocaleDateString('en-CA')}
+                            className="bg-white"
                         />
                     </div>
 
                     <div>
                         <label className="block text-sm font-medium">End Date</label>
-                        <input
-                            type="date"
+                        <CustomDateTimePicker
+                            mode="date"
                             value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
-                            className="w-full border rounded px-3 py-2"
+                            onChange={(val) => setEndDate(val)}
+                            minDate={startDate || new Date().toLocaleDateString('en-CA')}
+                            className="bg-white"
                         />
                     </div>
                 </div>
