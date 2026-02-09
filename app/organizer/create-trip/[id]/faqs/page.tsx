@@ -75,24 +75,26 @@ export default function FAQsPage() {
 
 
   useEffect(() => {
-    if (faqsData?.data?.masterData) {
-      const selectedFaqs =
-        faqsData?.data?.details.map((f: FAQ) => f.question) ?? [];
+    if (faqsData?.data) {
+      const masterData = faqsData.data.masterData || [];
+      const details = faqsData.data.details || [];
+
+      const selectedFaqs = details.map((f: FAQ) => f.question);
 
       setFaqs([
         // ⭐ MASTER DATA → read-only
-        ...faqsData.data.masterData
+        ...masterData
           .filter((f: FAQ) => !selectedFaqs.includes(f.question))
           .map((f: FAQ) => ({
             ...f,
-            isMaster: true,     // <-- THIS WAS MISSING
+            isMaster: true,
             isSelected: false,
           })),
 
         // ⭐ DETAILS → editable
-        ...faqsData.data.details.map((f: FAQ) => ({
+        ...details.map((f: FAQ) => ({
           ...f,
-          isMaster: false,      // <-- CUSTOM / DETAILS
+          isMaster: false,
           isSelected: true,
         })),
       ]);
