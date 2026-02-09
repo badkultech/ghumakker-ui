@@ -9,6 +9,7 @@ import RichTextEditor from "@/components/editor/RichTextEditor";
 import { ChooseFromLibraryButton } from "./ChooseFromLibraryButton";
 import { showSuccess, showApiError } from "@/lib/utils/toastHelpers";
 import { MultiUploader } from "../common/UploadFieldShortcuts";
+import { TimePicker15Min } from "@/components/ui/time-picker-15min";
 import {
   useDocumentsManager,
   Document as DocShape,
@@ -384,11 +385,10 @@ export function AddTransitForm({
             Departure Time <RequiredStar />
           </label>
 
-          <Input
+          <TimePicker15Min
             id="departure-time"
-            type="time"
             value={departure}
-            onChange={(e) => setDeparture(e.target.value)}
+            onChange={(val) => setDeparture(val)}
             aria-invalid={!!errors.departure}
             aria-describedby={errors.departure ? "departure-time-error" : undefined}
           />
@@ -412,11 +412,10 @@ export function AddTransitForm({
             Arrival Time <RequiredStar />
           </label>
 
-          <Input
+          <TimePicker15Min
             id="arrival-time"
-            type="time"
             value={arrival}
-            onChange={(e) => setArrival(e.target.value)}
+            onChange={(val) => setArrival(val)}
             aria-invalid={!!errors.arrival}
             aria-describedby={errors.arrival ? "arrival-time-error" : undefined}
           />

@@ -9,6 +9,7 @@ import RichTextEditor from "../editor/RichTextEditor";
 import { ChooseFromLibraryButton } from "./ChooseFromLibraryButton";
 import { showSuccess, showApiError } from "@/lib/utils/toastHelpers";
 import { MultiUploader } from "../common/UploadFieldShortcuts";
+import { TimePicker15Min } from "@/components/ui/time-picker-15min";
 import {
   useDocumentsManager,
   Document as DocShape,
@@ -246,10 +247,10 @@ export function AddDayDescriptionForm({
         <label className="block text-sm font-medium text-gray-700 mb-1">
           Time
         </label>
-        <Input
-          type="time"
+        <TimePicker15Min
           value={time}
-          onChange={(e) => setTime(e.target.value)}
+          onChange={(val) => setTime(val)}
+          placeholder="Select time"
         />
       </div>
 

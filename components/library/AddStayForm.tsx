@@ -14,6 +14,7 @@ import {
   Document as DocShape,
 } from "@/hooks/useDocumentsManager";
 import { MultiUploader } from "../common/UploadFieldShortcuts";
+import { TimePicker15Min } from "@/components/ui/time-picker-15min";
 import { useLazyGetStayByIdQuery } from "@/lib/services/organizer/trip/library/stay";
 import RequiredStar from "../common/RequiredStar";
 import { validateRequiredFields } from "@/lib/utils/validateRequiredFields";
@@ -257,12 +258,12 @@ export function AddStayForm({
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Check-in Time <RequiredStar /></label>
-          <Input type="time" value={checkIn} onChange={(e) => setCheckIn(e.target.value)} />
+          <TimePicker15Min value={checkIn} onChange={(val) => setCheckIn(val)} />
           {errors.checkIn && <p className="text-xs text-red-500 mt-1">{errors.checkIn}</p>}
         </div>
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Check-out Time <RequiredStar /></label>
-          <Input type="time" value={checkOut} onChange={(e) => setCheckOut(e.target.value)} />
+          <TimePicker15Min value={checkOut} onChange={(val) => setCheckOut(val)} />
           {errors.checkOut && <p className="text-xs text-red-500 mt-1">{errors.checkOut}</p>}
         </div>
       </div>

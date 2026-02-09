@@ -14,6 +14,7 @@ import {
   Document as DocShape,
 } from "@/hooks/useDocumentsManager";
 import { MultiUploader } from "../common/UploadFieldShortcuts";
+import { TimePicker15Min } from "@/components/ui/time-picker-15min";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 import { useLazyGetActivityByIdQuery } from "@/lib/services/organizer/trip/library/activity";
@@ -374,10 +375,10 @@ export function AddActivityForm({
         </div>
         <div>
           <label className="block text-[0.95rem] font-medium mb-2">Time</label>
-          <Input
-            type="time"
+          <TimePicker15Min
             value={time}
-            onChange={(e) => setTime(e.target.value)}
+            onChange={(val) => setTime(val)}
+            placeholder="Select time"
           />
         </div>
       </div>

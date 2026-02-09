@@ -29,6 +29,7 @@ import { useOrganizationId } from '@/hooks/useOrganizationId';
 import { CustomDateTimePicker } from '@/components/ui/date-time-picker';
 import { DynamicCategoryCard, type DynamicCategory } from '@/components/create-trip/dynamic-category-card';
 import { Plus } from 'lucide-react';
+import RequiredStar from '@/components/common/RequiredStar';
 
 type PricingMode = 'simple' | 'dynamic';
 
@@ -580,7 +581,7 @@ export default function PricingPage() {
                   <div className="space-y-5 pt-4 border-t border-gray-100">
                     <Label>GST Status *</Label>
                     <GstStatusToggle value={gst} onChange={setGst} />
-                    <Label>Deposit Required</Label>
+                    <Label>Deposit Required <RequiredStar /></Label>
                     <InputWithUnitToggle
                       placeholder='Deposit Amount'
                       value={depositPercent}
@@ -598,7 +599,7 @@ export default function PricingPage() {
                     <Label>EMI Options</Label>
                     <CreditOptions value={credit} onChange={setCredit} />
 
-                    <Label>Cancellation Policy</Label>
+                    <Label>Cancellation Policy <RequiredStar /></Label>
                     <Textarea
                       value={policy}
                       onChange={(e) => {

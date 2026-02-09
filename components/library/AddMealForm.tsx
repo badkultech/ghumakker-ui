@@ -9,6 +9,7 @@ import RichTextEditor from "../editor/RichTextEditor";
 import { ChooseFromLibraryButton } from "./ChooseFromLibraryButton";
 import { showSuccess, showApiError } from "@/lib/utils/toastHelpers";
 import { MultiUploader } from "../common/UploadFieldShortcuts";
+import { TimePicker15Min } from "@/components/ui/time-picker-15min";
 import {
   useDocumentsManager,
   Document as DocShape,
@@ -276,10 +277,10 @@ export function AddMealForm({
 
         <div>
           <label className="block text-[0.95rem] font-medium mb-2">Time <RequiredStar /></label>
-          <Input
-            type="time"
+          <TimePicker15Min
             value={time}
-            onChange={(e) => setTime(e.target.value)}
+            onChange={(val) => setTime(val)}
+            placeholder="Select time"
           />
           <label className="flex items-center gap-2 my-4">
             <input
