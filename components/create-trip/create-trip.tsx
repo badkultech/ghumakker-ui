@@ -434,7 +434,13 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
     // Calculate End Date
     const end = new Date(start);
     end.setDate(start.getDate() + (days - 1));
-    const formattedEnd = end.toString();
+
+    // For one-day trips, set end time to end of day (23:59:59)
+    // For multi-day trips, keep the same time as start
+    if (days === 1) {
+      end.setHours(23, 59, 59, 0);
+    }
+
     dispatch(setFormData({ ...formData, endDate: end.toISOString() }));
 
   }, [formData.startDate, formData.totalDays]);
