@@ -155,7 +155,7 @@ export default function CompareTripsPage() {
                 onMenuOpen={() => setIsMenuOpen(true)}
                 notifications={notificationsList}
                 onUpdateNotifications={setNotificationsList}
-                variant="center"
+                variant="edge"
             />
 
             <main className="max-w-6xl mx-auto p-4 md:p-6 overflow-x-auto">

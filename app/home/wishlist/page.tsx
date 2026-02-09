@@ -46,7 +46,7 @@ export default function WishlistPage() {
     if (!organizationId || !userId) {
         return (
             <div className="min-h-screen bg-background">
-                <MainHeader variant="center"
+                <MainHeader variant="edge"
                     isLoggedIn={isLoggedIn}
                     notifications={notifications}
                     onUpdateNotifications={setNotifications}
@@ -82,7 +82,7 @@ export default function WishlistPage() {
     if (isLoading) {
         return (
             <div className="min-h-screen bg-background">
-                <MainHeader variant="center"
+                <MainHeader variant="edge"
                     isLoggedIn={isLoggedIn}
                     notifications={notifications}
                     onUpdateNotifications={setNotifications}
@@ -109,7 +109,7 @@ export default function WishlistPage() {
     if (error) {
         return (
             <div className="min-h-screen bg-background">
-                <MainHeader variant="center"
+                <MainHeader variant="edge"
                     isLoggedIn={isLoggedIn}
                     notifications={notifications}
                     onUpdateNotifications={setNotifications}
@@ -127,7 +127,7 @@ export default function WishlistPage() {
     return (
         <div className="min-h-screen bg-background">
             {/* Header */}
-            <MainHeader variant="center"
+            <MainHeader variant="edge"
                 isLoggedIn={isLoggedIn}
                 notifications={notifications}
                 onUpdateNotifications={setNotifications}
