@@ -26,6 +26,7 @@ export default function AllLeadsPage() {
   // local states
   const [status, setStatus] = useState("all");
   const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("newest");
 
   const { data: leads = [], isLoading, refetch } = useGetTripLeadsByStatusQuery({
     organizationId,
@@ -86,18 +87,37 @@ export default function AllLeadsPage() {
     }
   };
 
-  // client-side search/filter
-  const filteredLeads = leads.filter((lead) => {
-    if (!search) return true;
-    return (
-      String(lead.tripTitle || "")
-        .toLowerCase()
-        .includes(search.toLowerCase()) ||
-      String(lead.customerName || "")
-        .toLowerCase()
-        .includes(search.toLowerCase())
-    );
-  });
+  // client-side search/filter and sort
+  const filteredLeads = leads
+    .filter((lead) => {
+      if (!search) return true;
+      return (
+        String(lead.tripTitle || "")
+          .toLowerCase()
+          .includes(search.toLowerCase()) ||
+        String(lead.customerName || "")
+          .toLowerCase()
+          .includes(search.toLowerCase())
+      );
+    })
+    .sort((a, b) => {
+      const dateA = a.createdDate;
+      const dateB = b.createdDate;
+
+      // Handle cases where dates might be missing
+      if (!dateA && !dateB) return 0;
+      if (!dateA) return 1;
+      if (!dateB) return -1;
+
+      const timeA = new Date(dateA).getTime();
+      const timeB = new Date(dateB).getTime();
+
+      if (sortOrder === "newest") {
+        return timeB - timeA; // newest first
+      } else {
+        return timeA - timeB; // oldest first
+      }
+    });
 
   return (
     <div className="flex min-h-screen bg-[#F9FAFB]">
@@ -119,10 +139,11 @@ export default function AllLeadsPage() {
             <span className="text-gray-700 font-medium">All Leads</span>
           </div>
 
-          {/* Filters (search + status) */}
+          {/* Filters (search + status + sort) */}
           <LeadFilters
             onSearchChange={(val) => setSearch(val)}
             onStatusChange={(val) => setStatus(val)}
+            onSortChange={(val) => setSortOrder(val)}
           />
 
           {/* Lead Cards */}
