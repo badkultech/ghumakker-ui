@@ -20,8 +20,8 @@ export interface TicketDTO {
     title: string;
     description?: string;
     category: string;
-    priority: string;
-    status: string;
+    priority: 'LOW' | 'MEDIUM' | 'HIGH';
+    status: 'OPEN' | 'IN_PROGRESS' | 'RESOLVED';
     raisedBy?: UserDTO;
     assignedTo?: UserDTO;
     ticketComments?: TicketCommentDTO[];
