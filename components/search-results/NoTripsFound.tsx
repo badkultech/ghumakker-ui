@@ -12,7 +12,26 @@ type ExploreDestination = {
   img: string;
 };
 
+import { useGetExploreTripsQuery } from "@/lib/services/trip-search";
+
 export default function NoTripsFound() {
+  const { data: exploreData } = useGetExploreTripsQuery();
+
+  const dummyExplore: ExploreDestination[] = [
+    { title: "Himachal Pradesh", trips: 0, img: "/explore-himachal.jpg" },
+    { title: "Rajasthan", trips: 0, img: "/explore-rajasthan.jpg" },
+    { title: "Kerala", trips: 0, img: "/explore-kerala.jpg" },
+    { title: "Goa", trips: 0, img: "/explore-goa.jpg" },
+  ];
+
+  const exploreDestinations: ExploreDestination[] = (exploreData && exploreData.length > 0)
+    ? exploreData.map((item: any) => ({
+      title: item.name || item.destination || "Destination",
+      trips: item.count || item.tripCount || 0,
+      img: item.imageUrl || item.image || "/placeholder.jpg"
+    }))
+    : dummyExplore;
+
   const moodsList = [
     "Mountain",
     "Skygaze",
@@ -31,12 +50,6 @@ export default function NoTripsFound() {
     "Camping",
     "Spiritual",
   ];
-  const [exploreDestinations, setExploreDestinations] = useState<ExploreDestination[]>([
-    { title: "Himachal Pradesh", trips: 12, img: "/explore-himachal.jpg" },
-    { title: "Rajasthan", trips: 12, img: "/explore-rajasthan.jpg" },
-    { title: "Kerala", trips: 12, img: "/explore-kerala.jpg" },
-    { title: "Goa", trips: 12, img: "/explore-goa.jpg" },
-  ]);
   const router = useRouter();
   const handleMoodClick = (mood: string) => {
     router.push(
@@ -87,7 +100,9 @@ export default function NoTripsFound() {
               </div>
               <div className="p-2">
                 <p className="text-sm font-semibold">{item.title}</p>
-                <p className="text-xs text-[#6b6b6b]">{item.trips} Trips</p>
+                <p className="text-xs text-[#6b6b6b]">
+                  {item.trips > 0 ? `${item.trips} ` : ""}Trips
+                </p>
               </div>
             </div>
           ))}
