@@ -27,9 +27,6 @@ export default function QueryList({
   onDelete,
 }: any) {
   const [search, setSearch] = useState("");
-  const [statusFilter, setStatusFilter] = useState<
-    "all" | "OPEN" | "RESPONDED"
-  >("all");
   const [tab, setTab] = useState<"all" | "OPEN" | "RESPONDED">("all");
   const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
 
@@ -57,8 +54,6 @@ export default function QueryList({
     // Filtering: tab takes precedence (if not "all"), otherwise use statusFilter (if not "all")
     if (tab !== "all") {
       out = out.filter((it: any) => String(it.status) === String(tab));
-    } else if (statusFilter !== "all") {
-      out = out.filter((it: any) => String(it.status) === String(statusFilter));
     }
 
     // Sorting by date fallback fields - normalize to ISO parseable
@@ -69,7 +64,7 @@ export default function QueryList({
     });
 
     return out;
-  }, [queries, search, statusFilter, tab, sortOrder]);
+  }, [queries, search, tab, sortOrder]);
 
   return (
     <div className="mt-6">
@@ -85,42 +80,7 @@ export default function QueryList({
         </div>
 
         <div className="flex items-center gap-3">
-          {/* All Status dropdown */}
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button
-                variant="outline"
-                className="flex items-center justify-between gap-2 border rounded-lg px-4 py-2 w-[150px]"
-              >
-                {statusFilter === "all"
-                  ? "All Status"
-                  : statusFilter === "OPEN"
-                    ? "Open"
-                    : "Responded"}
-                <ChevronDown className="w-4 h-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="w-[150px]">
-              <DropdownMenuLabel>Filter Status</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {[
-                { key: "all", label: "All Status" },
-                { key: "OPEN", label: "Open" },
-                { key: "RESPONDED", label: "Responded" },
-              ].map((opt) => (
-                <DropdownMenuItem
-                  key={opt.key}
-                  onClick={() => setStatusFilter(opt.key as any)}
-                  className={`${String(statusFilter) === String(opt.key)
-                      ? "bg-primary/10 text-primary"
-                      : ""
-                    } cursor-pointer`}
-                >
-                  {opt.label}
-                </DropdownMenuItem>
-              ))}
-            </DropdownMenuContent>
-          </DropdownMenu>
+
 
           {/* Sort By dropdown */}
           <DropdownMenu>
@@ -164,7 +124,6 @@ export default function QueryList({
               key={t}
               onClick={() => {
                 setTab(t as any);
-                setStatusFilter("all"); // reset dropdown when tab is used
               }}
               className={`px-4 py-2 rounded-lg text-sm font-medium ${isActive
                   ? "bg-transparent border border-primary text-primary"
