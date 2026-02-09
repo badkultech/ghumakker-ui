@@ -123,9 +123,19 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
   const [updateTrip, { isLoading: updateTripLoading }] =
     useUpdateTripMutation();
 
-  const [triggerGetTrip, { data: tripData }] =
+  const [triggerGetTrip, { data: tripData, error: tripError }] =
     useLazyGetTripByIdQuery();
   const [saveLeader] = useSaveGroupLeaderMutation();
+
+  useEffect(() => {
+    if (tripError) {
+      toast({
+        toastType: "error",
+        title: "Error",
+        description: "Failed to fetch trip details",
+      });
+    }
+  }, [tripError]);
 
   useEffect(() => {
     setSaveDraftDisabled(false);

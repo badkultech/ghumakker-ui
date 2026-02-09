@@ -36,7 +36,7 @@ export default function TripLeadersPage() {
 
   // Data fetching
   const { data: leaders = [], isLoading, error, refetch } =
-    useGetGroupLeadersQuery(organizationId);
+    useGetGroupLeadersQuery(organizationId ?? skipToken);
   const { data: selectedLeader, isLoading: isLeaderLoading, error: leaderError } =
     useGetGroupLeaderByIdQuery(
       selectedLeaderId && organizationId
