@@ -13,7 +13,11 @@ export default function DestinationMasterPage() {
 
     const handleSubmit = async () => {
         try {
-            await createDestination(form).unwrap();
+            const payload = {
+                ...form,
+                tripScope: (form.isDomestic ? "DOMESTIC" : "INTERNATIONAL") as "DOMESTIC" | "INTERNATIONAL",
+            };
+            await createDestination(payload).unwrap();
             showSuccess("Destination master data added successfully");
 
             setForm({

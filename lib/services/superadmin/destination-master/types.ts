@@ -5,6 +5,7 @@ export interface DestinationCreateRequest {
     country: string;
     region: string;
     isDomestic: boolean;
+    tripScope?: "DOMESTIC" | "INTERNATIONAL";
     pinCode?: string;
 }
 
