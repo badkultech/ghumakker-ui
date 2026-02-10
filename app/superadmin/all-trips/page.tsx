@@ -37,6 +37,10 @@ export default function AllTripsPage() {
     const trips = tripsData?.content || [];
     const totalTrips = tripsData?.totalElements || 0;
 
+    // Load More Logic (Client-side)
+    const [visibleCount, setVisibleCount] = useState(10);
+    const displayedTrips = trips.slice(0, visibleCount);
+
     const formatDate = (dateString?: string) => {
         if (!dateString) return "N/A";
         return new Date(dateString).toLocaleDateString("en-GB");
@@ -201,7 +205,7 @@ export default function AllTripsPage() {
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                trips.map((trip) => (
+                                                displayedTrips.map((trip) => (
                                                     <tr key={trip.publicId} className="hover:bg-gray-50">
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <Link
@@ -247,9 +251,21 @@ export default function AllTripsPage() {
                                     </table>
                                 </div>
 
-                                {/* Results Count */}
-                                <div className="px-6 py-3 bg-gray-50 border-t text-sm text-gray-600">
-                                    Showing {trips.length} of {totalTrips} trips
+                                {/* Results Count & Load More */}
+                                <div className="px-6 py-4 bg-gray-50 border-t flex items-center justify-between">
+                                    <div className="text-sm text-gray-600">
+                                        Showing {displayedTrips.length} of {trips.length} trips
+                                    </div>
+                                    {visibleCount < trips.length && (
+                                        <Button
+                                            variant="outline"
+                                            size="sm"
+                                            onClick={() => setVisibleCount((prev) => prev + 10)}
+                                            className="text-primary border-primary hover:bg-primary/5"
+                                        >
+                                            Load More
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
                         )}
