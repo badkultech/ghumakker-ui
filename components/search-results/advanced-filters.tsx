@@ -31,31 +31,12 @@ interface AdvancedFiltersProps {
 }
 
 const filterSections = [
-  { id: "startDate", label: "Start Date", defaultOpen: false },
   { id: "duration", label: "Duration", defaultOpen: true },
   { id: "ageGroup", label: "Age Group", defaultOpen: false },
   { id: "budgetRange", label: "Budget Range", defaultOpen: true },
-  { id: "destinations", label: "Destinations", defaultOpen: true },
-  { id: "departureCity", label: "Departure City", defaultOpen: true },
-  { id: "occupancyType", label: "Occupancy Type", defaultOpen: true },
-  { id: "groupType", label: "Group Type", defaultOpen: true },
 ]
 
-const destinations = [
-  { name: "Paris, France", checked: false },
-  { name: "Barcelona, Spain", checked: false },
-  { name: "Rome, Italy", checked: true },
-  { name: "London, UK", checked: false },
-  { name: "Tokyo, Japan", checked: false },
-]
 
-const departureCities = [
-  { name: "London", checked: false },
-  { name: "Paris", checked: false },
-  { name: "Barcelona", checked: false },
-  { name: "Madrid", checked: true },
-  { name: "Rome", checked: false },
-]
 
 const moods = [
   { name: "Mountain", icon: Mountain },
@@ -88,21 +69,12 @@ export function AdvancedFilters({
   )
   const [selectedDuration, setSelectedDuration] = useState("")
   const [budgetRange, setBudgetRange] = useState({ min: 0, max: 50000 })
-  const [selectedOccupancy, setSelectedOccupancy] = useState("")
   const [selectedMoods, setSelectedMoods] = useState<string[]>([])
   const [emiAvailable, setEmiAvailable] = useState(false)
-
-  // Properly manage destinations and departure cities state
-  const [selectedDestinations, setSelectedDestinations] = useState<string[]>([])
-  const [selectedDepartureCities, setSelectedDepartureCities] = useState<string[]>([])
 
 
   const minBudgetLimit = 0
   const maxBudgetLimit = 100000
-
-  const getPercent = (value: number) => {
-    return ((value - minBudgetLimit) / (maxBudgetLimit - minBudgetLimit)) * 100
-  }
 
   const toggleSection = (id: string) => {
     setExpandedSections((prev) => ({ ...prev, [id]: !prev[id] }))
@@ -112,39 +84,21 @@ export function AdvancedFilters({
     setSelectedMoods((prev) => (prev.includes(name) ? prev.filter((m) => m !== name) : [...prev, name]))
   }
 
-  const toggleDestination = (name: string) => {
-    setSelectedDestinations((prev) =>
-      prev.includes(name) ? prev.filter((d) => d !== name) : [...prev, name]
-    )
-  }
-
-  const toggleDepartureCity = (name: string) => {
-    setSelectedDepartureCities((prev) =>
-      prev.includes(name) ? prev.filter((c) => c !== name) : [...prev, name]
-    )
-  }
-
   const getSelectedFilters = () => ({
     duration: selectedDuration,
     minBudget: budgetRange.min,
     maxBudget: budgetRange.max,
     minAge: undefined,
     maxAge: undefined,
-    occupancy: selectedOccupancy,
     moods: selectedMoods,
     emi: emiAvailable,
-    destinations: selectedDestinations,
-    departureCities: selectedDepartureCities,
   });
 
   const clearAllFilters = () => {
     setSelectedDuration("7+ Days")
     setBudgetRange({ min: 5000, max: 50000 })
-    setSelectedOccupancy("")
     setSelectedMoods([])
     setEmiAvailable(false)
-    setSelectedDestinations([])
-    setSelectedDepartureCities([])
   }
 
   const containerClass = isMobile
@@ -165,26 +119,6 @@ export function AdvancedFilters({
       </div>
 
       <div className="space-y-4 overflow-y-auto max-h-[calc(100vh-200px)] md:max-h-none">
-        {/* Start Date */}
-        <div className="border-b border-[#e5e3e0] pb-4">
-          <button onClick={() => toggleSection("startDate")} className="w-full flex items-center justify-between">
-            <span className="text-sm font-medium text-[#2d2d2d]">Start Date</span>
-            {expandedSections.startDate ? (
-              <ChevronUp className="w-4 h-4 text-[#6b6b6b]" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-[#6b6b6b]" />
-            )}
-          </button>
-          {expandedSections.startDate && (
-            <div className="mt-3">
-              <input
-                type="text"
-                placeholder="dd/mm/yyyy"
-                className="w-full px-3 py-2 border border-[#e5e3e0] rounded-lg text-sm placeholder:text-[#a0a0a0]"
-              />
-            </div>
-          )}
-        </div>
 
         {/* Duration */}
         <div className="border-b border-[#e5e3e0] pb-4">
@@ -344,91 +278,6 @@ export function AdvancedFilters({
                 />
                 <span className="text-xs text-[#6b6b6b]">EMI Available</span>
               </label>
-            </div>
-          )}
-        </div>
-
-
-        {/* Destinations */}
-        <div className="border-b border-[#e5e3e0] pb-4">
-          <button onClick={() => toggleSection("destinations")} className="w-full flex items-center justify-between">
-            <span className="text-sm font-medium text-[#2d2d2d]">Destinations</span>
-            {expandedSections.destinations ? (
-              <ChevronUp className="w-4 h-4 text-[#6b6b6b]" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-[#6b6b6b]" />
-            )}
-          </button>
-          {expandedSections.destinations && (
-            <div className="mt-3 space-y-2">
-              {destinations.map((dest) => (
-                <label key={dest.name} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedDestinations.includes(dest.name)}
-                    onChange={() => toggleDestination(dest.name)}
-                    className="w-4 h-4 rounded border-[#e5e3e0] text-[#e07a5f] focus:ring-[#e07a5f]"
-                  />
-                  <span className="text-xs text-[#4d4d4d]">{dest.name}</span>
-                </label>
-              ))}
-              <button className="text-xs text-[#e07a5f] font-medium mt-2">Show more</button>
-            </div>
-          )}
-        </div>
-
-        {/* Departure City */}
-        <div className="border-b border-[#e5e3e0] pb-4">
-          <button onClick={() => toggleSection("departureCity")} className="w-full flex items-center justify-between">
-            <span className="text-sm font-medium text-[#2d2d2d]">Departure City</span>
-            {expandedSections.departureCity ? (
-              <ChevronUp className="w-4 h-4 text-[#6b6b6b]" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-[#6b6b6b]" />
-            )}
-          </button>
-          {expandedSections.departureCity && (
-            <div className="mt-3 space-y-2">
-              {departureCities.map((city) => (
-                <label key={city.name} className="flex items-center gap-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedDepartureCities.includes(city.name)}
-                    onChange={() => toggleDepartureCity(city.name)}
-                    className="w-4 h-4 rounded border-[#e5e3e0] text-[#e07a5f] focus:ring-[#e07a5f]"
-                  />
-                  <span className="text-xs text-[#4d4d4d]">{city.name}</span>
-                </label>
-              ))}
-              <button className="text-xs text-[#e07a5f] font-medium mt-2">Show more</button>
-            </div>
-          )}
-        </div>
-
-        {/* Occupancy Type */}
-        <div className="border-b border-[#e5e3e0] pb-4">
-          <button onClick={() => toggleSection("occupancyType")} className="w-full flex items-center justify-between">
-            <span className="text-sm font-medium text-[#2d2d2d]">Occupancy Type</span>
-            {expandedSections.occupancyType ? (
-              <ChevronUp className="w-4 h-4 text-[#6b6b6b]" />
-            ) : (
-              <ChevronDown className="w-4 h-4 text-[#6b6b6b]" />
-            )}
-          </button>
-          {expandedSections.occupancyType && (
-            <div className="mt-3 flex flex-wrap gap-2">
-              {["Single Occupancy", "Double Occupancy", "Triple Occupancy", "Dormitory"].map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setSelectedOccupancy(type)}
-                  className={`px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${selectedOccupancy === type
-                    ? "bg-[#e07a5f] text-white border-[#e07a5f]"
-                    : "bg-white text-[#4d4d4d] border-[#e0e0e0] hover:border-[#c0c0c0]"
-                    }`}
-                >
-                  {type}
-                </button>
-              ))}
             </div>
           )}
         </div>
