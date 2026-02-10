@@ -31,6 +31,7 @@ import { FullImageGalleryModal } from "@/components/library/FullImageGalleryModa
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
+import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
 import { Overlay } from "@/components/common/Overlay";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
@@ -85,15 +86,7 @@ export default function TripDetailsPage() {
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
   const [searchTab, setSearchTab] =
     useState<"destination" | "moods">("destination");
-  const user = isLoggedIn
-    ? {
-      name: userData?.firstName
-        ? `${userData.firstName} ${userData.lastName ?? ""}`
-        : "",
-      email: userData?.email as string,
-      profileImage: userData?.profileImageUrl,
-    }
-    : undefined;
+  const user = useDisplayedUser();
 
 
   const organizationId = useOrganizationId();

@@ -1,9 +1,7 @@
 "use client";
 
 import { useSelector } from "react-redux";
-import { usePathname } from "next/navigation";
 import { selectAuthState } from "@/lib/slices/auth";
-import { PublicRoutes } from "@/lib/utils";
 
 /**
  * Returns organizationId:
@@ -12,14 +10,9 @@ import { PublicRoutes } from "@/lib/utils";
  * - Always returns a string
  */
 export const useOrganizationId = (): string => {
-  const pathname = usePathname();
+
   const { focusedOrganizationId } = useSelector(selectAuthState);
 
-  const isPublic = PublicRoutes.some((r) => pathname === r);
-  if (isPublic) {
-    console.log("Public route detected");
-    return "";
-  }
   return focusedOrganizationId ? String(focusedOrganizationId) : "";
 };
 

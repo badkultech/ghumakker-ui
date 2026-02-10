@@ -25,6 +25,7 @@ import { Overlay } from "@/components/common/Overlay";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
+import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 
 export default function SettingsPage() {
 
@@ -44,19 +45,12 @@ export default function SettingsPage() {
   const [searchTab, setSearchTab] =
     useState<"destination" | "moods">("destination");
   const { userData } = useSelector(selectAuthState);
-  const user = isLoggedIn
-    ? {
-      name: userData?.firstName
-        ? `${userData.firstName} ${userData.lastName ?? ""}`
-        : "",
-      email: userData?.email as string,
-      profileImage: userData?.profileImageUrl,
-    }
-    : undefined;
   const { data, isLoading } = useGetTravelerProfileQuery({
     organizationId: organizationId,
     userPublicId: userPublicId,
   });
+
+  const user = useDisplayedUser();
 
   const [updateProfile, { isLoading: isSaving }] =
     useUpdateTravelerProfileFormMutation();
@@ -73,6 +67,8 @@ export default function SettingsPage() {
     dateOfBirth: "",
     bio: "",
   });
+  // ... (rest of code)
+
   const formatDateForUI = (date: string | null) => {
     if (!date) return "";
 
@@ -308,6 +304,7 @@ export default function SettingsPage() {
         userMenuItems={userMenuItems}
         onLogout={onLogout}
         isLoggedIn={isLoggedIn}
+        user={user}
       />
       <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
         <SearchTripsCard defaultTab={searchTab}

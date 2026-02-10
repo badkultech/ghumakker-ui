@@ -8,8 +8,7 @@ import { MainHeader } from "@/components/search-results/MainHeader"
 import { notificationsData, userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
-import { useSelector } from "react-redux"
-import { selectAuthState } from "@/lib/slices/auth"
+import { useDisplayedUser } from "@/hooks/useDisplayedUser"
 import { Overlay } from "@/components/common/Overlay"
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop"
 import { AuthModals } from "@/components/auth/auth/AuthModals"
@@ -99,16 +98,7 @@ export default function TripLeadersPage() {
     const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
     const [searchTab, setSearchTab] =
         useState<"destination" | "moods">("destination");
-    const { userData } = useSelector(selectAuthState);
-    const user = isLoggedIn
-        ? {
-            name: userData?.firstName
-                ? `${userData.firstName} ${userData.lastName ?? ""}`
-                : "",
-            email: userData?.email as string,
-            profileImage: userData?.profileImageUrl,
-        }
-        : undefined;
+    const user = useDisplayedUser();
 
     const onLogout = () => {
         handleLogout(() => setIsSidebarOpen(false));

@@ -11,8 +11,6 @@ import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { Overlay } from "@/components/common/Overlay"
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop"
-import { useSelector } from "react-redux"
-import { selectAuthState } from "@/lib/slices/auth"
 import { useOrganizationId } from "@/hooks/useOrganizationId"
 import { useUserId } from "@/hooks/useUserId"
 import {
@@ -20,6 +18,7 @@ import {
   useSendNudgeMutation,
   useUnsendInviteMutation
 } from "@/lib/services/user-leads"
+import { useDisplayedUser } from "@/hooks/useDisplayedUser"
 import { UserTripLead } from "@/lib/services/user-leads/types"
 import { toast } from "@/hooks/use-toast"
 
@@ -34,24 +33,17 @@ export default function TripInvitationsPage() {
   const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
   const [searchTab, setSearchTab] =
     useState<"destination" | "moods">("destination");
-  const { userData } = useSelector(selectAuthState);
-  const user = isLoggedIn
-    ? {
-      name: userData?.firstName
-        ? `${userData.firstName} ${userData.lastName ?? ""}`
-        : "",
-      email: userData?.email as string,
-      profileImage: userData?.profileImageUrl,
-    }
-    : undefined;
+  // Get organizationId and userId
+  const organizationId = useOrganizationId();
+  const userPublicId = useUserId();
+
+  const user = useDisplayedUser();
 
   const onLogout = () => {
     handleLogout(() => setIsSidebarOpen(false));
   };
 
-  // Get organizationId and userId
-  const organizationId = useOrganizationId();
-  const userPublicId = useUserId();
+
 
   // Fetch user leads
   const { data: leads, isLoading, error } = useGetUserLeadsQuery(
@@ -307,6 +299,7 @@ export default function TripInvitationsPage() {
         userMenuItems={userMenuItems}
         onLogout={onLogout}
         isLoggedIn={isLoggedIn}
+        user={user}
       />
       <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
         <SearchTripsCard defaultTab={searchTab}

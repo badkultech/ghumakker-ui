@@ -4,6 +4,7 @@ import { Heart } from "lucide-react"
 import { SearchResultsTripCard } from "@/components/search-results/search-results-trip-card"
 import { MainHeader } from "@/components/search-results/MainHeader"
 import { useGetMyWishlistQuery, useRemoveTripFromWishlistMutation } from "@/lib/services/wishlist"
+import { useDisplayedUser } from "@/hooks/useDisplayedUser"
 import { WishlistTrip } from "@/lib/services/wishlist/types"
 import { useOrganizationId } from "@/hooks/useOrganizationId"
 import { useUserId } from "@/hooks/useUserId"
@@ -12,8 +13,6 @@ import { useState } from "react"
 import { notificationsData, userMenuItems } from "../constants"
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { AuthModals } from "@/components/auth/auth/AuthModals"
-import { useSelector } from "react-redux"
-import { selectAuthState } from "@/lib/slices/auth"
 import { Overlay } from "@/components/common/Overlay"
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop"
 
@@ -31,16 +30,9 @@ export default function WishlistPage() {
     const onLogout = () => {
         handleLogout(() => setSidebarOpen(false));
     };
-    const { userData } = useSelector(selectAuthState);
-    const user = isLoggedIn
-        ? {
-            name: userData?.firstName
-                ? `${userData.firstName} ${userData.lastName ?? ""}`
-                : "",
-            email: userData?.email as string,
-            profileImage: userData?.profileImageUrl,
-        }
-        : undefined;
+    const user = useDisplayedUser();
+
+
 
 
     if (!organizationId || !userId) {

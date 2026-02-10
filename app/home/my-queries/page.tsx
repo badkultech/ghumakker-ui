@@ -24,9 +24,8 @@ import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useOrganizationId } from "@/hooks/useOrganizationId"
 import { useUserId } from "@/hooks/useUserId"
-import { useSelector } from "react-redux"
-import { selectAuthState } from "@/lib/slices/auth"
 import { useGetUserQueriesQuery } from "@/lib/services/user"
+import { useDisplayedUser } from "@/hooks/useDisplayedUser"
 import { AuthModals } from "@/components/auth/auth/AuthModals"
 import { Overlay } from "@/components/common/Overlay"
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop"
@@ -50,6 +49,7 @@ interface Question {
     warningMessage?: string
 }
 
+
 export default function MyQueriesPage() {
     const [expandedQuestions, setExpandedQuestions] = useState<string[]>([])
     const [showAskModal, setShowAskModal] = useState(false)
@@ -71,22 +71,15 @@ export default function MyQueriesPage() {
     const onLogout = () => {
         handleLogout(() => setSidebarOpen(false));
     };
-    const { userData } = useSelector(selectAuthState);
-    const user = isLoggedIn
-        ? {
-            name: userData?.firstName
-                ? `${userData.firstName} ${userData.lastName ?? ""}`
-                : "",
-            email: userData?.email as string,
-            profileImage: userData?.profileImageUrl,
-        }
-        : undefined;
-
-
 
     const organizationId = useOrganizationId();
-    // Use useUserId() hook to get focusedUserId (supports user switching)
     const userPublicId = useUserId();
+
+    const user = useDisplayedUser();
+
+
+
+
 
     const {
         data: queries,

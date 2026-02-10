@@ -56,8 +56,7 @@ const partnersData: Record<
 
 
 import { useAuthActions } from "@/hooks/useAuthActions";
-import { useSelector } from "react-redux";
-import { selectAuthState } from "@/lib/slices/auth";
+import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 import { Overlay } from "@/components/common/Overlay";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
@@ -76,16 +75,7 @@ export default function PartnerDetailPage({
   const [searchTab, setSearchTab] =
     useState<"destination" | "moods">("destination");
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
-  const { userData } = useSelector(selectAuthState);
-  const user = isLoggedIn
-    ? {
-      name: userData?.firstName
-        ? `${userData.firstName} ${userData.lastName ?? ""}`
-        : "",
-      email: userData?.email as string,
-      profileImage: userData?.profileImageUrl,
-    }
-    : undefined;
+  const user = useDisplayedUser();
 
   const onLogout = () => {
     handleLogout(() => setSidebarOpen(false));

@@ -20,6 +20,7 @@ import { Overlay } from "@/components/common/Overlay";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { SearchTripsCardMobile } from "@/components/homePage/shared/SearchTripsCardMobile";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
+import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 
 interface TripData {
     id: string;
@@ -66,15 +67,10 @@ export default function CompareTripsPage() {
     };
     const { userData } = useSelector(selectAuthState);
     const userType = userData?.userType;
-    const user = isLoggedIn
-        ? {
-            name: userData?.firstName
-                ? `${userData.firstName} ${userData.lastName ?? ""}`
-                : "",
-            email: userData?.email as string,
-            profileImage: userData?.profileImageUrl,
-        }
-        : undefined;
+
+    const user = useDisplayedUser();
+
+
 
     /** ✅ get compare items (objects) */
     const compareItems = useSelector(

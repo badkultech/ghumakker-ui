@@ -7,9 +7,8 @@ import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { HeroSection } from "@/components/homePage/sections/hero-section";
 import { Footer } from "@/components/homePage/sections/footer";
 import { userMenuItems, notificationsData } from "./constants";
-import { useSelector } from "react-redux";
-import { selectAuthState } from "@/lib/slices/auth";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
+import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 
 export default function Home() {
   const { isLoggedIn, handleLogout, router } = useAuthActions();
@@ -23,16 +22,7 @@ export default function Home() {
     handleLogout(() => setIsMenuOpen(false));
   };
 
-  const { userData } = useSelector(selectAuthState);
-  const user = isLoggedIn
-    ? {
-      name: userData?.firstName
-        ? `${userData.firstName} ${userData.lastName ?? ""}`
-        : "",
-      email: userData?.email as string,
-      profileImage: userData?.profileImageUrl,
-    }
-    : undefined;
+  const user = useDisplayedUser();
 
 
   return (

@@ -23,6 +23,7 @@ import { FloatingCompareBadge } from "@/components/homePage/shared/FloatingCompa
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";
 import { useGetMyWishlistQuery } from "@/lib/services/wishlist";
+import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
 
 const calculateDuration = (startDate: string, endDate: string) => {
@@ -70,17 +71,10 @@ export default function SearchResultsWithFilters() {
   const [searchTab, setSearchTab] =
     useState<"destination" | "moods">("destination");
 
-  const user = isLoggedIn
-    ? {
-      name: userData?.firstName
-        ? `${userData.firstName} ${userData.lastName ?? ""}`
-        : "",
-      email: userData?.email as string,
-      profileImage: userData?.profileImageUrl,
-    }
-    : undefined;
   const organizationId = useOrganizationId();
   const userId = useUserId();
+
+  const user = useDisplayedUser();
 
   const { data: wishlistData } = useGetMyWishlistQuery(
     { organizationId, publicId: userId }, // userId is the publicId
