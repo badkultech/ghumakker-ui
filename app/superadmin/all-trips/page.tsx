@@ -166,15 +166,12 @@ export default function AllTripsPage() {
                         {/* Trips Table */}
                         {!isLoading && !error && (
                             <div className="bg-white rounded-lg border overflow-hidden">
-                                <div className="overflow-x-auto no-scrollbar">
+                                <div className="overflow-x-auto custom-scrollbar">
                                     <table className="w-full">
                                         <thead className="bg-gray-50 border-b">
                                             <tr>
                                                 <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                                                     Trip Name
-                                                </th>
-                                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
-                                                    Location
                                                 </th>
                                                 <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                                                     Start Date
@@ -190,6 +187,9 @@ export default function AllTripsPage() {
                                                 </th>
                                                 <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
                                                     Created Date
+                                                </th>
+                                                <th className="px-6 py-3 text-left text-xs font-bold text-gray-700 uppercase tracking-wider">
+                                                    Location
                                                 </th>
                                             </tr>
                                         </thead>
@@ -210,9 +210,6 @@ export default function AllTripsPage() {
                                                             >
                                                                 {trip.name || "Untitled Trip"}
                                                             </Link>
-                                                        </td>
-                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                                                            {formatLocation(trip.cityTags)}
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                                             {formatDate(trip.startDate)}
@@ -239,6 +236,9 @@ export default function AllTripsPage() {
                                                         </td>
                                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                                                             {formatDate(trip.createDate)}
+                                                        </td>
+                                                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                                            {formatLocation(trip.cityTags)}
                                                         </td>
                                                     </tr>
                                                 ))
