@@ -1,6 +1,7 @@
 export interface TripFilterRequest {
   timeFilter?: "DRAFT" | "UPCOMING" | "PAST" | "ARCHIVED" | "DELETED";
-  tripStatus?: "PUBLISHED" | "UNDER_REVIEW" | "REQUIRES_MODIFICATION";
+  tripStatus?: "PUBLISHED" | "UNDER_REVIEW" | "REQUIRES_MODIFICATION" | "DRAFT";
+  status?: "PUBLISHED" | "UNDER_REVIEW" | "REQUIRES_MODIFICATION" | "DRAFT";
   search?: string;
   startDate?: string;
   endDate?: string;

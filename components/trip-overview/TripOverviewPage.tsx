@@ -24,7 +24,7 @@ export default function TripOverviewPage() {
 
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<
-    "PUBLISHED" | "UNDER_REVIEW" | "REQUIRES_MODIFICATION" | undefined
+    "PUBLISHED" | "UNDER_REVIEW" | "DRAFT" | undefined
   >(undefined);
 
   const [dateRange, setDateRange] = useState<{ start?: string; end?: string }>(
@@ -51,6 +51,7 @@ export default function TripOverviewPage() {
   const filterParams = {
     timeFilter: mapTabToTimeFilter[activeTab],
     tripStatus: statusFilter,
+    status: statusFilter,
     search,
     // Try both parameter naming conventions
     startDate: dateRange.start,
@@ -149,7 +150,11 @@ export default function TripOverviewPage() {
       {/* Trip Cards */}
       <div className="space-y-5">
         {trips.length === 0 && !isFetching && (
-          <div className="text-center text-gray-500 py-6">No trips found.</div>
+          <div className="text-center text-gray-500 py-6">
+            No trips found
+            {statusFilter ? ` with status: ${statusFilter.replace("_", " ")}` : ""}
+            {search ? ` matching "${search}"` : ""}.
+          </div>
         )}
 
         {trips.map((trip: TripListItem) => (
@@ -173,7 +178,11 @@ export default function TripOverviewPage() {
                   ? "Published"
                   : trip.status === "UNDER_REVIEW"
                     ? "Under Review"
-                    : "Requires Modification",
+                    : trip.status === "REQUIRES_MODIFICATION"
+                      ? "Requires Modification"
+                      : trip.status === "DRAFT"
+                        ? "Draft"
+                        : trip.status?.replace("_", " ") || "N/A",
               views: trip.viewsCount ?? 0,
               queries: trip.queriesCount ?? 0,
               leads: trip.leadsCount ?? 0,

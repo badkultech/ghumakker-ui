@@ -29,7 +29,7 @@ interface Props {
   setSearch: (v: string) => void;
 
   // status (backend TripStatus)
-  statusFilter?: "PUBLISHED" | "UNDER_REVIEW" | "REQUIRES_MODIFICATION";
+  statusFilter?: "PUBLISHED" | "UNDER_REVIEW" | "DRAFT";
   setStatusFilter: (v: any) => void;
 
   // date range
@@ -227,11 +227,9 @@ export default function TripFilterBar({
               )}
             </DropdownMenuItem>
 
-            <DropdownMenuItem
-              onClick={() => setStatusFilter("REQUIRES_MODIFICATION")}
-            >
-              Requires Modification
-              {statusFilter === "REQUIRES_MODIFICATION" && (
+            <DropdownMenuItem onClick={() => setStatusFilter("DRAFT")}>
+              Draft
+              {statusFilter === "DRAFT" && (
                 <Check className="w-4 h-4 text-primary ml-auto" />
               )}
             </DropdownMenuItem>

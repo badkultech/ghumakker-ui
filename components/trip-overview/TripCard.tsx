@@ -207,7 +207,7 @@ export default function TripCard({ trip, tab, onArchive, onDelete, onRestore }: 
                 : trip.status === "Requires Modification"
                   ? "bg-red-50 text-red-600"
                   : trip.status === "Draft"
-                    ? "bg-gray-100 text-gray-600"
+                    ? "bg-red-50 text-red-600"
                     : "bg-gray-100 text-gray-600"
               }`}
           >
