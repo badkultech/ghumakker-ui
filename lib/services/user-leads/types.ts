@@ -1,14 +1,15 @@
 // Types for User Trip Leads
 export interface UserTripLead {
-    id: number;
+    leadId: number;
     tripPublicId: string;
-    tripName: string;
-    organizerName: string;
-    organizerImage?: string;
-    sentTime: string;
-    status: "PENDING" | "COMPLETED" | "CANCELLED";
+    tripTitle: string;
+    organizationName: string;
+    organizerImage?: string; // might be missing in response?
+    sentTime?: string; // missing in response?
+    status: "OPEN" | "PENDING" | "COMPLETED" | "CANCELLED";
+    nudgeCount: number;
     createdDate: string;
-    updatedDate?: string;
+    userId: number;
 }
 
 export interface GetUserLeadsRequest {

@@ -79,12 +79,12 @@ export default function TripInvitationsPage() {
       await sendNudge({
         organizationId,
         userPublicId,
-        leadId: selectedLead.id,
+        leadId: selectedLead.leadId,
       }).unwrap();
 
       toast({
         title: "Nudge sent!",
-        description: `Organizer has been notified about ${selectedLead.tripName}`,
+        description: `Organizer has been notified about ${selectedLead.tripTitle}`,
       });
 
       setShowNudgeModal(false);
@@ -105,12 +105,12 @@ export default function TripInvitationsPage() {
       await unsendInvite({
         organizationId,
         userPublicId,
-        leadId: lead.id,
+        leadId: lead.leadId,
       }).unwrap();
 
       toast({
         title: "Invitation removed",
-        description: `Your request for ${lead.tripName} has been cancelled`,
+        description: `Your request for ${lead.tripTitle} has been cancelled`,
       });
     } catch (error) {
       toast({
@@ -180,16 +180,16 @@ export default function TripInvitationsPage() {
           {!isLoading && !error && leads && leads.length > 0 && (
             <div className="space-y-4">
               {leads.map((lead) => {
-                const isOpen = lead.id === openCardId
+                const isOpen = lead.leadId === openCardId
 
                 return (
                   <div
-                    key={lead.id}
+                    key={lead.leadId}
                     className="bg-card border border-border rounded-xl p-4 md:p-6 relative cursor-pointer"
-                    onClick={() => openButtonsFor(lead.id)}
+                    onClick={() => openButtonsFor(lead.leadId)}
                   >
                     {/* Status Badge Desktop */}
-                    {lead.status === "PENDING" && (
+                    {(lead.status === "PENDING" || lead.status === "OPEN") && (
                       <span className="absolute top-4 right-4 hidden md:inline-flex px-3 py-1 bg-primary/10 text-primary text-xs rounded-full">
                         Pending
                       </span>
@@ -208,16 +208,16 @@ export default function TripInvitationsPage() {
                     {/* Trip Info */}
                     <div className="mb-4">
                       <h3 className="text-lg md:text-xl font-semibold text-foreground mb-3">
-                        {lead.tripName}
+                        {lead.tripTitle}
                       </h3>
                       <div className="flex items-center gap-2 mb-2">
                         <Avatar className="w-8 h-8">
                           <AvatarImage src={lead.organizerImage} />
                           <AvatarFallback className="bg-muted text-muted-foreground text-xs">
-                            {lead.organizerName?.slice(0, 2).toUpperCase() || "OR"}
+                            {lead.organizationName?.slice(0, 2).toUpperCase() || "OR"}
                           </AvatarFallback>
                         </Avatar>
-                        <span className="text-sm text-foreground">{lead.organizerName || "Organizer"}</span>
+                        <span className="text-sm text-foreground">{lead.organizationName || "Organizer"}</span>
                       </div>
                       <div className="flex items-center gap-1.5 text-muted-foreground">
                         <Clock className="w-4 h-4" />
@@ -226,7 +226,7 @@ export default function TripInvitationsPage() {
                         </span>
                       </div>
                     </div>
-                    {isOpen && lead.status === "PENDING" && (
+                    {isOpen && (lead.status === "PENDING" || lead.status === "OPEN") && (
                       <div className="flex flex-col md:flex-row gap-3 mt-4">
                         <button
                           onClick={(e) => {
@@ -276,7 +276,7 @@ export default function TripInvitationsPage() {
 
               <h2 className="text-xl font-semibold text-foreground mb-2">Send a Nudge?</h2>
               <p className="text-sm text-muted-foreground mb-6">
-                We'll notify the organizer to take action on your request for <strong>{selectedLead.tripName}</strong>.
+                We'll notify the organizer to take action on your request for <strong>{selectedLead.tripTitle}</strong>.
               </p>
 
               <div className="flex flex-col md:flex-row gap-3">
