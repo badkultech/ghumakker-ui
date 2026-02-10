@@ -183,10 +183,6 @@ export default function TripLeadersPage() {
                         setUpdateId(leader.id);
                         setModalOpen(true);
                       }}
-                      onDelete={() => {
-                        setDeleteTarget({ id: leader.id, name: leader.name });
-                        setConfirmOpen(true);
-                      }}
                     />
                   </div>
                 </div>
@@ -213,18 +209,6 @@ export default function TripLeadersPage() {
           setSelectedLeaderId(null);
         }}
         leader={selectedLeader ?? null}
-      />
-
-      <DeleteConfirmDialog
-        open={confirmOpen}
-        onOpenChange={(open) => {
-          setConfirmOpen(open);
-          if (!open) setDeleteTarget(null);
-        }}
-        title="Delete Group Leader"
-        itemName={deleteTarget?.name}
-        isDeleting={Boolean(deletingId)}
-        onConfirm={handleDeleteConfirm}
       />
 
       <AddNewItemModal
