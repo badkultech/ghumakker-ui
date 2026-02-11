@@ -31,6 +31,8 @@ export function CustomDateTimePicker({
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [hourDropdownOpen, setHourDropdownOpen] = useState(false)
   const [minuteDropdownOpen, setMinuteDropdownOpen] = useState(false)
+  const [monthDropdownOpen, setMonthDropdownOpen] = useState(false)
+  const [yearDropdownOpen, setYearDropdownOpen] = useState(false)
 
   const pad = (n: number) => n.toString().padStart(2, "0")
 
@@ -97,6 +99,8 @@ export function CustomDateTimePicker({
         setOpen(false)
         setHourDropdownOpen(false)
         setMinuteDropdownOpen(false)
+        setMonthDropdownOpen(false)
+        setYearDropdownOpen(false)
       }
     }
     document.addEventListener("mousedown", onDoc)
@@ -134,6 +138,16 @@ export function CustomDateTimePicker({
     setSelectedMinute(m)
     setMinuteDropdownOpen(false)
     emitChange(selectedDate, selectedHour, m)
+  }
+
+  const handleMonthChange = (monthIndex: number) => {
+    setCurrentMonth(new Date(currentMonth.getFullYear(), monthIndex, 1))
+    setMonthDropdownOpen(false)
+  }
+
+  const handleYearChange = (year: number) => {
+    setCurrentMonth(new Date(year, currentMonth.getMonth(), 1))
+    setYearDropdownOpen(false)
   }
 
   // Calendar helpers
@@ -200,6 +214,10 @@ export function CustomDateTimePicker({
   ]
 
   const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
+  // Generate years from 1900 to current year
+  const currentYear = new Date().getFullYear()
+  const years = Array.from({ length: currentYear - 1900 + 1 }, (_, i) => currentYear - i)
 
   const formatted = (() => {
     if (!selectedDate) return ""
@@ -280,15 +298,75 @@ export function CustomDateTimePicker({
       </PopoverTrigger>
 
       <PopoverContent className="w-auto p-4" align="start" side="bottom">
-        {/* Month Navigation */}
-        <div className="flex items-center justify-between mb-4">
-          <button type="button" onClick={prevMonth} className="p-1 hover:bg-muted rounded-md transition-colors">
+        {/* Month/Year Navigation with Dropdowns */}
+        <div className="flex items-center justify-between mb-4 gap-2">
+          <button type="button" onClick={prevMonth} className="p-1 hover:bg-muted rounded-md transition-colors flex-shrink-0">
             <ChevronLeft size={20} className="text-muted-foreground" />
           </button>
-          <span className="font-medium text-foreground">
-            {monthNames[currentMonth.getMonth()]} {currentMonth.getFullYear()}
-          </span>
-          <button type="button" onClick={nextMonth} className="p-1 hover:bg-muted rounded-md transition-colors">
+
+          <div className="flex items-center gap-2 flex-1 justify-center">
+            {/* Month Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  setMonthDropdownOpen(!monthDropdownOpen)
+                  setYearDropdownOpen(false)
+                }}
+                className="flex items-center gap-1 px-2 py-1 hover:bg-muted rounded-md transition-colors text-sm font-medium"
+              >
+                <span>{monthNames[currentMonth.getMonth()]}</span>
+                <ChevronDown size={14} className="text-muted-foreground" />
+              </button>
+              {monthDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 bg-popover border border-border rounded-md shadow-md max-h-48 overflow-y-auto z-50 min-w-[120px]">
+                  {monthNames.map((month, idx) => (
+                    <button
+                      key={month}
+                      type="button"
+                      onClick={() => handleMonthChange(idx)}
+                      className={`w-full px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors ${idx === currentMonth.getMonth() ? "bg-accent text-accent-foreground font-medium" : ""
+                        }`}
+                    >
+                      {month}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Year Dropdown */}
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => {
+                  setYearDropdownOpen(!yearDropdownOpen)
+                  setMonthDropdownOpen(false)
+                }}
+                className="flex items-center gap-1 px-2 py-1 hover:bg-muted rounded-md transition-colors text-sm font-medium"
+              >
+                <span>{currentMonth.getFullYear()}</span>
+                <ChevronDown size={14} className="text-muted-foreground" />
+              </button>
+              {yearDropdownOpen && (
+                <div className="absolute top-full left-0 mt-1 bg-popover border border-border rounded-md shadow-md max-h-48 overflow-y-auto z-50 min-w-[80px]">
+                  {years.map((year) => (
+                    <button
+                      key={year}
+                      type="button"
+                      onClick={() => handleYearChange(year)}
+                      className={`w-full px-3 py-2 text-left text-sm hover:bg-accent hover:text-accent-foreground transition-colors ${year === currentMonth.getFullYear() ? "bg-accent text-accent-foreground font-medium" : ""
+                        }`}
+                    >
+                      {year}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <button type="button" onClick={nextMonth} className="p-1 hover:bg-muted rounded-md transition-colors flex-shrink-0">
             <ChevronRight size={20} className="text-muted-foreground" />
           </button>
         </div>
