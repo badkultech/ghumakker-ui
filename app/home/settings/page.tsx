@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Sidebar from "@/components/search-results/settings/Sidebar";
 import ProfileTab from "@/components/search-results/settings/ProfileTab";
 import CommunicationsTab from "@/components/search-results/settings/CommunicationsTab";
@@ -28,8 +29,18 @@ import { selectAuthState } from "@/lib/slices/auth";
 import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 
 export default function SettingsPage() {
-
+  const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("profile");
+
+  useEffect(() => {
+    if (searchParams.get("setup") === "true") {
+      setActiveTab("profile");
+      toast({
+        title: "Complete Profile 📝",
+        description: "Please fill in your details to continue.",
+      });
+    }
+  }, [searchParams]);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const organizationId = useOrganizationId();
@@ -159,10 +170,11 @@ export default function SettingsPage() {
         },
       }).unwrap();
 
-      toast({
-        title: "Success 🎉",
-        description: "Profile updated successfully",
-      });
+      showSuccess("Profile updated successfully");
+
+      if (searchParams.get("setup") === "true") {
+        router.push("/home");
+      }
     } catch (error: any) {
       toast({
         variant: "destructive",

@@ -10,6 +10,9 @@ import {
 } from "@/lib/services/otp";
 import { showApiError, showSuccess } from "@/lib/utils/toastHelpers";
 import { setCredentials } from "@/lib/slices/auth";
+import { useRouter } from "next/navigation";
+import { jwtDecode } from "jwt-decode";
+import { AuthTokenPayload } from "@/hooks/useDecodedToken";
 
 type Props = {
     phone: string;
@@ -22,6 +25,7 @@ const OTP_LENGTH = 6;
 const RESEND_TIME = 30;
 
 export function OTPVerificationModal({ phone, onBack, onClose, onNewUser, }: Props) {
+    const router = useRouter();
     const dispatch = useDispatch();
 
     const [otp, setOtp] = useState<string[]>(Array(OTP_LENGTH).fill(""));
@@ -61,6 +65,7 @@ export function OTPVerificationModal({ phone, onBack, onClose, onNewUser, }: Pro
         }
     };
 
+    // ... inside handleVerify ...
     const handleVerify = async () => {
         const code = otp.join("");
 
@@ -92,6 +97,16 @@ export function OTPVerificationModal({ phone, onBack, onClose, onNewUser, }: Pro
             if (res.refreshToken) {
                 localStorage.setItem("refreshToken", res.refreshToken);
             }
+
+            // Check if System Admin
+            try {
+                const decoded = jwtDecode<AuthTokenPayload>(res.accessToken);
+                if (decoded.userType === "SYSTEM_ADMIN") {
+                    router.push("/superadmin");
+                    onClose();
+                    return;
+                }
+            } catch (e) { /* ignore */ }
 
             showSuccess("Logged in successfully");
             onClose();

@@ -27,7 +27,7 @@ export const useDisplayedUser = (): DisplayedUser | undefined => {
             return {
                 name: focusedProfile.firstName
                     ? `${focusedProfile.firstName} ${focusedProfile.lastName ?? ""}`
-                    : "User",
+                    : "",
                 email: focusedProfile.email || "",
                 profileImage: focusedProfile.profileImageUrl || undefined,
             };

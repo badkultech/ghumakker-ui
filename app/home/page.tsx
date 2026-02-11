@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { MainHeader } from "@/components/search-results/MainHeader";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
@@ -23,6 +23,8 @@ export default function Home() {
   };
 
   const user = useDisplayedUser();
+
+
 
 
   return (

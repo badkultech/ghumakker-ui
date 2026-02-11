@@ -14,6 +14,8 @@ import { setCredentials } from "@/lib/slices/auth";
 import { showApiError, showSuccess } from "@/lib/utils/toastHelpers";
 import { FetchBaseQueryError } from "@reduxjs/toolkit/query";
 import { useAuthGuardContext } from "@/context/AuthGuardContext";
+import { jwtDecode } from "jwt-decode";
+import { AuthTokenPayload } from "@/hooks/useDecodedToken";
 
 export default function VerifyOTPPage() {
   const { resumePendingAction, clearPendingAction } = useAuthGuardContext(); // 🔥 ADDED
@@ -81,6 +83,23 @@ export default function VerifyOTPPage() {
       if (result.accessToken && result.refreshToken) {
         localStorage.setItem("accessToken", result.accessToken);
         localStorage.setItem("refreshToken", result.refreshToken);
+
+        // Check if System Admin
+        try {
+          const decoded = jwtDecode<AuthTokenPayload>(result.accessToken);
+          if (decoded.userType === "SYSTEM_ADMIN") {
+            dispatch(
+              setCredentials({
+                accessToken: result.accessToken || null,
+                refreshToken: result.refreshToken || null,
+              })
+            );
+            router.replace("/superadmin");
+            return;
+          }
+        } catch (e) {
+          console.error("Token decode error", e);
+        }
       }
 
       dispatch(
@@ -96,9 +115,13 @@ export default function VerifyOTPPage() {
 
       if (redirectUrl) {
         sessionStorage.removeItem("postLoginRedirect");
-        router.replace(redirectUrl);   // 🔥 GO BACK TO TRIP PAGE
+        if (redirectUrl.includes("/traveler/profile")) {
+          router.replace("/home/settings?setup=true");
+        } else {
+          router.replace(redirectUrl);
+        }
       } else {
-        router.back(); // fallback (keeps existing behavior)
+        router.replace("/home");
       }
       // 🔥 KEEP YOUR FLOW
     } catch (err) {

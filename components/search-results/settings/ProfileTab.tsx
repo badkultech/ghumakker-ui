@@ -4,6 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Upload, Calendar } from "lucide-react";
 import { GradientButton } from "@/components/gradient-button";
 import { useRef } from "react";
+import { CustomDateTimePicker } from "@/components/ui/date-time-picker";
 
 interface ProfileTabProps {
   formData: {
@@ -143,15 +144,31 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
               Date of Birth
             </label>
             <div className="relative">
-              <input
-                type="text"
-                name="dateOfBirth"
-                value={formData.dateOfBirth}
-                onChange={handleChange}
-                placeholder="dd/mm/yyyy"
-                className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+              <CustomDateTimePicker
+                mode="date"
+                placeholder="Select date of birth"
+                value={(() => {
+                  if (!formData.dateOfBirth) return "";
+                  const parts = formData.dateOfBirth.split("/");
+                  if (parts.length === 3) {
+                    return `${parts[2]}-${parts[1]}-${parts[0]}`; // dd/mm/yyyy -> yyyy-mm-dd
+                  }
+                  return formData.dateOfBirth;
+                })()}
+                onChange={(val: string) => {
+                  if (!val) {
+                    handleChange({ target: { name: "dateOfBirth", value: "" } } as any);
+                    return;
+                  }
+                  // yyyy-mm-dd -> dd/mm/yyyy
+                  const [y, m, d] = val.split("-");
+                  if (y && m && d) {
+                    const formatted = `${d}/${m}/${y}`;
+                    handleChange({ target: { name: "dateOfBirth", value: formatted } } as any);
+                  }
+                }}
+                className=""
               />
-              <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-5 text-muted-foreground" />
             </div>
           </div>
         </div>
