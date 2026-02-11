@@ -242,100 +242,114 @@ export default function MyQueriesPage() {
                     </div>
 
                     {/* Questions List */}
-                    <div className="mb-4">
-                        <h3 className="text-lg font-semibold mb-4">Your Questions</h3>
-                    </div>
+                    {mappedQuestions.length === 0 ? (
+                        <div className="flex flex-col items-center justify-center py-16 px-4">
+                            <div className="w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center mb-4">
+                                <MessageCircleQuestion className="h-10 w-10 text-gray-400" />
+                            </div>
+                            <h3 className="text-xl font-semibold text-gray-900 mb-2">No Queries Yet</h3>
+                            <p className="text-gray-500 text-center max-w-md">
+                                You haven't asked any questions yet. When you have questions about trips, they will appear here.
+                            </p>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="mb-4">
+                                <h3 className="text-lg font-semibold mb-4">Your Questions</h3>
+                            </div>
 
-                    <div className="space-y-4">
-                        {mappedQuestions?.map((question) => (
-                            <div key={question.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
-                                {/* Question Header */}
-                                <button
-                                    onClick={() => toggleQuestion(question.id)}
-                                    className="w-full p-4 flex items-start justify-between hover:bg-gray-50 transition-colors"
-                                >
-                                    <div className="flex-1 text-left">
-                                        <div className="flex items-center gap-2 mb-2">
-                                            <span
-                                                className={`text-xs font-medium px-2 py-1 rounded ${question.status === "responded"
-                                                    ? "bg-green-100 text-green-700"
-                                                    : "bg-yellow-100 text-yellow-700"
-                                                    }`}
-                                            >
-                                                {question.status === "responded" ? "Responded" : "Pending"}
-                                            </span>
-                                            <span className="text-xs text-gray-500">Asked on {question.askedDate}</span>
-                                        </div>
-                                        <h4 className="font-medium text-gray-900">{question.question}</h4>
-                                    </div>
-                                    {expandedQuestions.includes(question.id) ? (
-                                        <ChevronUp className="h-5 w-5 text-gray-400 ml-2 flex-shrink-0" />
-                                    ) : (
-                                        <ChevronDown className="h-5 w-5 text-gray-400 ml-2 flex-shrink-0" />
-                                    )}
-                                </button>
+                            <div className="space-y-4">
+                                {mappedQuestions.map((question) => (
+                                    <div key={question.id} className="bg-white rounded-lg border border-gray-200 overflow-hidden">
+                                        {/* Question Header */}
+                                        <button
+                                            onClick={() => toggleQuestion(question.id)}
+                                            className="w-full p-4 flex items-start justify-between hover:bg-gray-50 transition-colors"
+                                        >
+                                            <div className="flex-1 text-left">
+                                                <div className="flex items-center gap-2 mb-2">
+                                                    <span
+                                                        className={`text-xs font-medium px-2 py-1 rounded ${question.status === "responded"
+                                                            ? "bg-green-100 text-green-700"
+                                                            : "bg-yellow-100 text-yellow-700"
+                                                            }`}
+                                                    >
+                                                        {question.status === "responded" ? "Responded" : "Pending"}
+                                                    </span>
+                                                    <span className="text-xs text-gray-500">Asked on {question.askedDate}</span>
+                                                </div>
+                                                <h4 className="font-medium text-gray-900">{question.question}</h4>
+                                            </div>
+                                            {expandedQuestions.includes(question.id) ? (
+                                                <ChevronUp className="h-5 w-5 text-gray-400 ml-2 flex-shrink-0" />
+                                            ) : (
+                                                <ChevronDown className="h-5 w-5 text-gray-400 ml-2 flex-shrink-0" />
+                                            )}
+                                        </button>
 
-                                {/* Question Details */}
-                                {expandedQuestions.includes(question.id) && (
-                                    <div className=" p-4 bg-white">
-                                        {question.response ? (
-                                            <div>
-                                                <div className="flex items-start gap-3">
-                                                    <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-semibold flex-shrink-0">
-                                                        R
-                                                    </div>
-                                                    <div className="flex-1">
-                                                        <div className="flex items-center justify-between mb-1">
-                                                            <div>
-                                                                <span className="font-medium text-gray-900">{question.response.author}</span>
-                                                                <span className="text-sm text-gray-500 ml-2">
-                                                                    Responded on {question.response.respondedDate}
-                                                                </span>
+                                        {/* Question Details */}
+                                        {expandedQuestions.includes(question.id) && (
+                                            <div className=" p-4 bg-white">
+                                                {question.response ? (
+                                                    <div>
+                                                        <div className="flex items-start gap-3">
+                                                            <div className="w-10 h-10 rounded-full bg-orange-500 flex items-center justify-center text-white font-semibold flex-shrink-0">
+                                                                R
                                                             </div>
-                                                            <div className="flex gap-2">
-                                                                <Button
-                                                                    variant="ghost"
-                                                                    size="sm"
-                                                                    onClick={() => {
-                                                                        setSelectedQuery(question);
-                                                                        setShowConversationModal(true);
-                                                                    }}
-                                                                    className="text-orange-600 bg-orange-50 hover:text-orange-700 hover:bg-orange-100"
-                                                                >
-                                                                    <MessageSquare className="h-4 w-4 mr-1" />
-                                                                    View
-                                                                </Button>
-                                                                <Button
-                                                                    variant="ghost"
-                                                                    size="sm"
-                                                                    onClick={() => handleReport(question.id)}
-                                                                    className="text-red-600 bg-[#FFEEEE] hover:text-[#FE336A] hover:cursor-pointer hover:bg-red-50"
-                                                                >
-                                                                    <Flag className="h-4 w-4 mr-1" />
-                                                                    Report
-                                                                </Button>
+                                                            <div className="flex-1">
+                                                                <div className="flex items-center justify-between mb-1">
+                                                                    <div>
+                                                                        <span className="font-medium text-gray-900">{question.response.author}</span>
+                                                                        <span className="text-sm text-gray-500 ml-2">
+                                                                            Responded on {question.response.respondedDate}
+                                                                        </span>
+                                                                    </div>
+                                                                    <div className="flex gap-2">
+                                                                        <Button
+                                                                            variant="ghost"
+                                                                            size="sm"
+                                                                            onClick={() => {
+                                                                                setSelectedQuery(question);
+                                                                                setShowConversationModal(true);
+                                                                            }}
+                                                                            className="text-orange-600 bg-orange-50 hover:text-orange-700 hover:bg-orange-100"
+                                                                        >
+                                                                            <MessageSquare className="h-4 w-4 mr-1" />
+                                                                            View
+                                                                        </Button>
+                                                                        <Button
+                                                                            variant="ghost"
+                                                                            size="sm"
+                                                                            onClick={() => handleReport(question.id)}
+                                                                            className="text-red-600 bg-[#FFEEEE] hover:text-[#FE336A] hover:cursor-pointer hover:bg-red-50"
+                                                                        >
+                                                                            <Flag className="h-4 w-4 mr-1" />
+                                                                            Report
+                                                                        </Button>
+                                                                    </div>
+                                                                </div>
+                                                                <p className="text-gray-700 bg-[#E4E4E4] rounded-lg p-3 border border-gray-200">
+                                                                    {question.response.text}
+                                                                </p>
                                                             </div>
                                                         </div>
-                                                        <p className="text-gray-700 bg-[#E4E4E4] rounded-lg p-3 border border-gray-200">
-                                                            {question.response.text}
-                                                        </p>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        ) : (
-                                            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 flex items-center gap-2">
-                                                <Clock className="h-5 w-5 text-yellow-600 flex-shrink-0" />
-                                                <div>
-                                                    <span className="font-medium text-yellow-900">Awaiting response</span>
-                                                    <span className="text-yellow-700"> - {question.warningMessage}</span>
-                                                </div>
+                                                ) : (
+                                                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 flex items-center gap-2">
+                                                        <Clock className="h-5 w-5 text-yellow-600 flex-shrink-0" />
+                                                        <div>
+                                                            <span className="font-medium text-yellow-900">Awaiting response</span>
+                                                            <span className="text-yellow-700"> - {question.warningMessage}</span>
+                                                        </div>
+                                                    </div>
+                                                )}
                                             </div>
                                         )}
                                     </div>
-                                )}
+                                ))}
                             </div>
-                        ))}
-                    </div>
+                        </>
+                    )}
                 </main>
 
                 {/* Conversation Modal */}
