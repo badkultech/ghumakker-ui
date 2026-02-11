@@ -302,9 +302,7 @@ export const ROUTES = {
     DASHBOARD: '/user/dashboard',
     SEARCH: '/user/search',
   },
-  TRAVELER: {
-    PROFILE: '/traveler/profile',
-  },
+
   ADMIN: {
     FORGOT_PASSWORD: '/admin/forgot-password',
     RESET_PASSWORD: '/admin/reset-password',
@@ -334,7 +332,6 @@ export const ROLE_ROUTE_ACCESS: Record<RoleType, string[]> = {
 
   [ROLES.USER]: [
     ROUTES.USER.DASHBOARD,
-    ROUTES.TRAVELER.PROFILE,
     ROUTES.USER.SEARCH,
     ...PublicRoutes,
   ],
@@ -377,7 +374,7 @@ export const getDashboardPath = (role?: string) => {
     case ROLES.ORGANIZER:
       return ROUTES.ORGANIZER.DASHBOARD;
     case ROLES.USER:
-      return ROUTES.TRAVELER.PROFILE; // adjust to your actual path
+      return "/home"; // adjust to your actual path
     default:
       return ROUTES.USER.LANDING;
   }
