@@ -1,8 +1,9 @@
 import { baseAPI } from "@/lib/services";
-import { ApiResponse } from "@/lib/services/common-types";
+import { ApiResponse, PageResponse } from "@/lib/services/common-types";
 import {
     DestinationCreateRequest,
     DestinationSearchResponse,
+    Destination,
 } from "./types";
 import { TAGS } from "../../tags";
 import { ENDPOINTS } from "@/lib/utils";
@@ -25,10 +26,26 @@ export const destinationMasterAPI = baseAPI.injectEndpoints({
             invalidatesTags: [TAGS.DestinationMaster],
         }),
 
-        /* -----------------------------
-           SEARCH DESTINATION TAGS
-           (PUBLIC / AUTOCOMPLETE)
-        ------------------------------ */
+        getAllDestinations: builder.query<
+            PageResponse<Destination>,
+            {
+                page: number;
+                size: number;
+                city?: string;
+                country?: string;
+                province?: string;
+                region?: string;
+            }
+        >({
+            query: (params) => ({
+                url: ENDPOINTS.DESTINATION_MASTER,
+                params,
+            }),
+            transformResponse: (response: ApiResponse<PageResponse<Destination>>) =>
+                response.data,
+            providesTags: [TAGS.DestinationMaster],
+        }),
+
         searchDestinationMaster: builder.query<
             ApiResponse<DestinationCreateRequest[]>,
             string
@@ -45,4 +62,5 @@ export const destinationMasterAPI = baseAPI.injectEndpoints({
 export const {
     useCreateDestinationMutation,
     useSearchDestinationMasterQuery,
+    useGetAllDestinationsQuery,
 } = destinationMasterAPI;

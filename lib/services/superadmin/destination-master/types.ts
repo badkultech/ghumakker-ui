@@ -12,3 +12,9 @@ export interface DestinationCreateRequest {
 export interface DestinationSearchResponse {
     tags: string; // comma-separated
 }
+
+export interface Destination extends DestinationCreateRequest {
+    id: number;
+    publicId?: string;
+    createdDate?: string;
+}

@@ -14,7 +14,6 @@ import { ViewLeaderModal } from "@/components/library/ViewLeaderModal";
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useDebounce } from "@/hooks/useDebounce";
 import { ActionButtons } from "@/components/library/ActionButtons";
-import { DeleteConfirmDialog } from "@/components/library/DeleteConfirmDialog";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { LazyImage } from "@/components/ui/lazyImage";
 import { showError } from "@/lib/utils/toastHelpers";
