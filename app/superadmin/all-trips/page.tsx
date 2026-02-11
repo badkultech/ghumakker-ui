@@ -21,10 +21,13 @@ export default function AllTripsPage() {
     const [endDateFilter, setEndDateFilter] = useState("");
     const [statusFilter, setStatusFilter] = useState("");
 
+    const [currentPage, setCurrentPage] = useState(0);
+    const pageSize = 10;
+
     // Fetch all trips using superadmin API
     const { data: tripsData, isLoading, error } = useGetAllTripsQuery({
-        page: 0,
-        size: 1000,
+        page: currentPage,
+        size: pageSize,
         tripName: tripNameFilter || undefined,
         orgName: orgNameFilter || undefined,
         organizationNumber: orgNumberFilter || undefined,
@@ -36,10 +39,7 @@ export default function AllTripsPage() {
     // Get trips from response
     const trips = tripsData?.content || [];
     const totalTrips = tripsData?.totalElements || 0;
-
-    // Load More Logic (Client-side)
-    const [visibleCount, setVisibleCount] = useState(10);
-    const displayedTrips = trips.slice(0, visibleCount);
+    const totalPages = tripsData?.totalPages || 0;
 
     const formatDate = (dateString?: string) => {
         if (!dateString) return "N/A";
@@ -49,6 +49,14 @@ export default function AllTripsPage() {
     const formatLocation = (cityTags?: string[]) => {
         if (!cityTags || cityTags.length === 0) return "N/A";
         return cityTags.join(", ");
+    };
+
+    const handlePrevious = () => {
+        if (currentPage > 0) setCurrentPage(p => p - 1);
+    };
+
+    const handleNext = () => {
+        if (currentPage < totalPages - 1) setCurrentPage(p => p + 1);
     };
 
     return (
@@ -205,7 +213,7 @@ export default function AllTripsPage() {
                                                     </td>
                                                 </tr>
                                             ) : (
-                                                displayedTrips.map((trip) => (
+                                                trips.map((trip) => (
                                                     <tr key={trip.publicId} className="hover:bg-gray-50">
                                                         <td className="px-6 py-4 whitespace-nowrap">
                                                             <Link
@@ -251,21 +259,31 @@ export default function AllTripsPage() {
                                     </table>
                                 </div>
 
-                                {/* Results Count & Load More */}
+                                {/* Custom Pagination with Previous / Next */}
                                 <div className="px-6 py-4 bg-gray-50 border-t flex items-center justify-between">
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={handlePrevious}
+                                        disabled={currentPage === 0}
+                                        className="text-gray-700 border-gray-300 hover:bg-gray-50 cursor-pointer"
+                                    >
+                                        Previous
+                                    </Button>
+
                                     <div className="text-sm text-gray-600">
-                                        Showing {displayedTrips.length} of {trips.length} trips
+                                        Showing {totalTrips === 0 ? 0 : currentPage * pageSize + 1} to {Math.min((currentPage + 1) * pageSize, totalTrips)} of {totalTrips} results
                                     </div>
-                                    {visibleCount < trips.length && (
-                                        <Button
-                                            variant="outline"
-                                            size="sm"
-                                            onClick={() => setVisibleCount((prev) => prev + 10)}
-                                            className="text-primary border-primary hover:bg-primary/5"
-                                        >
-                                            Load More
-                                        </Button>
-                                    )}
+
+                                    <Button
+                                        variant="outline"
+                                        size="sm"
+                                        onClick={handleNext}
+                                        disabled={currentPage >= totalPages - 1}
+                                        className="text-gray-700 border-gray-300 hover:bg-gray-50 cursor-pointer"
+                                    >
+                                        Next
+                                    </Button>
                                 </div>
                             </div>
                         )}
