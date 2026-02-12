@@ -80,7 +80,9 @@ export const userAPI = baseAPI.injectEndpoints({
       }),
       transformResponse: (response: ApiResponse<TravelerProfileResponse>) =>
         response.data,
-      providesTags: [{ type: TAGS.travelerProfile }],
+      providesTags: (_result, _error, arg) => [
+        { type: TAGS.travelerProfile, id: `${arg.organizationId}:${arg.userPublicId}` },
+      ],
     }),
 
     // PUT/PATCH traveler profile (choose the verb your API supports)
@@ -140,6 +142,7 @@ export const userAPI = baseAPI.injectEndpoints({
           type: TAGS.travelerProfile,
           id: `${a.organizationId}:${a.userPublicId}`,
         },
+        { type: TAGS.travelerProfile },
       ],
     }),
 

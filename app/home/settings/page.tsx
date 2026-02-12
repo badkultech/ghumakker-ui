@@ -27,6 +27,7 @@ import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDes
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 import { useDisplayedUser } from "@/hooks/useDisplayedUser";
+import { extractPhoneNumber, isValidPhoneLength } from "@/lib/constants/phone";
 
 export default function SettingsPage() {
   const searchParams = useSearchParams();
@@ -119,7 +120,7 @@ export default function SettingsPage() {
       return "Enter a valid email address";
     }
 
-    if (formData.phone && formData.phone.length !== 10) {
+    if (formData.phone && !isValidPhoneLength(extractPhoneNumber(formData.phone))) {
       return "Phone number must be 10 digits";
     }
 

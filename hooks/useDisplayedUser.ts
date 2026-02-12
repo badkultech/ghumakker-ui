@@ -17,12 +17,20 @@ export const useDisplayedUser = (): DisplayedUser | undefined => {
     const organizationId = useOrganizationId();
     const userId = useUserId();
 
-    const { data: focusedProfile } = useGetTravelerProfileQuery(
+    const { data: focusedProfile, isFetching } = useGetTravelerProfileQuery(
         { organizationId, userPublicId: userId },
         { skip: !userId || !organizationId }
     );
 
     if (userId) {
+        if (isFetching) {
+            return {
+                name: "Loading...",
+                email: "",
+                profileImage: undefined,
+            };
+        }
+
         if (focusedProfile) {
             return {
                 name: focusedProfile.firstName

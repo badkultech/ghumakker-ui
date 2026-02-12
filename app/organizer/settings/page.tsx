@@ -157,7 +157,7 @@ export default function SettingsPage() {
         );
         setTagline(travelerProfile.tagline ?? "");
         setEmail(travelerProfile.email ?? "");
-        setMobileNumber(travelerProfile.mobileNumber ?? "");
+        setMobileNumber(extractPhoneNumber(travelerProfile.mobileNumber ?? ""));
         setProfileImageUrl(travelerProfile.profileImageUrl ?? null);
 
 

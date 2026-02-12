@@ -194,7 +194,7 @@ export default function RegisterOrganizer() {
               {/* Phone */}
               <div className="w-3/4">
                 <Label htmlFor="phone" className="text-sm font-medium">
-                  Phone No.
+                  Phone No. <RequiredStar />
                 </Label>
                 <div className="flex">
                   <span className="inline-flex items-center justify-center px-3 h-10 rounded-l-lg border border-r-0 border-gray-200 bg-gray-50 text-gray-600 text-sm">
