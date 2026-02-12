@@ -71,7 +71,7 @@ export default function TripHeader({
   isLoggedIn,
   providerName = TRIP_DETAILS.HEADER.PROVIDER_DEFAULT,
   providerImage,
-  organizerName = TRIP_DETAILS.HEADER.ORGANIZER_DEFAULT,
+  organizerName,
   organizerImage,
   cities = [],
   isFavorite = false,
@@ -149,27 +149,29 @@ export default function TripHeader({
           </div>
 
           {/* ORGANIZER / LEADER */}
-          <div className="flex items-center gap-3 mr-4">
-            <Avatar className="w-12 h-12">
-              {organizerImage && (
-                <AvatarImage src={organizerImage} alt={organizerName} />
-              )}
-              <AvatarFallback className="bg-blue-500 text-white">
-                {organizerName?.[0]}
-              </AvatarFallback>
-            </Avatar>
+          {organizerName && (
+            <div className="flex items-center gap-3 mr-4">
+              <Avatar className="w-12 h-12">
+                {organizerImage && (
+                  <AvatarImage src={organizerImage} alt={organizerName} />
+                )}
+                <AvatarFallback className="bg-blue-500 text-white">
+                  {organizerName?.[0]}
+                </AvatarFallback>
+              </Avatar>
 
-            <div>
-              <p className="font-semibold">{organizerName}</p>
-              <button
-                onClick={onOpenLeader}
-                className="text-xs text-orange-500 cursor-pointer"
-              >
-                {TRIP_DETAILS.HEADER.VIEW_PROFILE}{" "}
-                <ArrowRight className="inline w-3 h-3" />
-              </button>
+              <div>
+                <p className="font-semibold">{organizerName}</p>
+                <button
+                  onClick={onOpenLeader}
+                  className="text-xs text-orange-500 cursor-pointer"
+                >
+                  {TRIP_DETAILS.HEADER.VIEW_PROFILE}{" "}
+                  <ArrowRight className="inline w-3 h-3" />
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         {/* cities */}
@@ -190,7 +192,7 @@ export default function TripHeader({
       <div className="hidden md:flex md:mt-12 md:mr-4 gap-2">
         {isLoggedIn && (
           <>
-            
+
             <button
               onClick={onToggleWishlist}
               className="p-2 rounded-full border hover:text-gray-600 cursor-pointer"
