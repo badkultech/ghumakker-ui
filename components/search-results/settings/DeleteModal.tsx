@@ -21,7 +21,7 @@ export default function DeleteModal({ open, onClose, onConfirm, }: { open: boole
         <div className="flex gap-3 justify-center">
           <button
             onClick={onClose}
-            className="flex-1 py-3 border border-border rounded-lg text-sm font-medium hover:bg-muted transition"
+            className="flex-1 py-3 border border-border rounded-lg text-sm font-medium hover:bg-muted transition cursor-pointer"
           >
             Cancel
           </button>
@@ -29,7 +29,7 @@ export default function DeleteModal({ open, onClose, onConfirm, }: { open: boole
           {/* DELETE BUTTON */}
           <button
             onClick={onConfirm}
-            className="flex-1 py-3 rounded-lg bg-red-500 text-white font-medium flex items-center justify-center gap-2 hover:bg-red-600 transition"
+            className="flex-1 py-3 rounded-lg bg-red-500 text-white font-medium flex items-center justify-center gap-2 hover:bg-red-600 transition cursor-pointer"
           >
             <Trash2 className="w-4 h-4" />
             Delete

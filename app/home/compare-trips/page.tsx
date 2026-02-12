@@ -168,7 +168,7 @@ export default function CompareTripsPage() {
                         </p>
                         <button
                             onClick={() => router.push("/home/search-result-with-filter")}
-                            className="flex items-center gap-2 px-6 py-3 bg-[#FF804C] text-white rounded-full hover:bg-[#e67344] transition-colors font-medium"
+                            className="flex items-center gap-2 px-6 py-3 bg-[#FF804C] text-white rounded-full hover:bg-[#e67344] transition-colors font-medium cursor-pointer"
                         >
                             <Plus className="w-5 h-5" />
                             Add Trips to Compare

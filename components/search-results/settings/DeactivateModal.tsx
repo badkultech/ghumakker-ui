@@ -30,7 +30,7 @@ export default function DeactivateModal({ open, onClose, onConfirm }: {
               rounded-lg border border-gray-300 
               text-sm font-medium 
               text-gray-700 
-              hover:bg-gray-100 transition
+              hover:bg-gray-100 transition cursor-pointer
             "
           >
             Cancel
@@ -45,7 +45,7 @@ export default function DeactivateModal({ open, onClose, onConfirm }: {
               text-sm font-medium 
               text-white 
               bg-primary hover:bg-primary/90 transition
-              flex items-center justify-center gap-2
+              flex items-center justify-center gap-2 cursor-pointer
             "
           >
             <TemporaryUserIcon size={17} color="white" />
