@@ -5,6 +5,7 @@ import { Upload, Calendar } from "lucide-react";
 import { GradientButton } from "@/components/gradient-button";
 import { useRef, useState } from "react";
 import { CustomDateTimePicker } from "@/components/ui/date-time-picker";
+import { PHONE_CONFIG, extractPhoneNumber } from "@/lib/constants/phone";
 
 interface ProfileTabProps {
   formData: {
@@ -210,7 +211,7 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
               {/* Country Code */}
               <div className="w-24">
                 <input
-                  value="+91"
+                  value={PHONE_CONFIG.DEFAULT_COUNTRY_CODE}
                   readOnly
                   className="w-full h-[50px] px-4 py-3 bg-gray-50 border border-[#E4E4E4] rounded-lg text-center cursor-not-allowed"
                 />
@@ -219,14 +220,7 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
               <div className="flex-1">
                 <input
                   name="phone"
-                  value={(() => {
-                    // Extract last 10 digits from phone number
-                    const phone = formData.phone || "";
-                    // Remove any non-digit characters
-                    const digits = phone.replace(/\D/g, "");
-                    // Return last 10 digits
-                    return digits.slice(-10);
-                  })()}
+                  value={extractPhoneNumber(formData.phone)}
                   readOnly
                   className="w-full h-[50px] px-4 py-3 bg-gray-50 border border-[#E4E4E4] rounded-lg cursor-not-allowed"
                 />

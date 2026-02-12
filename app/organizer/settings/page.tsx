@@ -24,6 +24,7 @@ import { useGetTravelerProfileQuery, useUpdateTravelerProfileFormMutation } from
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useCreateOrganizationPreferenceMutation, useGetOrganizationPreferenceQuery, useUpdateOrganizationPreferenceMutation } from "@/lib/services/organizer/organizationPreference";
 import { useGetOrganizationNotificationPreferencesQuery, useSaveOrganizationNotificationPreferenceMutation } from "@/lib/services/superadmin/notification";
+import { PHONE_CONFIG, extractPhoneNumber, formatPhoneWithCountryCode } from "@/lib/constants/phone";
 
 export default function SettingsPage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -193,7 +194,7 @@ export default function SettingsPage() {
                     lastName: lastName || null,
                     tagline: tagline || null,
                     email: email || null,
-                    mobileNumber: mobileNumber || null,
+                    mobileNumber: mobileNumber ? formatPhoneWithCountryCode(mobileNumber) : null,
                     profileImage: profileImageFile ?? null,
                 },
             }).unwrap();
@@ -382,7 +383,25 @@ export default function SettingsPage() {
                                 <Input placeholder="Organizer Name" value={name} onChange={(e) => setName(e.target.value)} />
                                 <Input placeholder="Tagline" value={tagline} onChange={(e) => setTagline(e.target.value)} />
                                 <Input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                                <Input placeholder="Mobile Number" value={mobileNumber} onChange={(e) => setMobileNumber(e.target.value)} />
+
+                                {/* Mobile Number with Country Code */}
+                                <div className="flex gap-2">
+                                    <Input
+                                        value={PHONE_CONFIG.DEFAULT_COUNTRY_CODE}
+                                        readOnly
+                                        className="w-20 text-center bg-gray-50 cursor-not-allowed"
+                                    />
+                                    <Input
+                                        placeholder={PHONE_CONFIG.PLACEHOLDER}
+                                        value={extractPhoneNumber(mobileNumber)}
+                                        onChange={(e) => {
+                                            const v = e.target.value.replace(/\D/g, "");
+                                            setMobileNumber(v.slice(0, PHONE_CONFIG.PHONE_NUMBER_LENGTH));
+                                        }}
+                                        maxLength={PHONE_CONFIG.PHONE_NUMBER_LENGTH}
+                                        className="flex-1"
+                                    />
+                                </div>
                             </div>
                             <div className="flex items-center gap-3 justify-end">
                                 <Button

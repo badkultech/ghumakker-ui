@@ -27,6 +27,7 @@ import { AppHeader } from "@/components/app-header";
 import RequiredStar from "@/components/common/RequiredStar";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { ROUTES } from "@/lib/utils";
+import { PHONE_CONFIG, formatPhoneWithCountryCode, isValidPhoneLength } from "@/lib/constants/phone";
 
 type FormFields = {
   organizerId: string;
@@ -71,9 +72,10 @@ export default function RegisterOrganizer() {
       !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(formData.email)
     )
       next.email = "Enter a valid email";
-    const digits = formData.phone.replace(/\D/g, "");
-    if (!digits || digits.length < 7 || digits.length > 12)
-      next.phone = "Enter a valid phone";
+
+    if (!isValidPhoneLength(formData.phone))
+      next.phone = PHONE_CONFIG.ERRORS.INVALID_LENGTH;
+
     if (!formData.businessType) next.businessType = "Select business type";
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -95,7 +97,7 @@ export default function RegisterOrganizer() {
         email: formData.email.trim().toLowerCase(),
         businessType: formData.businessType,
         organizationNumber: data ?? "",
-        primaryPhone: formData.phone.trim(),
+        primaryPhone: formatPhoneWithCountryCode(formData.phone.trim()),
       };
 
       await createOrganization({ payload }).unwrap();
@@ -196,18 +198,20 @@ export default function RegisterOrganizer() {
                 </Label>
                 <div className="flex">
                   <span className="inline-flex items-center justify-center px-3 h-10 rounded-l-lg border border-r-0 border-gray-200 bg-gray-50 text-gray-600 text-sm">
-                    +91
+                    {PHONE_CONFIG.DEFAULT_COUNTRY_CODE}
                   </span>
                   <Input
                     id="phone"
                     inputMode="numeric"
+                    placeholder={PHONE_CONFIG.PLACEHOLDER}
                     value={formData.phone}
                     onChange={(e) => {
                       let digits = e.target.value.replace(/\D/g, "");
-                      digits = digits.replace(/^0+/, "");
-                      if (digits.length > 10) digits = digits.slice(0, 10);
+                      if (digits.length > PHONE_CONFIG.PHONE_NUMBER_LENGTH)
+                        digits = digits.slice(0, PHONE_CONFIG.PHONE_NUMBER_LENGTH);
                       setFormData((f) => ({ ...f, phone: digits }));
                     }}
+                    maxLength={PHONE_CONFIG.PHONE_NUMBER_LENGTH}
                     className={`h-10 px-3 text-sm rounded-l-none w-full ${errors.phone ? "border-red-500" : ""
                       }`}
                   />

@@ -8,6 +8,7 @@ import { ArrowRight } from "lucide-react";
 import { useGenerateOtpMutation } from "@/lib/services/otp";
 import { showApiError, showSuccess } from "@/lib/utils/toastHelpers";
 import { useAuthActions } from "@/hooks/useAuthActions";
+import { PHONE_CONFIG, formatPhoneWithCountryCode, isValidPhoneLength } from "@/lib/constants/phone";
 
 export default function PhoneEntryPage() {
   const [loginMethod, setLoginMethod] = useState<"EMAIL" | "MOBILE">("MOBILE");
@@ -24,9 +25,9 @@ export default function PhoneEntryPage() {
 
   const handleGenerateOTP = async () => {
     if (isSendingOtp) return;
-    const target = loginMethod === "MOBILE" ? phoneNumber : email;
-    if (!target) {
-      setOtpError("Please enter a valid phone number or email.");
+    const target = loginMethod === "MOBILE" ? formatPhoneWithCountryCode(phoneNumber) : email;
+    if (!target || (loginMethod === "MOBILE" && !isValidPhoneLength(phoneNumber))) {
+      setOtpError(PHONE_CONFIG.ERRORS.INVALID_LENGTH);
       return;
     }
     // ignore multiple clicks
@@ -45,15 +46,9 @@ export default function PhoneEntryPage() {
         setOtpSent(true);
 
         if (loginMethod === "MOBILE") {
-          const phone = phoneNumber
-            .replace(/[^+\d]/g, "")
-            .replace(/(?!^)\+/g, "")
-            .slice(0, 13);
-
-          setPhoneNumber(phone);
           router.push(
             `/verify-otp?phone=${encodeURIComponent(
-              phone
+              target
             )}&userId=${userPublicId}`
           );
         } else {
@@ -73,12 +68,11 @@ export default function PhoneEntryPage() {
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // keep only + and digits
-    let v = e.target.value.replace(/[^+\d]/g, "");
-    // allow at most one leading +
-    v = v.replace(/(?!^)\+/g, "");
-    // enforce max length 13
-    if (v.length > 13) v = v.slice(0, 13);
+    // Only allow digits, max length from config
+    let v = e.target.value.replace(/\D/g, "");
+    if (v.length > PHONE_CONFIG.PHONE_NUMBER_LENGTH) {
+      v = v.slice(0, PHONE_CONFIG.PHONE_NUMBER_LENGTH);
+    }
     setPhoneNumber(v);
   };
 
@@ -115,18 +109,29 @@ export default function PhoneEntryPage() {
                 >
                   Enter Phone No.
                 </label>
-                <div className="relative">
-                  <input
-                    id="phone"
-                    type="tel"
-                    value={phoneNumber}
-                    onChange={handlePhoneChange}
-                    placeholder="+91"
-                    maxLength={13}
-                    pattern="^\+?\d{1,13}$"
-                    inputMode="tel"
-                    className="w-full px-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
-                  />
+                <div className="flex gap-2">
+                  {/* Country Code */}
+                  <div className="w-24">
+                    <input
+                      value={PHONE_CONFIG.DEFAULT_COUNTRY_CODE}
+                      readOnly
+                      className="w-full h-[56px] px-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-center text-lg cursor-not-allowed"
+                    />
+                  </div>
+                  {/* Phone Number */}
+                  <div className="flex-1">
+                    <input
+                      id="phone"
+                      type="tel"
+                      value={phoneNumber}
+                      onChange={handlePhoneChange}
+                      placeholder={PHONE_CONFIG.PLACEHOLDER}
+                      maxLength={PHONE_CONFIG.PHONE_NUMBER_LENGTH}
+                      pattern={`^\\d{${PHONE_CONFIG.PHONE_NUMBER_LENGTH}}$`}
+                      inputMode="numeric"
+                      className="w-full h-[56px] px-4 py-4 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-lg"
+                    />
+                  </div>
                 </div>
               </div>
 

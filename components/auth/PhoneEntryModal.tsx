@@ -7,6 +7,7 @@ import { useGenerateOtpMutation } from "@/lib/services/otp";
 import { showApiError, showSuccess } from "@/lib/utils/toastHelpers";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
+import { PHONE_CONFIG, formatPhoneWithCountryCode, isValidPhoneLength } from "@/lib/constants/phone";
 
 type Props = {
     onClose: () => void;
@@ -22,8 +23,8 @@ export function PhoneEntryModal({ onClose, onOtpSent }: Props) {
     const userPublicId = userData?.userPublicId || "";
 
     const handleGenerateOTP = async () => {
-        if (phoneNumber.length < 10) {
-            showApiError({ message: "Enter valid phone number" } as any);
+        if (!isValidPhoneLength(phoneNumber)) {
+            showApiError({ message: PHONE_CONFIG.ERRORS.INVALID_LENGTH } as any);
             return;
         }
 
@@ -32,15 +33,17 @@ export function PhoneEntryModal({ onClose, onOtpSent }: Props) {
         try {
             setIsSendingOtp(true);
 
+            const phoneWithCountryCode = formatPhoneWithCountryCode(phoneNumber);
+
             await generateOtp({
-                identifier: phoneNumber,
+                identifier: phoneWithCountryCode,
                 type: "MOBILE",
                 organization: false,
                 userPublicId,
             }).unwrap();
 
             showSuccess("OTP sent successfully");
-            onOtpSent(phoneNumber);
+            onOtpSent(phoneWithCountryCode);
         } catch (err) {
             showApiError(err as any);
         } finally {
@@ -78,16 +81,32 @@ export function PhoneEntryModal({ onClose, onOtpSent }: Props) {
                     >
                         Enter Phone No.
                     </label>
-                    <input
-                        type="tel"
-                        placeholder="+91"
-                        value={phoneNumber}
-                        onChange={(e) =>
-                            setPhoneNumber(e.target.value.replace(/[^+\d]/g, "").slice(0, 13))
-                        }
-                        inputMode="tel"
-                        className="w-full px-4 py-4 border rounded-xl mb-5 text-lg focus:ring-2 focus:ring-orange-400"
-                    />
+                    <div className="flex gap-2 mb-5">
+                        {/* Country Code */}
+                        <div className="w-24">
+                            <input
+                                value={PHONE_CONFIG.DEFAULT_COUNTRY_CODE}
+                                readOnly
+                                className="w-full h-[56px] px-4 py-4 bg-gray-50 border border-gray-200 rounded-xl text-center text-lg cursor-not-allowed"
+                            />
+                        </div>
+                        {/* Phone Number */}
+                        <div className="flex-1">
+                            <input
+                                id="phone"
+                                type="tel"
+                                placeholder={PHONE_CONFIG.PLACEHOLDER}
+                                value={phoneNumber}
+                                onChange={(e) => {
+                                    const v = e.target.value.replace(/\D/g, "");
+                                    setPhoneNumber(v.slice(0, PHONE_CONFIG.PHONE_NUMBER_LENGTH));
+                                }}
+                                inputMode="numeric"
+                                maxLength={PHONE_CONFIG.PHONE_NUMBER_LENGTH}
+                                className="w-full h-[56px] px-4 py-4 border border-gray-200 rounded-xl text-lg focus:ring-2 focus:ring-primary focus:outline-none"
+                            />
+                        </div>
+                    </div>
                 </div>
 
                 <GradientButton

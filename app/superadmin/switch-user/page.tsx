@@ -13,6 +13,7 @@ import { useGetUsersQuery } from '@/lib/services/user';
 import { useRouter } from 'next/navigation';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { CustomDateTimePicker } from '@/components/ui/date-time-picker';
+import { PHONE_CONFIG, extractPhoneNumber, formatPhoneWithCountryCode } from "@/lib/constants/phone";
 
 export default function SwitchUser() {
     const dispatch = useDispatch();
@@ -182,13 +183,25 @@ export default function SwitchUser() {
                                 <label className="text-sm font-medium text-gray-700">
                                     Phone (EQUALS)
                                 </label>
-                                <Input
-                                    placeholder="Enter phone"
-                                    value={filters.phone}
-                                    onChange={(e) =>
-                                        setFilters({ ...filters, phone: e.target.value })
-                                    }
-                                />
+                                <div className="flex gap-2">
+                                    <div className="w-20">
+                                        <Input
+                                            value={PHONE_CONFIG.DEFAULT_COUNTRY_CODE}
+                                            readOnly
+                                            className="text-center bg-gray-50 cursor-not-allowed"
+                                        />
+                                    </div>
+                                    <Input
+                                        placeholder={PHONE_CONFIG.PLACEHOLDER}
+                                        value={extractPhoneNumber(filters.phone)}
+                                        onChange={(e) => {
+                                            const v = e.target.value.replace(/\D/g, "").slice(0, PHONE_CONFIG.PHONE_NUMBER_LENGTH);
+                                            setFilters((prev) => ({ ...prev, phone: v ? formatPhoneWithCountryCode(v) : "" }));
+                                        }}
+                                        maxLength={PHONE_CONFIG.PHONE_NUMBER_LENGTH}
+                                        className="flex-1"
+                                    />
+                                </div>
                             </div>
                         </div>
 

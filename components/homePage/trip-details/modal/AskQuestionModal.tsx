@@ -10,6 +10,7 @@ import { toast } from "@/hooks/use-toast";
 import { useGetTravelerProfileQuery } from "@/lib/services/user";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { PHONE_CONFIG, extractPhoneNumber, formatPhoneWithCountryCode } from "@/lib/constants/phone";
 
 
 export default function AskQuestionModal({
@@ -146,12 +147,26 @@ export default function AskQuestionModal({
             </div>
             <div className="space-y-2">
               <label className="text-sm font-medium">Phone Number *</label>
-              <Input
-                name="phone"
-                placeholder="Enter phone number"
-                value={form.phone}
-                onChange={handleChange}
-              />
+              <div className="flex gap-2">
+                <div className="w-20">
+                  <Input
+                    value={PHONE_CONFIG.DEFAULT_COUNTRY_CODE}
+                    readOnly
+                    className="text-center bg-gray-50 cursor-not-allowed"
+                  />
+                </div>
+                <Input
+                  name="phone"
+                  placeholder={PHONE_CONFIG.PLACEHOLDER}
+                  value={extractPhoneNumber(form.phone)}
+                  onChange={(e) => {
+                    const v = e.target.value.replace(/\D/g, "").slice(0, PHONE_CONFIG.PHONE_NUMBER_LENGTH);
+                    setForm((prev) => ({ ...prev, phone: v ? formatPhoneWithCountryCode(v) : "" }));
+                  }}
+                  maxLength={PHONE_CONFIG.PHONE_NUMBER_LENGTH}
+                  className="flex-1"
+                />
+              </div>
             </div>
             {/* CATEGORY */}
             <div>
