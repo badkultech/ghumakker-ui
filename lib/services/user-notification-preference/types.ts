@@ -41,5 +41,6 @@ export const NOTIFICATION_CHANNELS = {
     WHATSAPP: "WHATSAPP",
     EMAIL: "EMAIL",
     SMS: "SMS",
-    BROWSER: "BROWSER"
+    BROWSER: "BROWSER",
+    CALL: "CALL"
 } as const;

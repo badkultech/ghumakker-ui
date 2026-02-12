@@ -16,6 +16,7 @@ interface CommunicationPreferences {
   whatsappUpdates: boolean;
   emailNotifications: boolean;
   smsUpdates: boolean;
+  callUpdates: boolean;
   marketingWhatsapp: boolean;
   marketingEmails: boolean;
   marketingSms: boolean;
@@ -30,6 +31,7 @@ export default function CommunicationsTab() {
     whatsappUpdates: false,
     emailNotifications: false,
     smsUpdates: false,
+    callUpdates: false,
     marketingWhatsapp: false,
     marketingEmails: false,
     marketingSms: false,
@@ -64,6 +66,16 @@ export default function CommunicationsTab() {
       userId: userId!,
       categoryId: NOTIFICATION_CATEGORIES.TRIP_UPDATES.id,
       channel: NOTIFICATION_CHANNELS.SMS
+    },
+    { skip: !organizationId || !userId }
+  );
+
+  const { data: tripCall } = useGetUserNotificationPreferenceQuery(
+    {
+      organizationId: organizationId!,
+      userId: userId!,
+      categoryId: NOTIFICATION_CATEGORIES.TRIP_UPDATES.id,
+      channel: NOTIFICATION_CHANNELS.CALL
     },
     { skip: !organizationId || !userId }
   );
@@ -106,11 +118,12 @@ export default function CommunicationsTab() {
       whatsappUpdates: tripWhatsapp?.enabled ?? false,
       emailNotifications: tripEmail?.enabled ?? false,
       smsUpdates: tripSms?.enabled ?? false,
+      callUpdates: tripCall?.enabled ?? false,
       marketingWhatsapp: marketingWhatsapp?.enabled ?? false,
       marketingEmails: marketingEmail?.enabled ?? false,
       marketingSms: marketingSms?.enabled ?? false,
     });
-  }, [tripWhatsapp, tripEmail, tripSms, marketingWhatsapp, marketingEmail, marketingSms]);
+  }, [tripWhatsapp, tripEmail, tripSms, tripCall, marketingWhatsapp, marketingEmail, marketingSms]);
 
   const handleToggle = (key: keyof CommunicationPreferences, checked: boolean) => {
     setCommunications((prev) => ({ ...prev, [key]: checked }));
@@ -154,6 +167,13 @@ export default function CommunicationsTab() {
           categoryName: NOTIFICATION_CATEGORIES.TRIP_UPDATES.name,
           channel: NOTIFICATION_CHANNELS.SMS,
           enabled: communications.smsUpdates,
+        },
+        {
+          categoryId: NOTIFICATION_CATEGORIES.TRIP_UPDATES.id,
+          categoryCode: NOTIFICATION_CATEGORIES.TRIP_UPDATES.code,
+          categoryName: NOTIFICATION_CATEGORIES.TRIP_UPDATES.name,
+          channel: NOTIFICATION_CHANNELS.CALL,
+          enabled: communications.callUpdates,
         },
         // Marketing Communications
         {
@@ -212,10 +232,14 @@ export default function CommunicationsTab() {
           <div>
             <p className="text-sm text-[#6B6B6B] mb-2">Booking Communication Preference</p>
 
-            <button className="w-full flex items-center justify-between px-4 py-3 border border-[#E4E4E4] rounded-xl bg-white">
+            <div className="flex items-center justify-between px-4 py-4 bg-white border border-[#E4E4E4] rounded-xl shadow-sm">
               <span className="text-sm font-medium text-[#1A1A1A]">Call</span>
-              <span className="text-xl text-[#7A7A7A]">›</span>
-            </button>
+              <Switch
+                className="data-[state=checked]:bg-primary"
+                checked={communications.callUpdates}
+                onCheckedChange={(checked) => handleToggle("callUpdates", checked)}
+              />
+            </div>
           </div>
 
           {/* Trip Updates */}
