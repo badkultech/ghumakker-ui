@@ -324,7 +324,11 @@ export default function TripDetailsPage() {
 
               <FAQSection faqs={faq?.details || []} />
               <button
-                onClick={() => setShowReport(true)}
+                onClick={() =>
+                  requireAuth(() => {
+                    setShowReport(true);
+                  })
+                }
                 className="mx-auto block text-sm text-gray-600 hover:text-gray-900 cursor-pointer"
               >
                 {TRIP_DETAILS.PAGE.REPORT_BUTTON}
