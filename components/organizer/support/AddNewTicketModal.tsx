@@ -18,7 +18,7 @@ import RequiredStar from "@/components/common/RequiredStar";
 import { MultiUploader } from "@/components/common/UploadFieldShortcuts";
 import { useDocumentsManager } from "@/hooks/useDocumentsManager";
 import { useCreateUserTicketMutation } from "@/lib/services/user-tickets";
-import { toast } from "sonner";
+import { useToast } from "@/hooks/use-toast";
 
 // ✅ Validation Schema
 const ticketSchema = z.object({
@@ -43,6 +43,7 @@ interface AddNewTicketModalProps {
 }
 
 export function AddNewTicketModal({ open, onClose, organizationId, userId }: AddNewTicketModalProps) {
+  const { toast } = useToast();
   const docsManager = useDocumentsManager();
   const [createTicket, { isLoading }] = useCreateUserTicketMutation();
 
@@ -75,12 +76,19 @@ export function AddNewTicketModal({ open, onClose, organizationId, userId }: Add
         },
       }).unwrap();
 
-      toast.success("Ticket created successfully!");
+      toast({
+        title: "Success",
+        description: "Ticket created successfully!",
+      });
       reset();
-      onClose();
+      setTimeout(() => onClose(), 0);
     } catch (error) {
       console.error("Failed to create ticket:", error);
-      toast.error("Failed to create ticket. Please try again.");
+      toast({
+        title: "Error",
+        description: "Failed to create ticket. Please try again.",
+        variant: "destructive",
+      });
     }
   };
 

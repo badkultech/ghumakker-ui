@@ -11,7 +11,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { Textarea } from "@/components/ui/textarea";
 import { User, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -85,7 +84,7 @@ export function ViewTicketModal({
 
     return (
         <Dialog open={open} onOpenChange={onClose}>
-            <DialogContent className="max-w-2xl max-h-[85vh] overflow-y-auto rounded-2xl p-6 space-y-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+            <DialogContent className="max-w-2xl rounded-2xl">
                 <DialogHeader>
                     <DialogTitle className="text-xl font-semibold text-gray-900">
                         Ticket Details
@@ -141,7 +140,7 @@ export function ViewTicketModal({
                     <div>
                         <p className="text-sm text-gray-500 font-medium mb-1">Comments:</p>
                         {localComments.length > 0 ? (
-                            <ScrollArea className="max-h-[220px] border rounded-lg bg-gray-50">
+                            <div className="border rounded-lg bg-gray-50">
                                 <div className="space-y-3 p-3">
                                     {localComments.map((comment) => (
                                         <div
@@ -160,7 +159,7 @@ export function ViewTicketModal({
                                         </div>
                                     ))}
                                 </div>
-                            </ScrollArea>
+                            </div>
                         ) : (
                             <p className="text-sm text-gray-400 italic">
                                 No comments yet.
