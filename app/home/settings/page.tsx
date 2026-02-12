@@ -32,6 +32,7 @@ import { extractPhoneNumber, isValidPhoneLength } from "@/lib/constants/phone";
 export default function SettingsPage() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("profile");
+  const { isLoggedIn, handleLogout, router } = useAuthActions();
 
   useEffect(() => {
     if (searchParams.get("setup") === "true") {
@@ -42,6 +43,12 @@ export default function SettingsPage() {
       });
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    }
+  }, [isLoggedIn, router]);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const organizationId = useOrganizationId();
@@ -49,7 +56,6 @@ export default function SettingsPage() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showDeactivateModal, setShowDeactivateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const { isLoggedIn, handleLogout, router } = useAuthActions();
   const [notifications, setNotifications] = useState(notificationsData);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);

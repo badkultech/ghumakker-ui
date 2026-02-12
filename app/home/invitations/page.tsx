@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { ChevronLeft, Menu, Scale, Bell, Info, Send, X, Clock } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -27,6 +27,12 @@ export default function TripInvitationsPage() {
   const [selectedLead, setSelectedLead] = useState<UserTripLead | null>(null)
   const [openCardId, setOpenCardId] = useState<number | null>(null)
   const { isLoggedIn, handleLogout, router } = useAuthActions();
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      router.push("/login");
+    }
+  }, [isLoggedIn, router]);
   const [notifications, setNotifications] = useState(notificationsData)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);

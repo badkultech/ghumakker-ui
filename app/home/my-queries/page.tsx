@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
     ChevronDown,
     ChevronUp,
@@ -59,6 +59,12 @@ export default function MyQueriesPage() {
     const [reportReasons, setReportReasons] = useState<string[]>([])
     const [reportDetails, setReportDetails] = useState("")
     const { isLoggedIn, handleLogout, router } = useAuthActions();
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            router.push("/login");
+        }
+    }, [isLoggedIn, router]);
     const [notifications, setNotifications] = useState(notificationsData);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);

@@ -9,7 +9,7 @@ import { WishlistTrip } from "@/lib/services/wishlist/types"
 import { useOrganizationId } from "@/hooks/useOrganizationId"
 import { useUserId } from "@/hooks/useUserId"
 import { useAuthActions } from "@/hooks/useAuthActions"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { notificationsData, userMenuItems } from "../constants"
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { AuthModals } from "@/components/auth/auth/AuthModals"
@@ -20,7 +20,7 @@ import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDes
 export default function WishlistPage() {
     const organizationId = useOrganizationId();
     const userId = useUserId();
-    const { isLoggedIn, handleLogout } = useAuthActions();
+    const { isLoggedIn, handleLogout, router } = useAuthActions();
     const [notifications, setNotifications] = useState(notificationsData);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
@@ -31,6 +31,12 @@ export default function WishlistPage() {
         handleLogout(() => setSidebarOpen(false));
     };
     const user = useDisplayedUser();
+
+    useEffect(() => {
+        if (!isLoggedIn) {
+            router.push("/login");
+        }
+    }, [isLoggedIn, router]);
 
 
 
