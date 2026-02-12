@@ -3,7 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Upload, Calendar } from "lucide-react";
 import { GradientButton } from "@/components/gradient-button";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { CustomDateTimePicker } from "@/components/ui/date-time-picker";
 
 interface ProfileTabProps {
@@ -34,6 +34,57 @@ interface ProfileTabProps {
 }
 
 export default function ProfileTab({ formData, setFormData, profileImageUrl, onSaveProfile, isSaving, onImageSelect }: ProfileTabProps) {
+  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+
+  const validateEmail = (email: string): boolean => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+  };
+
+  const validateField = (name: string, value: string): string => {
+    switch (name) {
+      case "firstName":
+        if (!value.trim()) return "First name is required";
+        if (value.trim().length < 2) return "First name must be at least 2 characters";
+        if (value.trim().length > 50) return "First name must not exceed 50 characters";
+        if (!/^[a-zA-Z\s]+$/.test(value)) return "First name can only contain letters";
+        return "";
+
+      case "lastName":
+        if (!value.trim()) return "Last name is required";
+        if (value.trim().length < 2) return "Last name must be at least 2 characters";
+        if (value.trim().length > 50) return "Last name must not exceed 50 characters";
+        if (!/^[a-zA-Z\s]+$/.test(value)) return "Last name can only contain letters";
+        return "";
+
+      case "email":
+        if (!value.trim()) return "Email is required";
+        if (!validateEmail(value)) return "Please enter a valid email address";
+        return "";
+
+      case "dateOfBirth":
+        if (!value) return ""; // Optional field
+
+        // Check if date is valid
+        const parts = value.split("/");
+        if (parts.length !== 3) return "Invalid date format";
+
+        const [day, month, year] = parts.map(Number);
+        const birthDate = new Date(year, month - 1, day);
+        const today = new Date();
+
+        // Check if date is in the future
+        if (birthDate > today) {
+          return "Date of birth cannot be in the future";
+        }
+
+        return "";
+
+      default:
+        return "";
+    }
+  };
+
   const handleChange = (
     e: React.ChangeEvent<
       HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
@@ -41,6 +92,38 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Clear error when user starts typing
+    if (errors[name]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
+  const handleBlur = (name: string, value: string) => {
+    const error = validateField(name, value);
+    setErrors((prev) => ({ ...prev, [name]: error }));
+  };
+
+  const handleSave = () => {
+    // Validate all required fields
+    const newErrors: { [key: string]: string } = {};
+
+    newErrors.firstName = validateField("firstName", formData.firstName);
+    newErrors.lastName = validateField("lastName", formData.lastName);
+    newErrors.email = validateField("email", formData.email);
+    newErrors.dateOfBirth = validateField("dateOfBirth", formData.dateOfBirth);
+
+    // Remove empty errors
+    Object.keys(newErrors).forEach(key => {
+      if (!newErrors[key]) delete newErrors[key];
+    });
+
+    setErrors(newErrors);
+
+    // If no errors, proceed with save
+    if (Object.keys(newErrors).length === 0) {
+      onSaveProfile();
+    }
   };
 
   const fileRef = useRef<HTMLInputElement>(null);
@@ -93,35 +176,69 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
             name="firstName"
             value={formData.firstName}
             onChange={handleChange}
+            onBlur={() => handleBlur("firstName", formData.firstName)}
             label="First Name"
+            error={errors.firstName}
+            required
           />
 
           <InputField
             name="lastName"
             value={formData.lastName}
             onChange={handleChange}
+            onBlur={() => handleBlur("lastName", formData.lastName)}
             label="Last Name"
+            error={errors.lastName}
+            required
           />
 
           <InputField
             name="email"
             value={formData.email}
             onChange={handleChange}
+            onBlur={() => handleBlur("email", formData.email)}
             label="Email Address"
+            error={errors.email}
+            required
           />
 
-          <InputField
-            name="phone"
-            readOnly
-            value={formData.phone}
-            onChange={handleChange}
-            label="Phone No."
-          />
+
+          {/* Phone Number with Country Code */}
+          <div>
+            <label className="block text-sm font-medium mb-2">Phone No.</label>
+            <div className="flex gap-2">
+              {/* Country Code */}
+              <div className="w-24">
+                <input
+                  value="+91"
+                  readOnly
+                  className="w-full h-[50px] px-4 py-3 bg-gray-50 border border-[#E4E4E4] rounded-lg text-center cursor-not-allowed"
+                />
+              </div>
+              {/* Phone Number */}
+              <div className="flex-1">
+                <input
+                  name="phone"
+                  value={(() => {
+                    // Extract last 10 digits from phone number
+                    const phone = formData.phone || "";
+                    // Remove any non-digit characters
+                    const digits = phone.replace(/\D/g, "");
+                    // Return last 10 digits
+                    return digits.slice(-10);
+                  })()}
+                  readOnly
+                  className="w-full h-[50px] px-4 py-3 bg-gray-50 border border-[#E4E4E4] rounded-lg cursor-not-allowed"
+                />
+              </div>
+            </div>
+          </div>
+
 
           {/* Gender Selection */}
           <div>
             <label className="block text-sm font-medium mb-2">
-              Gender (Optional)
+              Gender
             </label>
             <select
               name="gender"
@@ -147,6 +264,7 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
               <CustomDateTimePicker
                 mode="date"
                 placeholder="Select date of birth"
+                maxDate={new Date().toISOString().split('T')[0]} // Today's date in yyyy-mm-dd format
                 value={(() => {
                   if (!formData.dateOfBirth) return "";
                   const parts = formData.dateOfBirth.split("/");
@@ -165,18 +283,23 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
                   if (y && m && d) {
                     const formatted = `${d}/${m}/${y}`;
                     handleChange({ target: { name: "dateOfBirth", value: formatted } } as any);
+                    // Validate on change
+                    setTimeout(() => handleBlur("dateOfBirth", formatted), 0);
                   }
                 }}
-                className=""
+                className="h-[50px]"
               />
             </div>
+            {errors.dateOfBirth && (
+              <p className="text-red-500 text-xs mt-1">{errors.dateOfBirth}</p>
+            )}
           </div>
         </div>
 
         {/* Bio Section */}
         <div className="mt-6">
           <label className="block text-sm font-medium mb-2">
-            Bio / About me (Optional)
+            Bio / About me
           </label>
 
           <div className="relative ">
@@ -199,7 +322,7 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
         <div className="mt-8">
           <GradientButton
             className="inline-flex items-center gap-2"
-            onClick={onSaveProfile}
+            onClick={handleSave}
             disabled={isSaving}
           >
             {isSaving ? "Saving..." : "Save Changes"}
@@ -216,27 +339,39 @@ function InputField({
   name,
   value,
   onChange,
+  onBlur,
   label,
   readOnly = false,
+  error,
+  required = false,
 }: {
   name: string;
   value: string;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => void;
+  onBlur?: () => void;
   label: string;
   readOnly?: boolean;
+  error?: string;
+  required?: boolean;
 }) {
   return (
     <div>
-      <label className="block text-sm font-medium mb-2">{label}</label>
+      <label className="block text-sm font-medium mb-2">
+        {label}
+        {required && <span className="text-red-500 ml-1">*</span>}
+      </label>
       <input
         name={name}
         value={value}
         onChange={onChange}
+        onBlur={onBlur}
         readOnly={readOnly}
-        className="w-full px-4 py-3 bg-[#FFFFFF] border border-[#E4E4E4] rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+        className={`w-full px-4 py-3 bg-[#FFFFFF] border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all ${error ? "border-red-500" : "border-[#E4E4E4]"
+          } ${readOnly ? "bg-gray-50 cursor-not-allowed" : ""}`}
       />
+      {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
     </div>
   );
 }

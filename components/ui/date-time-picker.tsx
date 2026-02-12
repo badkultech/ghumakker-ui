@@ -10,8 +10,8 @@ interface Props {
   className?: string
   mode?: "datetime" | "date"
   stepMinutes?: number
-  minDate?: string // Format: "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM"
-  maxDate?: string // Format: "YYYY-MM-DD" or "YYYY-MM-DDTHH:MM"
+  minDate?: string 
+  maxDate?: string 
   disabled?: boolean
 }
 
@@ -85,7 +85,7 @@ export function CustomDateTimePicker({
 
   useEffect(() => {
     const p = parseToLocalParts(value)
-    setSelectedDate(p.dateStr) // Always match prop
+    setSelectedDate(p.dateStr) 
     if (p.dateStr) {
       setCurrentMonth(new Date(p.year, p.month - 1, 1))
     }
@@ -264,7 +264,7 @@ export function CustomDateTimePicker({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <div className={`relative ${className} ${disabled ? "opacity-50 pointer-events-none" : ""}`}>
+        <div className={`relative ${disabled ? "opacity-50 pointer-events-none" : ""}`}>
           <div className="relative flex items-center">
             <Input
               type="text"
@@ -272,7 +272,7 @@ export function CustomDateTimePicker({
               placeholder={placeholder}
               readOnly
               disabled={disabled}
-              className={`w-full ${value ? "pr-16" : "pr-10"} cursor-pointer bg-background`}
+              className={`w-full ${value ? "pr-16" : "pr-10"} cursor-pointer bg-background ${className}`}
             />
             {value && !disabled && (
               <div
