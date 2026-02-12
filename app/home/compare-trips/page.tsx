@@ -168,7 +168,7 @@ export default function CompareTripsPage() {
                         </p>
                         <button
                             onClick={() => router.push("/home/search-result-with-filter")}
-                            className="flex items-center gap-2 px-6 py-3 bg-[#FF804C] text-white rounded-full hover:bg-[#e67344] transition-colors font-medium cursor-pointer"
+                            className="flex items-center gap-2 px-6 py-3 bg-brand-gradient text-white rounded-full hover:opacity-90 transition-all font-medium cursor-pointer"
                         >
                             <Plus className="w-5 h-5" />
                             Add Trips to Compare
@@ -265,7 +265,7 @@ export default function CompareTripsPage() {
                                                 )}
 
                                                 {attr.key === "bookNow" && (
-                                                    <button className="w-full px-6 py-2.5 bg-[#FF804C] text-white text-sm font-medium rounded-lg hover:opacity-90 transition">
+                                                    <button className="w-full px-6 py-2.5 bg-brand-gradient text-white text-sm font-medium rounded-lg hover:opacity-90 transition-all">
                                                         Book Now
                                                     </button>
                                                 )}
