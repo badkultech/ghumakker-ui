@@ -87,7 +87,7 @@ export default function MobilePricingBar({
         {/* BUTTON */}
         <button
           onClick={onOpen}
-          className="bg-orange-500 text-white px-6 py-3 rounded-lg"
+          className="bg-brand-gradient text-white px-6 py-3 rounded-lg font-medium shadow-lg"
         >
           {TRIP_DETAILS.MOBILE_BAR.VIEW_OPTIONS}
         </button>

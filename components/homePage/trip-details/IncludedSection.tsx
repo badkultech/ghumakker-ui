@@ -101,7 +101,7 @@ export default function IncludedSection() {
                             className={cn(
                                 "flex items-center gap-2 px-6 py-2.5 rounded-full text-sm font-medium transition-colors whitespace-nowrap cursor-pointer",
                                 isActive
-                                    ? "bg-[#FF7043] text-white"
+                                    ? "bg-brand-gradient text-white shadow-md"
                                     : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                             )}
                         >

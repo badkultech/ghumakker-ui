@@ -163,7 +163,7 @@ export default function PricingDetailsModal({
                 </p>
               </div>
 
-              <span className="font-bold text-orange-500">
+              <span className="font-bold text-[#e07a5f]">
                 ₹
                 {getFinal(
                   simple.basePrice,
@@ -189,7 +189,7 @@ export default function PricingDetailsModal({
                         {opt.name} (Auto included)
                       </p>
                     </div>
-                    <span className="font-bold text-orange-500">
+                    <span className="font-bold text-[#e07a5f]">
                       ₹{getFinal(opt.price, opt.discount)}
                     </span>
                   </div>
@@ -210,7 +210,7 @@ export default function PricingDetailsModal({
                       {selectedOpt.name}
                     </p>
                   </div>
-                  <span className="font-bold text-orange-500">
+                  <span className="font-bold text-[#e07a5f]">
                     ₹
                     {getFinal(
                       selectedOpt.price,
@@ -230,7 +230,7 @@ export default function PricingDetailsModal({
               return (
                 <div key={i} className="flex justify-between border-b pb-3">
                   <p className="font-semibold">{add.name}</p>
-                  <span className="font-bold text-orange-500">
+                  <span className="font-bold text-[#e07a5f]">
                     ₹{(add.charge || add.price || 0).toLocaleString()}
                   </span>
                 </div>
@@ -238,7 +238,7 @@ export default function PricingDetailsModal({
             })}
 
           {/* ================= TOTAL ================= */}
-          <div className="flex justify-between pt-4 border-t font-bold text-orange-600">
+          <div className="flex justify-between pt-4 border-t font-bold text-[#e07a5f]">
             <p>Total Payable</p>
             <span>
               ₹{selectedPricing.finalPrice.toLocaleString()}
@@ -276,7 +276,7 @@ export default function PricingDetailsModal({
             <button
               onClick={handleRequestInvite}
               disabled={isLoading}
-              className="flex-1 bg-orange-500 text-white py-3 rounded-lg disabled:opacity-50 cursor-pointer"
+              className="flex-1 bg-brand-gradient text-white py-3 rounded-lg disabled:opacity-50 cursor-pointer shadow-lg hover:opacity-90 transition-opacity"
             >
               {isLoading ? "Requesting..." : TRIP_DETAILS.PRICING_DETAILS_MODAL.REQUEST_INVITE}
             </button>

@@ -137,6 +137,16 @@ export default function DesktopSidebar({
               </p>
             )}
 
+            {/* Deposit Required Info */}
+            {(pricing?.depositRequiredPercent || pricing?.depositRequiredAmount) && (
+              <div className="mt-2 text-sm text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 inline-block w-full">
+                <span className="font-semibold">Deposit Required: </span>
+                {pricing.depositRequiredPercent
+                  ? `${pricing.depositRequiredPercent}%`
+                  : `₹${pricing.depositRequiredAmount?.toLocaleString()}`}
+              </div>
+            )}
+
           </div>
 
           {/* DYNAMIC ONLY */}
@@ -349,7 +359,7 @@ export default function DesktopSidebar({
               })
             }
             className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-medium cursor-pointer ${isButtonEnabled
-              ? "bg-orange-500 text-white"
+              ? "bg-brand-gradient text-white shadow-lg hover:opacity-90 transition-opacity"
               : "bg-gray-200 text-gray-400 cursor-not-allowed"
               }`}
           >
@@ -359,7 +369,7 @@ export default function DesktopSidebar({
 
           <button
             onClick={onAsk}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-orange-500 text-orange-500 font-medium cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-50 text-blue-600 font-medium cursor-pointer hover:bg-blue-100 transition-colors"
           >
             <MessageCircle className="w-4 h-4" />
             {TRIP_DETAILS.SIDEBAR.SEND_QUERY}

@@ -99,7 +99,7 @@ export default function DayWiseItinerary({
         {itineraryPdfUrl && (
           <button
             onClick={() => window.open(itineraryPdfUrl, '_blank')}
-            className="flex items-center gap-2 px-4 py-2 border border-[#FF7043] text-[#FF7043] rounded-lg text-sm font-medium hover:bg-orange-50 transition-colors"
+            className="flex items-center gap-2 px-4 py-2 bg-brand-gradient text-white rounded-lg text-sm font-medium shadow-md hover:opacity-90 transition-opacity"
           >
             <Calendar className="w-4 h-4" />
             View Full Itinerary
@@ -116,7 +116,7 @@ export default function DayWiseItinerary({
             className={cn(
               "px-6 py-2 rounded-full text-sm font-medium transition-colors whitespace-nowrap cursor-pointer",
               activeDay === i
-                ? "bg-[#FF7043] text-white"
+                ? "bg-brand-gradient text-white shadow-md"
                 : "bg-gray-100 text-gray-600 hover:bg-gray-200"
             )}
           >

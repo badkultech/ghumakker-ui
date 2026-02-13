@@ -115,13 +115,15 @@ export default function AskQuestionModal({
         </div>
         <div className="overflow-y-auto no-scrollbar">
           {/* INFO BANNER */}
-          <div className="mx-6 mt-4 flex gap-2 items-start bg-blue-50  text-sm p-3 rounded-lg ">
-            <Info className="w-4 h-4 mt-0.5 text-blue-700" />
-            <p>
-              <span className="font-medium text-blue-700">Quick Response Guaranteed</span>
+          <div className="mx-6 mt-4 flex gap-2 items-start bg-[#FFF7F4] text-sm p-3 rounded-lg ">
+            <Info className="w-4 h-4 mt-0.5 text-[#e07a5f]" />
+            <p className="text-[#e07a5f]">
+              <span className="font-medium">Quick Response Guaranteed</span>
               <br />
-              Our team typically responds within 2–4 hours during business hours
-              (9 AM – 9 PM IST)
+              <span className="opacity-90">
+                Our team typically responds within 2–4 hours during business hours
+                (9 AM – 9 PM IST)
+              </span>
             </p>
           </div>
 
@@ -230,7 +232,7 @@ export default function AskQuestionModal({
             <button
               onClick={handleSubmit}
               disabled={isLoading || !form.query.trim()}
-              className="w-full mt-2 bg-orange-500 text-white py-3 rounded-xl font-medium disabled:opacity-50 cursor-pointer"
+              className="w-full mt-2 bg-brand-gradient text-white py-3 rounded-xl font-medium disabled:opacity-50 cursor-pointer shadow-lg hover:opacity-90 transition-opacity"
             >
               {isLoading ? "Sending..." : "Send Query"}
             </button>

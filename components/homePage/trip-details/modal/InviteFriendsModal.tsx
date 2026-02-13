@@ -72,7 +72,7 @@ export default function InviteFriendsModal({
                             className={`w-full border rounded-lg px-4 py-3 focus:outline-none focus:ring-2
                 ${error
                                     ? "border-red-500 focus:ring-red-400"
-                                    : "focus:ring-orange-400"
+                                    : "focus:ring-[#e07a5f]"
                                 }`}
                         />
 
@@ -83,7 +83,7 @@ export default function InviteFriendsModal({
 
                     <button
                         onClick={handleSend}
-                        className="ml-auto flex items-center gap-2 bg-orange-500 text-white px-6 py-3 rounded-lg cursor-pointer"
+                        className="ml-auto flex items-center gap-2 bg-brand-gradient text-white px-6 py-3 rounded-lg cursor-pointer shadow-lg hover:opacity-90 transition-opacity"
                     >
                         <Send className="w-4 h-4" />
                         Send Invite
