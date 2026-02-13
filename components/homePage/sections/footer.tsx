@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { Facebook, Instagram, Youtube } from "lucide-react";
 import { APP_BRANDING } from "@/lib/constants/assets";
+import { socialLinks } from "@/app/home/constants";
 
 export function Footer() {
   return (
@@ -11,9 +11,18 @@ export function Footer() {
         </p>
 
         <div className="flex gap-3">
-          <Link href="#"><Facebook className="w-4 h-4" /></Link>
-          <Link href="#"><Instagram className="w-4 h-4" /></Link>
-          <Link href="#"><Youtube className="w-4 h-4" /></Link>
+          {socialLinks.map((link) => {
+            const Icon = link.icon;
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
+              >
+                <Icon className="w-3 h-3 text-white" />
+              </Link>
+            );
+          })}
         </div>
       </div>
     </footer>

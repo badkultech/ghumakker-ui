@@ -1,6 +1,6 @@
 import {
     Bell, Bookmark, MessageCircleQuestion,
-    Scale, Settings
+    Scale, Settings, Facebook, Instagram, Youtube, Linkedin
 } from "lucide-react";
 
 export const userMenuItems = [
@@ -28,4 +28,24 @@ export const notificationsData = [
         time: "2 hours ago",
         read: false,
     },
+];
+
+export const footerLinks = {
+    main: [
+        { label: "Home", href: "/home" },
+        { label: "About us", href: "https://badkultechnology.com/about" },
+        { label: "Trips", href: "/home/search-result-with-filter" },
+    ],
+    support: [
+        { label: "Contact us", href: "https://badkultechnology.com/contact" },
+        { label: "Terms and Conditions", href: "/terms" },
+        { label: "Privacy Policy", href: "/privacy" },
+    ],
+};
+
+export const socialLinks = [
+    { icon: Facebook, href: "#", label: "Facebook" },
+    { icon: Instagram, href: "https://www.instagram.com/ghumakkerofficial/", label: "Instagram" },
+    { icon: Youtube, href: "#", label: "Youtube" },
+    { icon: Linkedin, href: "https://www.linkedin.com/company/badkul-technology/", label: "LinkedIn" },
 ];
