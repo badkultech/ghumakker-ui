@@ -322,8 +322,13 @@ export default function PricingPage() {
       // ---------- SIMPLE PRICING ----------
       if (mode === "simple") {
         fd.append("simplePricingRequest.basePrice", String(Number(price || 0)));
-        fd.append("simplePricingRequest.discountPercent", String(Number(discount || 0)));
-        fd.append("simplePricingRequest.discountValidUntil", discountUntil || "");
+        const discountVal = Number(discount || 0);
+        fd.append("simplePricingRequest.discountPercent", String(discountVal));
+        if (discountVal > 0) {
+          fd.append("simplePricingRequest.discountValidUntil", discountUntil || "");
+        } else {
+          fd.append("simplePricingRequest.discountValidUntil", "");
+        }
       }
 
       // ---------- DYNAMIC PRICING ----------
@@ -546,6 +551,7 @@ export default function PricingPage() {
                             }}
                             maxDate={trip?.data?.startDate ? new Date(trip.data.startDate).toISOString().split("T")[0] : undefined}
                             className="h-10"
+                            disabled={!discount || Number(discount) <= 0}
                           />
 
                           {errors.discountUntil && (
