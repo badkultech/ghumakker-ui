@@ -7,7 +7,7 @@ import { AddNewItemModal } from "@/components/library/add-new-item/AddNewItemMod
 import { LibraryHeader } from "@/components/library/LibraryHeader";
 import {
   useGetGroupLeaderByIdQuery,
-  useGetGroupLeadersQuery,
+  useGetLibraryGroupLeadersQuery,
   useDeleteGroupLeaderMutation,
 } from "@/lib/services/organizer/trip/library/leader";
 import { ViewLeaderModal } from "@/components/library/ViewLeaderModal";
@@ -35,7 +35,7 @@ export default function TripLeadersPage() {
 
   // Data fetching
   const { data: leaders = [], isLoading, error, refetch } =
-    useGetGroupLeadersQuery(organizationId ?? skipToken);
+    useGetLibraryGroupLeadersQuery(organizationId ?? skipToken);
   const { data: selectedLeader, isLoading: isLeaderLoading, error: leaderError } =
     useGetGroupLeaderByIdQuery(
       selectedLeaderId && organizationId

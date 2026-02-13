@@ -14,7 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton"; // for loading state
 import { useGetOrganizerFaqsQuery } from "@/lib/services/organizer/trip/library/faq";
 import { useGetOrganizerTransitsQuery } from "@/lib/services/organizer/trip/library/transit";
-import { useGetGroupLeadersQuery } from "@/lib/services/organizer/trip/library/leader";
+import { useGetLibraryGroupLeadersQuery } from "@/lib/services/organizer/trip/library/leader";
 import { useGetStaysQuery } from "@/lib/services/organizer/trip/library/stay";
 import { useGetMealsQuery } from "@/lib/services/organizer/trip/library/meal";
 import { useGetActivitiesQuery } from "@/lib/services/organizer/trip/library/activity";
@@ -79,7 +79,7 @@ export function LibrarySelectModal({
           { skip: shouldSkip, refetchOnMountOrArgChange: true }
         )
         : category === "trip-leaders"
-          ? useGetGroupLeadersQuery(organizationId ?? "", {
+          ? useGetLibraryGroupLeadersQuery(organizationId ?? "", {
             skip: shouldSkip,
             refetchOnMountOrArgChange: true,
           })
