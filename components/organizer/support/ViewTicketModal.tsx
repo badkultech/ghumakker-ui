@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { User, Send } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { getStatusClasses } from "@/lib/utils/getStatusStyles";
+import { toast } from "@/hooks/use-toast";
 
 interface UserDTO {
     id?: number;
@@ -75,8 +76,13 @@ export function ViewTicketModal({
             };
             setLocalComments((prev) => [commentToAdd, ...prev]);
             setNewComment("");
-        } catch (err) {
+        } catch (err: any) {
             console.error("Error adding comment:", err);
+            toast({
+                variant: "destructive",
+                title: "Failed to add comment",
+                description: err?.data?.message || err?.message || "Something went wrong",
+            });
         } finally {
             setIsSubmitting(false);
         }
