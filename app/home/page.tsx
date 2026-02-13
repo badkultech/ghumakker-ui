@@ -35,7 +35,7 @@ export default function Home() {
         onMenuOpen={() => setIsMenuOpen(true)}
         notifications={notificationsList}
         onUpdateNotifications={setNotificationsList}
-        variant="center"
+        variant="edge"
       />
 
       <div className="flex-1 overflow-auto">

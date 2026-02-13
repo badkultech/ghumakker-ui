@@ -98,9 +98,9 @@ export default function OrganizerProfilePage() {
             {/* Page Header */}
             <div className='flex items-start justify-between mb-4'>
               <h1 className='text-3xl font-semibold'>Organizer Profile</h1>
-              <div className='flex items-center space-x-3'>
+              <div className='flex items-center space-x-3 '>
                 <Link href='/organizer/profile/edit'>
-                  <GradientButton className='rounded-full px-5 py-2 text-white'>
+                  <GradientButton className='rounded-full px-5 py-2 text-white cursor-pointer'>
                     Edit Profile
                   </GradientButton>
                 </Link>

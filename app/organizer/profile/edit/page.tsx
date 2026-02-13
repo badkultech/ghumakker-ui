@@ -645,7 +645,7 @@ export default function OrganizerProfileEditPage() {
             </Button>
             <Button
               onClick={handleSaveProfile}
-              className='bg-brand-gradient text-white rounded-2xl'
+              className='bg-brand-gradient text-white rounded-2xl cursor-pointer'
               disabled={isLoading}
             >
               {isLoading ? 'Saving...' : 'Save Profile'}

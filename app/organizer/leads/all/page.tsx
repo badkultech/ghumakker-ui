@@ -244,7 +244,7 @@ export default function AllLeadsPage() {
                             setSelectedLeadTripPublicId(lead.tripPublicId);
                             setShowModal(true);
                           }}
-                          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 py-2 text-sm shadow"
+                          className="bg-primary hover:bg-primary/90 text-primary-foreground rounded-full px-6 py-2 text-sm shadow cursor-pointer"
                         >
                           Mark as Converted
                         </Button>
@@ -254,7 +254,7 @@ export default function AllLeadsPage() {
                           setSelectedLeadTripPublicId(lead.tripPublicId);
                           onRequestDelete(lead.id.toString());
                         }}
-                        className="border border-red-300 p-2 rounded-md hover:bg-red-50"
+                        className="border border-red-300 p-2 rounded-md hover:bg-red-50 cursor-pointer"
                       >
                         <Trash2 className="w-4 h-4 text-red-500" />
                       </button>

@@ -35,7 +35,7 @@ export function ConfirmConversionModal({
         "
             >
                 {/* Header */}
-                <DialogHeader className="flex flex-row items-center justify-between mb-2">
+                <DialogHeader className="flex flex-row items-center justify-between mb-2 ">
                     <DialogTitle className="text-lg font-semibold">
                         Confirm Conversion
                     </DialogTitle>
@@ -57,7 +57,7 @@ export function ConfirmConversionModal({
                         Cancel
                     </Button>
                     <Button
-                        className="bg-green-500 hover:bg-green-600 text-white rounded-md w-full sm:w-auto"
+                        className="bg-green-500 hover:bg-green-600 text-white rounded-md w-full sm:w-auto cursor-pointer"
                         onClick={() => {
                             onConfirm();
                             onClose();

@@ -201,7 +201,7 @@ export default function TripFilterBar({
           <DropdownMenuTrigger asChild>
             <Button
               variant="outline"
-              className="flex items-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="flex items-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50 "
             >
               <SlidersHorizontal size={16} />
               {statusFilter ?? "All Status"}
@@ -209,25 +209,25 @@ export default function TripFilterBar({
           </DropdownMenuTrigger>
 
           <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuItem onClick={() => setStatusFilter(undefined)}>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => setStatusFilter(undefined)}>
               All Status
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => setStatusFilter("PUBLISHED")}>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => setStatusFilter("PUBLISHED")}>
               Published
               {statusFilter === "PUBLISHED" && (
                 <Check className="w-4 h-4 text-primary ml-auto" />
               )}
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => setStatusFilter("UNDER_REVIEW")}>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => setStatusFilter("UNDER_REVIEW")}>
               Under Review
               {statusFilter === "UNDER_REVIEW" && (
                 <Check className="w-4 h-4 text-primary ml-auto" />
               )}
             </DropdownMenuItem>
 
-            <DropdownMenuItem onClick={() => setStatusFilter("DRAFT")}>
+            <DropdownMenuItem className="cursor-pointer" onClick={() => setStatusFilter("DRAFT")}>
               Draft
               {statusFilter === "DRAFT" && (
                 <Check className="w-4 h-4 text-primary ml-auto" />
@@ -249,7 +249,7 @@ export default function TripFilterBar({
           </Button>
         </DropdownMenuTrigger>
 
-        <DropdownMenuContent align="end" className="w-48">
+        <DropdownMenuContent align="end" className="w-48 cursor-pointer">
           {sortOptions.map((opt) => (
             <DropdownMenuItem
               key={opt.label}
@@ -257,7 +257,7 @@ export default function TripFilterBar({
                 setSortBy(opt.sortBy);
                 setSortDir(opt.sortDir);
               }}
-              className="flex items-center justify-between text-sm"
+              className="flex items-center justify-between text-sm cursor-pointer"
             >
               {opt.label}
               {currentSort === opt.label && (

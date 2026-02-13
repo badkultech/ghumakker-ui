@@ -68,7 +68,7 @@ export default function QueryItem({ query, onView, onDelete }: any) {
 
         <Button
           variant="outline"
-          className="rounded-full px-4 flex items-center gap-1 text-gray-700"
+          className="rounded-full px-4 flex items-center gap-1 text-gray-700 cursor-pointer"
           onClick={onView}
         >
           View
@@ -77,7 +77,7 @@ export default function QueryItem({ query, onView, onDelete }: any) {
 
         <button
           onClick={onDelete}
-          className="p-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-full"
+          className="p-2 bg-red-50 hover:bg-red-100 text-red-600 rounded-full cursor-pointer"
         >
           <Trash2 className="w-4 h-4" />
         </button>

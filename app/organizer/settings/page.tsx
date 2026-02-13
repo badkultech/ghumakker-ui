@@ -351,9 +351,8 @@ export default function SettingsPage() {
 
                                 <div className="flex flex-col gap-2">
                                     <Button
-                                        type="button"
                                         variant="outline"
-                                        className="flex items-center gap-2"
+                                        className="flex items-center gap-2 cursor-pointer"
                                         asChild
                                     >
                                         <label htmlFor="profileImage">
@@ -407,7 +406,7 @@ export default function SettingsPage() {
                                 <Button
                                     onClick={handleUpdateProfile}
                                     disabled={isUpdating}
-                                    className="bg-primary hover:bg-primary/90 text-primary-foreground"
+                                    className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
                                 >
                                     {isUpdating ? "Saving..." : "Save Changes"}
                                 </Button>
@@ -453,6 +452,7 @@ export default function SettingsPage() {
                                 <Button
                                     onClick={handleSaveNotificationPreferences}
                                     disabled={savingNotificationPref}
+                                    className="cursor-pointer"
                                 >
                                     {savingNotificationPref ? "Saving..." : "Save Preferences"}
                                 </Button>
@@ -552,7 +552,7 @@ export default function SettingsPage() {
 
                             {/* Save Button */}
                             <div className="flex justify-end">
-                                <Button onClick={handleSaveOrganizationPreference} disabled={creatingPref || updatingPref} > {creatingPref || updatingPref ? "Saving..." : "Save Preferences"} </Button>
+                                <Button className="cursor-pointer" onClick={handleSaveOrganizationPreference} disabled={creatingPref || updatingPref} > {creatingPref || updatingPref ? "Saving..." : "Save Preferences"} </Button>
                             </div>
                         </CardContent>
                     </Card>
@@ -687,7 +687,7 @@ export default function SettingsPage() {
                             <div className="flex items-center justify-between mt-4">
                                 <Button
                                     variant="outline"
-                                    className="text-sm text-gray-700 border-gray-300"
+                                    className="text-sm text-gray-700 border-gray-300 cursor-pointer"
                                 >
                                     Forgot Password?
                                 </Button>
@@ -698,7 +698,7 @@ export default function SettingsPage() {
                                     className={`${allValid
                                         ? "bg-primary hover:bg-primary/90 text-primary-foreground"
                                         : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                        }`}
+                                        } cursor-pointer`}
                                 >
                                     {isLoading ? "Updating..." : "Update Password"}
                                 </Button>
