@@ -79,6 +79,12 @@ export default function DestinationMasterPage() {
     ) => {
         const { name, value } = e.target;
 
+        if (name === "pinCode") {
+            const numericValue = value.replace(/\D/g, "").slice(0, 6);
+            setForm((prev) => ({ ...prev, [name]: numericValue }));
+            return;
+        }
+
         setForm((prev) => ({
             ...prev,
             [name]:
