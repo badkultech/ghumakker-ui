@@ -86,12 +86,20 @@ export default function TripDetailsPage() {
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
   const [searchTab, setSearchTab] =
     useState<"destination" | "moods">("destination");
+  const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
   const user = useDisplayedUser();
 
 
   const organizationId = useOrganizationId();
   const userId = useUserId();
-  const { requireAuth } = useAuthGuard(isLoggedIn);
+  const requireAuth = (action: () => void) => {
+    if (!isLoggedIn) {
+      setPendingAction(() => action);
+      setAuthStep("PHONE");
+    } else {
+      action();
+    }
+  };
   const { data, isLoading, error } = useTripDetailsQuery(id as string);
   const [updateTripStatus, { isLoading: isPublishing }] = useUpdateTripStatusMutation();
   const { toast } = useToast();
@@ -112,6 +120,14 @@ export default function TripDetailsPage() {
       setIsFavorite(isInWishlist);
     }
   }, [isInWishlist]);
+
+  // Execute pending action after login
+  useEffect(() => {
+    if (isLoggedIn && pendingAction) {
+      pendingAction();
+      setPendingAction(null);
+    }
+  }, [isLoggedIn, pendingAction]);
 
   const handleWishlistToggle = async () => {
     if (!organizationId || !userId) {

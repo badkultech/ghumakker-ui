@@ -46,9 +46,9 @@ export default function SettingsPage() {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push("/login");
+      setAuthStep("PHONE");
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn]);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null);
   const organizationId = useOrganizationId();

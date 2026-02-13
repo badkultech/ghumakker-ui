@@ -62,9 +62,9 @@ export default function MyQueriesPage() {
 
     useEffect(() => {
         if (!isLoggedIn) {
-            router.push("/login");
+            setAuthStep("PHONE");
         }
-    }, [isLoggedIn, router]);
+    }, [isLoggedIn]);
     const [notifications, setNotifications] = useState(notificationsData);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
@@ -198,6 +198,7 @@ export default function MyQueriesPage() {
                     notifications={notifications}
                     onUpdateNotifications={setNotifications}
                     onMenuOpen={() => setSidebarOpen(true)}
+                    onLoginClick={() => setAuthStep("PHONE")}
                     variant="edge"
                 />
 

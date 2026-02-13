@@ -9,6 +9,7 @@ import { MainHeader } from "@/components/search-results/MainHeader"
 import { notificationsData, userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
+import { AuthModals } from "@/components/auth/auth/AuthModals";
 import { Overlay } from "@/components/common/Overlay"
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop"
 import { useOrganizationId } from "@/hooks/useOrganizationId"
@@ -30,9 +31,9 @@ export default function TripInvitationsPage() {
 
   useEffect(() => {
     if (!isLoggedIn) {
-      router.push("/login");
+      setAuthStep("PHONE");
     }
-  }, [isLoggedIn, router]);
+  }, [isLoggedIn]);
   const [notifications, setNotifications] = useState(notificationsData)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
@@ -311,6 +312,7 @@ export default function TripInvitationsPage() {
         <SearchTripsCard defaultTab={searchTab}
           onClose={() => setShowSearchOverlay(false)} />
       </Overlay>
+      <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
     </>
   )
 }

@@ -34,9 +34,9 @@ export default function WishlistPage() {
 
     useEffect(() => {
         if (!isLoggedIn) {
-            router.push("/login");
+            setAuthStep("PHONE");
         }
-    }, [isLoggedIn, router]);
+    }, [isLoggedIn]);
 
 
 
@@ -49,6 +49,7 @@ export default function WishlistPage() {
                     notifications={notifications}
                     onUpdateNotifications={setNotifications}
                     onMenuOpen={() => setSidebarOpen(true)}
+                    onLoginClick={() => setAuthStep("PHONE")}
                 />
                 <p className="text-center mt-10 text-gray-500">Loading user...</p>
             </div>
@@ -85,6 +86,7 @@ export default function WishlistPage() {
                     notifications={notifications}
                     onUpdateNotifications={setNotifications}
                     onMenuOpen={() => setSidebarOpen(true)}
+                    onLoginClick={() => setAuthStep("PHONE")}
                 />
                 <main className="max-w-6xl mx-auto p-4 md:p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
@@ -112,6 +114,7 @@ export default function WishlistPage() {
                     notifications={notifications}
                     onUpdateNotifications={setNotifications}
                     onMenuOpen={() => setSidebarOpen(true)}
+                    onLoginClick={() => setAuthStep("PHONE")}
                 />
                 <main className="max-w-6xl mx-auto p-4 md:p-6">
                     <p className="text-red-500 text-center">Failed to load wishlist</p>
@@ -130,6 +133,7 @@ export default function WishlistPage() {
                 notifications={notifications}
                 onUpdateNotifications={setNotifications}
                 onMenuOpen={() => setSidebarOpen(true)}
+                onLoginClick={() => setAuthStep("PHONE")}
             />
 
             {/* Wishlist Grid */}
