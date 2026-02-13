@@ -138,9 +138,10 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
         {/* Profile Image Section */}
         <div className="flex items-center gap-4 mb-8">
           <Avatar className="w-20 h-20 md:w-24 md:h-24">
-            <AvatarImage src={profileImageUrl || "/man-profile.png"} />
+            <AvatarImage src={profileImageUrl || ""} />
             <AvatarFallback className="bg-primary text-primary-foreground text-xl">
-              RS
+              {formData.firstName?.[0]?.toUpperCase()}
+              {formData.lastName?.[0]?.toUpperCase()}
             </AvatarFallback>
           </Avatar>
 
