@@ -153,8 +153,8 @@ export default function TripFilterBar({
                   }
 
                   setTempDateRange({
-                    start: range.from?.toISOString()?.slice(0, 10),
-                    end: range.to?.toISOString()?.slice(0, 10),
+                    start: range.from ? format(range.from, "yyyy-MM-dd") : undefined,
+                    end: range.to ? format(range.to, "yyyy-MM-dd") : undefined,
                   });
                 }}
                 disabled={

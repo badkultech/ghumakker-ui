@@ -192,7 +192,10 @@ export default function TripCard({ trip, tab, onArchive, onDelete, onRestore }: 
   };
 
   return (
-    <Card className="rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition">
+    <Card
+      onClick={() => router.push(`/home/search-result-with-filter/trip-details/${trip.id}`)}
+      className="rounded-2xl border border-gray-200 shadow-sm hover:shadow-md transition cursor-pointer"
+    >
       <div className="p-5 space-y-4">
         {/* Header */}
         <div className="flex justify-between items-start">
@@ -266,7 +269,12 @@ export default function TripCard({ trip, tab, onArchive, onDelete, onRestore }: 
         </div>
 
         {/* Action Buttons */}
-        <div className="flex items-center gap-3 pt-3 flex-wrap">{renderButtons()}</div>
+        <div
+          onClick={(e) => e.stopPropagation()}
+          className="flex items-center gap-3 pt-3 flex-wrap"
+        >
+          {renderButtons()}
+        </div>
       </div>
     </Card>
   );

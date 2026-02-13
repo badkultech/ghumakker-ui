@@ -91,19 +91,8 @@ export function LoginForm({ title, forgotPasswordRoute }: LoginFormProps) {
             <AppHeader showAvatar={false} showLogo={true} />
 
             <main className="relative flex-1">
-                {/* Background image */}
-                <div className="absolute inset-0 -z-10">
-                    <Image
-                        src="/bg.jpg"
-                        alt="Background"
-                        fill
-                        priority
-                        style={{ objectFit: "cover" }}
-                        sizes="100vw"
-                    />
-                    {/* Light overlay for readability */}
-                    <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-[rgba(255,255,255,0.06)] to-transparent" />
-                </div>
+                {/* Background */}
+                <div className="absolute inset-0 -z-10 bg-primary/5" />
 
                 {/* Centered card */}
                 <div className="relative z-10 flex items-center justify-center min-h-screen px-4 py-8">
