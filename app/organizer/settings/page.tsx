@@ -12,15 +12,17 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Eye, EyeOff, Upload, CheckCircle2, XCircle } from "lucide-react";
+import { Eye, EyeOff, CheckCircle2, XCircle } from "lucide-react";
 import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
 import { AppHeader } from "@/components/app-header";
 import { useChangePasswordMutation } from "@/lib/services/login";
 import { showApiError, showSuccess, showError } from "@/lib/utils/toastHelpers";
-import { useDispatch, useSelector } from "react-redux";
+
+import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
+
 import { useOrganizationId } from "@/hooks/useOrganizationId";
-import { useGetTravelerProfileQuery, useUpdateTravelerProfileFormMutation } from "@/lib/services/user";
+
 import { skipToken } from "@reduxjs/toolkit/query";
 import { useCreateOrganizationPreferenceMutation, useGetOrganizationPreferenceQuery, useUpdateOrganizationPreferenceMutation } from "@/lib/services/organizer/organizationPreference";
 import { useGetOrganizationNotificationPreferencesQuery, useSaveOrganizationNotificationPreferenceMutation } from "@/lib/services/superadmin/notification";
@@ -80,28 +82,10 @@ export default function SettingsPage() {
     const [currentPassword, setCurrentPassword] = useState("");
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [name, setName] = useState("");
-    const [tagline, setTagline] = useState("");
-    const [email, setEmail] = useState("");
-    const [mobileNumber, setMobileNumber] = useState("");
-    const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
-    const { userData } = useSelector(selectAuthState);
     const organizationId = useOrganizationId();
-    const [profileImageFile, setProfileImageFile] = useState<File | null>(null);
+    const { userData } = useSelector(selectAuthState);
 
-    const {
-        data: travelerProfile,
-        isLoading: travelerProfileLoading,
-    } = useGetTravelerProfileQuery(
-        organizationId && userData?.userPublicId
-            ? {
-                organizationId,
-                userPublicId: userData.userPublicId,
-            }
-            : skipToken
-    );
-    const [updateTravelerProfile, { isLoading: isUpdating }] =
-        useUpdateTravelerProfileFormMutation();
+
 
     const {
         data: orgPreference,
@@ -149,19 +133,7 @@ export default function SettingsPage() {
     }, [orgPreference]);
 
 
-    useEffect(() => {
-        if (!travelerProfile) return;
 
-        setName(
-            `${travelerProfile.firstName ?? ""} ${travelerProfile.lastName ?? ""}`.trim()
-        );
-        setTagline(travelerProfile.tagline ?? "");
-        setEmail(travelerProfile.email ?? "");
-        setMobileNumber(extractPhoneNumber(travelerProfile.mobileNumber ?? ""));
-        setProfileImageUrl(travelerProfile.profileImageUrl ?? null);
-
-
-    }, [travelerProfile]);
     useEffect(() => {
         if (!orgNotificationPreferences?.length) return;
 
@@ -179,31 +151,7 @@ export default function SettingsPage() {
     }, [orgNotificationPreferences]);
 
 
-    const handleUpdateProfile = async () => {
-        try {
-            if (!organizationId || !userData?.userPublicId) return;
 
-            const [firstName, ...rest] = name.trim().split(" ");
-            const lastName = rest.join(" ");
-
-            await updateTravelerProfile({
-                organizationId,
-                userPublicId: userData.userPublicId,
-                body: {
-                    firstName: firstName || null,
-                    lastName: lastName || null,
-                    tagline: tagline || null,
-                    email: email || null,
-                    mobileNumber: mobileNumber ? formatPhoneWithCountryCode(mobileNumber) : null,
-                    profileImage: profileImageFile ?? null,
-                },
-            }).unwrap();
-
-            showSuccess("Profile updated successfully");
-        } catch (error) {
-            showApiError(error);
-        }
-    };
 
     const handleSaveOrganizationPreference = async () => {
         if (!organizationId) return;
@@ -260,15 +208,7 @@ export default function SettingsPage() {
         }
     };
 
-    const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const file = e.target.files?.[0];
-        if (!file) return;
 
-        setProfileImageFile(file);
-
-        const previewUrl = URL.createObjectURL(file);
-        setProfileImageUrl(previewUrl);
-    };
 
 
 
@@ -299,7 +239,7 @@ export default function SettingsPage() {
             await changePassword({
                 currentPassword,
                 newPassword,
-                email
+                email: userData?.email || "",
             }).unwrap();
 
             showSuccess("Password updated successfully!");
@@ -334,86 +274,6 @@ export default function SettingsPage() {
                         <h1 className="text-2xl font-semibold">Settings</h1>
 
                     </div>
-
-                    {/* Profile Settings */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Profile Settings</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-6">
-                            {/* Image Upload */}
-                            <div className="flex flex-col sm:flex-row items-center gap-4">
-                                <img
-                                    src={profileImageUrl || "/images/profile.png"}
-                                    alt="Profile"
-                                    className="w-20 h-20 rounded-full object-cover"
-                                />
-
-                                <div className="flex flex-col gap-2">
-                                    <Button
-                                        variant="outline"
-                                        className="flex items-center gap-2 cursor-pointer"
-                                        asChild
-                                    >
-                                        <label htmlFor="profileImage">
-                                            <Upload className="w-4 h-4" />
-                                            Upload New Image
-                                        </label>
-                                    </Button>
-
-                                    <input
-                                        id="profileImage"
-                                        type="file"
-                                        accept="image/*"
-                                        className="hidden"
-                                        onChange={handleImageUpload}
-                                    />
-
-                                    <p className="text-xs text-gray-500">
-                                        PNG, JPG up to 10MB
-                                    </p>
-                                </div>
-
-                            </div>
-
-
-                            {/* Input Fields */}
-                            <div className="grid sm:grid-cols-2 gap-4">
-                                <Input placeholder="Organizer Name" value={name} onChange={(e) => setName(e.target.value)} />
-                                <Input placeholder="Tagline" value={tagline} onChange={(e) => setTagline(e.target.value)} />
-                                <Input placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-
-                                {/* Mobile Number with Country Code */}
-                                <div className="flex gap-2">
-                                    <Input
-                                        value={PHONE_CONFIG.DEFAULT_COUNTRY_CODE}
-                                        readOnly
-                                        className="w-20 text-center bg-gray-50 cursor-not-allowed"
-                                    />
-                                    <Input
-                                        placeholder={PHONE_CONFIG.PLACEHOLDER}
-                                        value={extractPhoneNumber(mobileNumber)}
-                                        onChange={(e) => {
-                                            const v = e.target.value.replace(/\D/g, "");
-                                            setMobileNumber(v.slice(0, PHONE_CONFIG.PHONE_NUMBER_LENGTH));
-                                        }}
-                                        maxLength={PHONE_CONFIG.PHONE_NUMBER_LENGTH}
-                                        className="flex-1"
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex items-center gap-3 justify-end">
-                                <Button
-                                    onClick={handleUpdateProfile}
-                                    disabled={isUpdating}
-                                    className="bg-primary hover:bg-primary/90 text-primary-foreground cursor-pointer"
-                                >
-                                    {isUpdating ? "Saving..." : "Save Changes"}
-                                </Button>
-
-                            </div>
-                        </CardContent>
-                    </Card>
 
                     <Card>
                         <CardHeader>
