@@ -46,10 +46,13 @@ export default function SwitchUser() {
         () => getValueFromLocalStorage('focusedUserId') as string | null
     );
 
+    const [currentPage, setCurrentPage] = useState(0);
+    const pageSize = 10;
+
     // Fetch users from API
     const { data, isLoading } = useGetUsersQuery({
-        page: 0,
-        size: 200,
+        page: currentPage,
+        size: pageSize,
         firstName: appliedFilters.name,
         publicId: appliedFilters.userId,
         email: appliedFilters.email,
@@ -59,6 +62,8 @@ export default function SwitchUser() {
     });
     const users = data?.content || [];
     const filteredUsers = users; // Server-side filtered now
+    const totalPages = data?.totalPages || 0;
+    const totalElements = data?.totalElements || 0;
 
     const handleApplyUser = () => {
         if (!selectedUserId) return;
@@ -211,6 +216,7 @@ export default function SwitchUser() {
                             onClick={() => {
                                 console.log("Applying user filters:", filters);
                                 setAppliedFilters({ ...filters });
+                                setCurrentPage(0); // Reset to first page
                             }}
                         >
                             Apply Filters
@@ -267,9 +273,23 @@ export default function SwitchUser() {
 
                         {/* PAGINATION */}
                         <div className="flex justify-between items-center mt-4">
-                            <Button variant="outline" disabled>Previous</Button>
-                            <p className="text-sm text-gray-600">Showing {filteredUsers.length} results</p>
-                            <Button variant="outline" disabled>Next</Button>
+                            <Button
+                                variant="outline"
+                                disabled={currentPage === 0}
+                                onClick={() => setCurrentPage(p => Math.max(0, p - 1))}
+                            >
+                                Previous
+                            </Button>
+                            <p className="text-sm text-gray-600">
+                                Showing {totalElements === 0 ? 0 : currentPage * pageSize + 1} to {Math.min((currentPage + 1) * pageSize, totalElements)} of {totalElements} results
+                            </p>
+                            <Button
+                                variant="outline"
+                                disabled={currentPage >= totalPages - 1}
+                                onClick={() => setCurrentPage(p => p + 1)}
+                            >
+                                Next
+                            </Button>
                         </div>
 
                         {/* APPLY BTN */}
