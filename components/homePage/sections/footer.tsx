@@ -17,6 +17,8 @@ export function Footer() {
               <Link
                 key={link.label}
                 href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
               >
                 <Icon className="w-3 h-3 text-white" />

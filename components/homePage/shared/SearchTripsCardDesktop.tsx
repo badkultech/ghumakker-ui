@@ -13,6 +13,7 @@ import {
   Users, PartyPopper, GraduationCap, Tent, Flower2,
 } from "lucide-react"
 import { useRouter } from "next/navigation"
+import ScreenLoader from "@/components/common/ScreenLoader"
 
 const moods = [
   { name: "Mountain", icon: Mountain },
@@ -205,6 +206,9 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
           {isSearching ? "Searching..." : "Search"}
         </div>
       </GradientButton>
+
+      {/* Full Screen Loader */}
+      {isSearching && <ScreenLoader />}
     </div>
   )
 }

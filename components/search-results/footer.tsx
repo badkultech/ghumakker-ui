@@ -27,21 +27,39 @@ export function Footer() {
             <div>
               <h4 className="font-bold text-gray-900 mb-4 text-base">Quick Links</h4>
               <ul className="space-y-3 text-sm text-gray-600">
-                {footerLinks.main.map((link) => (
-                  <li key={link.label} className="hover:text-primary hover:translate-x-1 transition-all duration-200 cursor-pointer flex items-center gap-1">
-                    <Link href={link.href}>{link.label}</Link>
-                  </li>
-                ))}
+                {footerLinks.main.map((link) => {
+                  const isExternal = link.href.startsWith("http");
+                  return (
+                    <li key={link.label} className="hover:text-primary hover:translate-x-1 transition-all duration-200 cursor-pointer flex items-center gap-1">
+                      <Link
+                        href={link.href}
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
             <div>
               <h4 className="font-bold text-gray-900 mb-4 text-base">Support</h4>
               <ul className="space-y-3 text-sm text-gray-600">
-                {footerLinks.support.map((link) => (
-                  <li key={link.label} className="hover:text-primary hover:translate-x-1 transition-all duration-200 cursor-pointer flex items-center gap-1">
-                    <Link href={link.href}>{link.label}</Link>
-                  </li>
-                ))}
+                {footerLinks.support.map((link) => {
+                  const isExternal = link.href.startsWith("http");
+                  return (
+                    <li key={link.label} className="hover:text-primary hover:translate-x-1 transition-all duration-200 cursor-pointer flex items-center gap-1">
+                      <Link
+                        href={link.href}
+                        target={isExternal ? "_blank" : undefined}
+                        rel={isExternal ? "noopener noreferrer" : undefined}
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  )
+                })}
               </ul>
             </div>
           </div>
@@ -61,6 +79,8 @@ export function Footer() {
                 <a
                   key={link.label}
                   href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
                 >
                   <Icon className="w-3 h-3 text-white" />

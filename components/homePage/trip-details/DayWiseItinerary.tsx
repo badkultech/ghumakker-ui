@@ -141,7 +141,7 @@ export default function DayWiseItinerary({
 
         {/* Timeline Items */}
         <div className="space-y-4">
-          {activities.length === 0 && (
+          {activities.length === 0 && !dayDescription && (
             <p className="text-sm text-gray-500 italic">No activities listed for this day.</p>
           )}
 
