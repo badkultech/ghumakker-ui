@@ -333,6 +333,7 @@ export const ROLE_ROUTE_ACCESS: Record<RoleType, string[]> = {
   [ROLES.USER]: [
     ROUTES.USER.DASHBOARD,
     ROUTES.USER.SEARCH,
+    `${ROUTES.COMMON.HOME_NAV}/*`,
     ...PublicRoutes,
   ],
 

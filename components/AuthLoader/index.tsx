@@ -31,12 +31,14 @@ export default function HydratedAuth({ children }: { children: React.ReactNode }
     const lsAccess = getValue("accessToken");
     const lsRefresh = getValue("refreshToken");
     const lsFocusedOrg = getValue("focusedOrganizationId"); // ALWAYS STRING
+    const lsFocusedUser = getValue("focusedUserId");
 
     dispatch(
       setCredentials({
         accessToken: lsAccess ?? null,
         refreshToken: lsRefresh ?? null,
         focusedOrganizationId: lsFocusedOrg ?? null,
+        focusedUserId: lsFocusedUser ?? null,
       })
     );
 
@@ -86,8 +88,14 @@ export default function HydratedAuth({ children }: { children: React.ReactNode }
       // Exact match
       if (pathname === r) return true;
 
-      // Allow /home/* patterns
-      if (r === ROUTES.COMMON.HOME_NAV && pathname.startsWith(`${ROUTES.COMMON.HOME_NAV}/`)) return true;
+      // Allow /home/* patterns, BUT exclude specific protected sub-routes
+      if (r === ROUTES.COMMON.HOME_NAV && pathname.startsWith(`${ROUTES.COMMON.HOME_NAV}/`)) {
+        const protectedPaths = ['/settings', '/my-queries', '/wishlist', '/invitations'];
+        if (protectedPaths.some(p => pathname.startsWith(`${ROUTES.COMMON.HOME_NAV}${p}`))) {
+          return false;
+        }
+        return true;
+      }
 
       return false;
     });
@@ -129,8 +137,18 @@ export default function HydratedAuth({ children }: { children: React.ReactNode }
   const isAuthenticated = Boolean(accessToken) && !accessTokenExpired;
   const isLogin = pathname === ROUTES.COMMON.HOME || pathname.includes(ROUTES.COMMON.LOGIN);
   const isPublicRoute = PublicRoutes.some((r) => {
+    // Exact match
     if (pathname === r) return true;
-    if (r === ROUTES.COMMON.HOME_NAV && pathname.startsWith(`${ROUTES.COMMON.HOME_NAV}/`)) return true;
+
+    // Allow /home/* patterns, BUT exclude specific protected sub-routes
+    if (r === ROUTES.COMMON.HOME_NAV && pathname.startsWith(`${ROUTES.COMMON.HOME_NAV}/`)) {
+      const protectedPaths = ['/settings', '/my-queries', '/wishlist', '/invitations'];
+      if (protectedPaths.some(p => pathname.startsWith(`${ROUTES.COMMON.HOME_NAV}${p}`))) {
+        return false;
+      }
+      return true;
+    }
+
     return false;
   });
 
