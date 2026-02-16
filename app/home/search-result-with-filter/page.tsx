@@ -45,15 +45,17 @@ const formatDateRange = (startDate: string, endDate: string) => {
 
   if (isNaN(start.getTime()) || isNaN(end.getTime())) return "—";
 
-  const startDay = start.getDate();
-  const startMonth = String(start.getMonth() + 1).padStart(2, '0'); // Month is 0-indexed, so add 1
+  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  const startDay = String(start.getDate()).padStart(2, '0');
+  const startMonth = months[start.getMonth()];
   const startYear = start.getFullYear();
 
-  const endDay = end.getDate();
-  const endMonth = String(end.getMonth() + 1).padStart(2, '0');
+  const endDay = String(end.getDate()).padStart(2, '0');
+  const endMonth = months[end.getMonth()];
   const endYear = end.getFullYear();
 
-  return `${startDay}-${startMonth}-${startYear} — ${endDay}-${endMonth}-${endYear}`;
+  return `${startDay} ${startMonth} ${startYear} — ${endDay} ${endMonth} ${endYear}`;
 };
 
 export default function SearchResultsWithFilters() {
@@ -364,7 +366,7 @@ export default function SearchResultsWithFilters() {
                       price={trip.startingFrom || 0}
                       image={
                         trip.document?.url ||
-                        "/hampi-ruins-temples.png"
+                        "/placeholder.svg"
                       }
 
                       badges={[
