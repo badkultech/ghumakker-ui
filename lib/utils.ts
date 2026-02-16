@@ -254,7 +254,6 @@ export const ROUTES = {
     CONTACT: '/contact',
     FAQ: '/faq',
     TERMS: '/terms',
-    SEARCH_RESULTS: '/home/search-result-with-filter',
   },
   SUPER_ADMIN: {
     LOGIN: '/superadmin/login',
@@ -325,7 +324,6 @@ export const PublicRoutes = [
   ROUTES.COMMON.VERIFY_OTP,
   ROUTES.COMMON.HOME_NAV,
   ROUTES.COMMON.NOT_FOUND,
-  ROUTES.COMMON.SEARCH_RESULTS,
 ];
 
 // ✅ Always arrays. Use ["*"] to mean unrestricted access.
