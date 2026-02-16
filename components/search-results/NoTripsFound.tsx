@@ -28,7 +28,7 @@ export default function NoTripsFound() {
     ? exploreData.map((item: any) => ({
       title: item.name || item.destination || "Destination",
       trips: item.count || item.tripCount || 0,
-      img: item.imageUrl || item.image || "/placeholder.jpg"
+      img: item.document?.url || "/placeholder.jpg"
     }))
     : dummyExplore;
 
@@ -87,19 +87,24 @@ export default function NoTripsFound() {
       <div className="w-full max-w-[900px]">
         <h3 className="text-base font-semibold text-[#2d2d2d] mb-3">Explore</h3>
 
-        {/* Dummy Explore Cards */}
+        {/* Explore Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
           {exploreDestinations.map((item, i) => (
             <div
-              key={i}
+              key={item.title || i}
               onClick={() => handleDestinationClick(item.title)}
-              className="rounded-xl overflow-hidden shadow bg-white cursor-pointer"
+              className="rounded-xl overflow-hidden shadow bg-white cursor-pointer group hover:shadow-lg transition-all"
             >
-              <div className="relative h-24 w-full">
-                <LazyImage src={item.img} alt={item.title} fill className="object-cover" />
+              <div className="relative h-24 w-full bg-gray-100">
+                <LazyImage
+                  src={item.img}
+                  alt={item.title}
+                  fill
+                  className="object-cover transition-transform duration-500 group-hover:scale-105"
+                />
               </div>
               <div className="p-2">
-                <p className="text-sm font-semibold">{item.title}</p>
+                <p className="text-sm font-semibold capitalize truncate">{item.title}</p>
                 <p className="text-xs text-[#6b6b6b]">
                   {item.trips > 0 ? `${item.trips} ` : ""}Trips
                 </p>

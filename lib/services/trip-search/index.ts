@@ -91,7 +91,7 @@ export const publicTripAPI = baseAPI.injectEndpoints({
         url: `${ENDPOINTS.PUBLIC_TRIPS}/explore`,
         method: "GET",
       }),
-      transformResponse: (response: { data: any }) => response.data,
+      transformResponse: (response: any) => response.data ?? response,
       providesTags: [TAGS.trips],
     }),
 
