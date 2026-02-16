@@ -66,7 +66,8 @@ export default function PricingPage() {
     organizationId,
     tripPublicId: tripId as string,
   });
-  const { data: trip } = useGetTripByIdQuery({ organizationId, tripId: tripId as string });
+  const { data: trip, refetch: refetchTrip } = useGetTripByIdQuery({ organizationId, tripId: tripId as string });
+  useEffect(() => { refetchTrip() }, []);
 
   const [isSavingNext, setIsSavingNext] = useState(false);
   const [draftDisabled, setDraftDisabled] = useState(false);
@@ -549,6 +550,7 @@ export default function PricingPage() {
                               setDiscountUntil(v)
                               clearFieldError("discountUntil")
                             }}
+                            minDate={new Date().toISOString().split("T")[0]}
                             maxDate={trip?.data?.startDate ? new Date(trip.data.startDate).toISOString().split("T")[0] : undefined}
                             className="h-10"
                             disabled={!discount || Number(discount) <= 0}
