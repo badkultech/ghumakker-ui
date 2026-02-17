@@ -25,7 +25,7 @@ export default function SecurityTab({
           {/* LOGOUT */}
           <button
             onClick={() => setShowLogoutModal(true)}
-            className="w-full flex items-center gap-3 px-4 py-4 bg-white border rounded-xl cursor-pointer"
+            className="w-full flex items-center gap-3 px-4 py-4 bg-white border rounded-xl cursor-pointer hover:bg-primary/5 hover:text-black transition"
           >
             <LogOut className="w-5 h-5" />
             Log Out
@@ -59,7 +59,7 @@ export default function SecurityTab({
             </div>
             <button
               onClick={() => setShowDeleteModal(true)}
-              className="px-4 py-2 border rounded-lg bg-white text-red-600 cursor-pointer"
+              className="px-4 py-2 border rounded-lg bg-white text-red-600 cursor-pointer hover:bg-red-600 hover:text-white transition"
             >
               Delete
             </button>
