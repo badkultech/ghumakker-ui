@@ -377,6 +377,7 @@ export default function SearchResultsWithFilters() {
                       userId={userId}
                       isWishlistPage={false}
                       isFavorite={wishlistTripIds.has(trip.publicId)}
+                      organizerImage={trip.organizerDisplayPicture}
                     />
                   ))}
                 </div>

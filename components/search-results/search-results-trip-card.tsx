@@ -30,6 +30,7 @@ interface SearchResultsTripCardProps {
   route?: string
   isWishlistPage?: boolean
   onRemoveFromWishlist?: () => void
+  organizerImage?: string | null
 }
 
 export function SearchResultsTripCard({
@@ -50,6 +51,7 @@ export function SearchResultsTripCard({
   organizationId,
   userId,
   onRemoveFromWishlist,
+  organizerImage,
 }: SearchResultsTripCardProps) {
 
   const [favorite, setFavorite] = useState(isFavorite)
@@ -236,7 +238,7 @@ export function SearchResultsTripCard({
               {/* Placeholder Avatar */}
               <div className="w-6 h-6 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 overflow-hidden relative border border-gray-100 shrink-0 flex items-center justify-center">
                 <Image
-                  src="/adventure-traveler-in-nature.jpg"
+                  src={organizerImage || "/adventure-traveler-in-nature.jpg"}
                   alt={provider}
                   fill
                   className="object-cover"
