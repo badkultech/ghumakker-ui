@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
+import { Flag } from "lucide-react";
 import HeroSection from "@/components/homePage/trip-details/HeroSection";
 import TripHeader from "@/components/homePage/trip-details/TripHeader";
 import TripInfoCards from "@/components/homePage/trip-details/TripInfoCards";
@@ -342,11 +343,21 @@ export default function TripDetailsPage() {
               <button
                 onClick={() =>
                   requireAuth(() => {
+                    const reportCount = Number(localStorage.getItem(`report_count_${trip?.publicId}`) || 0);
+                    if (reportCount >= 5) {
+                      toast({
+                        title: "Report Limit Reached",
+                        description: "You cannot report this trip more than 5 times.",
+                        variant: "destructive"
+                      });
+                      return;
+                    }
                     setShowReport(true);
                   })
                 }
-                className="mx-auto block text-sm text-gray-600 hover:text-gray-900 cursor-pointer"
+                className="mt-4 mx-auto flex items-center justify-center gap-2 px-5 py-2 text-sm font-medium text-gray-500 bg-white border border-gray-200 rounded-full hover:text-primary hover:border-primary hover:bg-primary/5 transition-all duration-300 mb-2 cursor-pointer"
               >
+                <Flag className="w-3.5 h-3.5" />
                 {TRIP_DETAILS.PAGE.REPORT_BUTTON}
               </button>
             </div>

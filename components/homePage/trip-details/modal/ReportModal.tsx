@@ -46,6 +46,9 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
         comments: details,
       }).unwrap();
 
+      const currentCount = Number(localStorage.getItem(`report_count_${tripPublicId}`) || 0);
+      localStorage.setItem(`report_count_${tripPublicId}`, String(currentCount + 1));
+
       toast({
         toastType: "success",
         title: "Report submitted successfully!",
@@ -90,13 +93,13 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
                   key={opt}
                   onClick={() => setSelected([opt])}
                   className={`flex items-center gap-3 rounded-xl px-4 py-3 cursor-pointer transition
-        border ${isSelected ? "border-orange-400 " : "border-gray-200"}`}
+        border ${isSelected ? "border-primary " : "border-gray-200"}`}
                 >
                   {/* CUSTOM CHECKBOX */}
                   <div
                     className={`w-4 h-4 rounded border flex items-center justify-center transition-all duration-200
             ${isSelected
-                        ? "bg-gradient-to-r from-orange-400 to-pink-500 text-white border-transparent"
+                        ? "bg-primary text-white border-transparent"
                         : "border-gray-300 bg-white"
                       }`}
                   >
@@ -129,7 +132,7 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
             rows={4}
             maxLength={500}
             placeholder="Additional details (optional)"
-            className="w-full border rounded-xl p-3 text-sm focus:ring-2 focus:ring-orange-400 outline-none"
+            className="w-full border rounded-xl p-3 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none"
           />
 
           {/* FOOTER BUTTONS */}
@@ -144,7 +147,7 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
             <button
               onClick={handleSubmit}
               disabled={!selected.length}
-              className="flex-1 bg-orange-500 text-white py-3 rounded-full text-sm disabled:opacity-50 cursor-pointer"
+              className="flex-1 bg-brand-gradient text-white py-3 rounded-full text-sm disabled:opacity-50 cursor-pointer hover:opacity-90 transition-opacity"
             >
               {TRIP_DETAILS.REPORT_MODAL.SUBMIT}
             </button>
