@@ -235,7 +235,7 @@ export default function CommunicationsTab() {
             <div className="flex items-center justify-between px-4 py-4 bg-white border border-[#E4E4E4] rounded-xl shadow-sm">
               <span className="text-sm font-medium text-[#1A1A1A]">Call</span>
               <Switch
-                className="data-[state=checked]:bg-primary"
+                className="data-[state=checked]:bg-primary cursor-pointer"
                 checked={communications.callUpdates}
                 onCheckedChange={(checked) => handleToggle("callUpdates", checked)}
               />
@@ -258,7 +258,7 @@ export default function CommunicationsTab() {
                 <span className="text-sm font-medium">{label}</span>
 
                 <Switch
-                  className="data-[state=checked]:bg-primary"
+                  className="data-[state=checked]:bg-primary cursor-pointer"
                   checked={communications[key as keyof CommunicationPreferences]}
                   onCheckedChange={(checked) => handleToggle(key as keyof CommunicationPreferences, checked)}
                 />
@@ -282,7 +282,7 @@ export default function CommunicationsTab() {
                 <span className="text-sm font-medium">{label}</span>
 
                 <Switch
-                  className="data-[state=checked]:bg-primary"
+                  className="data-[state=checked]:bg-primary cursor-pointer"
                   checked={communications[key as keyof CommunicationPreferences]}
                   onCheckedChange={(checked) => handleToggle(key as keyof CommunicationPreferences, checked)}
                 />
@@ -294,7 +294,7 @@ export default function CommunicationsTab() {
           <GradientButton
             onClick={savePreferences}
             disabled={!hasChanges || isSaving}
-            className={`w-full mt-6 ${!hasChanges && !isSaving ? "bg-gray-200 text-gray-400 opacity-100" : ""}`}
+            className={`w-full mt-6 cursor-pointer ${!hasChanges && !isSaving ? "bg-gray-200 text-gray-400 opacity-100" : ""}`}
           >
             {isSaving ? "Saving..." : "Save Preferences"}
           </GradientButton>

@@ -196,7 +196,7 @@ export default function PreferencesTab() {
           <button
             onClick={savePreferences}
             disabled={!hasChanges || isSaving}
-            className={`w-full mt-6 px-6 py-3 rounded-xl font-medium transition-all ${hasChanges && !isSaving
+            className={`w-full mt-6 px-6 py-3 rounded-xl font-medium transition-all cursor-pointer ${hasChanges && !isSaving
               ? "bg-primary hover:bg-primary/90 text-white shadow-md hover:shadow-lg"
               : "bg-gray-200 text-gray-400 cursor-not-allowed"
               }`}
