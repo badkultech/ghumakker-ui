@@ -1,10 +1,11 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { X, LucideIcon } from "lucide-react";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { LogoutButton } from "../common/LogoutButton";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ScreenLoader from "@/components/common/ScreenLoader";
 
 interface BaseMenuItem {
@@ -21,10 +22,11 @@ interface User {
   name: string;
   email: string;
   profileImage?: string | null;
+  userType?: string;
 }
 
 type UserMenuItem = LinkMenuItem;
-  
+
 
 export function SidebarMenu({
   isOpen,
@@ -42,6 +44,12 @@ export function SidebarMenu({
   user?: User;
 }) {
   const [isNavigating, setIsNavigating] = useState(false);
+  const pathname = usePathname();
+
+  // Reset loading state when pathname changes (navigation completes)
+  useEffect(() => {
+    setIsNavigating(false);
+  }, [pathname]);
 
   return (
     <>
@@ -96,22 +104,37 @@ export function SidebarMenu({
                 </div>
 
                 {/* User Menu Items */}
-                {userMenuItems.map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    onClick={() => {
-                      onClose();
-                      setIsNavigating(true);
-                    }}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted transition-colors group cursor-pointer"
-                  >
-                    <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
-                    <span className="text-sm font-medium text-foreground">
-                      {item.label}
-                    </span>
-                  </Link>
-                ))}
+                {userMenuItems.map((item) => {
+                  let href = item.href;
+                  if (item.label === "My Dashboard" && user?.userType) {
+                    if (["SYSTEM_ADMIN", "SUPER_ADMIN"].includes(user.userType)) {
+                      href = "/superadmin";
+                    } else if (["ORGANIZER", "ORGANIZATION_ADMIN"].includes(user.userType)) {
+                      href = "/organizer/dashboard";
+                    } else {
+                      href = "/home";
+                    }
+                  }
+
+                  return (
+                    <Link
+                      key={item.label}
+                      href={href}
+                      onClick={() => {
+                        onClose();
+                        if (pathname !== href) {
+                          setIsNavigating(true);
+                        }
+                      }}
+                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted transition-colors group cursor-pointer"
+                    >
+                      <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
+                      <span className="text-sm font-medium text-foreground">
+                        {item.label}
+                      </span>
+                    </Link>
+                  );
+                })}
 
                 <div className="my-4 border-t border-border" />
 

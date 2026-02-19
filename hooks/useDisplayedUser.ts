@@ -10,6 +10,7 @@ export interface DisplayedUser {
     name: string;
     email: string;
     profileImage?: string;
+    userType?: string;
 }
 
 export const useDisplayedUser = (): DisplayedUser | undefined => {
@@ -28,6 +29,7 @@ export const useDisplayedUser = (): DisplayedUser | undefined => {
                 name: "Loading...",
                 email: "",
                 profileImage: undefined,
+                userType: undefined,
             };
         }
 
@@ -38,6 +40,7 @@ export const useDisplayedUser = (): DisplayedUser | undefined => {
                     : "",
                 email: focusedProfile.email || "",
                 profileImage: focusedProfile.profileImageUrl || undefined,
+                userType: userData?.userType, // Always use real role (e.g. SYSTEM_ADMIN) so dashboard link goes to admin panel
             };
         }
         // Loading state for focused user
@@ -45,6 +48,7 @@ export const useDisplayedUser = (): DisplayedUser | undefined => {
             name: "Loading...",
             email: "",
             profileImage: undefined,
+            userType: undefined,
         };
     }
 
@@ -56,6 +60,7 @@ export const useDisplayedUser = (): DisplayedUser | undefined => {
                 : "",
             email: userData.email as string,
             profileImage: userData.profileImageUrl,
+            userType: userData.userType,
         };
     }
 
