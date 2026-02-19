@@ -8,7 +8,6 @@ import TripHeader from "@/components/homePage/trip-details/TripHeader";
 import TripInfoCards from "@/components/homePage/trip-details/TripInfoCards";
 import TripHighlights from "@/components/homePage/trip-details/TripHighlights";
 import DayWiseItinerary from "@/components/homePage/trip-details/DayWiseItinerary";
-import IncludedSection from "@/components/homePage/trip-details/IncludedSection";
 import ExcludedSection from "@/components/homePage/trip-details/ExcludedSection";
 import FAQSection from "@/components/homePage/trip-details/FAQSection";
 import DesktopSidebar from "@/components/homePage/trip-details/DesktopSidebar";
@@ -334,8 +333,6 @@ export default function TripDetailsPage() {
                 dayDescription={dayDescription}
                 itineraryPdfUrl={itinerary?.itineraryPdfDocument?.url}
               />
-
-              <IncludedSection />
 
               <ExcludedSection items={exclusions?.details || []} />
 
