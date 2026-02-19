@@ -193,7 +193,7 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                     variant="ghost"
                     size="icon"
                     onClick={onRemove}
-                    className="text-muted-foreground hover:text-destructive -mt-1 -mr-2"
+                    className="text-muted-foreground hover:text-destructive -mt-1 -mr-2 cursor-pointer"
                 >
                     <X className="w-5 h-5" />
                 </Button>
@@ -300,7 +300,7 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                             </div>
 
                             <Button
-                                className="bg-brand-gradient text-white h-11 px-6 rounded-lg font-medium hover:opacity-90 transition-opacity"
+                                className="bg-brand-gradient text-white h-11 px-6 rounded-lg font-medium hover:opacity-90 transition-opacity cursor-pointer"
                                 onClick={() => {
                                     if (!bulkDiscount) return;
                                     const newOptions = category.options.map(o => ({
@@ -423,7 +423,7 @@ export function DynamicCategoryCard({ category, onChange, onRemove, onValidate }
                 {category.type === 'multi' && (
                     <Button
                         variant="outline"
-                        className="w-full border-dashed border-2 py-6 text-muted-foreground hover:text-foreground hover:border-gray-400"
+                        className="w-full border-dashed border-2 py-6 text-muted-foreground hover:text-foreground hover:border-gray-400 cursor-pointer"
                         onClick={addOption}
                     >
                         <Plus className="w-4 h-4 mr-2" />

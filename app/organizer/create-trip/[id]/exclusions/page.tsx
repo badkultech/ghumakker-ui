@@ -166,7 +166,7 @@ export default function ExclusionsPage() {
                     <Button
                       type="button"
                       variant="outline"
-                      className="px-8 py-2 rounded-full font-medium text-primary border-primary/50 hover:bg-primary/5 transition"
+                      className="px-8 py-2 rounded-full font-medium text-primary border-primary/50 hover:bg-primary/5 transition cursor-pointer"
                       onClick={addCustom}
                     >
                       + Add

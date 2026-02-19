@@ -25,7 +25,7 @@ export function WizardFooter({
         <div className="flex justify-center sm:justify-start">
           <Button
             variant="outline"
-            className="px-8 py-2 rounded-full font-medium text-primary border-primary/50 hover:bg-primary/5 transition flex items-center gap-2"
+            className="px-8 py-2 rounded-full font-medium text-primary border-primary/50 hover:bg-primary/5 transition flex items-center gap-2 cursor-pointer"
             onClick={onPrev}
           >
             {prevLabel}
@@ -37,7 +37,7 @@ export function WizardFooter({
         {onDraft ? (
           <Button
             variant="outline"
-            className={`rounded-full bg-transparent border border-gray-300 text-gray-700 px-6 py-2
+            className={`rounded-full bg-transparent border border-gray-300 text-gray-700 px-6 py-2 cursor-pointer
               ${draftDisabled ? "opacity-50 cursor-not-allowed" : "hover:bg-gray-100"}`}
             onClick={!draftDisabled ? onDraft : undefined}
             disabled={draftDisabled}
@@ -49,7 +49,7 @@ export function WizardFooter({
           <Button
             className={`
              px-8 py-2 rounded-full font-medium text-white
-             bg-brand-gradient shadow
+             bg-brand-gradient shadow cursor-pointer
              flex items-center gap-2 transition hover:opacity-90
              ${loading ? "opacity-50 cursor-not-allowed" : ""}
           `}

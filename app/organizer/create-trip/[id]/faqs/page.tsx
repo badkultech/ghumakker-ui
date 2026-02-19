@@ -255,7 +255,7 @@ export default function FAQsPage() {
                   if (selectedFaq) handleAddFromLibrary(selectedFaq);
                   setChooseFromLibrary(false);
                 }}
-                className='bg-brand-gradient shadow hover:opacity-90 text-white'
+                className='bg-brand-gradient shadow hover:opacity-90 text-white cursor-pointer'
               >
                 Select
               </Button>
@@ -291,7 +291,7 @@ export default function FAQsPage() {
                   <AccordionItem
                     key={faq.question}
                     value={faq.question}
-                    className={`relative group rounded-lg border bg-background px-2 sm:px-4 ${faq.isSelected ? "bg-sky-50" : ""
+                    className={`relative group rounded-lg border bg-background px-2 sm:px-4  ${faq.isSelected ? "bg-sky-50" : ""
                       }`}
                   >
                     <div className="flex justify-between items-center py-2">
@@ -314,18 +314,20 @@ export default function FAQsPage() {
                         <span className="font-medium">{faq.question}</span>
                       </div>
 
-                      <AccordionTrigger />
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemoveFaq(faq.question);
+                          }}
+                          className="p-1 rounded hover:bg-red-50 text-gray-400 hover:text-red-600 transition-colors cursor-pointer"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                        <AccordionTrigger />
+                      </div>
                     </div>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleRemoveFaq(faq.question);
-                      }}
-                      className="absolute top-[-10px] right-[-9px] p-1 rounded hover:bg-red-50 text-gray-500 hover:text-red-600 opacity-0 group-hover:opacity-100 transition"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
                     <AccordionContent className="pt-2 pb-4">
                       {isMaster ? (
                         <div className="border border-gray-300 bg-gray-50 rounded-lg p-3 text-sm text-gray-700">
@@ -368,7 +370,7 @@ export default function FAQsPage() {
             <div className='flex gap-2'>
               <Button
                 variant='outline'
-                className='px-8 py-2 text-primary border-primary/50 hover:bg-primary/5'
+                className='px-8 py-2 text-primary border-primary/50 hover:bg-primary/5 cursor-pointer'
                 onClick={handleAddFaq}
               >
                 + Add Question
@@ -378,7 +380,7 @@ export default function FAQsPage() {
                 onClick={() => {
                   setChooseFromLibrary(true);
                 }}
-                className='px-8 py-2 text-white bg-brand-gradient'
+                className='px-8 py-2 text-white bg-brand-gradient cursor-pointer'
               >
                 Choose from Library
               </Button>

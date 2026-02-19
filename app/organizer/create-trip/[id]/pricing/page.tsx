@@ -586,7 +586,7 @@ export default function PricingPage() {
                       ))}
                       <Button
                         variant="outline"
-                        className="w-full border-primary/20 text-primary hover:text-primary hover:bg-primary/5"
+                        className="w-full border-primary/20 text-primary hover:text-primary hover:bg-primary/5 cursor-pointer"
                         onClick={addCategory}
                       >
                         <Plus className="w-4 h-4 mr-2" />

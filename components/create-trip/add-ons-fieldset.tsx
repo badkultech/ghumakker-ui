@@ -45,7 +45,7 @@ export function AddOnsFieldset({
           variant="outline"
           size="sm"
           onClick={addRow}
-          className="text-primary border-primary/50 hover:text-primary hover:border-primary hover:bg-primary/10"
+          className="text-primary border-primary/50 hover:text-primary hover:border-primary hover:bg-primary/10 cursor-pointer"
         >
           + Add Ons
         </Button>
@@ -83,6 +83,7 @@ export function AddOnsFieldset({
                 size="icon"
                 onClick={() => removeRow(row.id)}
                 aria-label="Remove add on"
+                className="cursor-pointer"
               >
                 <X className="h-4 w-4" />
               </Button>
