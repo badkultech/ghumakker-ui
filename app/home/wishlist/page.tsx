@@ -15,6 +15,7 @@ import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { AuthModals } from "@/components/auth/auth/AuthModals"
 import { Overlay } from "@/components/common/Overlay"
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop"
+import { FloatingCompareBadge } from "@/components/homePage/shared/FloatingCompareBadge";
 
 
 export default function WishlistPage() {
@@ -199,6 +200,7 @@ export default function WishlistPage() {
                     onClose={() => setShowSearchOverlay(false)} />
             </Overlay>
             <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
+            <FloatingCompareBadge />
         </div>
     )
 }

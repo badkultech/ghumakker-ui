@@ -265,7 +265,9 @@ export default function CompareTripsPage() {
                                                 )}
 
                                                 {attr.key === "bookNow" && (
-                                                    <button className="w-full px-6 py-2.5 bg-brand-gradient text-white text-sm font-medium rounded-lg hover:opacity-90 transition-all">
+                                                    <button
+                                                        onClick={() => router.push(`/home/search-result-with-filter/trip-details/${trip.id}`)}
+                                                        className="w-full px-6 py-2.5 bg-brand-gradient text-white text-sm font-medium rounded-lg hover:opacity-90 transition-all cursor-pointer">
                                                         Book Now
                                                     </button>
                                                 )}
