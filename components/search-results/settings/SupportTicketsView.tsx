@@ -166,49 +166,52 @@ export default function SupportTicketsView({ onBack }: SupportTicketsViewProps) 
                             <p className="text-sm text-gray-400 mt-2">Click "New Ticket" to create one.</p>
                         </div>
                     ) : (
-                        filteredTickets.map((ticket) => (
-                            <Card
-                                key={ticket.id}
-                                onClick={() => setSelectedTicket(ticket)}
-                                className="hover:shadow-md transition-all cursor-pointer bg-white"
-                            >
-                                <CardContent className="p-4">
-                                    <div className="flex items-start justify-between">
-                                        <div className="flex-1 space-y-2">
-                                            {/* Ticket ID and Status Badge */}
-                                            <div className="flex items-center gap-3">
-                                                <span className="font-mono font-semibold text-gray-800">#T-{ticket.id}</span>
-                                                <span
-                                                    className={`px-3 py-0.5 rounded-full text-xs font-medium ${getStatusClasses(
-                                                        ticket.status
-                                                    )}`}
-                                                >
-                                                    {ticket.status}
-                                                </span>
-                                            </div>
+                        filteredTickets.map((t) => {
+                            const nestedTicket = (t as any).ticketComments?.[0]?.ticket;
+                            const patchedRaisedBy = ((t.raisedBy as any)?.firstName || t.raisedBy?.email)
+                                ? t.raisedBy
+                                : ((nestedTicket?.raisedBy) || t.raisedBy);
 
-                                            {/* Ticket Title */}
-                                            <p className="font-semibold text-gray-900">{ticket.title}</p>
+                            const ticket: any = {
+                                ...t,
+                                raisedBy: patchedRaisedBy
+                            };
 
-                                            {/* Created & Updated Info */}
-                                            <div className="flex items-center gap-4 text-sm text-gray-400">
-                                                <span>Created: {ticket.createdDate || "2 hours ago"}</span>
-                                                <span>Last updated: {ticket.updatedDate || "2 hours ago"}</span>
+                            return (
+                                <Card
+                                    key={ticket.id}
+                                    onClick={() => setSelectedTicket(ticket)}
+                                    className="hover:shadow-md transition-all cursor-pointer bg-white"
+                                >
+                                    <CardContent className="p-4">
+                                        <div className="flex items-start justify-between">
+                                            <div className="flex-1 space-y-2">
+                                                {/* Ticket ID and Status Badge */}
+                                                <div className="flex items-center gap-3">
+                                                    <span className="font-mono font-semibold text-gray-800">#T-{ticket.id}</span>
+                                                    <span
+                                                        className={`px-3 py-0.5 rounded-full text-xs font-medium ${getStatusClasses(
+                                                            ticket.status
+                                                        )}`}
+                                                    >
+                                                        {ticket.status}
+                                                    </span>
+                                                </div>
+
+                                                {/* Ticket Title */}
+                                                <p className="font-semibold text-gray-900">{ticket.title}</p>
+
+                                                {/* Created & Updated Info */}
+                                                <div className="flex items-center gap-4 text-sm text-gray-400">
+                                                    <span>Created: {ticket.createdDate || "N/A"}</span>
+                                                    <span>Last updated: {ticket.updatedDate || "N/A"}</span>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        {/* Avatar */}
-                                        <div className="ml-4">
-                                            <img
-                                                src="/diverse-user-avatars.png"
-                                                alt="User avatar"
-                                                className="w-10 h-10 rounded-full object-cover"
-                                            />
-                                        </div>
-                                    </div>
-                                </CardContent>
-                            </Card>
-                        ))
+                                    </CardContent>
+                                </Card>
+                            );
+                        })
                     )}
                 </div>
 
