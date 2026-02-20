@@ -63,7 +63,7 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
         if (!validateEmail(value)) return "Please enter a valid email address";
         return "";
 
-      case "dateOfBirth":
+      case "dateOfBirth": {
         if (!value) return ""; // Optional field
 
         // Check if date is valid
@@ -79,7 +79,14 @@ export default function ProfileTab({ formData, setFormData, profileImageUrl, onS
           return "Date of birth cannot be in the future";
         }
 
+        // Check 18+ age
+        const minAgeDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+        if (birthDate > minAgeDate) {
+          return "You must be at least 18 years old";
+        }
+
         return "";
+      }
 
       default:
         return "";
