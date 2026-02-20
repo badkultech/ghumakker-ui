@@ -100,7 +100,7 @@ export default function TripDetailsPage() {
       action();
     }
   };
-  const { data, isLoading, error } = useTripDetailsQuery(id as string);
+  const { data, isLoading, error, refetch } = useTripDetailsQuery(id as string);
   const [updateTripStatus, { isLoading: isPublishing }] = useUpdateTripStatusMutation();
   const { toast } = useToast();
 
@@ -158,6 +158,8 @@ export default function TripDetailsPage() {
     }
   };
 
+  const [isPublished, setIsPublished] = useState(false);
+
   const handlePublishTrip = async () => {
     if (!organizationId || !id) {
       toast({
@@ -175,13 +177,16 @@ export default function TripDetailsPage() {
         status: "PUBLISHED"
       }).unwrap();
 
+      setIsPublished(true); // ✅ Immediately disable button after success
+
       toast({
         title: "Success",
         description: "Trip published successfully!",
       });
 
-      // Refresh to update UI
-      router.refresh();
+      // Re-fetch trip data to update tripStatus without page reload
+      await refetch();
+      setIsPublished(false); // Reset — tripStatus from API now drives the disabled state
     } catch (err: any) {
       console.error("Failed to publish trip:", err);
       toast({
@@ -509,7 +514,7 @@ export default function TripDetailsPage() {
           router.push(`/organizer/create-trip/${trip.publicId}`)
         }
         onPublishTrip={handlePublishTrip}
-        isPublishDisabled={trip?.tripStatus === "PUBLISHED"}
+        isPublishDisabled={trip?.tripStatus === "PUBLISHED" || isPublished || isPublishing}
       />
       <Overlay
         open={showSearchOverlay}
