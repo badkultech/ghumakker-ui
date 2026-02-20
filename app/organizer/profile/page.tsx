@@ -134,6 +134,7 @@ export default function OrganizerProfilePage() {
                       src={bannerFile.url}
                       alt='Cover'
                       className='w-full h-full rounded-xl object-cover'
+                      fill
                     />
                   ) : (
                     <div className='w-full h-full flex items-center justify-center bg-[#EFF1F3]'>
@@ -150,6 +151,7 @@ export default function OrganizerProfilePage() {
                         src={logoFile.url}
                         alt='Logo'
                         className='w-full h-full rounded-full object-cover'
+                        fill
                       />
                     </div>
                   ) : (
