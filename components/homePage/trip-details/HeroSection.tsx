@@ -25,13 +25,12 @@ export default function HeroSection({
       <div className="hidden lg:block">
         <div className="h-96 rounded-2xl overflow-hidden relative">
           {imageUrl ? (
-            <div onClick={onImageClick} className="cursor-pointer">
+            <div onClick={onImageClick} className="cursor-pointer w-full h-full">
               <LazyImage
                 src={imageUrl}
                 alt={title}
-                width={1200}
-                height={400}
-                className="object-cover"
+                fill
+                className="w-full h-full rounded-2xl"
               />
             </div>
           ) : (
@@ -45,14 +44,13 @@ export default function HeroSection({
 
       {/* Mobile */}
       <div className="lg:hidden">
-        <div className="col-span-2 h-64 rounded-2xl overflow-hidden">
+        <div className="col-span-2 h-64 rounded-2xl overflow-hidden relative">
           {imageUrl ? (
             <LazyImage
               src={imageUrl}
               alt={title}
-              width={1200}
-              height={400}
-              className="object-cover"
+              fill
+              className="w-full h-full rounded-2xl"
             />
           ) : (
             <div className="w-full h-full bg-gray-200 flex items-center justify-center text-gray-500">

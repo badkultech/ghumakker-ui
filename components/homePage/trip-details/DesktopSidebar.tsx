@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import Image from "next/image";
+import { LazyImage } from "@/components/ui/lazyImage";
 import { Send, AlertCircle, MessageCircle } from "lucide-react";
 import { TRIP_DETAILS } from "@/lib/constants/strings";
 
@@ -89,18 +89,18 @@ export default function DesktopSidebar({
 
         {/* Images */}
         <div className="grid grid-cols-2 gap-2">
-          {(images?.length ? images : Array.from({ length: 6 })).map(
+          {(images?.length ? images.slice(0, 6) : Array.from({ length: 6 })).map(
             (img: any, i: number) => (
               <div key={i} className="h-28 rounded-xl overflow-hidden relative">
                 {img?.url ? (
-                  <Image
-                    src={img.url}
-                    onClick={onImageClick}
-                    alt="Trip gallery"
-                    width={200}
-                    height={150}
-                    className="w-full h-full object-cover"
-                  />
+                  <div onClick={onImageClick} className="w-full h-full cursor-pointer">
+                    <LazyImage
+                      src={img.url}
+                      alt="Trip gallery"
+                      fill
+                      className="w-full h-full"
+                    />
+                  </div>
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-xs text-gray-500">
                     No image available
