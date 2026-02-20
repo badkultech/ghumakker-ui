@@ -36,8 +36,8 @@ export const ENDPOINTS = {
   PROMOTE_GROUP_LEADER: (leaderId: number) =>
     `/tenant/trip-leaders/${leaderId}/promotions`,
 
-  DEACTIVATE_GROUP_LEADER_PROMOTION: (promotionId: number) =>
-    `/tenant/group-leaders/promotions/${promotionId}/deactivate`,
+  DEACTIVATE_GROUP_LEADER_PROMOTION: (leaderId: number) =>
+    `/tenant/group-leaders/promotions/${leaderId}/deactivate`,
 
   TRIP_REPORTS: () => "/tenant/trip-reports",
 

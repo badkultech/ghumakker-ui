@@ -74,7 +74,7 @@ export default function GroupLeadersPage() {
         if (!leader.promotion) return;
 
         try {
-            await deactivatePromotion(leader.promotion.id).unwrap();
+            await deactivatePromotion(leader.id).unwrap();
             showSuccess("Promotion deactivated");
         } catch (error) {
             showApiError(error);

@@ -69,12 +69,12 @@ export const groupLeaderAPI = baseAPI.injectEndpoints({
         }),
 
         /* ----------------------------------------
-           PATCH: Deactivate Promotion
+           POST: Deactivate Promotion
         ----------------------------------------- */
         deactivateGroupLeaderPromotion: builder.mutation<void, number>({
-            query: (promotionId) => ({
-                url: ENDPOINTS.DEACTIVATE_GROUP_LEADER_PROMOTION(promotionId),
-                method: "PATCH",
+            query: (leaderId) => ({
+                url: ENDPOINTS.DEACTIVATE_GROUP_LEADER_PROMOTION(leaderId),
+                method: "POST",
             }),
             invalidatesTags: [TAGS.groupLeaders],
         }),
