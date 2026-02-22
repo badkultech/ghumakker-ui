@@ -10,7 +10,7 @@ import { useOrganizationId } from "@/hooks/useOrganizationId"
 import { useUserId } from "@/hooks/useUserId"
 import { useAuthActions } from "@/hooks/useAuthActions"
 import { useState, useEffect } from "react"
-import { notificationsData, userMenuItems } from "../constants"
+import { userMenuItems } from "../constants"
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { AuthModals } from "@/components/auth/auth/AuthModals"
 import { Overlay } from "@/components/common/Overlay"
@@ -22,7 +22,7 @@ export default function WishlistPage() {
     const organizationId = useOrganizationId();
     const userId = useUserId();
     const { isLoggedIn, handleLogout, router } = useAuthActions();
-    const [notifications, setNotifications] = useState(notificationsData);
+    const [notifications, setNotifications] = useState<any[]>([]);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
     const [showSearchOverlay, setShowSearchOverlay] = useState(false);

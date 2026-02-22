@@ -19,7 +19,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import GradientCheckbox from "@/components/ui/GradientCheckbox"
 import { MainHeader } from "@/components/search-results/MainHeader"
-import { notificationsData, userMenuItems } from "../constants";
+import { userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useOrganizationId } from "@/hooks/useOrganizationId"
@@ -65,7 +65,7 @@ export default function MyQueriesPage() {
             setAuthStep("PHONE");
         }
     }, [isLoggedIn]);
-    const [notifications, setNotifications] = useState(notificationsData);
+    const [notifications, setNotifications] = useState<any[]>([]);
     const [isSidebarOpen, setSidebarOpen] = useState(false);
     const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
     const [showSearchOverlay, setShowSearchOverlay] = useState(false);

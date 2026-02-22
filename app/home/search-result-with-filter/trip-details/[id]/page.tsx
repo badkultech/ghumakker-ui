@@ -25,7 +25,7 @@ import OrganizerProfileModal from "@/components/homePage/trip-details/modal/Orga
 import InviteFriendsModal from "@/components/homePage/trip-details/modal/InviteFriendsModal";
 import SendInvitationModal from "@/components/homePage/trip-details/modal/SendInvitationModal";
 import { useAuthActions } from "@/hooks/useAuthActions";
-import { notificationsData, userMenuItems } from "@/app/home/constants";
+import { userMenuItems } from "@/app/home/constants";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { FullImageGalleryModal } from "@/components/library/FullImageGalleryModal";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
@@ -77,7 +77,7 @@ export default function TripDetailsPage() {
   const [inviteEmail, setInviteEmail] = useState("");
   const { isLoggedIn, handleLogout } = useAuthActions();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [notificationsList, setNotificationsList] = useState(notificationsData);
+  const [notificationsList, setNotificationsList] = useState<any[]>([]);
   const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);

@@ -6,7 +6,7 @@ import { ChevronLeft, Menu, Scale, Bell, Info, Send, X, Clock } from "lucide-rea
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { useRouter } from "next/navigation"
 import { MainHeader } from "@/components/search-results/MainHeader"
-import { notificationsData, userMenuItems } from "../constants";
+import { userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
@@ -34,7 +34,7 @@ export default function TripInvitationsPage() {
       setAuthStep("PHONE");
     }
   }, [isLoggedIn]);
-  const [notifications, setNotifications] = useState(notificationsData)
+  const [notificationsList, setNotificationsList] = useState<any[]>([]);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
   const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
@@ -126,8 +126,8 @@ export default function TripInvitationsPage() {
 
         {/* Header */}
         <MainHeader logoText="Trip Invitations sent" isLoggedIn={isLoggedIn}
-          notifications={notifications}
-          onUpdateNotifications={setNotifications}
+          notifications={notificationsList}
+          onUpdateNotifications={setNotificationsList}
           onMenuOpen={() => setIsSidebarOpen(true)}
           onLoginClick={() => setAuthStep("PHONE")}
           variant="edge"
@@ -137,9 +137,9 @@ export default function TripInvitationsPage() {
         <main className="max-w-[1200px] mx-auto px-4 md:px-8 py-6 md:py-10">
 
           {/* Info Banner */}
-          <div className="bg-orange-50 border border-primary/20 rounded-xl p-4 md:p-5 mb-6 md:mb-8 flex gap-3">
-            <div className="flex-shrink-0 w-6 h-6 rounded-full  flex items-center justify-center">
-              <Info className="w-4 h-4 text-[#FF804C]" />
+          <div className="bg-primary/10 border border-primary/20 rounded-xl p-4 md:p-5 mb-6 md:mb-8 flex gap-3">
+            <div className="flex-shrink-0 w-6 h-6 rounded-full flex items-center justify-center">
+              <Info className="w-4 h-4 text-primary" />
             </div>
             <div>
               <h3 className="font-semibold text-foreground text-sm md:text-base mb-1">
@@ -233,10 +233,10 @@ export default function TripInvitationsPage() {
                             handleNudge(lead)
                           }}
                           disabled={isSendingNudge}
-                          className="flex-1 flex items-center justify-center gap-2 py-2.5 md:py-3 px-4 border border-[#FF804C] text-primary rounded-lg hover:bg-orange-50 text-sm font-medium disabled:opacity-50"
+                          className="flex-1 flex items-center justify-center gap-2 py-2.5 md:py-3 px-4 border border-primary text-primary rounded-lg hover:bg-primary/5 text-sm font-medium disabled:opacity-50"
                         >
-                          <Send className="w-4 h-4 text-[#FF804C]" />
-                          <span className="text-[#FF804C]">
+                          <Send className="w-4 h-4 text-primary" />
+                          <span className="text-primary">
                             {isSendingNudge ? "Sending..." : "Nudge Organizer"}
                           </span>
                         </button>
@@ -270,7 +270,7 @@ export default function TripInvitationsPage() {
 
             <div className="relative bg-card rounded-2xl p-6 md:p-8 w-full max-w-md shadow-xl text-center">
               <div className="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
-                <Send className="w-12 h-12 text-[#FF804C]" />
+                <Send className="w-12 h-12 text-primary" />
               </div>
 
               <h2 className="text-xl font-semibold text-foreground mb-2">Send a Nudge?</h2>
@@ -290,7 +290,7 @@ export default function TripInvitationsPage() {
                 <button
                   onClick={confirmNudge}
                   disabled={isSendingNudge}
-                  className="flex-1 py-3 px-4 bg-[#FF804C] text-primary-foreground rounded-lg hover:opacity-90 text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50"
+                  className="flex-1 py-3 px-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 text-sm font-medium flex items-center justify-center gap-2 disabled:opacity-50"
                 >
                   <Send className="w-4 h-4" />
                   {isSendingNudge ? "Sending..." : "Send Nudge"}

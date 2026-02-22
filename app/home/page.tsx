@@ -6,7 +6,7 @@ import { MainHeader } from "@/components/search-results/MainHeader";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { HeroSection } from "@/components/homePage/sections/hero-section";
 import { Footer } from "@/components/homePage/sections/footer";
-import { userMenuItems, notificationsData } from "./constants";
+import { userMenuItems } from "./constants";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
 import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 
@@ -14,7 +14,7 @@ export default function Home() {
   const { isLoggedIn, handleLogout, router } = useAuthActions();
 
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [notificationsList, setNotificationsList] = useState(notificationsData);
+  const [notificationsList, setNotificationsList] = useState<any[]>([]);
 
   const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
 

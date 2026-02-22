@@ -546,12 +546,6 @@ export default function SettingsPage() {
 
                             <div className="flex items-center justify-between mt-4">
                                 <Button
-                                    variant="outline"
-                                    className="text-sm text-gray-700 border-gray-300 cursor-pointer"
-                                >
-                                    Forgot Password?
-                                </Button>
-                                <Button
                                     type="button"
                                     onClick={handlePasswordUpdate}
                                     disabled={!allValid || isLoading}

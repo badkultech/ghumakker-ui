@@ -5,7 +5,7 @@ import { ChevronLeft } from "lucide-react"
 import { TripLeaderCard } from "@/components/homePage/shared/trip-leader-card"
 import { TripLeaderModal } from "@/components/homePage/shared/trip-leader-modal"
 import { MainHeader } from "@/components/search-results/MainHeader"
-import { notificationsData, userMenuItems } from "../constants";
+import { userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useDisplayedUser } from "@/hooks/useDisplayedUser"
@@ -92,7 +92,7 @@ export default function TripLeadersPage() {
     const [selectedLeader, setSelectedLeader] = useState<(typeof tripLeaders)[0] | null>(null)
     const [isModalOpen, setIsModalOpen] = useState(false)
     const { isLoggedIn, handleLogout, router } = useAuthActions();
-    const [notifications, setNotifications] = useState(notificationsData);
+    const [notifications, setNotifications] = useState<any[]>([]);
     const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const [showSearchOverlay, setShowSearchOverlay] = useState(false);
     const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);

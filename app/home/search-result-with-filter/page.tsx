@@ -10,7 +10,7 @@ import { MobileBottomBar } from "@/components/search-results/mobile-bottom-bar";
 import NoTripsFound from "@/components/search-results/NoTripsFound";
 import { useSearchPublicTripsQuery } from "@/lib/services/trip-search";
 import { MainHeader } from "@/components/search-results/MainHeader";
-import { userMenuItems, notificationsData } from "../constants"
+import { userMenuItems } from "../constants"
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { useSelector } from "react-redux";
@@ -63,7 +63,7 @@ export default function SearchResultsWithFilters() {
   const router = useRouter();
   const { isLoggedIn, handleLogout } = useAuthActions();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [notificationsList, setNotificationsList] = useState(notificationsData);
+  const [notificationsList, setNotificationsList] = useState<any[]>([]);
   const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
   const moodsFromUrl = searchParams.get("moods");
   const moodsAll = searchParams.getAll("moods");

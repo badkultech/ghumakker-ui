@@ -12,7 +12,7 @@ import { clearCompare, removeFromCompare } from "@/lib/slices/compareSlice";
 import { useRouter } from "next/navigation";
 import { MainHeader } from "@/components/search-results/MainHeader";
 import { useAuthActions } from "@/hooks/useAuthActions";
-import { notificationsData, userMenuItems } from "../constants";
+import { userMenuItems } from "../constants";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
 import { selectAuthState } from "@/lib/slices/auth";
@@ -59,7 +59,7 @@ export default function CompareTripsPage() {
     const router = useRouter();
     const { isLoggedIn, handleLogout } = useAuthActions();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [notificationsList, setNotificationsList] = useState(notificationsData);
+    const [notificationsList, setNotificationsList] = useState<any[]>([]);
     const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
     const [showSearchOverlay, setShowSearchOverlay] = useState(false);
     const onLogout = () => {

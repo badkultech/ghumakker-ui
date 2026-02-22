@@ -13,7 +13,7 @@ import { LogoutModal } from "@/components/organizer/LogoutModal";
 import DeactivateModal from "@/components/search-results/settings/DeactivateModal";
 import DeleteModal from "@/components/search-results/settings/DeleteModal";
 import { MainHeader } from "@/components/search-results/MainHeader";
-import { notificationsData, userMenuItems } from "../constants";
+import { userMenuItems } from "../constants";
 
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { useAuthActions } from "@/hooks/useAuthActions";
@@ -56,7 +56,7 @@ export default function SettingsPage() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showDeactivateModal, setShowDeactivateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [notifications, setNotifications] = useState(notificationsData);
+  const [notifications, setNotifications] = useState<any[]>([]);
   const [isSidebarOpen, setSidebarOpen] = useState(false);
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
   const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);

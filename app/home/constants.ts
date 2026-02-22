@@ -12,25 +12,6 @@ export const userMenuItems = [
     { icon: Settings, label: "Settings", href: "/home/settings" },
 ] as const;
 
-export const notificationsData = [
-    {
-        id: 1,
-        type: "booking",
-        title: "Booking Confirmed!",
-        description: "Your booking for Ladakh Skygaze has been confirmed",
-        time: "2 hours ago",
-        read: false,
-    },
-    {
-        id: 2,
-        type: "message",
-        title: "New Message",
-        description: "Trip organizer replied to your query",
-        time: "2 hours ago",
-        read: false,
-    },
-];
-
 export const footerLinks = {
     main: [
         { label: "Home", href: "/home" },
