@@ -10,7 +10,7 @@ interface Activity {
   name?: string;
   description?: string;
   tags?: string[];
-  image?: string;
+  images?: string[];
 }
 
 interface Props {
@@ -18,7 +18,7 @@ interface Props {
   activeDay: number;
   setActiveDay: (i: number) => void;
   activities: Activity[];
-  onImageClick?: (index: number) => void;
+  onImageClick?: (images: string[]) => void;
   dayTitle?: string;
   dayDescription?: string;
   itineraryPdfUrl?: string;
@@ -183,14 +183,14 @@ export default function DayWiseItinerary({
                       </div>
                     ))}
 
-                    {/* View Image Button if image exists */}
-                    {activity.image && (
+                    {/* View Photo button — opens gallery with this item's images only */}
+                    {activity.images && activity.images.length > 0 && (
                       <button
-                        onClick={() => onImageClick?.(i)}
-                        className="flex items-center gap-1.5 text-xs text-orange-600 font-medium hover:underline"
+                        onClick={() => onImageClick?.(activity.images!)}
+                        className="flex items-center gap-1.5 text-xs text-primary font-medium hover:underline"
                       >
                         <Camera className="w-4 h-4" />
-                        View Photo
+                        View Photo{activity.images.length > 1 ? `s (${activity.images.length})` : ""}
                       </button>
                     )}
                   </div>

@@ -81,6 +81,7 @@ export default function TripDetailsPage() {
   const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
+  const [galleryImages, setGalleryImages] = useState<{ url: string }[]>([]);
   const { userData } = useSelector(selectAuthState);
   const userType = userData?.userType;
   const [showSearchOverlay, setShowSearchOverlay] = useState(false);
@@ -227,7 +228,7 @@ export default function TripDetailsPage() {
       time: item.time || item.startTime || item.checkInTime || "--",
       name: item.name,
       description: item.description,
-      image: item.documents?.[0]?.url || "",
+      images: (item.documents || []).map((doc: any) => doc.url).filter(Boolean),
     }));
 
 
@@ -330,11 +331,11 @@ export default function TripDetailsPage() {
                 activeDay={activeDay}
                 setActiveDay={setActiveDay}
                 activities={activities}
-                onImageClick={() => {
-                  setGalleryIndex(0);
+                onImageClick={(images: string[]) => {
+                  setGalleryImages(images.map(url => ({ url })));
                   setGalleryOpen(true);
                 }}
-                dayTitle={`Day ${activeDay + 1}: ${trip?.name}`}
+                dayTitle={`Day ${activeDay + 1}: ${dayDescriptionItem?.name || trip?.name}`}
                 dayDescription={dayDescription}
                 itineraryPdfUrl={itinerary?.itineraryPdfDocument?.url}
               />
@@ -491,8 +492,8 @@ export default function TripDetailsPage() {
       )}
       <FullImageGalleryModal
         open={galleryOpen}
-        onClose={() => setGalleryOpen(false)}
-        images={sidebarImages}
+        onClose={() => { setGalleryOpen(false); setGalleryImages([]); }}
+        images={galleryImages.length > 0 ? galleryImages : sidebarImages}
         title={tripName}
       />
 

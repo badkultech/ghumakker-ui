@@ -19,6 +19,8 @@ export function FullImageGalleryModal({
   images,
   title,
 }: FullImageGalleryModalProps) {
+  // Filter out images with empty/null URLs
+  const validImages = images.filter(img => !!img?.url);
   const [mounted, setMounted] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [portalTarget, setPortalTarget] = useState<HTMLElement | null>(null);
@@ -31,9 +33,14 @@ export function FullImageGalleryModal({
     setMounted(true);
   }, []);
 
-  const next = () => setCurrentIndex((prev) => (prev + 1) % images.length);
+  // Reset index whenever gallery opens or image set changes
+  useEffect(() => {
+    if (open) setCurrentIndex(0);
+  }, [open, images]);
+
+  const next = () => setCurrentIndex((prev) => (prev + 1) % validImages.length);
   const prev = () =>
-    setCurrentIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+    setCurrentIndex((prev) => (prev === 0 ? validImages.length - 1 : prev - 1));
 
   // ✅ Keyboard navigation with window guard
   useEffect(() => {
@@ -51,11 +58,11 @@ export function FullImageGalleryModal({
     return () => {
       if (open) window.removeEventListener("keydown", handleKey);
     };
-  }, [open, images.length]);
+  }, [open, validImages.length]);
 
-  if (!mounted || !open || !images?.length || !portalTarget) return null;
+  if (!mounted || !open || !validImages?.length || !portalTarget) return null;
 
-  const currentImage = images[currentIndex]?.url;
+  const currentImage = validImages[currentIndex]?.url;
 
   // ✅ Only render portal once document.body is available
   return createPortal(
@@ -87,19 +94,21 @@ export function FullImageGalleryModal({
             transition={{ duration: 0.3 }}
             className="absolute inset-0 flex items-center justify-center"
           >
-            <Image
-              src={currentImage}
-              alt={`Gallery image ${currentIndex + 1}`}
-              width={1600}
-              height={900}
-              className="object-contain max-h-[85vh] w-auto"
-              unoptimized
-            />
+            {currentImage ? (
+              <Image
+                src={currentImage}
+                alt={`Gallery image ${currentIndex + 1}`}
+                width={1600}
+                height={900}
+                className="object-contain max-h-[85vh] w-auto"
+                unoptimized
+              />
+            ) : null}
           </motion.div>
         </AnimatePresence>
 
         {/* Navigation */}
-        {images.length > 1 && (
+        {validImages.length > 1 && (
           <>
             <button
               onClick={prev}
@@ -119,7 +128,7 @@ export function FullImageGalleryModal({
 
       {/* Counter */}
       <div className="absolute bottom-4 text-sm text-white bg-black/50 px-3 py-1 rounded-full">
-        {currentIndex + 1} / {images.length}
+        {currentIndex + 1} / {validImages.length}
       </div>
     </div>,
     portalTarget
