@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Sidebar } from "@/components/superadmin/sidebar";
 import { AppHeader } from "@/components/app-header";
 import { useGetAllTripsQuery } from "@/lib/services/superadmin";
@@ -9,6 +9,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { CustomDateTimePicker } from "@/components/ui/date-time-picker";
+
+const SESSION_KEY = "allTrips_statusFilter";
+const REFRESH_FLAG_KEY = "allTrips_isNavigating";
 
 export default function AllTripsPage() {
     const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -23,6 +26,25 @@ export default function AllTripsPage() {
 
     const [currentPage, setCurrentPage] = useState(0);
     const pageSize = 10;
+
+    // On mount: restore status from sessionStorage only if navigating (not hard refresh)
+    useEffect(() => {
+        const isNavigating = sessionStorage.getItem(REFRESH_FLAG_KEY);
+        if (isNavigating) {
+            const savedStatus = sessionStorage.getItem(SESSION_KEY);
+            if (savedStatus) setStatusFilter(savedStatus);
+        } else {
+            // Hard refresh — clear saved status
+            sessionStorage.removeItem(SESSION_KEY);
+        }
+        // Set flag so next time (navigation) data is restored
+        sessionStorage.setItem(REFRESH_FLAG_KEY, "true");
+
+        // Clear flag on page unload (tab close / browser close)
+        const handleUnload = () => sessionStorage.removeItem(REFRESH_FLAG_KEY);
+        window.addEventListener("beforeunload", handleUnload);
+        return () => window.removeEventListener("beforeunload", handleUnload);
+    }, []);
 
     // Fetch all trips using superadmin API
     const { data: tripsData, isLoading, error } = useGetAllTripsQuery({
@@ -154,7 +176,15 @@ export default function AllTripsPage() {
                                     <select
                                         className="w-full h-10 px-3 rounded-md border border-gray-300 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-primary"
                                         value={statusFilter}
-                                        onChange={(e) => setStatusFilter(e.target.value)}
+                                        onChange={(e) => {
+                                            const val = e.target.value;
+                                            setStatusFilter(val);
+                                            if (val) {
+                                                sessionStorage.setItem(SESSION_KEY, val);
+                                            } else {
+                                                sessionStorage.removeItem(SESSION_KEY);
+                                            }
+                                        }}
                                     >
                                         <option value="">All Status</option>
                                         <option value="PUBLISHED">Published</option>
