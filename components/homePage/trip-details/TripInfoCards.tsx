@@ -24,6 +24,20 @@ export default function TripInfoCards({
   maxGroupSize,
   totalDays,
 }: TripInfoProps) {
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return "-";
+    const parts = dateStr.split("-");
+    if (parts.length === 3) {
+      const [y, m, d] = parts;
+      const monthIndex = parseInt(m, 10) - 1;
+      return `${parseInt(d, 10)} ${monthNames[monthIndex] ?? m} ${y}`;
+    }
+    return dateStr; // fallback: return as-is
+  };
+
   return (
     <div className="grid grid-cols-2 gap-4 p-4 bg-white rounded-2xl border py-8">
       <Item
@@ -35,7 +49,7 @@ export default function TripInfoCards({
       <Item
         icon={Calendar}
         label={TRIP_DETAILS.INFO_CARDS.DATES}
-        value={`${startDate || "-"} — ${endDate || "-"}`}
+        value={`${formatDate(startDate)} — ${formatDate(endDate)}`}
       />
 
       <Item

@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Search } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { MoodTag } from "@/components/search-results/mood-tag"
@@ -43,8 +43,29 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
 
   const [activeTab, setActiveTab] = useState<"destination" | "moods">(defaultTab || "destination")
   const [selectedMoods, setSelectedMoods] = useState<string[]>(["Mountain", "Wellness", "Women-Only"])
-  const [selectedMonth, setSelectedMonth] = useState(monthNames[today.getMonth()])
-  const [year, setYear] = useState(today.getFullYear())
+  const [selectedMonth, setSelectedMonth] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return sessionStorage.getItem('searchMonth') || monthNames[today.getMonth()]
+    }
+    return monthNames[today.getMonth()]
+  })
+  const [year, setYear] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return Number(sessionStorage.getItem('searchYear')) || today.getFullYear()
+    }
+    return today.getFullYear()
+  })
+
+  // Clear saved month/year on hard refresh (F5 / Ctrl+R)
+  useEffect(() => {
+    const navEntry = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined
+    if (navEntry?.type === 'reload') {
+      sessionStorage.removeItem('searchMonth')
+      sessionStorage.removeItem('searchYear')
+      setSelectedMonth(monthNames[today.getMonth()])
+      setYear(today.getFullYear())
+    }
+  }, [])
   const [destinationTags, setDestinationTags] = useState("")
   const [selectedRegion, setSelectedRegion] = useState<"domestic" | "international">("domestic")
   const [isSearching, setIsSearching] = useState(false)
@@ -190,6 +211,8 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
           onChange={({ year, month }) => {
             setYear(year)
             setSelectedMonth(month)
+            sessionStorage.setItem('searchMonth', month)
+            sessionStorage.setItem('searchYear', String(year))
           }}
           className="scale-[0.95] origin-top"
         />
