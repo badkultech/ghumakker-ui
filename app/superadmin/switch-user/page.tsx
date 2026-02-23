@@ -16,6 +16,16 @@ import { CustomDateTimePicker } from '@/components/ui/date-time-picker';
 import { PHONE_CONFIG, extractPhoneNumber, formatPhoneWithCountryCode } from "@/lib/constants/phone";
 
 export default function SwitchUser() {
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const formatDate = (dateStr?: string) => {
+        if (!dateStr) return "-";
+        const parts = dateStr.split("-");
+        if (parts.length === 3) {
+            const [y, m, d] = parts;
+            return `${parseInt(d, 10)} ${monthNames[parseInt(m, 10) - 1] ?? m} ${y}`;
+        }
+        return dateStr;
+    };
     const dispatch = useDispatch();
     const router = useRouter();
     const { getValueFromLocalStorage, setValueInLocalStorage } = useLocalStorage();
@@ -264,7 +274,7 @@ export default function SwitchUser() {
                                             <td className="p-3 font-medium">{user.firstName} {user.lastName}</td>
                                             <td className="p-3">{user.email}</td>
                                             <td className="p-3">{user.mobileNumber}</td>
-                                            <td className="p-3">{user.createdDate}</td>
+                                            <td className="p-3">{formatDate(user.createdDate)}</td>
                                         </tr>
                                     ))}
                                 </tbody>

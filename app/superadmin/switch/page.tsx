@@ -16,6 +16,16 @@ import { CustomDateTimePicker } from '@/components/ui/date-time-picker';
 import { PHONE_CONFIG, extractPhoneNumber, formatPhoneWithCountryCode } from "@/lib/constants/phone";
 
 export default function SwitchOrganization() {
+  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+  const formatDate = (dateStr?: string) => {
+    if (!dateStr) return "-";
+    const parts = dateStr.split("-");
+    if (parts.length === 3) {
+      const [y, m, d] = parts;
+      return `${parseInt(d, 10)} ${monthNames[parseInt(m, 10) - 1] ?? m} ${y}`;
+    }
+    return dateStr;
+  };
   const dispatch = useDispatch();
   const router = useRouter();
   const { getValueFromLocalStorage, setValueInLocalStorage } = useLocalStorage();
@@ -254,7 +264,7 @@ export default function SwitchOrganization() {
                       <td className="p-3 font-medium">{org.entityName}</td>
                       <td className="p-3">{org.email}</td>
                       <td className="p-3">{org.primaryPhone}</td>
-                      <td className="p-3">{org.dateOfEstablishment}</td>
+                      <td className="p-3">{formatDate(org.dateOfEstablishment)}</td>
                     </tr>
                   ))}
                 </tbody>

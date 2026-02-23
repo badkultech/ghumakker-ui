@@ -41,9 +41,15 @@ export default function AllTripsPage() {
     const totalTrips = tripsData?.totalElements || 0;
     const totalPages = tripsData?.totalPages || 0;
 
-    const formatDate = (dateString?: string) => {
-        if (!dateString) return "N/A";
-        return new Date(dateString).toLocaleDateString("en-GB");
+    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    const formatDate = (dateStr?: string) => {
+        if (!dateStr) return "N/A";
+        const parts = dateStr.split("-");
+        if (parts.length === 3) {
+            const [y, m, d] = parts;
+            return `${parseInt(d, 10)} ${monthNames[parseInt(m, 10) - 1] ?? m} ${y}`;
+        }
+        return dateStr;
     };
 
     const formatLocation = (cityTags?: string[]) => {
