@@ -5,7 +5,6 @@ import { useAuthActions } from "@/hooks/useAuthActions";
 import { MainHeader } from "@/components/search-results/MainHeader";
 import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { HeroSection } from "@/components/homePage/sections/hero-section";
-import { Footer } from "@/components/homePage/sections/footer";
 import { userMenuItems } from "./constants";
 import { AuthModals } from "@/components/auth/auth/AuthModals";
 import { useDisplayedUser } from "@/hooks/useDisplayedUser";
@@ -28,7 +27,7 @@ export default function Home() {
 
 
   return (
-    <main className="min-h-screen flex flex-col overflow-auto bg-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
+    <main className="flex flex-col overflow-auto bg-white [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <MainHeader
         isLoggedIn={isLoggedIn}
         onLoginClick={() => setAuthStep("PHONE")}
@@ -41,8 +40,6 @@ export default function Home() {
       <div className="flex-1 overflow-auto">
         <HeroSection />
       </div>
-
-      <Footer />
 
       <SidebarMenu
         isOpen={isMenuOpen}

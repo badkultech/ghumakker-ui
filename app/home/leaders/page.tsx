@@ -116,7 +116,7 @@ export default function TripLeadersPage() {
 
     return (
         <>
-            <div className="min-h-screen bg-white">
+            <div className="bg-white">
                 <MainHeader isLoggedIn={isLoggedIn}
                     notifications={notifications}
                     onUpdateNotifications={setNotifications}

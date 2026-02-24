@@ -234,7 +234,7 @@ export default function SearchResultsWithFilters() {
 
   return (
     <>
-      <div className="min-h-screen bg-[#f5f3f0]">
+      <div className="bg-[#f5f3f0]">
         <MainHeader isLoggedIn={isLoggedIn}
           onLoginClick={() => setAuthStep("PHONE")}
           onMenuOpen={() => setIsMenuOpen(true)}

@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useDisplayedUser } from "@/hooks/useDisplayedUser";
+import { Footer } from "@/components/homePage/sections/footer";
 
 export default function HomeLayout({
     children,
@@ -16,9 +17,6 @@ export default function HomeLayout({
     const user = useDisplayedUser();
 
     useEffect(() => {
-        // If logged in, and user object exists (means profile loaded)
-        // If name is explicitly empty string (indicating missing first name)
-        // And we are NOT already on the settings page
         if (
             isLoggedIn &&
             user &&
@@ -29,5 +27,12 @@ export default function HomeLayout({
         }
     }, [isLoggedIn, user, router, pathname]);
 
-    return <>{children}</>;
+    return (
+        <div className="flex flex-col min-h-screen">
+            <div className="flex-1">
+                {children}
+            </div>
+            <Footer />
+        </div>
+    );
 }

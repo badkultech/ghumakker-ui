@@ -255,7 +255,7 @@ export default function SettingsPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-background w-full">
+      <div className="bg-background w-full">
 
         {/* ✅ HEADER FIXED */}
         <MainHeader logoText="Settings"
@@ -315,7 +315,6 @@ export default function SettingsPage() {
           onConfirm={handleDeactivateAccount} />
         <DeleteModal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}
           onConfirm={handleDeleteAccount} />
-
       </div>
       <SidebarMenu
         isOpen={isSidebarOpen}

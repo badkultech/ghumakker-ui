@@ -122,7 +122,7 @@ export default function TripInvitationsPage() {
 
   return (
     <>
-      <div className="min-h-screen bg-background">
+      <div className="bg-background">
 
         {/* Header */}
         <MainHeader logoText="Trip Invitations sent" isLoggedIn={isLoggedIn}

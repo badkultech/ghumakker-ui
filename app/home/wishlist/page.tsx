@@ -127,7 +127,7 @@ export default function WishlistPage() {
     const wishlistTrips = data?.content || [];
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="bg-background">
             {/* Header */}
             <MainHeader variant="edge"
                 isLoggedIn={isLoggedIn}

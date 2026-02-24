@@ -144,7 +144,7 @@ export default function CompareTripsPage() {
     });
 
     return (
-        <div className="min-h-screen bg-background">
+        <div className="bg-background">
             <MainHeader
                 isLoggedIn={isLoggedIn}
                 onLoginClick={() => setAuthStep("PHONE")}
