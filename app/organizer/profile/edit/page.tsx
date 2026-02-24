@@ -89,6 +89,8 @@ export default function OrganizerProfileEditPage() {
               instagramHandle: data.instagramHandle || '',
               youtubeChannel: data.youtubeChannel || '',
               googleBusiness: data.googleBusiness || '',
+              facebookUrl: data.facebookUrl || '',
+              linkedinUrl: data.linkedinUrl || '',
               testimonials: data.testimonials || '',
             }),
           );
@@ -136,6 +138,8 @@ export default function OrganizerProfileEditPage() {
         instagramHandle: profile.instagramHandle,
         youtubeChannel: profile.youtubeChannel,
         googleBusiness: profile.googleBusiness,
+        facebookUrl: profile.facebookUrl,
+        linkedinUrl: profile.linkedinUrl,
         testimonials: profile.testimonials,
       };
 
@@ -225,7 +229,8 @@ export default function OrganizerProfileEditPage() {
                   <LazyImage
                     src={logoFile.url}
                     alt='Logo'
-                    className='w-20 h-20 rounded-full'
+                    className='w-20 h-20 rounded-full object-cover'
+                    fill
                   />
                 </div>
               )}
@@ -313,6 +318,7 @@ export default function OrganizerProfileEditPage() {
                       src={bannerFile.url}
                       alt='Banner'
                       className='w-full h-40 rounded-lg mb-4'
+                      fill
                     />
                     <button
                       type='button'
@@ -473,6 +479,40 @@ export default function OrganizerProfileEditPage() {
                     )
                   }
                   placeholder='Business link'
+                />
+              </div>
+              <div>
+                <label className='block text-sm mb-1 font-medium'>
+                  Facebook URL
+                </label>
+                <Input
+                  value={profile.facebookUrl}
+                  onChange={(e) =>
+                    dispatch(
+                      setProfile({
+                        ...profile,
+                        facebookUrl: e.target.value,
+                      }),
+                    )
+                  }
+                  placeholder='facebook.com/page'
+                />
+              </div>
+              <div>
+                <label className='block text-sm mb-1 font-medium'>
+                  LinkedIn URL
+                </label>
+                <Input
+                  value={profile.linkedinUrl}
+                  onChange={(e) =>
+                    dispatch(
+                      setProfile({
+                        ...profile,
+                        linkedinUrl: e.target.value,
+                      }),
+                    )
+                  }
+                  placeholder='linkedin.com/in/profile'
                 />
               </div>
             </div>

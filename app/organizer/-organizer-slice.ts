@@ -13,6 +13,8 @@ export interface Profile {
   instagramHandle: string;
   youtubeChannel: string;
   googleBusiness: string;
+  facebookUrl: string;
+  linkedinUrl: string;
   testimonials: string;
 }
 
@@ -56,6 +58,8 @@ export const initialOrganizerSliceState: OrganizerSliceState = {
     instagramHandle: '',
     youtubeChannel: '',
     googleBusiness: '',
+    facebookUrl: '',
+    linkedinUrl: '',
     testimonials: '',
   },
   logoFile: EMPTY_DOCUMENT,
