@@ -1,17 +1,40 @@
+"use client";
+
 import Link from "next/link";
 import { APP_BRANDING } from "@/lib/constants/assets";
-import { socialLinks } from "@/app/home/constants";
+import { socialLinks as fallbackSocialLinks } from "@/app/home/constants";
+import { useGetLandingPageQuery } from "@/lib/services/landing-page";
+import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { Facebook, Instagram, Youtube, Linkedin } from "lucide-react";
 
 export function Footer() {
+  const organizationPublicId = useOrganizationId();
+
+  const { data: landingPage } = useGetLandingPageQuery(
+    { organizationPublicId: organizationPublicId! },
+    { skip: !organizationPublicId }
+  );
+
+  // Build dynamic social links from API, fall back to constants if not available
+  const dynamicLinks = landingPage
+    ? [
+      { icon: Facebook, href: landingPage.facebookUrl || "#", label: "Facebook" },
+      { icon: Instagram, href: landingPage.instagramUrl || "#", label: "Instagram" },
+      { icon: Youtube, href: landingPage.youtubeUrl || "#", label: "YouTube" },
+      { icon: Linkedin, href: landingPage.linkedinUrl || "#", label: "LinkedIn" },
+    ].filter((l) => l.href && l.href !== "#")
+    : fallbackSocialLinks;
+
+  const footerText = landingPage?.footerText
+    || `© ${new Date().getFullYear()} ${APP_BRANDING}. All rights reserved.`;
+
   return (
     <footer className="border-t bg-brand-gradient text-white">
       <div className="container mx-auto px-6 py-4 flex items-center justify-between text-xs">
-        <p>
-          © {new Date().getFullYear()} {APP_BRANDING}. All rights reserved.
-        </p>
+        <p>{footerText}</p>
 
         <div className="flex gap-3">
-          {socialLinks.map((link) => {
+          {dynamicLinks.map((link) => {
             const Icon = link.icon;
             return (
               <Link

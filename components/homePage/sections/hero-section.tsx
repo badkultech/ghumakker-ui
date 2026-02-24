@@ -1,15 +1,38 @@
+"use client";
+
 import Image from "next/image";
 import { SearchTripsCard } from "../shared/SearchTripsCardDesktop";
 import { SearchTripsCardMobile } from "../shared/SearchTripsCardMobile";
+import { useGetLandingPageQuery } from "@/lib/services/landing-page";
+import { useOrganizationId } from "@/hooks/useOrganizationId";
+
+// Fallback values shown before API loads
+const DEFAULT_TITLE = "Travel Together.\nBuild Real Connections.";
+const DEFAULT_SUBTITLE = "Discover curated group trips and connect with travelers who share your mindset.";
+const DEFAULT_BG = "/hero-bg.png";
 
 export function HeroSection() {
+  const organizationPublicId = useOrganizationId();
+
+  const { data: landingPage } = useGetLandingPageQuery(
+    { organizationPublicId: organizationPublicId! },
+    { skip: !organizationPublicId }
+  );
+
+  const bgImage = landingPage?.backgroundImage?.url || DEFAULT_BG;
+  const heroTitle = landingPage?.heroTitle || DEFAULT_TITLE;
+  const heroSubtitle = landingPage?.heroSubtitle || DEFAULT_SUBTITLE;
+
+  // Split title on \n so we can render <br /> between lines
+  const titleLines = heroTitle.split("\n");
+
   return (
     <section className="relative w-full overflow-visible lg:overflow-hidden">
 
       {/* Background layer */}
       <div className="absolute inset-0 min-h-full z-0">
         <Image
-          src="/hero-bg.png"
+          src={bgImage}
           alt="Group travel"
           fill
           priority
@@ -26,14 +49,16 @@ export function HeroSection() {
             {/* LEFT COLUMN */}
             <div className="max-w-xl w-full">
               <h1 className="text-3xl lg:text-5xl font-bold leading-tight text-black drop-shadow-sm">
-                Travel Together.
-                <br />
-                Build Real Connections.
+                {titleLines.map((line, i) => (
+                  <span key={i}>
+                    {line}
+                    {i < titleLines.length - 1 && <br />}
+                  </span>
+                ))}
               </h1>
 
               <p className="mt-4 text-sm text-gray-800 max-w-md drop-shadow-sm">
-                Discover curated group trips and connect with travelers who
-                share your mindset.
+                {heroSubtitle}
               </p>
             </div>
 
