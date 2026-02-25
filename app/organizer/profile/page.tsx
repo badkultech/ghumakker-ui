@@ -62,7 +62,9 @@ export default function OrganizerProfilePage() {
               instagramHandle: data.instagramHandle || '',
               youtubeChannel: data.youtubeChannel || '',
               googleBusiness: data.googleBusiness || '',
-              testimonials: data.testimonials || [],
+              facebookUrl: data.facebookUrl || '',
+              linkedinUrl: data.linkedinUrl || '',
+              testimonials: data.testimonials || '',
             }),
           );
           dispatch(setLogoFile(data.displayPicture || EMPTY_DOCUMENT));
