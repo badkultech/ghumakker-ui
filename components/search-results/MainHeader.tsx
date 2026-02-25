@@ -83,14 +83,26 @@ export function MainHeader({
       >
         {/* LEFT */}
         <div className="flex items-center gap-2">
-          <Image
-            src={logoSrc}
-            alt="Logo"
-            width={96}
-            height={28}
-            className="w-[110px] h-[28px] cursor-pointer"
-            onClick={() => router.push("/home")}
-          />
+          {logoText ? (
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => router.back()}
+                className="p-1.5 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="w-5 h-5 text-gray-600" />
+              </button>
+              <span className="text-base font-semibold text-gray-800">{logoText}</span>
+            </div>
+          ) : (
+            <Image
+              src={logoSrc}
+              alt="Logo"
+              width={96}
+              height={28}
+              className="w-[110px] h-[28px] cursor-pointer"
+              onClick={() => router.push("/home")}
+            />
+          )}
         </div>
 
         {/* RIGHT */}

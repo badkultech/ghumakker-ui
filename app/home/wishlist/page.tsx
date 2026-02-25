@@ -1,94 +1,47 @@
 "use client"
 
+import { useEffect } from "react"
 import { Heart } from "lucide-react"
 import { SearchResultsTripCard } from "@/components/search-results/search-results-trip-card"
-import { MainHeader } from "@/components/search-results/MainHeader"
 import { useGetMyWishlistQuery, useRemoveTripFromWishlistMutation } from "@/lib/services/wishlist"
-import { useDisplayedUser } from "@/hooks/useDisplayedUser"
 import { WishlistTrip } from "@/lib/services/wishlist/types"
 import { useOrganizationId } from "@/hooks/useOrganizationId"
 import { useUserId } from "@/hooks/useUserId"
 import { useAuthActions } from "@/hooks/useAuthActions"
-import { useState, useEffect } from "react"
-import { userMenuItems } from "../constants"
-import { SidebarMenu } from "@/components/search-results/SidebarMenu"
-import { AuthModals } from "@/components/auth/auth/AuthModals"
-import { Overlay } from "@/components/common/Overlay"
-import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop"
 import { FloatingCompareBadge } from "@/components/homePage/shared/FloatingCompareBadge";
-
+import { useHomeLayout } from "../HomeLayoutContext"
 
 export default function WishlistPage() {
     const organizationId = useOrganizationId();
     const userId = useUserId();
-    const { isLoggedIn, handleLogout, router } = useAuthActions();
-    const [notifications, setNotifications] = useState<any[]>([]);
-    const [isSidebarOpen, setSidebarOpen] = useState(false);
-    const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
-    const [showSearchOverlay, setShowSearchOverlay] = useState(false);
-    const [searchTab, setSearchTab] =
-        useState<"destination" | "moods">("destination");
-    const onLogout = () => {
-        handleLogout(() => setSidebarOpen(false));
-    };
-    const user = useDisplayedUser();
+    const { isLoggedIn } = useAuthActions();
+    const { openLoginModal } = useHomeLayout();
 
-    useEffect(() => {
-        if (!isLoggedIn) {
-            setAuthStep("PHONE");
-        }
-    }, [isLoggedIn]);
-
-
-
-
-    if (!organizationId || !userId) {
-        return (
-            <div className="min-h-screen bg-background">
-                <MainHeader variant="edge"
-                    isLoggedIn={isLoggedIn}
-                    notifications={notifications}
-                    onUpdateNotifications={setNotifications}
-                    onMenuOpen={() => setSidebarOpen(true)}
-                    onLoginClick={() => setAuthStep("PHONE")}
-                />
-                <p className="text-center mt-10 text-gray-500">Loading user...</p>
-            </div>
-        );
-    }
-
-
+    // All hooks must be at top level
     const { data, isLoading, error } = useGetMyWishlistQuery(
         { organizationId, publicId: userId },
         { skip: !organizationId || !userId }
     );
-
     const [removeTrip] = useRemoveTripFromWishlistMutation();
+
+    // Open login modal if not logged in
+    useEffect(() => {
+        if (!isLoggedIn) openLoginModal();
+    }, [isLoggedIn]);
+
     const handleRemoveFromWishlist = async (tripId: string) => {
         if (!organizationId || !userId) return;
-
         try {
-            await removeTrip({
-                organizationId,
-                userId,
-                tripId,
-            }).unwrap();
+            await removeTrip({ organizationId, userId, tripId }).unwrap();
         } catch (err) {
             console.error("Failed to remove trip from wishlist:", err);
         }
     };
 
-
-    if (isLoading) {
+    // Loading skeleton
+    if (!organizationId || !userId || isLoading) {
         return (
-            <div className="min-h-screen bg-background">
-                <MainHeader variant="edge"
-                    isLoggedIn={isLoggedIn}
-                    notifications={notifications}
-                    onUpdateNotifications={setNotifications}
-                    onMenuOpen={() => setSidebarOpen(true)}
-                    onLoginClick={() => setAuthStep("PHONE")}
-                />
+            <div className="bg-background">
                 <main className="max-w-6xl mx-auto p-4 md:p-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                         {[...Array(6)].map((_, i) => (
@@ -109,14 +62,7 @@ export default function WishlistPage() {
 
     if (error) {
         return (
-            <div className="min-h-screen bg-background">
-                <MainHeader variant="edge"
-                    isLoggedIn={isLoggedIn}
-                    notifications={notifications}
-                    onUpdateNotifications={setNotifications}
-                    onMenuOpen={() => setSidebarOpen(true)}
-                    onLoginClick={() => setAuthStep("PHONE")}
-                />
+            <div className="bg-background">
                 <main className="max-w-6xl mx-auto p-4 md:p-6">
                     <p className="text-red-500 text-center">Failed to load wishlist</p>
                 </main>
@@ -128,16 +74,6 @@ export default function WishlistPage() {
 
     return (
         <div className="bg-background">
-            {/* Header */}
-            <MainHeader variant="edge"
-                isLoggedIn={isLoggedIn}
-                notifications={notifications}
-                onUpdateNotifications={setNotifications}
-                onMenuOpen={() => setSidebarOpen(true)}
-                onLoginClick={() => setAuthStep("PHONE")}
-            />
-
-            {/* Wishlist Grid */}
             <main className="max-w-6xl mx-auto p-4 md:p-6">
                 {wishlistTrips.length === 0 ? (
                     <div className="text-center py-12">
@@ -148,14 +84,12 @@ export default function WishlistPage() {
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
                         {wishlistTrips.map((trip: WishlistTrip) => {
-                            // Calculate duration
                             const calculateDuration = (startDate: string, endDate: string) => {
                                 if (!startDate || !endDate) return "-D/-N";
                                 const start = new Date(startDate);
                                 const end = new Date(endDate);
                                 if (isNaN(start.getTime()) || isNaN(end.getTime())) return "-D/-N";
-                                const diffTime = Math.abs(end.getTime() - start.getTime());
-                                const nights = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                                const nights = Math.ceil(Math.abs(end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
                                 return `${nights + 1}D/${nights}N`;
                             };
 
@@ -177,29 +111,13 @@ export default function WishlistPage() {
                                     organizationId={organizationId}
                                     userId={userId}
                                     isWishlistPage={true}
-                                    onRemoveFromWishlist={() =>
-                                        handleRemoveFromWishlist(trip.publicId)
-                                    }
+                                    onRemoveFromWishlist={() => handleRemoveFromWishlist(trip.publicId)}
                                 />
                             );
                         })}
-
                     </div>
                 )}
             </main>
-            <SidebarMenu
-                isOpen={isSidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-                userMenuItems={userMenuItems}
-                onLogout={onLogout}
-                isLoggedIn={isLoggedIn}
-                user={user}
-            />
-            <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
-                <SearchTripsCard defaultTab={searchTab}
-                    onClose={() => setShowSearchOverlay(false)} />
-            </Overlay>
-            <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
             <FloatingCompareBadge />
         </div>
     )

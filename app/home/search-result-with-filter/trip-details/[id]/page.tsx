@@ -17,36 +17,28 @@ import ReportModal from "@/components/homePage/trip-details/modal/ReportModal";
 import AskQuestionModal from "@/components/homePage/trip-details/modal/AskQuestionModal";
 import LeaderProfileModal from "@/components/homePage/trip-details/modal/LeaderProfileModal";
 import MobilePricingModal from "@/components/homePage/trip-details/modal/MobilePricingModal";
-import { MainHeader } from "@/components/search-results/MainHeader";
-import { Footer } from "@/components/search-results/footer";
 import { useTripDetailsQuery } from "@/lib/services/trip-search";
 import { TRIP_DETAILS } from "@/lib/constants/strings";
 import OrganizerProfileModal from "@/components/homePage/trip-details/modal/OrganizerProfileModal";
 import InviteFriendsModal from "@/components/homePage/trip-details/modal/InviteFriendsModal";
 import SendInvitationModal from "@/components/homePage/trip-details/modal/SendInvitationModal";
 import { useAuthActions } from "@/hooks/useAuthActions";
-import { userMenuItems } from "@/app/home/constants";
 import { useAuthGuard } from "@/hooks/useAuthGuard";
 import { FullImageGalleryModal } from "@/components/library/FullImageGalleryModal";
-import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
-import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
 import { Overlay } from "@/components/common/Overlay";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { useRouter } from "next/navigation";
 import ScreenLoader from "@/components/common/ScreenLoader";
-import { AuthModals } from "@/components/auth/auth/AuthModals";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";
-import {
-  useCheckTripInWishlistQuery,
-  useAddTripToWishlistMutation,
-  useRemoveTripFromWishlistMutation
-} from "@/lib/services/wishlist";
+import { useCheckTripInWishlistQuery, useAddTripToWishlistMutation, useRemoveTripFromWishlistMutation } from "@/lib/services/wishlist";
 import { useUpdateTripStatusMutation } from "@/lib/services/organizer/trip/my-trips";
 import { useToast } from "@/hooks/use-toast";
+import { useHomeLayout } from "@/app/home/HomeLayoutContext";
+import { Footer } from "@/components/search-results/footer";
 
 
 export default function TripDetailsPage() {
@@ -75,10 +67,8 @@ export default function TripDetailsPage() {
   const [showInviteFriends, setShowInviteFriends] = useState(false);
   const [showSendInvitation, setShowSendInvitation] = useState(false);
   const [inviteEmail, setInviteEmail] = useState("");
-  const { isLoggedIn, handleLogout } = useAuthActions();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [notificationsList, setNotificationsList] = useState<any[]>([]);
-  const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
+  const { isLoggedIn } = useAuthActions();
+  const { openLoginModal } = useHomeLayout();
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [galleryImages, setGalleryImages] = useState<{ url: string }[]>([]);
@@ -88,7 +78,7 @@ export default function TripDetailsPage() {
   const [searchTab, setSearchTab] =
     useState<"destination" | "moods">("destination");
   const [pendingAction, setPendingAction] = useState<(() => void) | null>(null);
-  const user = useDisplayedUser();
+
 
 
   const organizationId = useOrganizationId();
@@ -96,7 +86,7 @@ export default function TripDetailsPage() {
   const requireAuth = (action: () => void) => {
     if (!isLoggedIn) {
       setPendingAction(() => action);
-      setAuthStep("PHONE");
+      openLoginModal();
     } else {
       action();
     }
@@ -132,7 +122,7 @@ export default function TripDetailsPage() {
 
   const handleWishlistToggle = async () => {
     if (!organizationId || !userId) {
-      setAuthStep("PHONE"); // Redirect to login
+      openLoginModal();
       return;
     }
 
@@ -260,13 +250,6 @@ export default function TripDetailsPage() {
 
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
-      <MainHeader isLoggedIn={isLoggedIn}
-        onLoginClick={() => setAuthStep("PHONE")}
-        onMenuOpen={() => setIsMenuOpen(true)}
-        notifications={notificationsList}
-        onUpdateNotifications={setNotificationsList}
-        variant="edge"
-      />
 
       <main className="flex-1">
         <div className="max-w-7xl mx-auto px-4 py-6">
@@ -497,47 +480,22 @@ export default function TripDetailsPage() {
         title={tripName}
       />
 
-      <SidebarMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        userMenuItems={userMenuItems}
-        onLogout={handleLogout}
-        isLoggedIn={isLoggedIn}
-        user={user}
-      />
       <FloatingRoleActions
         isLoggedIn={isLoggedIn}
         userType={userType}
-        onModifySearch={() => {
-          setShowSearchOverlay(true);
-        }}
-        onEditTrip={() =>
-          router.push(`/organizer/create-trip/${trip.publicId}`)
-        }
+        onModifySearch={() => setShowSearchOverlay(true)}
+        onEditTrip={() => router.push(`/organizer/create-trip/${trip.publicId}`)}
         onPublishTrip={handlePublishTrip}
         isPublishDisabled={trip?.tripStatus === "PUBLISHED" || isPublished || isPublishing}
       />
-      <Overlay
-        open={showSearchOverlay}
-        onClose={() => setShowSearchOverlay(false)}
-      >
+      <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
         <div className="block lg:hidden w-[85vw] max-w-[360px]">
-          <SearchTripsCard
-            defaultTab={searchTab}
-            onClose={() => setShowSearchOverlay(false)}
-            className="shadow-none border-none p-1"
-          />
+          <SearchTripsCard defaultTab={searchTab} onClose={() => setShowSearchOverlay(false)} className="shadow-none border-none p-1" />
         </div>
         <div className="hidden lg:block">
-          <SearchTripsCard
-            defaultTab={searchTab}
-            onClose={() => setShowSearchOverlay(false)}
-            className="shadow-none"
-          />
+          <SearchTripsCard defaultTab={searchTab} onClose={() => setShowSearchOverlay(false)} className="shadow-none" />
         </div>
       </Overlay>
-      <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
-
     </div>
   );
 }

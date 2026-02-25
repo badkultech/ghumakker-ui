@@ -9,10 +9,7 @@ import { DesktopFilterSidebar } from "@/components/search-results/desktop-filter
 import { MobileBottomBar } from "@/components/search-results/mobile-bottom-bar";
 import NoTripsFound from "@/components/search-results/NoTripsFound";
 import { useSearchPublicTripsQuery } from "@/lib/services/trip-search";
-import { MainHeader } from "@/components/search-results/MainHeader";
-import { userMenuItems } from "../constants"
 import { useAuthActions } from "@/hooks/useAuthActions";
-import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
@@ -23,8 +20,6 @@ import { FloatingCompareBadge } from "@/components/homePage/shared/FloatingCompa
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";
 import { useGetMyWishlistQuery } from "@/lib/services/wishlist";
-import { useDisplayedUser } from "@/hooks/useDisplayedUser";
-import { AuthModals } from "@/components/auth/auth/AuthModals";
 
 const calculateDuration = (startDate: string, endDate: string) => {
   if (!startDate || !endDate) return "-DAY/-NIGHT";
@@ -61,10 +56,7 @@ const formatDateRange = (startDate: string, endDate: string) => {
 export default function SearchResultsWithFilters() {
   const searchParams = useSearchParams();
   const router = useRouter();
-  const { isLoggedIn, handleLogout } = useAuthActions();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [notificationsList, setNotificationsList] = useState<any[]>([]);
-  const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
+  const { isLoggedIn } = useAuthActions();
   const moodsFromUrl = searchParams.get("moods");
   const moodsAll = searchParams.getAll("moods");
   const { userData } = useSelector(selectAuthState);
@@ -76,7 +68,6 @@ export default function SearchResultsWithFilters() {
   const organizationId = useOrganizationId();
   const userId = useUserId();
 
-  const user = useDisplayedUser();
 
   const { data: wishlistData } = useGetMyWishlistQuery(
     { organizationId, publicId: userId }, // userId is the publicId
@@ -235,12 +226,6 @@ export default function SearchResultsWithFilters() {
   return (
     <>
       <div className="bg-[#f5f3f0]">
-        <MainHeader isLoggedIn={isLoggedIn}
-          onLoginClick={() => setAuthStep("PHONE")}
-          onMenuOpen={() => setIsMenuOpen(true)}
-          notifications={notificationsList}
-          onUpdateNotifications={setNotificationsList}
-          variant="edge" />
 
         {/* DESKTOP FILTER BAR */}
         <DesktopFilterBar
@@ -471,40 +456,22 @@ export default function SearchResultsWithFilters() {
           </div>
         </div>
       )}
-      <SidebarMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        userMenuItems={userMenuItems}
-        onLogout={handleLogout}
-        isLoggedIn={isLoggedIn}
-        user={user}
-      />
+
       <FloatingRoleActions
         isLoggedIn={isLoggedIn}
         userType={userType}
         hiddenActions={["PUBLISH", "EDIT"]}
-        onModifySearch={() => {
-          setShowSearchOverlay(true);
-        }}
+        onModifySearch={() => setShowSearchOverlay(true)}
       />
-      <Overlay
-        open={showSearchOverlay}
-        onClose={() => setShowSearchOverlay(false)}
-      >
+      <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
         <div className="block lg:hidden w-[85vw] max-w-[360px]">
-          <SearchTripsCardMobile
-            defaultTab={searchTab}
-            onClose={() => setShowSearchOverlay(false)}
-            className="shadow-none border-none p-1"
-          />
+          <SearchTripsCardMobile defaultTab={searchTab} onClose={() => setShowSearchOverlay(false)} className="shadow-none border-none p-1" />
         </div>
         <div className="hidden lg:block">
-          <SearchTripsCard defaultTab={searchTab}
-            onClose={() => setShowSearchOverlay(false)} />
+          <SearchTripsCard defaultTab={searchTab} onClose={() => setShowSearchOverlay(false)} />
         </div>
       </Overlay>
       <FloatingCompareBadge />
-      <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
     </>
   );
 }

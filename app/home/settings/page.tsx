@@ -12,42 +12,32 @@ import SecurityTab from "@/components/search-results/settings/SecurityTab";
 import { LogoutModal } from "@/components/organizer/LogoutModal";
 import DeactivateModal from "@/components/search-results/settings/DeactivateModal";
 import DeleteModal from "@/components/search-results/settings/DeleteModal";
-import { MainHeader } from "@/components/search-results/MainHeader";
-import { userMenuItems } from "../constants";
-
-import { SidebarMenu } from "@/components/search-results/SidebarMenu";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useDeactivateUserMutation, useDeleteUserMutation, useGetTravelerProfileQuery, useUpdateTravelerProfileFormMutation } from "@/lib/services/user";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";
 import { toast } from "@/hooks/use-toast";
 import { showSuccess } from "@/lib/utils/toastHelpers";
-import { Overlay } from "@/components/common/Overlay";
-import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
-import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 import { extractPhoneNumber, isValidPhoneLength } from "@/lib/constants/phone";
+import { useHomeLayout } from "../HomeLayoutContext";
 
 export default function SettingsPage() {
   const searchParams = useSearchParams();
   const [activeTab, setActiveTab] = useState("profile");
   const { isLoggedIn, handleLogout, router } = useAuthActions();
+  const { openLoginModal } = useHomeLayout();
 
   useEffect(() => {
     if (searchParams.get("setup") === "true") {
       setActiveTab("profile");
-      toast({
-        title: "Complete Profile 📝",
-        description: "Please fill in your details to continue.",
-      });
+      toast({ title: "Complete Profile 📝", description: "Please fill in your details to continue." });
     }
   }, [searchParams]);
 
   useEffect(() => {
-    if (!isLoggedIn) {
-      setAuthStep("PHONE");
-    }
+    if (!isLoggedIn) openLoginModal();
   }, [isLoggedIn]);
   const [profileImageUrl, setProfileImageUrl] = useState<string | null>(null);
   const [profileImage, setProfileImage] = useState<File | null>(null);
@@ -56,19 +46,11 @@ export default function SettingsPage() {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [showDeactivateModal, setShowDeactivateModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [notifications, setNotifications] = useState<any[]>([]);
-  const [isSidebarOpen, setSidebarOpen] = useState(false);
-  const [showSearchOverlay, setShowSearchOverlay] = useState(false);
-  const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
-  const [searchTab, setSearchTab] =
-    useState<"destination" | "moods">("destination");
   const { userData } = useSelector(selectAuthState);
   const { data, isLoading } = useGetTravelerProfileQuery({
     organizationId: organizationId,
     userPublicId: userPublicId,
   });
-
-  const user = useDisplayedUser();
 
   const [updateProfile, { isLoading: isSaving }] =
     useUpdateTravelerProfileFormMutation();
@@ -246,88 +228,54 @@ export default function SettingsPage() {
 
 
 
-  const onLogout = () => {
-    handleLogout(() => setSidebarOpen(false));
-  };
   const handleConfirmLogout = () => {
     handleLogout(() => setShowLogoutModal(false));
   };
 
   return (
-    <>
-      <div className="bg-background w-full">
+    <div className="bg-background w-full">
+      {/* MAIN CONTENT AREA */}
+      <main className="max-w-[1400px] mx-auto px-4 md:px-8 py-6 md:py-10">
+        <div className="flex flex-col md:flex-row gap-6 md:gap-10">
 
-        {/* ✅ HEADER FIXED */}
-        <MainHeader logoText="Settings"
-          isLoggedIn={isLoggedIn}
-          notifications={notifications}
-          onUpdateNotifications={setNotifications}
-          onMenuOpen={() => setSidebarOpen(true)}
-          onLoginClick={() => setAuthStep("PHONE")}
-          variant="edge"
-        />
+          {/* SIDEBAR */}
+          <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
 
-        {/* MAIN CONTENT AREA */}
-        <main className="max-w-[1400px] mx-auto px-4 md:px-8 py-6 md:py-10">
-          <div className="flex flex-col md:flex-row gap-6 md:gap-10">
+          {/* TAB CONTENT */}
+          <div className="flex-1">
+            {activeTab === "profile" && (
+              <ProfileTab formData={formData} setFormData={setFormData}
+                profileImageUrl={profileImageUrl}
+                onImageSelect={(file) => {
+                  setProfileImage(file);
+                  setProfileImageUrl(URL.createObjectURL(file));
+                }}
+                onSaveProfile={handleSaveProfile} isSaving={isSaving} />
+            )}
 
-            {/* SIDEBAR */}
-            <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+            {activeTab === "communications" && (
+              <CommunicationsTab />
+            )}
 
-            {/* TAB CONTENT */}
-            <div className="flex-1">
-              {activeTab === "profile" && (
-                <ProfileTab formData={formData} setFormData={setFormData}
-                  profileImageUrl={profileImageUrl}
-                  onImageSelect={(file) => {
-                    setProfileImage(file);
-                    setProfileImageUrl(URL.createObjectURL(file));
-                  }}
-                  onSaveProfile={handleSaveProfile} isSaving={isSaving} />
-              )}
+            {activeTab === "preferences" && <PreferencesTab />}
+            {activeTab === "support" && <SupportTab />}
+            {activeTab === "legal" && <LegalTab />}
 
-              {activeTab === "communications" && (
-                <CommunicationsTab />
-              )}
-
-              {activeTab === "preferences" && <PreferencesTab />}
-              {activeTab === "support" && <SupportTab />}
-              {activeTab === "legal" && <LegalTab />}
-
-              {activeTab === "security" && (
-                <SecurityTab
-                  setShowLogoutModal={setShowLogoutModal}
-                  setShowDeactivateModal={setShowDeactivateModal}
-                  setShowDeleteModal={setShowDeleteModal}
-                />
-              )}
-            </div>
+            {activeTab === "security" && (
+              <SecurityTab
+                setShowLogoutModal={setShowLogoutModal}
+                setShowDeactivateModal={setShowDeactivateModal}
+                setShowDeleteModal={setShowDeleteModal}
+              />
+            )}
           </div>
-        </main>
+        </div>
+      </main>
 
-        {/* MODALS */}
-        <LogoutModal
-          open={showLogoutModal}
-          onClose={() => setShowLogoutModal(false)}
-          onConfirm={handleConfirmLogout}
-        />
-        <DeactivateModal open={showDeactivateModal} onClose={() => setShowDeactivateModal(false)}
-          onConfirm={handleDeactivateAccount} />
-        <DeleteModal open={showDeleteModal} onClose={() => setShowDeleteModal(false)}
-          onConfirm={handleDeleteAccount} />
-      </div>
-      <SidebarMenu
-        isOpen={isSidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-        userMenuItems={userMenuItems}
-        onLogout={onLogout}
-        isLoggedIn={isLoggedIn}
-        user={user}
-      />
-      <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
-        <SearchTripsCard defaultTab={searchTab}
-          onClose={() => setShowSearchOverlay(false)} />
-      </Overlay>
-    </>
+      {/* MODALS */}
+      <LogoutModal open={showLogoutModal} onClose={() => setShowLogoutModal(false)} onConfirm={handleConfirmLogout} />
+      <DeactivateModal open={showDeactivateModal} onClose={() => setShowDeactivateModal(false)} onConfirm={handleDeactivateAccount} />
+      <DeleteModal open={showDeleteModal} onClose={() => setShowDeleteModal(false)} onConfirm={handleDeleteAccount} />
+    </div>
   );
 }

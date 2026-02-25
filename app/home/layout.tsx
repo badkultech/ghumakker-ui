@@ -1,21 +1,48 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useDisplayedUser } from "@/hooks/useDisplayedUser";
 import { Footer } from "@/components/homePage/sections/footer";
+import { MainHeader } from "@/components/search-results/MainHeader";
+import { SidebarMenu } from "@/components/search-results/SidebarMenu";
+import { AuthModals } from "@/components/auth/auth/AuthModals";
+import { userMenuItems } from "./constants";
+import { HomeLayoutContext } from "./HomeLayoutContext";
 
 export default function HomeLayout({
     children,
 }: {
     children: React.ReactNode;
 }) {
-    const { isLoggedIn } = useAuthActions();
+    const { isLoggedIn, handleLogout } = useAuthActions();
     const router = useRouter();
     const pathname = usePathname();
     const user = useDisplayedUser();
 
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
+
+    const onLogout = () => handleLogout(() => setIsMenuOpen(false));
+    const openLoginModal = () => setAuthStep("PHONE");
+
+    // Route → page title mapping (logo की जगह text)
+    const pageTitleMap: Record<string, string> = {
+        "/home/invitations": "Trip Invitations",
+        "/home/my-queries": "My Queries",
+        "/home/wishlist": "Saved",
+        "/home/settings": "Settings",
+        "/home/compare-trips": "Compare Trips",
+        "/home/leaders": "Trip Leaders",
+    };
+
+    // Current page ka title (prefix match के लिए)
+    const logoText = Object.entries(pageTitleMap).find(([route]) =>
+        pathname === route || pathname.startsWith(route + "/")
+    )?.[1] ?? "";
+
+    // Redirect to settings if profile incomplete
     useEffect(() => {
         if (
             isLoggedIn &&
@@ -28,11 +55,38 @@ export default function HomeLayout({
     }, [isLoggedIn, user, router, pathname]);
 
     return (
-        <div className="flex flex-col min-h-screen">
-            <div className="flex-1">
-                {children}
+        <HomeLayoutContext.Provider value={{ openLoginModal }}>
+            <div className="flex flex-col min-h-screen">
+                {/* Centralized Header */}
+                <MainHeader
+                    isLoggedIn={isLoggedIn}
+                    onLoginClick={openLoginModal}
+                    onMenuOpen={() => setIsMenuOpen(true)}
+                    variant="edge"
+                    logoText={logoText}
+                />
+
+                {/* Page Content */}
+                <div className="flex-1">
+                    {children}
+                </div>
+
+                {/* Footer */}
+                <Footer />
+
+                {/* Centralized Sidebar */}
+                <SidebarMenu
+                    isOpen={isMenuOpen}
+                    onClose={() => setIsMenuOpen(false)}
+                    userMenuItems={userMenuItems}
+                    onLogout={onLogout}
+                    isLoggedIn={isLoggedIn}
+                    user={user}
+                />
+
+                {/* Centralized Auth Modals */}
+                <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
             </div>
-            <Footer />
-        </div>
+        </HomeLayoutContext.Provider>
     );
 }

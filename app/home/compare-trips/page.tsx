@@ -2,25 +2,19 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Image from "next/image";
-import { AppHeader } from "@/components/app-header";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/lib/slices/store";
 import { useTripDetailsQuery } from "@/lib/services/trip-search";
 import { Star, X, Scale, Plus } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { clearCompare, removeFromCompare } from "@/lib/slices/compareSlice";
 import { useRouter } from "next/navigation";
-import { MainHeader } from "@/components/search-results/MainHeader";
-import { useAuthActions } from "@/hooks/useAuthActions";
-import { userMenuItems } from "../constants";
-import { SidebarMenu } from "@/components/search-results/SidebarMenu";
-import { AuthModals } from "@/components/auth/auth/AuthModals";
 import { selectAuthState } from "@/lib/slices/auth";
 import { Overlay } from "@/components/common/Overlay";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
 import { SearchTripsCardMobile } from "@/components/homePage/shared/SearchTripsCardMobile";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
-import { useDisplayedUser } from "@/hooks/useDisplayedUser";
+import { useAuthActions } from "@/hooks/useAuthActions";
 
 interface TripData {
     id: string;
@@ -57,18 +51,10 @@ const attributes = [
 export default function CompareTripsPage() {
     const dispatch = useDispatch();
     const router = useRouter();
-    const { isLoggedIn, handleLogout } = useAuthActions();
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
-    const [notificationsList, setNotificationsList] = useState<any[]>([]);
-    const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
+    const { isLoggedIn } = useAuthActions();
     const [showSearchOverlay, setShowSearchOverlay] = useState(false);
-    const onLogout = () => {
-        handleLogout(() => setIsMenuOpen(false));
-    };
     const { userData } = useSelector(selectAuthState);
     const userType = userData?.userType;
-
-    const user = useDisplayedUser();
 
 
 
@@ -145,15 +131,6 @@ export default function CompareTripsPage() {
 
     return (
         <div className="bg-background">
-            <MainHeader
-                isLoggedIn={isLoggedIn}
-                onLoginClick={() => setAuthStep("PHONE")}
-                onMenuOpen={() => setIsMenuOpen(true)}
-                notifications={notificationsList}
-                onUpdateNotifications={setNotificationsList}
-                variant="edge"
-            />
-
             <main className="max-w-6xl mx-auto p-4 md:p-6 overflow-x-auto">
                 {isLoading ? (
                     <p className="text-center">Loading...</p>
@@ -280,38 +257,20 @@ export default function CompareTripsPage() {
                     </div>
                 )}
             </main>
-            <SidebarMenu
-                isOpen={isMenuOpen}
-                onClose={() => setIsMenuOpen(false)}
-                userMenuItems={userMenuItems}
-                onLogout={onLogout}
-                isLoggedIn={isLoggedIn}
-                user={user}
-            />
-            <AuthModals authStep={authStep} setAuthStep={setAuthStep} />
             <FloatingRoleActions
                 isLoggedIn={isLoggedIn}
                 userType={userType}
                 hiddenActions={["PUBLISH", "EDIT"]}
-                onModifySearch={() => {
-                    setShowSearchOverlay(true);
-                }}
+                onModifySearch={() => setShowSearchOverlay(true)}
             />
-            <Overlay
-                open={showSearchOverlay}
-                onClose={() => setShowSearchOverlay(false)}
-            >
+            <Overlay open={showSearchOverlay} onClose={() => setShowSearchOverlay(false)}>
                 <div className="hidden lg:block">
                     <SearchTripsCard onClose={() => setShowSearchOverlay(false)} />
                 </div>
                 <div className="block lg:hidden w-[85vw] max-w-[360px]">
-                    <SearchTripsCardMobile
-                        onClose={() => setShowSearchOverlay(false)}
-                        className="shadow-none border-none"
-                    />
+                    <SearchTripsCardMobile onClose={() => setShowSearchOverlay(false)} className="shadow-none border-none" />
                 </div>
             </Overlay>
-
         </div>
     );
 }

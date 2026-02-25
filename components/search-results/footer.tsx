@@ -65,31 +65,6 @@ export function Footer() {
           </div>
         </div>
       </div>
-
-      {/* Copyright Bar */}
-      <div className="bg-brand-gradient py-3 px-4">
-        <div className="max-w-[1400px] mx-auto flex items-center justify-between">
-          <p className="text-xs text-white">
-            © {new Date().getFullYear()} {APP_BRANDING}. All rights reserved.
-          </p>
-          <div className="flex items-center gap-3">
-            {socialLinks.map((link) => {
-              const Icon = link.icon;
-              return (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-6 h-6 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors"
-                >
-                  <Icon className="w-3 h-3 text-white" />
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      </div>
     </footer>
   )
 }
