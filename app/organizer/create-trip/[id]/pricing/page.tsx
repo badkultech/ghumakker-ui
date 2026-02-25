@@ -17,8 +17,7 @@ import { InputWithUnitToggle, UnitType } from '@/components/create-trip/input-wi
 import { useParams, useRouter } from 'next/navigation';
 import { WizardFooter } from '@/components/create-trip/wizard-footer';
 import { TripStepperHeader } from '@/components/create-trip/tripStepperHeader';
-import { AppHeader } from '@/components/app-header';
-import { OrganizerSidebar } from '@/components/organizer/organizer-sidebar';
+
 
 import {
   useCreatePricingMutation,
@@ -47,7 +46,7 @@ export default function PricingPage() {
   const [gst, setGst] = useState<GstValue>('excludes');
   const [credit, setCredit] = useState({ card: true, emi: false });
   const [mode, setMode] = useState<PricingMode>('simple');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [price, setPrice] = useState('');
   const [discount, setDiscount] = useState('');
   const [discountUnit, setDiscountUnit] = useState<UnitType>('percent');
@@ -384,280 +383,272 @@ export default function PricingPage() {
 
 
   return (
-    <div className='flex min-h-screen bg-gray-50'>
-      <OrganizerSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+    <main className="p-6">
+      <TripStepperHeader activeStep={5} />
 
-      <div className='flex-1'>
-        <AppHeader title='Create New Trip' />
-        <TripStepperHeader activeStep={5} />
+      <div className='mx-auto w-full max-w-6xl px-4 py-6'>
+        <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
+          <div className='md:col-span-2 space-y-6'>
+            <Card>
+              <CardHeader>
+                <CardTitle className='text-lg'>Simple Pricing</CardTitle>
+              </CardHeader>
 
-        <main className='mx-auto w-full max-w-6xl px-4 py-6'>
-          <div className='grid grid-cols-1 gap-6 md:grid-cols-3'>
-            <div className='md:col-span-2 space-y-6'>
-              <Card>
-                <CardHeader>
-                  <CardTitle className='text-lg'>Simple Pricing</CardTitle>
-                </CardHeader>
+              <CardContent className='space-y-6'>
+                {/* Mode Buttons */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
 
-                <CardContent className='space-y-6'>
-                  {/* Mode Buttons */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-
-                    {/* Simple Pricing */}
-                    {/* Simple Pricing */}
-                    <div
-                      onClick={() => setMode("simple")}
-                      className={`
+                  {/* Simple Pricing */}
+                  {/* Simple Pricing */}
+                  <div
+                    onClick={() => setMode("simple")}
+                    className={`
       flex flex-col items-center justify-center gap-3
       px-6 py-4 rounded-xl border cursor-pointer transition-all
       ${mode === "simple"
-                          ? "border-primary bg-primary/5 shadow-sm"
-                          : "border-gray-200 bg-white"
-                        }
+                        ? "border-primary bg-primary/5 shadow-sm"
+                        : "border-gray-200 bg-white"
+                      }
     `}
-                    >
-                      {/* RADIO BUTTON TOP */}
-                      <div
-                        className="w-5 h-5 rounded-full flex items-center justify-center"
-                        style={
-                          mode === "simple"
-                            ? {
-                              border: "2px solid transparent",
-                              background: `
+                  >
+                    {/* RADIO BUTTON TOP */}
+                    <div
+                      className="w-5 h-5 rounded-full flex items-center justify-center"
+                      style={
+                        mode === "simple"
+                          ? {
+                            border: "2px solid transparent",
+                            background: `
             linear-gradient(white, white) padding-box,
             var(--brand-gradient) border-box
           `,
-                            }
-                            : {
-                              border: "2px solid #D1D5DB",
-                              background: "white",
-                            }
-                        }
-                      >
-                        {mode === "simple" && (
-                          <div
-                            className="w-2.5 h-2.5 rounded-full bg-brand-gradient"
-                          ></div>
-                        )}
-                      </div>
-
-
-                      {/* TEXT BELOW */}
-                      <span
-                        className={`text-sm font-medium ${mode === "simple" ? "text-black" : "text-gray-600"
-                          }`}
-                      >
-                        Simple Pricing
-                      </span>
+                          }
+                          : {
+                            border: "2px solid #D1D5DB",
+                            background: "white",
+                          }
+                      }
+                    >
+                      {mode === "simple" && (
+                        <div
+                          className="w-2.5 h-2.5 rounded-full bg-brand-gradient"
+                        ></div>
+                      )}
                     </div>
 
-                    {/* Dynamic Pricing */}
-                    <div
-                      onClick={() => setMode("dynamic")}
-                      className={`
+
+                    {/* TEXT BELOW */}
+                    <span
+                      className={`text-sm font-medium ${mode === "simple" ? "text-black" : "text-gray-600"
+                        }`}
+                    >
+                      Simple Pricing
+                    </span>
+                  </div>
+
+                  {/* Dynamic Pricing */}
+                  <div
+                    onClick={() => setMode("dynamic")}
+                    className={`
       flex flex-col items-center justify-center gap-3
       px-6 py-4 rounded-xl border cursor-pointer transition-all
       ${mode === "dynamic"
-                          ? "border-primary bg-primary/5 shadow-sm"
-                          : "border-gray-200 bg-white"
-                        }
+                        ? "border-primary bg-primary/5 shadow-sm"
+                        : "border-gray-200 bg-white"
+                      }
     `}
-                    >
-                      {/* RADIO BUTTON TOP */}
-                      <div
-                        className="w-5 h-5 rounded-full flex items-center justify-center"
-                        style={
-                          mode === "dynamic"
-                            ? {
-                              border: "2px solid transparent",
-                              background: `
+                  >
+                    {/* RADIO BUTTON TOP */}
+                    <div
+                      className="w-5 h-5 rounded-full flex items-center justify-center"
+                      style={
+                        mode === "dynamic"
+                          ? {
+                            border: "2px solid transparent",
+                            background: `
             linear-gradient(white, white) padding-box,
             var(--brand-gradient) border-box
           `,
-                            }
-                            : {
-                              border: "2px solid #D1D5DB",
-                            }
-                        }
-                      >
-                        {mode === "dynamic" && (
-                          <div
-                            className="w-2.5 h-2.5 rounded-full bg-brand-gradient"
-                          ></div>
+                          }
+                          : {
+                            border: "2px solid #D1D5DB",
+                          }
+                      }
+                    >
+                      {mode === "dynamic" && (
+                        <div
+                          className="w-2.5 h-2.5 rounded-full bg-brand-gradient"
+                        ></div>
+                      )}
+                    </div>
+
+
+                    {/* TEXT BELOW */}
+                    <span
+                      className={`text-sm font-medium ${mode === "dynamic" ? "text-black" : "text-gray-600"
+                        }`}
+                    >
+                      Dynamic Pricing
+                    </span>
+                  </div>
+
+                </div>
+
+
+                {/* SIMPLE PRICING */}
+                {mode === 'simple' && (
+                  <div className='space-y-5'>
+                    <Label>Price *</Label>
+                    <Input
+                      placeholder='Enter price'
+                      value={price}
+                      onChange={(e) => {
+                        setPrice(e.target.value)
+                        clearFieldError('price')
+                      }}
+                    />
+                    {errors.price && <p className="text-red-500 text-xs">{errors.price}</p>}
+                    <div className='flex items-end gap-4'>
+
+                      {/* DISCOUNT */}
+                      <div className='flex-1 space-y-2'>
+                        <Label className="text-sm font-semibold text-gray-700">Discount</Label>
+
+                        <InputWithUnitToggle
+                          placeholder='Discount'
+                          value={discount}
+                          type="number"
+                          onChange={(e) => {
+                            setDiscount(e)
+                            clearFieldError('discount')
+                          }}
+                          unit={discountUnit}
+                          onUnitChange={setDiscountUnit}
+                        />
+
+                        {errors.discount && (
+                          <p className="text-red-500 text-xs">{errors.discount}</p>
                         )}
                       </div>
 
+                      {/* DATE */}
+                      <div className='flex-1 space-y-2'>
+                        <Label className="text-sm font-semibold text-gray-700">Valid until</Label>
 
-                      {/* TEXT BELOW */}
-                      <span
-                        className={`text-sm font-medium ${mode === "dynamic" ? "text-black" : "text-gray-600"
-                          }`}
-                      >
-                        Dynamic Pricing
-                      </span>
-                    </div>
+                        <CustomDateTimePicker
+                          mode="date"
+                          value={discountUntil}
+                          onChange={(v) => {
+                            setDiscountUntil(v)
+                            clearFieldError("discountUntil")
+                          }}
+                          minDate={new Date().toISOString().split("T")[0]}
+                          maxDate={trip?.data?.startDate ? new Date(trip.data.startDate).toISOString().split("T")[0] : undefined}
+                          className="h-10"
+                          disabled={!discount || Number(discount) <= 0}
+                        />
 
-                  </div>
-
-
-                  {/* SIMPLE PRICING */}
-                  {mode === 'simple' && (
-                    <div className='space-y-5'>
-                      <Label>Price *</Label>
-                      <Input
-                        placeholder='Enter price'
-                        value={price}
-                        onChange={(e) => {
-                          setPrice(e.target.value)
-                          clearFieldError('price')
-                        }}
-                      />
-                      {errors.price && <p className="text-red-500 text-xs">{errors.price}</p>}
-                      <div className='flex items-end gap-4'>
-
-                        {/* DISCOUNT */}
-                        <div className='flex-1 space-y-2'>
-                          <Label className="text-sm font-semibold text-gray-700">Discount</Label>
-
-                          <InputWithUnitToggle
-                            placeholder='Discount'
-                            value={discount}
-                            type="number"
-                            onChange={(e) => {
-                              setDiscount(e)
-                              clearFieldError('discount')
-                            }}
-                            unit={discountUnit}
-                            onUnitChange={setDiscountUnit}
-                          />
-
-                          {errors.discount && (
-                            <p className="text-red-500 text-xs">{errors.discount}</p>
-                          )}
-                        </div>
-
-                        {/* DATE */}
-                        <div className='flex-1 space-y-2'>
-                          <Label className="text-sm font-semibold text-gray-700">Valid until</Label>
-
-                          <CustomDateTimePicker
-                            mode="date"
-                            value={discountUntil}
-                            onChange={(v) => {
-                              setDiscountUntil(v)
-                              clearFieldError("discountUntil")
-                            }}
-                            minDate={new Date().toISOString().split("T")[0]}
-                            maxDate={trip?.data?.startDate ? new Date(trip.data.startDate).toISOString().split("T")[0] : undefined}
-                            className="h-10"
-                            disabled={!discount || Number(discount) <= 0}
-                          />
-
-                          {errors.discountUntil && (
-                            <p className="text-red-500 text-xs">{errors.discountUntil}</p>
-                          )}
-                        </div>
-
+                        {errors.discountUntil && (
+                          <p className="text-red-500 text-xs">{errors.discountUntil}</p>
+                        )}
                       </div>
 
-
-
                     </div>
-                  )}
 
-                  {/* Dynamic Pricing */}
-                  {mode === 'dynamic' && (
-                    <div className='space-y-6'>
-                      {dynamicCategories.map((category, idx) => (
-                        <DynamicCategoryCard
-                          key={category.id}
-                          category={category}
-                          onChange={(updated) => updateCategory(idx, updated)}
-                          onRemove={() => removeCategory(idx)}
-                          onValidate={(isValid) => {
-                            const copy = [...categoryValidStates];
-                            copy[idx] = isValid;
-                            setCategoryValidStates(copy);
-                          }}
-                        />
-                      ))}
-                      <Button
-                        variant="outline"
-                        className="w-full border-primary/20 text-primary hover:text-primary hover:bg-primary/5 cursor-pointer"
-                        onClick={addCategory}
-                      >
-                        <Plus className="w-4 h-4 mr-2" />
-                        Create Category
-                      </Button>
-                    </div>
-                  )}
 
-                  {/* COMMON FIELDS (Shared between Simple & Dynamic) */}
-                  {/* ADD ONS */}
-                  <AddOnsFieldset value={addOns} onChange={setAddOns} />
-                  <div className="space-y-5 pt-4 border-t border-gray-100">
-                    <Label>GST Status *</Label>
-                    <GstStatusToggle value={gst} onChange={setGst} />
-                    <Label>Deposit Required <RequiredStar /></Label>
-                    <InputWithUnitToggle
-                      placeholder='Deposit Amount'
-                      value={depositPercent}
-                      type="number"
-                      onChange={(e) => {
-                        setDepositPercent(e)
-                        clearFieldError('depositPercent')
-                      }}
-                      unit={depositUnit}
-                      onUnitChange={setDepositUnit}
-                    />
-                    {errors.depositPercent && (
-                      <p className="text-red-500 text-xs">{errors.depositPercent}</p>
-                    )}
-                    <Label>EMI Options</Label>
-                    <CreditOptions value={credit} onChange={setCredit} />
 
-                    <Label>Cancellation Policy <RequiredStar /></Label>
-                    <Textarea
-                      value={policy}
-                      onChange={(e) => {
-                        setPolicy(e.target.value)
-                        clearFieldError('policy')
-                      }}
-                    />
-                    {errors.policy && (
-                      <p className="text-red-500 text-xs">{errors.policy}</p>
-                    )}
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                )}
 
-            <div className='md:col-span-1'>
-              <PricingSummary
-                mode={mode}
-                simplePrice={price}
-                dynamicCategories={dynamicCategories}
-                addOns={addOns}
-                gstMode={gst}
-                depositPercent={depositPercent}
-                depositUnit={depositUnit}
-                creditOptions={credit}
-              />
-            </div>
+                {/* Dynamic Pricing */}
+                {mode === 'dynamic' && (
+                  <div className='space-y-6'>
+                    {dynamicCategories.map((category, idx) => (
+                      <DynamicCategoryCard
+                        key={category.id}
+                        category={category}
+                        onChange={(updated) => updateCategory(idx, updated)}
+                        onRemove={() => removeCategory(idx)}
+                        onValidate={(isValid) => {
+                          const copy = [...categoryValidStates];
+                          copy[idx] = isValid;
+                          setCategoryValidStates(copy);
+                        }}
+                      />
+                    ))}
+                    <Button
+                      variant="outline"
+                      className="w-full border-primary/20 text-primary hover:text-primary hover:bg-primary/5 cursor-pointer"
+                      onClick={addCategory}
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Create Category
+                    </Button>
+                  </div>
+                )}
+
+                {/* COMMON FIELDS (Shared between Simple & Dynamic) */}
+                {/* ADD ONS */}
+                <AddOnsFieldset value={addOns} onChange={setAddOns} />
+                <div className="space-y-5 pt-4 border-t border-gray-100">
+                  <Label>GST Status *</Label>
+                  <GstStatusToggle value={gst} onChange={setGst} />
+                  <Label>Deposit Required <RequiredStar /></Label>
+                  <InputWithUnitToggle
+                    placeholder='Deposit Amount'
+                    value={depositPercent}
+                    type="number"
+                    onChange={(e) => {
+                      setDepositPercent(e)
+                      clearFieldError('depositPercent')
+                    }}
+                    unit={depositUnit}
+                    onUnitChange={setDepositUnit}
+                  />
+                  {errors.depositPercent && (
+                    <p className="text-red-500 text-xs">{errors.depositPercent}</p>
+                  )}
+                  <Label>EMI Options</Label>
+                  <CreditOptions value={credit} onChange={setCredit} />
+
+                  <Label>Cancellation Policy <RequiredStar /></Label>
+                  <Textarea
+                    value={policy}
+                    onChange={(e) => {
+                      setPolicy(e.target.value)
+                      clearFieldError('policy')
+                    }}
+                  />
+                  {errors.policy && (
+                    <p className="text-red-500 text-xs">{errors.policy}</p>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          <WizardFooter
-            onPrev={() => router.push(`/organizer/create-trip/${tripId}/faqs`)}
-            onDraft={() => handleSavePricing(true)}
-            onNext={() => handleSavePricing(false)}
-            loading={isSavingNext}
-            draftDisabled={draftDisabled}
-          />
-        </main>
+          <div className='md:col-span-1'>
+            <PricingSummary
+              mode={mode}
+              simplePrice={price}
+              dynamicCategories={dynamicCategories}
+              addOns={addOns}
+              gstMode={gst}
+              depositPercent={depositPercent}
+              depositUnit={depositUnit}
+              creditOptions={credit}
+            />
+          </div>
+        </div>
+
+        <WizardFooter
+          onPrev={() => router.push(`/organizer/create-trip/${tripId}/faqs`)}
+          onDraft={() => handleSavePricing(true)}
+          onNext={() => handleSavePricing(false)}
+          loading={isSavingNext}
+          draftDisabled={draftDisabled}
+        />
       </div>
-    </div>
+    </main>
   );
 }

@@ -6,8 +6,7 @@ import { TripStepperHeader } from '@/components/create-trip/tripStepperHeader';
 import { SectionCard } from '@/components/create-trip/section-card';
 import { TripSummaryCard } from '@/components/create-trip/trip-summary-card';
 import { WizardFooter } from '@/components/create-trip/wizard-footer';
-import { AppHeader } from '@/components/app-header';
-import { OrganizerSidebar } from '@/components/organizer/organizer-sidebar';
+
 import {
   useCreateReviewMutation,
   useUpdateReviewMutation,
@@ -32,7 +31,7 @@ export default function ReviewPage() {
   const params = useParams();
   const organizationId = useOrganizationId();
   const tripId = Array.isArray(params.id) ? params.id[0] : params.id;
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
 
   const [createReview] = useCreateReviewMutation();
   const [updateReview] = useUpdateReviewMutation();
@@ -141,40 +140,31 @@ export default function ReviewPage() {
   };
 
   return (
-    <div className='flex min-h-screen bg-gray-50'>
-      {/* Sidebar */}
-      <OrganizerSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+    <main className="p-6">
+      <TripStepperHeader activeStep={6} />
 
-      <div className='flex-1 h-auto'>
-        <AppHeader title='Create New Trip' />
-        <TripStepperHeader activeStep={6} />
-
-        <SectionCard title='Review & Submit'>
-          <TripSummaryCard
-            data={{
-              tripName: state.tripName,
-              travelDates: state.travelDates,
-              duration: state.duration,
-              groupSize: state.groupSize,
-              ageRange: state.ageRange,
-              leader: state.leader,
-              itineraryType: state.itineraryType,
-            }}
-            confirmed={state.confirmed}
-            onConfirmedChange={(confirmed) => setState({ ...state, confirmed })}
-          />
-        </SectionCard>
-
-        <WizardFooter
-          nextLabel='Submit'
-          onPrev={handlePrevious}
-          onDraft={handleDraft}
-          onNext={handleSubmit}
+      <SectionCard title='Review & Submit'>
+        <TripSummaryCard
+          data={{
+            tripName: state.tripName,
+            travelDates: state.travelDates,
+            duration: state.duration,
+            groupSize: state.groupSize,
+            ageRange: state.ageRange,
+            leader: state.leader,
+            itineraryType: state.itineraryType,
+          }}
+          confirmed={state.confirmed}
+          onConfirmedChange={(confirmed) => setState({ ...state, confirmed })}
         />
-      </div>
-    </div>
+      </SectionCard>
+
+      <WizardFooter
+        nextLabel='Submit'
+        onPrev={handlePrevious}
+        onDraft={handleDraft}
+        onNext={handleSubmit}
+      />
+    </main>
   );
 }

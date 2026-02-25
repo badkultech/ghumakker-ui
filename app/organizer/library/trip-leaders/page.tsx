@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useMemo, useEffect } from "react";
-import { AppHeader } from "@/components/app-header";
-import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
+
 import { AddNewItemModal } from "@/components/library/add-new-item/AddNewItemModal";
 import { LibraryHeader } from "@/components/library/LibraryHeader";
 import {
@@ -24,7 +23,7 @@ export default function TripLeadersPage() {
   // UI state
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [selectedLeaderId, setSelectedLeaderId] = useState<number | null>(null);
   const [updateId, setUpdateId] = useState<number | null>(null);
@@ -109,97 +108,85 @@ export default function TripLeadersPage() {
   }
 
   return (
-    <div className="flex min-h-screen bg-white">
-      <OrganizerSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
-
-      <div className="flex-1 flex flex-col">
-        <AppHeader
-          title="Group Leader Library"
-          onMenuClick={() => setSidebarOpen(true)}
+    <>
+      <main className="p-6 md:p-8">
+        <LibraryHeader
+          buttonLabel="Add Group Leader"
+          onAddClick={() => {
+            setUpdateId(null);
+            setSelectedLeaderId(null);
+            setModalOpen(true);
+          }}
+          // controlled search props
+          searchValue={search}
+          onSearchChange={(v) => setSearch(v)}
         />
 
-        <main className="flex-1 p-6 md:p-8">
-          <LibraryHeader
-            buttonLabel="Add Group Leader"
-            onAddClick={() => {
-              setUpdateId(null);
-              setSelectedLeaderId(null);
-              setModalOpen(true);
-            }}
-            // controlled search props
-            searchValue={search}
-            onSearchChange={(v) => setSearch(v)}
-          />
-
-          {/* List */}
-          <div className="flex flex-col gap-3 mt-4">
-            {filtered.length > 0 ? (
-              filtered.map((leader) => (
-                <div
-                  key={leader.id}
-                  className="flex items-start justify-between bg-white border border-gray-200 rounded-2xl px-5 py-4 shadow-sm hover:shadow-md transition"
-                >
-                  {/* Left section: Avatar + Content */}
-                  <div className="flex items-start gap-4 flex-1">
-                    <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
-                      {leader.documents && leader.documents[0]?.url ? (
-                        <LazyImage
-                          src={leader.documents[0].url}
-                          alt={leader.name}
-                          className="w-full h-full object-cover rounded-lg"
-                        />
-                      ) : (
-                        <span className="text-xs text-gray-400">No Img</span>
-                      )}
-                    </div>
-
-                    <div className="flex flex-col justify-center">
-                      <h3 className="font-semibold text-gray-900 text-sm">
-                        {leader.name}
-                      </h3>
-                      {leader.tagline && (
-                        <p className="text-xs text-gray-600 mt-0.5">
-                          {leader.tagline}
-                        </p>
-                      )}
-                      <div
-                        className="text-xs prose prose-sm text-gray-500 mt-1 max-w-xl prose prose-sm clamp-3"
-                        dangerouslySetInnerHTML={{ __html: leader.bio || "" }}
+        {/* List */}
+        <div className="flex flex-col gap-3 mt-4">
+          {filtered.length > 0 ? (
+            filtered.map((leader) => (
+              <div
+                key={leader.id}
+                className="flex items-start justify-between bg-white border border-gray-200 rounded-2xl px-5 py-4 shadow-sm hover:shadow-md transition"
+              >
+                {/* Left section: Avatar + Content */}
+                <div className="flex items-start gap-4 flex-1">
+                  <div className="w-14 h-14 bg-gray-100 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
+                    {leader.documents && leader.documents[0]?.url ? (
+                      <LazyImage
+                        src={leader.documents[0].url}
+                        alt={leader.name}
+                        className="w-full h-full object-cover rounded-lg"
                       />
-                    </div>
+                    ) : (
+                      <span className="text-xs text-gray-400">No Img</span>
+                    )}
                   </div>
-                  <div className="flex items-end gap-3 ml-4 self-end text-gray-400">
-                    <ActionButtons
-                      onView={() => {
-                        setSelectedLeaderId(leader.id);
-                        setViewModalOpen(true);
-                      }}
-                      onEdit={() => {
-                        setSelectedLeaderId(leader.id);
-                        setUpdateId(leader.id);
-                        setModalOpen(true);
-                      }}
+
+                  <div className="flex flex-col justify-center">
+                    <h3 className="font-semibold text-gray-900 text-sm">
+                      {leader.name}
+                    </h3>
+                    {leader.tagline && (
+                      <p className="text-xs text-gray-600 mt-0.5">
+                        {leader.tagline}
+                      </p>
+                    )}
+                    <div
+                      className="text-xs prose prose-sm text-gray-500 mt-1 max-w-xl prose prose-sm clamp-3"
+                      dangerouslySetInnerHTML={{ __html: leader.bio || "" }}
                     />
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="text-center text-gray-500 py-10 text-sm">
-                {qLen === 0 && leaders.length === 0
-                  ? "No group leaders found in library."
-                  : qLen === 0 && leaders.length > 0
-                    ? "Showing all group leaders. Type at least 3 characters to search."
-                    : qLen > 0 && qLen < 3
-                      ? "Type at least 3 characters to search."
-                      : "No group leaders found."}
+                <div className="flex items-end gap-3 ml-4 self-end text-gray-400">
+                  <ActionButtons
+                    onView={() => {
+                      setSelectedLeaderId(leader.id);
+                      setViewModalOpen(true);
+                    }}
+                    onEdit={() => {
+                      setSelectedLeaderId(leader.id);
+                      setUpdateId(leader.id);
+                      setModalOpen(true);
+                    }}
+                  />
+                </div>
               </div>
-            )}
-          </div>
-        </main>
-      </div>
+            ))
+          ) : (
+            <div className="text-center text-gray-500 py-10 text-sm">
+              {qLen === 0 && leaders.length === 0
+                ? "No group leaders found in library."
+                : qLen === 0 && leaders.length > 0
+                  ? "Showing all group leaders. Type at least 3 characters to search."
+                  : qLen > 0 && qLen < 3
+                    ? "Type at least 3 characters to search."
+                    : "No group leaders found."}
+            </div>
+          )}
+        </div>
+      </main>
 
       <ViewLeaderModal
         open={viewModalOpen}
@@ -216,6 +203,6 @@ export default function TripLeadersPage() {
         onClose={() => handleModalClose(true)}
         initialStep="trip-leader"
       />
-    </div>
+    </>
   );
 }

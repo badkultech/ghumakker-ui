@@ -4,8 +4,7 @@ import { useState, useMemo } from "react";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { ChevronRight } from "lucide-react";
-import { AppHeader } from "@/components/app-header";
-import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
+
 import QueryList from "@/components/queries/QueryList";
 import ConfirmDeleteModal from "@/components/queries/ConfirmDeleteModal";
 import ReportQueryModal from "@/components/queries/ReportQueryModal";
@@ -28,7 +27,7 @@ export default function AllQueriesPage() {
   const [status, setStatus] = useState("all"); // not all APIs use it, but kept for parity
   const [selectedQuery, setSelectedQuery] = useState<any>(null);
   const [showReport, setShowReport] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
 
   // Delete state
   const [showDelete, setShowDelete] = useState(false);
@@ -156,66 +155,60 @@ export default function AllQueriesPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F9FAFB] overflow-x-hidden">
-      <OrganizerSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <>
+      <div className="p-6">
+        {!selectedQuery ? (
+          <>
+            {/* Breadcrumb */}
+            <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
+              <Link href={ROUTES.ORGANIZER.QUERIES_ALL} className="hover:text-primary transition-colors">
+                Queries
+              </Link>
+              <ChevronRight className="w-4 h-4" />
+              <span className="text-gray-700 font-medium">All Queries</span>
+            </div>
 
-      <div className="flex-1 flex flex-col">
-        <AppHeader title="Queries" />
-
-        <div className="p-6">
-          {!selectedQuery ? (
-            <>
-              {/* Breadcrumb */}
-              <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-                <Link href={ROUTES.ORGANIZER.QUERIES_ALL} className="hover:text-primary transition-colors">
-                  Queries
-                </Link>
-                <ChevronRight className="w-4 h-4" />
-                <span className="text-gray-700 font-medium">All Queries</span>
+            {/* Loading / Error / Empty states */}
+            {((tripPublicIdFromRoute && (isTripLoading || isTripFetching)) ||
+              (!tripPublicIdFromRoute && isOrgLoading)) ? (
+              <div className="py-20 text-center text-gray-500">Loading queries…</div>
+            ) : (tripPublicIdFromRoute && isTripError) || (!tripPublicIdFromRoute && isOrgError) ? (
+              <div className="py-20 text-center text-red-500">Failed to load queries. Try refreshing.</div>
+            ) : !filteredQueries || filteredQueries.length === 0 ? (
+              <div className="py-20 text-center text-gray-500">
+                {tripPublicIdFromRoute
+                  ? "No queries found for this trip."
+                  : "No queries found for this organization."}
               </div>
-
-              {/* Loading / Error / Empty states */}
-              {((tripPublicIdFromRoute && (isTripLoading || isTripFetching)) ||
-                (!tripPublicIdFromRoute && isOrgLoading)) ? (
-                <div className="py-20 text-center text-gray-500">Loading queries…</div>
-              ) : (tripPublicIdFromRoute && isTripError) || (!tripPublicIdFromRoute && isOrgError) ? (
-                <div className="py-20 text-center text-red-500">Failed to load queries. Try refreshing.</div>
-              ) : !filteredQueries || filteredQueries.length === 0 ? (
-                <div className="py-20 text-center text-gray-500">
-                  {tripPublicIdFromRoute
-                    ? "No queries found for this trip."
-                    : "No queries found for this organization."}
-                </div>
-              ) : (
-                <QueryList
-                  queries={filteredQueries}
-                  onViewQuery={(q: any) => setSelectedQuery(q)}
-                  onDelete={(q: any) => onDeleteClick(q)}
-                  onReport={(q: any) => onReport(q)}
-                />
-              )}
-            </>
-          ) : (
-            <QueryDetail
-              query={selectedQuery}
-              onBack={() => setSelectedQuery(null)}
-              onDelete={() => onDeleteClick(selectedQuery)}
-            />
-          )}
-
-          {/* Modals */}
-          <ConfirmDeleteModal
-            open={showDelete}
-            onClose={() => {
-              setShowDelete(false);
-              setPendingDeleteId(null);
-              setPendingDeleteTripPublicId("");
-            }}
-            onConfirm={() => performDelete(pendingDeleteId)}
-            loading={isDeleting}
+            ) : (
+              <QueryList
+                queries={filteredQueries}
+                onViewQuery={(q: any) => setSelectedQuery(q)}
+                onDelete={(q: any) => onDeleteClick(q)}
+                onReport={(q: any) => onReport(q)}
+              />
+            )}
+          </>
+        ) : (
+          <QueryDetail
+            query={selectedQuery}
+            onBack={() => setSelectedQuery(null)}
+            onDelete={() => onDeleteClick(selectedQuery)}
           />
-        </div>
+        )}
+
+        {/* Modals */}
+        <ConfirmDeleteModal
+          open={showDelete}
+          onClose={() => {
+            setShowDelete(false);
+            setPendingDeleteId(null);
+            setPendingDeleteTripPublicId("");
+          }}
+          onConfirm={() => performDelete(pendingDeleteId)}
+          loading={isDeleting}
+        />
       </div>
-    </div>
+    </>
   );
 }

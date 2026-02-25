@@ -13,8 +13,7 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Eye, EyeOff, CheckCircle2, XCircle } from "lucide-react";
-import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
-import { AppHeader } from "@/components/app-header";
+
 import { useChangePasswordMutation } from "@/lib/services/login";
 import { showApiError, showSuccess, showError } from "@/lib/utils/toastHelpers";
 
@@ -29,7 +28,6 @@ import { useGetOrganizationNotificationPreferencesQuery, useSaveOrganizationNoti
 import { PHONE_CONFIG, extractPhoneNumber, formatPhoneWithCountryCode } from "@/lib/constants/phone";
 
 export default function SettingsPage() {
-    const [sidebarOpen, setSidebarOpen] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -257,311 +255,298 @@ export default function SettingsPage() {
 
 
     return (
-        <div className="flex h-screen overflow-hidden bg-gray-50">
-            {/* Sidebar */}
-            <OrganizerSidebar
-                isOpen={sidebarOpen}
-                onClose={() => setSidebarOpen(false)}
-            />
+        <main className="p-6 space-y-8">
+            {/* Header */}
+            <div className="flex justify-between items-center">
+                <h1 className="text-2xl font-semibold">Settings</h1>
 
-            {/* Main Section */}
-            <div className="flex-1 flex flex-col overflow-hidden">
-                <AppHeader title="Settings" onMenuClick={() => setSidebarOpen(true)} />
+            </div>
 
-                <main className="flex-1 overflow-y-auto p-6 space-y-8">
-                    {/* Header */}
-                    <div className="flex justify-between items-center">
-                        <h1 className="text-2xl font-semibold">Settings</h1>
+            <Card>
+                <CardHeader>
+                    <CardTitle>Notification Preferences</CardTitle>
+                </CardHeader>
+
+                <CardContent className="space-y-4">
+                    {preferences.map((pref) => (
+                        <div
+                            key={`${pref.categoryCode}-${pref.channel}`}
+                            className="flex items-center justify-between"
+                        >
+                            <div>
+                                <p className="font-medium text-gray-800">{pref.title}</p>
+                                <p className="text-sm text-gray-500">{pref.description}</p>
+                            </div>
+
+                            <Switch
+                                checked={pref.enabled}
+                                onCheckedChange={(checked) =>
+                                    setPreferences((prev) =>
+                                        prev.map((p) =>
+                                            p.categoryCode === pref.categoryCode &&
+                                                p.channel === pref.channel
+                                                ? { ...p, enabled: checked }
+                                                : p
+                                        )
+                                    )
+                                }
+                            />
+                        </div>
+                    ))}
+
+                    {/* Save Button */}
+                    <div className="flex justify-end">
+                        <Button
+                            onClick={handleSaveNotificationPreferences}
+                            disabled={savingNotificationPref}
+                            className="cursor-pointer"
+                        >
+                            {savingNotificationPref ? "Saving..." : "Save Preferences"}
+                        </Button>
 
                     </div>
+                </CardContent>
+            </Card>
 
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Notification Preferences</CardTitle>
-                        </CardHeader>
 
-                        <CardContent className="space-y-4">
-                            {preferences.map((pref) => (
-                                <div
-                                    key={`${pref.categoryCode}-${pref.channel}`}
-                                    className="flex items-center justify-between"
-                                >
-                                    <div>
-                                        <p className="font-medium text-gray-800">{pref.title}</p>
-                                        <p className="text-sm text-gray-500">{pref.description}</p>
+            {/* Account Preferences */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Account Preferences</CardTitle>
+                </CardHeader>
+
+                <CardContent className="space-y-6">
+                    <div className="grid sm:grid-cols-2 gap-4">
+                        {/* Language */}
+                        <div>
+                            <p className="text-sm font-medium mb-2">Language</p>
+                            <Select
+                                value={organizationPreferences.language}
+                                onValueChange={(value) =>
+                                    setOrganizationPreferences((prev) => ({ ...prev, language: value }))
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Language" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="English">English</SelectItem>
+                                    <SelectItem value="Hindi">Hindi</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Time Zone */}
+                        <div>
+                            <p className="text-sm font-medium mb-2">Time Zone</p>
+                            <Select
+                                value={organizationPreferences.timezone}
+                                onValueChange={(value) =>
+                                    setOrganizationPreferences((prev) => ({ ...prev, timezone: value }))
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Time Zone" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="IST">IST (GMT +5:30)</SelectItem>
+                                    <SelectItem value="UTC">UTC</SelectItem>
+                                    <SelectItem value="PST">PST (GMT -8:00)</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Currency */}
+                        <div>
+                            <p className="text-sm font-medium mb-2">Currency</p>
+                            <Select
+                                value={organizationPreferences.currency}
+                                onValueChange={(value) =>
+                                    setOrganizationPreferences((prev) => ({ ...prev, currency: value }))
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Currency" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="INR">INR (₹)</SelectItem>
+                                    <SelectItem value="USD">USD ($)</SelectItem>
+                                    <SelectItem value="EUR">EUR (€)</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+
+                        {/* Date Format */}
+                        <div>
+                            <p className="text-sm font-medium mb-2">Date Format</p>
+                            <Select
+                                value={organizationPreferences.dateFormat}
+                                onValueChange={(value) =>
+                                    setOrganizationPreferences((prev) => ({ ...prev, dateFormat: value }))
+                                }
+                            >
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select Date Format" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
+                                    <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
+                                    <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </div>
+
+                    {/* Save Button */}
+                    <div className="flex justify-end">
+                        <Button className="cursor-pointer" onClick={handleSaveOrganizationPreference} disabled={creatingPref || updatingPref} > {creatingPref || updatingPref ? "Saving..." : "Save Preferences"} </Button>
+                    </div>
+                </CardContent>
+            </Card>
+
+
+
+            {/* Security */}
+            <Card>
+                <CardHeader>
+                    <CardTitle>Security</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                    <div>
+                        <p className="text-sm font-medium mb-1">Current Password</p>
+                        <div className="relative">
+                            <Input
+                                type={showPassword ? "text" : "password"}
+                                placeholder="**************"
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowPassword(!showPassword)}
+                                className="absolute right-3 top-2.5 text-gray-500"
+                            >
+                                {showPassword ? (
+                                    <EyeOff className="w-5 h-5" />
+                                ) : (
+                                    <Eye className="w-5 h-5" />
+                                )}
+                            </button>
+                        </div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-2 gap-4">
+                        {/* New Password */}
+                        <div className="relative">
+                            <p className="text-sm font-medium mb-1">New Password</p>
+                            <Input
+                                type={showNewPassword ? "text" : "password"}
+                                placeholder="**************"
+                                value={newPassword}
+                                onChange={(e) => setNewPassword(e.target.value)}
+                                maxLength={50}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowNewPassword(!showNewPassword)}
+                                className="absolute right-3 top-9 text-gray-500"
+                            >
+                                {showNewPassword ? (
+                                    <EyeOff className="w-5 h-5" />
+                                ) : (
+                                    <Eye className="w-5 h-5" />
+                                )}
+                            </button>
+
+                            {/* Password Strength */}
+                            {newPassword && (
+                                <div className="mt-4 space-y-1">
+                                    <div className="flex items-center text-sm">
+                                        {rules.length ? (
+                                            <CheckCircle2 className="text-primary mr-2" size={16} />
+                                        ) : (
+                                            <XCircle className="text-gray-400 mr-2" size={16} />
+                                        )}
+                                        <span className="text-gray-600">8+ characters</span>
                                     </div>
-
-                                    <Switch
-                                        checked={pref.enabled}
-                                        onCheckedChange={(checked) =>
-                                            setPreferences((prev) =>
-                                                prev.map((p) =>
-                                                    p.categoryCode === pref.categoryCode &&
-                                                        p.channel === pref.channel
-                                                        ? { ...p, enabled: checked }
-                                                        : p
-                                                )
-                                            )
-                                        }
-                                    />
-                                </div>
-                            ))}
-
-                            {/* Save Button */}
-                            <div className="flex justify-end">
-                                <Button
-                                    onClick={handleSaveNotificationPreferences}
-                                    disabled={savingNotificationPref}
-                                    className="cursor-pointer"
-                                >
-                                    {savingNotificationPref ? "Saving..." : "Save Preferences"}
-                                </Button>
-
-                            </div>
-                        </CardContent>
-                    </Card>
-
-
-                    {/* Account Preferences */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Account Preferences</CardTitle>
-                        </CardHeader>
-
-                        <CardContent className="space-y-6">
-                            <div className="grid sm:grid-cols-2 gap-4">
-                                {/* Language */}
-                                <div>
-                                    <p className="text-sm font-medium mb-2">Language</p>
-                                    <Select
-                                        value={organizationPreferences.language}
-                                        onValueChange={(value) =>
-                                            setOrganizationPreferences((prev) => ({ ...prev, language: value }))
-                                        }
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select Language" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="English">English</SelectItem>
-                                            <SelectItem value="Hindi">Hindi</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                {/* Time Zone */}
-                                <div>
-                                    <p className="text-sm font-medium mb-2">Time Zone</p>
-                                    <Select
-                                        value={organizationPreferences.timezone}
-                                        onValueChange={(value) =>
-                                            setOrganizationPreferences((prev) => ({ ...prev, timezone: value }))
-                                        }
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select Time Zone" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="IST">IST (GMT +5:30)</SelectItem>
-                                            <SelectItem value="UTC">UTC</SelectItem>
-                                            <SelectItem value="PST">PST (GMT -8:00)</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                {/* Currency */}
-                                <div>
-                                    <p className="text-sm font-medium mb-2">Currency</p>
-                                    <Select
-                                        value={organizationPreferences.currency}
-                                        onValueChange={(value) =>
-                                            setOrganizationPreferences((prev) => ({ ...prev, currency: value }))
-                                        }
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select Currency" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="INR">INR (₹)</SelectItem>
-                                            <SelectItem value="USD">USD ($)</SelectItem>
-                                            <SelectItem value="EUR">EUR (€)</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-
-                                {/* Date Format */}
-                                <div>
-                                    <p className="text-sm font-medium mb-2">Date Format</p>
-                                    <Select
-                                        value={organizationPreferences.dateFormat}
-                                        onValueChange={(value) =>
-                                            setOrganizationPreferences((prev) => ({ ...prev, dateFormat: value }))
-                                        }
-                                    >
-                                        <SelectTrigger>
-                                            <SelectValue placeholder="Select Date Format" />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            <SelectItem value="DD/MM/YYYY">DD/MM/YYYY</SelectItem>
-                                            <SelectItem value="MM/DD/YYYY">MM/DD/YYYY</SelectItem>
-                                            <SelectItem value="YYYY-MM-DD">YYYY-MM-DD</SelectItem>
-                                        </SelectContent>
-                                    </Select>
-                                </div>
-                            </div>
-
-                            {/* Save Button */}
-                            <div className="flex justify-end">
-                                <Button className="cursor-pointer" onClick={handleSaveOrganizationPreference} disabled={creatingPref || updatingPref} > {creatingPref || updatingPref ? "Saving..." : "Save Preferences"} </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
-
-
-
-                    {/* Security */}
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>Security</CardTitle>
-                        </CardHeader>
-                        <CardContent className="space-y-4">
-                            <div>
-                                <p className="text-sm font-medium mb-1">Current Password</p>
-                                <div className="relative">
-                                    <Input
-                                        type={showPassword ? "text" : "password"}
-                                        placeholder="**************"
-                                        value={currentPassword}
-                                        onChange={(e) => setCurrentPassword(e.target.value)}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-2.5 text-gray-500"
-                                    >
-                                        {showPassword ? (
-                                            <EyeOff className="w-5 h-5" />
+                                    <div className="flex items-center text-sm">
+                                        {rules.uppercase ? (
+                                            <CheckCircle2 className="text-primary mr-2" size={16} />
                                         ) : (
-                                            <Eye className="w-5 h-5" />
+                                            <XCircle className="text-gray-400 mr-2" size={16} />
                                         )}
-                                    </button>
-                                </div>
-                            </div>
-
-                            <div className="grid sm:grid-cols-2 gap-4">
-                                {/* New Password */}
-                                <div className="relative">
-                                    <p className="text-sm font-medium mb-1">New Password</p>
-                                    <Input
-                                        type={showNewPassword ? "text" : "password"}
-                                        placeholder="**************"
-                                        value={newPassword}
-                                        onChange={(e) => setNewPassword(e.target.value)}
-                                        maxLength={50}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowNewPassword(!showNewPassword)}
-                                        className="absolute right-3 top-9 text-gray-500"
-                                    >
-                                        {showNewPassword ? (
-                                            <EyeOff className="w-5 h-5" />
+                                        <span className="text-gray-600">1 uppercase letter</span>
+                                    </div>
+                                    <div className="flex items-center text-sm">
+                                        {rules.number ? (
+                                            <CheckCircle2 className="text-primary mr-2" size={16} />
                                         ) : (
-                                            <Eye className="w-5 h-5" />
+                                            <XCircle className="text-gray-400 mr-2" size={16} />
                                         )}
-                                    </button>
-
-                                    {/* Password Strength */}
-                                    {newPassword && (
-                                        <div className="mt-4 space-y-1">
-                                            <div className="flex items-center text-sm">
-                                                {rules.length ? (
-                                                    <CheckCircle2 className="text-primary mr-2" size={16} />
-                                                ) : (
-                                                    <XCircle className="text-gray-400 mr-2" size={16} />
-                                                )}
-                                                <span className="text-gray-600">8+ characters</span>
-                                            </div>
-                                            <div className="flex items-center text-sm">
-                                                {rules.uppercase ? (
-                                                    <CheckCircle2 className="text-primary mr-2" size={16} />
-                                                ) : (
-                                                    <XCircle className="text-gray-400 mr-2" size={16} />
-                                                )}
-                                                <span className="text-gray-600">1 uppercase letter</span>
-                                            </div>
-                                            <div className="flex items-center text-sm">
-                                                {rules.number ? (
-                                                    <CheckCircle2 className="text-primary mr-2" size={16} />
-                                                ) : (
-                                                    <XCircle className="text-gray-400 mr-2" size={16} />
-                                                )}
-                                                <span className="text-gray-600">1 number</span>
-                                            </div>
-                                            <div className="flex items-center text-sm">
-                                                {rules.special ? (
-                                                    <CheckCircle2 className="text-primary mr-2" size={16} />
-                                                ) : (
-                                                    <XCircle className="text-gray-400 mr-2" size={16} />
-                                                )}
-                                                <span className="text-gray-600">
-                                                    1 special symbol (!@#$)
-                                                </span>
-                                            </div>
-                                        </div>
-                                    )}
-                                </div>
-
-                                {/* Confirm New Password */}
-                                <div className="relative">
-                                    <p className="text-sm font-medium mb-1">Confirm New Password</p>
-                                    <Input
-                                        type={showConfirmPassword ? "text" : "password"}
-                                        placeholder="**************"
-                                        value={confirmPassword}
-                                        onChange={(e) => setConfirmPassword(e.target.value)}
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                        className="absolute right-3 top-9 text-gray-500"
-                                    >
-                                        {showConfirmPassword ? (
-                                            <EyeOff className="w-5 h-5" />
+                                        <span className="text-gray-600">1 number</span>
+                                    </div>
+                                    <div className="flex items-center text-sm">
+                                        {rules.special ? (
+                                            <CheckCircle2 className="text-primary mr-2" size={16} />
                                         ) : (
-                                            <Eye className="w-5 h-5" />
+                                            <XCircle className="text-gray-400 mr-2" size={16} />
                                         )}
-                                    </button>
-
-                                    {/* Inline error message */}
-                                    {confirmPassword &&
-                                        newPassword &&
-                                        confirmPassword !== newPassword && (
-                                            <p className="text-xs text-red-500 mt-1">
-                                                Passwords do not match
-                                            </p>
-                                        )}
+                                        <span className="text-gray-600">
+                                            1 special symbol (!@#$)
+                                        </span>
+                                    </div>
                                 </div>
-                            </div>
+                            )}
+                        </div>
 
-                            <div className="flex items-center justify-between mt-4">
-                                <Button
-                                    type="button"
-                                    onClick={handlePasswordUpdate}
-                                    disabled={!allValid || isLoading}
-                                    className={`${allValid
-                                        ? "bg-primary hover:bg-primary/90 text-primary-foreground"
-                                        : "bg-gray-300 text-gray-500 cursor-not-allowed"
-                                        } cursor-pointer`}
-                                >
-                                    {isLoading ? "Updating..." : "Update Password"}
-                                </Button>
-                            </div>
-                        </CardContent>
-                    </Card>
+                        {/* Confirm New Password */}
+                        <div className="relative">
+                            <p className="text-sm font-medium mb-1">Confirm New Password</p>
+                            <Input
+                                type={showConfirmPassword ? "text" : "password"}
+                                placeholder="**************"
+                                value={confirmPassword}
+                                onChange={(e) => setConfirmPassword(e.target.value)}
+                            />
+                            <button
+                                type="button"
+                                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                className="absolute right-3 top-9 text-gray-500"
+                            >
+                                {showConfirmPassword ? (
+                                    <EyeOff className="w-5 h-5" />
+                                ) : (
+                                    <Eye className="w-5 h-5" />
+                                )}
+                            </button>
 
-                </main>
-            </div>
-        </div>
+                            {/* Inline error message */}
+                            {confirmPassword &&
+                                newPassword &&
+                                confirmPassword !== newPassword && (
+                                    <p className="text-xs text-red-500 mt-1">
+                                        Passwords do not match
+                                    </p>
+                                )}
+                        </div>
+                    </div>
+
+                    <div className="flex items-center justify-between mt-4">
+                        <Button
+                            type="button"
+                            onClick={handlePasswordUpdate}
+                            disabled={!allValid || isLoading}
+                            className={`${allValid
+                                ? "bg-primary hover:bg-primary/90 text-primary-foreground"
+                                : "bg-gray-300 text-gray-500 cursor-not-allowed"
+                                } cursor-pointer`}
+                        >
+                            {isLoading ? "Updating..." : "Update Password"}
+                        </Button>
+                    </div>
+                </CardContent>
+            </Card>
+
+        </main>
     );
 }

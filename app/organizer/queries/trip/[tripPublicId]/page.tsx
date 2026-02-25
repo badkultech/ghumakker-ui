@@ -1,8 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { AppHeader } from "@/components/app-header";
-import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
+
 import ConfirmDeleteModal from "@/components/queries/ConfirmDeleteModal";
 import QueryDetail from "@/components/queries/QueryDetail";
 import QueryList from "@/components/queries/QueryList";
@@ -27,7 +26,7 @@ export default function QueriesPage() {
   const [selectedQuery, setSelectedQuery] = useState<any>(null);
   const [showDelete, setShowDelete] = useState(false);
   const [showReport, setShowReport] = useState(false);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
 
   // Backend — Fetch trip-specific queries
   const {
@@ -95,80 +94,72 @@ export default function QueriesPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F9FAFB] overflow-x-hidden">
-      {/* Sidebar */}
-      <OrganizerSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+    <>
+      <div className="p-6">
+        {!selectedQuery ? (
+          <>
+            {/* Heading + "View All" button */}
+            <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
+                Trip Queries
+              </h2>
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        <AppHeader title="Queries" />
+              <Link href={`/organizer/queries/all`}>
+                <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 rounded-lg">
+                  View All Queries
+                </Button>
+              </Link>
+            </div>
 
-        <div className="p-6">
-          {!selectedQuery ? (
-            <>
-              {/* Heading + "View All" button */}
-              <div className="flex justify-between items-center mb-6 flex-wrap gap-3">
-                <h2 className="text-lg sm:text-xl font-semibold text-gray-800">
-                  Trip Queries
-                </h2>
+            {/* Stats Section */}
+            <QueryStats queries={tripQueries ?? []} />
 
-                <Link href={`/organizer/queries/all`}>
-                  <Button className="bg-primary hover:bg-primary/90 text-primary-foreground px-6 rounded-lg">
-                    View All Queries
-                  </Button>
-                </Link>
+            {/* Query List */}
+            {isLoading ? (
+              <div className="text-center py-12 text-gray-500">Loading queries…</div>
+            ) : isError ? (
+              <div className="text-center py-12 text-red-500">
+                Failed to load queries.
               </div>
-
-              {/* Stats Section */}
-              <QueryStats queries={tripQueries ?? []} />
-
-              {/* Query List */}
-              {isLoading ? (
-                <div className="text-center py-12 text-gray-500">Loading queries…</div>
-              ) : isError ? (
-                <div className="text-center py-12 text-red-500">
-                  Failed to load queries.
-                </div>
-              ) : !tripQueries || tripQueries.length === 0 ? (
-                <div className="text-center py-12 text-gray-500">
-                  No queries found for this trip.
-                </div>
-              ) : (
-                <QueryList
-                  queries={tripQueries}
-                  onViewQuery={setSelectedQuery}
-                  // ensure we pass the object to the handler (QueryList already uses onDelete={() => onDelete(q)})
-                  onDelete={(q: any) => onDeleteClick(q)}
-                />
-              )}
-            </>
-          ) : (
-            <QueryDetail
-              query={selectedQuery}
-              onBack={() => setSelectedQuery(null)}
-              onReport={() => setShowReport(true)}
-              onDelete={() => onDeleteClick(selectedQuery)}
-            />
-          )}
-
-          {/* Modals */}
-          <ConfirmDeleteModal
-            open={showDelete}
-            onClose={() => {
-              setShowDelete(false);
-              setSelectedQuery(null);
-            }}
-            onConfirm={confirmDelete}
-            loading={isDeleting}
-          />
-
-          <ReportQueryModal
-            open={showReport}
-            onClose={() => setShowReport(false)}
+            ) : !tripQueries || tripQueries.length === 0 ? (
+              <div className="text-center py-12 text-gray-500">
+                No queries found for this trip.
+              </div>
+            ) : (
+              <QueryList
+                queries={tripQueries}
+                onViewQuery={setSelectedQuery}
+                // ensure we pass the object to the handler (QueryList already uses onDelete={() => onDelete(q)})
+                onDelete={(q: any) => onDeleteClick(q)}
+              />
+            )}
+          </>
+        ) : (
+          <QueryDetail
             query={selectedQuery}
+            onBack={() => setSelectedQuery(null)}
+            onReport={() => setShowReport(true)}
+            onDelete={() => onDeleteClick(selectedQuery)}
           />
-        </div>
+        )}
+
+        {/* Modals */}
+        <ConfirmDeleteModal
+          open={showDelete}
+          onClose={() => {
+            setShowDelete(false);
+            setSelectedQuery(null);
+          }}
+          onConfirm={confirmDelete}
+          loading={isDeleting}
+        />
+
+        <ReportQueryModal
+          open={showReport}
+          onClose={() => setShowReport(false)}
+          query={selectedQuery}
+        />
       </div>
-    </div>
+    </>
   );
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { TripStepperHeader } from "@/components/create-trip/tripStepperHeader";
-import { AppHeader } from "@/components/app-header";
+
 import { DetailsOptions } from "@/components/create-trip/detailsOption/addDetails";
 import { WizardFooter } from "@/components/create-trip/wizard-footer";
 import { useParams, useRouter, useSearchParams } from "next/navigation";
@@ -10,7 +10,7 @@ import { FileUploadCard } from "@/components/create-trip/file-upload-card";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { CustomDateTimePicker } from "@/components/ui/date-time-picker";
-import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
+
 
 import {
   useLazyGetItineraryByTripIdQuery,
@@ -29,7 +29,7 @@ export default function ItineraryPage() {
 
   const organizationId = useOrganizationId();
 
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [days, setDays] = useState<Day[]>([]);
   const [showDetails, setShowDetails] = useState<boolean[]>([]);
   const [startingPoint, setStartingPoint] = useState("");
@@ -285,13 +285,10 @@ export default function ItineraryPage() {
 
 
   return (
-    <div className="flex min-h-screen bg-gray-50 overflow-x-hidden">
-      <OrganizerSidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
-      <div className="flex-1 w-full min-h-screen flex flex-col">
-        <AppHeader title="Create New Trip" />
+    <>
+      <main className="p-6">
         <TripStepperHeader activeStep={2} />
-
-        <div className="p-8 bg-white">
+        <div className="p-8 bg-white min-h-screen">
           <div className={isSavingNext ? "pointer-events-none opacity-50" : ""}>
             <div className="max-w-full mx-auto bg-white shadow rounded-2xl p-8 overflow-x-hidden">
               <h2 className="text-2xl font-semibold text-gray-800 mb-6">Itinerary</h2>
@@ -450,7 +447,7 @@ export default function ItineraryPage() {
 
           </div>
         </div>
-      </div>
-    </div>
+      </main>
+    </>
   );
 }

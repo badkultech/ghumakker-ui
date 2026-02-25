@@ -10,8 +10,7 @@ import {
   UsersRound,
   MessageSquare,
 } from "lucide-react";
-import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
-import { AppHeader } from "@/components/app-header";
+
 import { LibraryIcon } from "@/components/library/SvgComponents/Icons";
 import { CreateTripModal } from "@/components/trip/CreateTripModal";
 import Link from "next/link";
@@ -34,7 +33,6 @@ function EmptyMonthState({ label }: { label: string }) {
 
 
 export default function DashboardMainContent() {
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [openModal, setOpenModal] = useState(false);
   const organizationId = useOrganizationId();
 
@@ -102,155 +100,142 @@ export default function DashboardMainContent() {
     })) as any[]);
 
   return (
-    <div className="flex h-screen overflow-hidden bg-gray-50">
-      {/* Sidebar */}
-      <OrganizerSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
-
-      {/* Main Section */}
-      <div className="flex-1 flex flex-col overflow-hidden">
-        <AppHeader title="Dashboard" onMenuClick={() => setSidebarOpen(true)} />
-
-        <main className="flex-1 overflow-y-auto p-6 space-y-8">
-          {/* Top 4 Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Create Trip Card */}
-            <Card className="bg-primary text-primary-foreground hover:bg-primary/90 transition cursor-pointer">
-              <CardContent
-                className="flex flex-col items-center justify-center h-32 space-y-2"
-                onClick={() => setOpenModal(true)}
-              >
-                <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20">
-                  <Plus className="w-5 h-5" />
-                </div>
-                <h3 className="font-semibold text-lg">Create New Trip</h3>
-                <p className="text-sm font-semibold items-right justify-right">
-                  Start from scratch or use template
-                </p>
-              </CardContent>
-            </Card>
-
-            {/* All Leads */}
-            <Link href={ROUTES.ORGANIZER.LEADS_ALL}>
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center h-32 space-y-2">
-                  <div className="bg-gray-100 p-2 rounded-full">
-                    <UsersRound className="w-5 h-5 text-gray-700" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">All Leads</p>
-                  <h2 className="text-2xl font-bold">{totalLeads}</h2>
-                </CardContent>
-              </Card>
-            </Link>
-
-            {/* All Queries */}
-            <Link href={ROUTES.ORGANIZER.QUERIES_ALL}>
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center h-32 space-y-2">
-                  <div className="bg-gray-100 p-2 rounded-full">
-                    <MessageSquare className="w-5 h-5 text-gray-700" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">All Queries</p>
-                  <h2 className="text-2xl font-bold">
-                    {isDashboardLoading ? "…" : totalQueries}
-                  </h2>
-                </CardContent>
-              </Card>
-            </Link>
-
-            {/* Library */}
-            <Link href={ROUTES.ORGANIZER.LIBRARY}>
-              <Card>
-                <CardContent className="flex flex-col items-center justify-center h-32 space-y-3">
-                  <div className="bg-gray-100 p-4 rounded-full">
-                    <LibraryIcon width="5" height="5" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">Library</p>
-                  <h2 className="text-2xl font-bold"></h2>
-                </CardContent>
-              </Card>
-            </Link>
-          </div>
-          {/* This Month Trips */}
-          <section>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold">This Month</h2>
-              <Link
-                href={{
-                  pathname: ROUTES.ORGANIZER.TRIP_OVERVIEW,
-                  query: { month: "current" },
-                }}
-              >
-                <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                  View all
-                </Button>
-              </Link>
-
+    <main className="p-6 space-y-8">
+      {/* Top 4 Cards */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Create Trip Card */}
+        <Card className="bg-primary text-primary-foreground hover:bg-primary/90 transition cursor-pointer">
+          <CardContent
+            className="flex flex-col items-center justify-center h-32 space-y-2"
+            onClick={() => setOpenModal(true)}
+          >
+            <div className="flex items-center justify-center w-10 h-10 rounded-full bg-white/20">
+              <Plus className="w-5 h-5" />
             </div>
+            <h3 className="font-semibold text-lg">Create New Trip</h3>
+            <p className="text-sm font-semibold items-right justify-right">
+              Start from scratch or use template
+            </p>
+          </CardContent>
+        </Card>
 
-            {currentMonthTrips?.length ? (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {currentMonthTrips.map((trip, i) => (
-                  <TripCard
-                    key={trip.tripPublicId ?? i}
-                    tripPublicId={trip.tripPublicId}
-                    image={trip.image}
-                    name={trip.name}
-                    tags={trip.tags}
-                    description={trip.description}
-                    leads={trip.leads}
-                    queries={trip.queries}
-                  />
-
-                ))}
+        {/* All Leads */}
+        <Link href={ROUTES.ORGANIZER.LEADS_ALL}>
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center h-32 space-y-2">
+              <div className="bg-gray-100 p-2 rounded-full">
+                <UsersRound className="w-5 h-5 text-gray-700" />
               </div>
-            ) : (
-              <EmptyMonthState label="this month" />
-            )}
-          </section>
+              <p className="text-sm text-muted-foreground">All Leads</p>
+              <h2 className="text-2xl font-bold">{totalLeads}</h2>
+            </CardContent>
+          </Card>
+        </Link>
 
-
-          {/* Next Month Trips */}
-          <section>
-            <div className="flex items-center justify-between mb-3">
-              <h2 className="text-lg font-semibold">Next Month</h2>
-              <Link
-                href={{
-                  pathname: ROUTES.ORGANIZER.TRIP_OVERVIEW,
-                  query: { month: "next" },
-                }}
-              >
-                <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
-                  View all
-                </Button>
-              </Link>
-
-            </div>
-
-            {nextMonthTrips?.length ? (
-              <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {nextMonthTrips.map((trip, i) => (
-                  <TripCard
-                    key={trip.tripPublicId ?? i}
-                    tripPublicId={trip.tripPublicId}
-                    image={trip.image}
-                    name={trip.name}
-                    tags={trip.tags}
-                    description={trip.description}
-                    leads={trip.leads}
-                    queries={trip.queries}
-                  />
-                ))}
+        {/* All Queries */}
+        <Link href={ROUTES.ORGANIZER.QUERIES_ALL}>
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center h-32 space-y-2">
+              <div className="bg-gray-100 p-2 rounded-full">
+                <MessageSquare className="w-5 h-5 text-gray-700" />
               </div>
-            ) : (
-              <EmptyMonthState label="next month" />
-            )}
-          </section>
+              <p className="text-sm text-muted-foreground">All Queries</p>
+              <h2 className="text-2xl font-bold">
+                {isDashboardLoading ? "…" : totalQueries}
+              </h2>
+            </CardContent>
+          </Card>
+        </Link>
 
-        </main>
+        {/* Library */}
+        <Link href={ROUTES.ORGANIZER.LIBRARY}>
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center h-32 space-y-3">
+              <div className="bg-gray-100 p-4 rounded-full">
+                <LibraryIcon width="5" height="5" />
+              </div>
+              <p className="text-sm text-muted-foreground">Library</p>
+              <h2 className="text-2xl font-bold"></h2>
+            </CardContent>
+          </Card>
+        </Link>
       </div>
+      {/* This Month Trips */}
+      <section>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg font-semibold">This Month</h2>
+          <Link
+            href={{
+              pathname: ROUTES.ORGANIZER.TRIP_OVERVIEW,
+              query: { month: "current" },
+            }}
+          >
+            <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              View all
+            </Button>
+          </Link>
+
+        </div>
+
+        {currentMonthTrips?.length ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {currentMonthTrips.map((trip, i) => (
+              <TripCard
+                key={trip.tripPublicId ?? i}
+                tripPublicId={trip.tripPublicId}
+                image={trip.image}
+                name={trip.name}
+                tags={trip.tags}
+                description={trip.description}
+                leads={trip.leads}
+                queries={trip.queries}
+              />
+
+            ))}
+          </div>
+        ) : (
+          <EmptyMonthState label="this month" />
+        )}
+      </section>
+
+
+      {/* Next Month Trips */}
+      <section>
+        <div className="flex items-center justify-between mb-3">
+          <h2 className="text-lg font-semibold">Next Month</h2>
+          <Link
+            href={{
+              pathname: ROUTES.ORGANIZER.TRIP_OVERVIEW,
+              query: { month: "next" },
+            }}
+          >
+            <Button size="sm" className="bg-primary hover:bg-primary/90 text-primary-foreground">
+              View all
+            </Button>
+          </Link>
+
+        </div>
+
+        {nextMonthTrips?.length ? (
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {nextMonthTrips.map((trip, i) => (
+              <TripCard
+                key={trip.tripPublicId ?? i}
+                tripPublicId={trip.tripPublicId}
+                image={trip.image}
+                name={trip.name}
+                tags={trip.tags}
+                description={trip.description}
+                leads={trip.leads}
+                queries={trip.queries}
+              />
+            ))}
+          </div>
+        ) : (
+          <EmptyMonthState label="next month" />
+        )}
+      </section>
+
       {/* Create Trip Modal */}
       <CreateTripModal
         open={openModal}
@@ -258,6 +243,6 @@ export default function DashboardMainContent() {
         onStartFromScratch={() => console.log("New trip")}
         onUseSimilarTrip={() => console.log("Use similar trip")}
       />
-    </div>
+    </main>
   );
 }

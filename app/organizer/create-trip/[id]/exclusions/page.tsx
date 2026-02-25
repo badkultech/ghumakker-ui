@@ -10,8 +10,7 @@ import { WizardFooter } from "@/components/create-trip/wizard-footer";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { AppHeader } from "@/components/app-header";
-import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
+
 
 import {
   useCreateExclusionMutation,
@@ -42,7 +41,7 @@ export default function ExclusionsPage() {
   const [selected, setSelected] = useState<string[]>([]);
   const [custom, setCustom] = useState("");
   const [customOptions, setCustomOptions] = useState<Array<string>>([]);
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const mergedOptions = Array.from(new Set([...options, ...customOptions]));
   const [isSaving, setIsSaving] = useState(false);
   const [draftDisabled, setDraftDisabled] = useState(false);
@@ -123,69 +122,60 @@ export default function ExclusionsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      <OrganizerSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+    <>
+      <TripStepperHeader activeStep={3} />
+      <main className="p-6 bg-white overflow-y-auto">
+        <div className={isSaving ? "pointer-events-none opacity-50" : ""}>
+          <SectionCard title="Exclusions">
+            <div className="space-y-6">
+              {errorMsg && (
+                <p className="text-red-500 text-sm mb-3">{errorMsg}</p>
+              )}
 
-      <div className="flex-1 w-full min-h-screen flex flex-col">
-        <AppHeader title="Create New Trip" />
-        <TripStepperHeader activeStep={3} />
+              <PillCheckboxGroup
+                options={mergedOptions}
+                value={selected ?? []}
+                onChange={(val) => {
+                  setSelected(val);
+                  if (val.length > 0) {
+                    setErrorMsg("");
+                  }
+                }}
+              />
 
-        <div className="p-8 bg-white min-h-screen">
-          <div className={isSaving ? "pointer-events-none opacity-50" : ""}>
-            <SectionCard title="Exclusions">
-              <div className="space-y-6">
-                {errorMsg && (
-                  <p className="text-red-500 text-sm mb-3">{errorMsg}</p>
-                )}
+              <div className="space-y-2">
+                <Label htmlFor="custom-exclusion">Custom Exclusion</Label>
 
-                <PillCheckboxGroup
-                  options={mergedOptions}
-                  value={selected ?? []}
-                  onChange={(val) => {
-                    setSelected(val);
-                    if (val.length > 0) {
-                      setErrorMsg("");
-                    }
-                  }}
-                />
+                <div className="flex items-center gap-2">
+                  <Input
+                    id="custom-exclusion"
+                    placeholder="Enter custom exclusion"
+                    value={custom ?? ""}
+                    onChange={(e) => setCustom(e.target.value)}
+                  />
 
-                <div className="space-y-2">
-                  <Label htmlFor="custom-exclusion">Custom Exclusion</Label>
-
-                  <div className="flex items-center gap-2">
-                    <Input
-                      id="custom-exclusion"
-                      placeholder="Enter custom exclusion"
-                      value={custom ?? ""}
-                      onChange={(e) => setCustom(e.target.value)}
-                    />
-
-                    <Button
-                      type="button"
-                      variant="outline"
-                      className="px-8 py-2 rounded-full font-medium text-primary border-primary/50 hover:bg-primary/5 transition cursor-pointer"
-                      onClick={addCustom}
-                    >
-                      + Add
-                    </Button>
-                  </div>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="px-8 py-2 rounded-full font-medium text-primary border-primary/50 hover:bg-primary/5 transition cursor-pointer"
+                    onClick={addCustom}
+                  >
+                    + Add
+                  </Button>
                 </div>
               </div>
-            </SectionCard>
-          </div>
-          <WizardFooter
-            onPrev={handlePrev}
-            onDraft={() => handleSave(true)}
-            onNext={() => handleSave(false)}
-            draftDisabled={draftDisabled}
-            loading={isSaving}
-          />
-
+            </div>
+          </SectionCard>
         </div>
-      </div>
-    </div>
+        <WizardFooter
+          onPrev={handlePrev}
+          onDraft={() => handleSave(true)}
+          onNext={() => handleSave(false)}
+          draftDisabled={draftDisabled}
+          loading={isSaving}
+        />
+
+      </main>
+    </>
   );
 }

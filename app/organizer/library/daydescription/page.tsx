@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { AppHeader } from "@/components/app-header";
-import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
+
 import { MapPin, Pencil, Eye, Trash2 } from "lucide-react";
 import { AddNewItemModal } from "@/components/library/add-new-item/AddNewItemModal";
 import { LibraryHeader } from "@/components/library/LibraryHeader";
@@ -23,7 +22,6 @@ import ScreenLoader from "@/components/common/ScreenLoader";
 export default function EventsPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [search, setSearch] = useState("");
-  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [updateId, setUpdateId] = useState<number | null>(null);
   const [viewModalOpen, setViewModalOpen] = useState(false);
   const [selectedDayId, setSelectedDayId] = useState<any>(null);
@@ -89,100 +87,88 @@ export default function EventsPage() {
   }, [dayDescriptions, debouncedSearch]);
 
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
-      <OrganizerSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+    <>
+      <main className="p-6 md:p-4">
+        {/* Header (controlled search) */}
+        <LibraryHeader
+          title="ghumakker Library"
+          buttonLabel="Add Day Description"
+          onAddClick={() => {
+            setUpdateId(null);
+            setModalOpen(true);
+          }}
+          searchValue={search}
+          onSearchChange={(v) => setSearch(v)}
+          width={540}
+        />
 
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col bg-white">
-        <AppHeader title="Day Descriptions" />
+        {/* Card Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-6">
+          {filtered.length > 0 ? (
+            filtered.map((dayDescription) => (
+              <div
+                key={dayDescription.id}
+                className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 overflow-hidden flex flex-col"
+              >
+                <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
+                  {dayDescription.documents?.[0]?.url ? (
+                    <img
+                      src={dayDescription.documents[0].url}
+                      alt={dayDescription.name}
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <span className="text-gray-400 text-sm">No Image</span>
+                  )}
+                </div>
 
-        <main className="flex-1 p-6 md:p-4">
-          {/* Header (controlled search) */}
-          <LibraryHeader
-            title="ghumakker Library"
-            buttonLabel="Add Day Description"
-            onAddClick={() => {
-              setUpdateId(null);
-              setModalOpen(true);
-            }}
-            searchValue={search}
-            onSearchChange={(v) => setSearch(v)}
-            width={540}
-          />
-
-          {/* Card Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 2xl:grid-cols-3 gap-6">
-            {filtered.length > 0 ? (
-              filtered.map((dayDescription) => (
-                <div
-                  key={dayDescription.id}
-                  className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 overflow-hidden flex flex-col"
-                >
-                  <div className="h-32 bg-gray-100 rounded-lg flex items-center justify-center">
-                    {dayDescription.documents?.[0]?.url ? (
-                      <img
-                        src={dayDescription.documents[0].url}
-                        alt={dayDescription.name}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-gray-400 text-sm">No Image</span>
-                    )}
+                <div className="pt-4 flex-1 flex flex-col">
+                  <h3 className="font-bold text-gray-900">
+                    <strong>{dayDescription.name}</strong>
+                  </h3>
+                  <div className="flex items-center text-gray-600 text-sm mt-1">
+                    <MapPin className="w-4 h-4 mr-1 text-gray-500" />
+                    {dayDescription.location}
                   </div>
+                  <p
+                    className="text-sm prose prose-sm text-gray-500 mt-4 line-clamp-2"
+                    dangerouslySetInnerHTML={{
+                      __html: dayDescription.description || "",
+                    }}
+                  />
 
-                  <div className="pt-4 flex-1 flex flex-col">
-                    <h3 className="font-bold text-gray-900">
-                      <strong>{dayDescription.name}</strong>
-                    </h3>
-                    <div className="flex items-center text-gray-600 text-sm mt-1">
-                      <MapPin className="w-4 h-4 mr-1 text-gray-500" />
-                      {dayDescription.location}
-                    </div>
-                    <p
-                      className="text-sm prose prose-sm text-gray-500 mt-4 line-clamp-2"
-                      dangerouslySetInnerHTML={{
-                        __html: dayDescription.description || "",
+                  <div className="flex justify-end gap-3 text-gray-500 mt-3">
+                    <ActionButtons
+                      onView={async () => {
+                        setViewLoading(true);
+                        await new Promise(res => setTimeout(res, 1000));
+                        setSelectedDayId(dayDescription.id);
+                        setViewModalOpen(true);
+                        setViewLoading(false);
+                      }}
+                      onEdit={() => {
+                        setUpdateId(dayDescription.id);
+                        setModalOpen(true);
+                      }}
+                      onDelete={() => {
+                        setDeleteTarget({ id: dayDescription.id, name: dayDescription.name });
+                        setConfirmOpen(true);
                       }}
                     />
-
-                    <div className="flex justify-end gap-3 text-gray-500 mt-3">
-                      <ActionButtons
-                        onView={async () => {
-                          setViewLoading(true);
-                          await new Promise(res => setTimeout(res, 1000));
-                          setSelectedDayId(dayDescription.id);
-                          setViewModalOpen(true);
-                          setViewLoading(false);
-                        }}
-                        onEdit={() => {
-                          setUpdateId(dayDescription.id);
-                          setModalOpen(true);
-                        }}
-                        onDelete={() => {
-                          setDeleteTarget({ id: dayDescription.id, name: dayDescription.name });
-                          setConfirmOpen(true);
-                        }}
-                      />
-                    </div>
                   </div>
                 </div>
-              ))
-            ) : (
-              <div className="col-span-full text-center text-gray-500 py-10">
-                {debouncedSearch.length < 3
-                  ? "Type at least 3 characters to search."
-                  : "No day descriptions found."}
               </div>
-            )}
-          </div>
-        </main>
-      </div>
+            ))
+          ) : (
+            <div className="col-span-full text-center text-gray-500 py-10">
+              {debouncedSearch.length < 3
+                ? "Type at least 3 characters to search."
+                : "No day descriptions found."}
+            </div>
+          )}
+        </div>
+      </main>
 
-      {/* Add New Item Modal */}
       <AddNewItemModal
         open={modalOpen}
         updateId={updateId}
@@ -190,12 +176,12 @@ export default function EventsPage() {
         initialStep="day-description"
       />
 
-      {/* DELETE DIALOG: show deleteTarget?.name for correct label */}
+      {/* DELETE DIALOG */}
       <DeleteConfirmDialog
         open={confirmOpen}
         onOpenChange={(open) => {
           setConfirmOpen(open);
-          if (!open) setDeleteTarget(null); // clear when dialog closed
+          if (!open) setDeleteTarget(null);
         }}
         title="Delete Day Description"
         itemName={deleteTarget?.name}
@@ -213,6 +199,6 @@ export default function EventsPage() {
         data={selectedDay}
       />
       {viewLoading && <ScreenLoader />}
-    </div>
+    </>
   );
 }

@@ -14,8 +14,7 @@ import {
 } from '@/components/ui/accordion';
 import { Input } from '@/components/ui/input';
 import { WizardFooter } from '@/components/create-trip/wizard-footer';
-import { AppHeader } from '@/components/app-header';
-import { OrganizerSidebar } from '@/components/organizer/organizer-sidebar';
+
 
 import {
   useCreateFaqMutation,
@@ -46,7 +45,7 @@ export default function FAQsPage() {
   const [faqs, setFaqs] = useState<LocalFAQ[]>([]);
   const [newQuestion, setNewQuestion] = useState('');
   const [newAnswer, setNewAnswer] = useState('');
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   const [isChooseFromLibrary, setChooseFromLibrary] = useState(false);
   const [selectedFaq, setSelectedFaq] = useState<any>(null);
   const [draftDisabled, setDraftDisabled] = useState(false);
@@ -192,7 +191,7 @@ export default function FAQsPage() {
 
 
   return (
-    <div className='flex min-h-screen bg-gray-50'>
+    <>
       <Dialog open={isChooseFromLibrary} onOpenChange={setChooseFromLibrary}>
         <DialogContent className='sm:max-w-[40%]'>
           <div className='relative'>
@@ -264,13 +263,7 @@ export default function FAQsPage() {
         </DialogContent>
       </Dialog>
 
-      <OrganizerSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
-
-      <div className='flex-1'>
-        <AppHeader title='Create New Trip' />
+      <main className="p-6">
         <TripStepperHeader activeStep={4} />
 
         <SectionCard title='Trip Preparation & FAQs'>
@@ -396,7 +389,7 @@ export default function FAQsPage() {
           loading={isSaving}
         />
 
-      </div>
-    </div>
+      </main>
+    </>
   );
 }

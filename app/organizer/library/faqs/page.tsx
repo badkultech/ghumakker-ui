@@ -1,8 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { AppHeader } from "@/components/app-header";
-import { OrganizerSidebar } from "@/components/organizer/organizer-sidebar";
+
 import { MessageCircleQuestion } from "lucide-react";
 import { AddNewItemModal } from "@/components/library/add-new-item/AddNewItemModal";
 import { LibraryHeader } from "@/components/library/LibraryHeader";
@@ -25,7 +24,7 @@ export default function FAQsPage() {
   const [updateId, setUpdateId] = useState<number | null>(null);
 
   const organizationId = useOrganizationId();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+
 
   // Search state (controlled)
   const [search, setSearch] = useState("");
@@ -68,117 +67,95 @@ export default function FAQsPage() {
   };
 
   return (
-    <div className="flex min-h-screen bg-white">
-      {/* Sidebar */}
-      <OrganizerSidebar
-        isOpen={sidebarOpen}
-        onClose={() => setSidebarOpen(false)}
-      />
+    <>
+      <main className="p-6 md:p-8">
+        <LibraryHeader
+          buttonLabel="Add FAQ"
+          onAddClick={() => {
+            setUpdateId(null);
+            setModalOpen(true);
+          }}
+          // controlled search props
+          searchValue={search}
+          onSearchChange={(v) => setSearch(v)}
+        />
 
-      {/* Main Section */}
-      <div className="flex-1 flex flex-col">
-        <AppHeader title="FAQs" />
-        <main className="flex-1 p-6 md:p-8">
-          <LibraryHeader
-            buttonLabel="Add FAQ"
-            onAddClick={() => {
-              setUpdateId(null);
-              setModalOpen(true);
-            }}
-            // controlled search props
-            searchValue={search}
-            onSearchChange={(v) => setSearch(v)}
-          />
+        {/* FAQ List */}
+        <div className="flex flex-col gap-4 mt-4">
+          {isLoading ? (
+            <div className="text-center text-gray-500 py-10">
+              Loading FAQs...
+            </div>
+          ) : faqs.length === 0 ? (
+            <div className="text-center text-gray-500 py-10">
+              No FAQs found.
+            </div>
+          ) : filtered.length === 0 ? (
+            <div className="text-center text-gray-500 py-10">
+              {qLen === 0 && faqs.length > 0
+                ? "Showing all FAQs. Type at least 3 characters to search."
+                : qLen > 0 && qLen < 3
+                  ? "Type at least 3 characters to search."
+                  : "No FAQs found."}
+            </div>
+          ) : (
+            filtered.map((faq) => (
+              <div
+                key={faq.id}
+                className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex items-start gap-4"
+              >
+                {/* Icon */}
+                <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
+                  <MessageCircleQuestion className="w-5 h-5 text-gray-500" />
+                </div>
 
-          {/* FAQ List */}
-          <div className="flex flex-col gap-4 mt-4">
-            {isLoading ? (
-              <div className="text-center text-gray-500 py-10">
-                Loading FAQs...
-              </div>
-            ) : faqs.length === 0 ? (
-              <div className="text-center text-gray-500 py-10">
-                No FAQs found.
-              </div>
-            ) : filtered.length === 0 ? (
-              <div className="text-center text-gray-500 py-10">
-                {qLen === 0 && faqs.length > 0
-                  ? "Showing all FAQs. Type at least 3 characters to search."
-                  : qLen > 0 && qLen < 3
-                    ? "Type at least 3 characters to search."
-                    : "No FAQs found."}
-              </div>
-            ) : (
-              filtered.map((faq) => (
-                <div
-                  key={faq.id}
-                  className="bg-white border border-gray-200 rounded-xl shadow-sm p-4 flex items-start gap-4"
-                >
-                  {/* Icon */}
-                  <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center">
-                    <MessageCircleQuestion className="w-5 h-5 text-gray-500" />
-                  </div>
-
-                  {/* Content */}
-                  <div className="flex-1">
-                    <h3 className="font-semibold text-gray-900">
-                      <strong>{faq.name}</strong>
-                    </h3>
-                    <p className="text-sm text-gray-500 mt-1 line-clamp-2"
-                      dangerouslySetInnerHTML={{
-                        __html: faq.answer || "",
-                      }}
-                    />
-                  </div>
-
-                  {/* Actions (reusable) */}
-                  <ActionButtons
-                    onView={() => {
-                      setSelectedFaq(faq);
-                      setViewOpen(true);
-                    }}
-                    onEdit={() => {
-                      setUpdateId(faq.id);
-                      setModalOpen(true);
-                    }}
-                    onDelete={() => {
-                      setSelectedFaq(faq);
-                      setConfirmOpen(true);
+                {/* Content */}
+                <div className="flex-1">
+                  <h3 className="font-semibold text-gray-900">
+                    <strong>{faq.name}</strong>
+                  </h3>
+                  <p className="text-sm text-gray-500 mt-1 line-clamp-2"
+                    dangerouslySetInnerHTML={{
+                      __html: faq.answer || "",
                     }}
                   />
                 </div>
-              ))
-            )}
-          </div>
-        </main>
-      </div>
 
-      {/* ➕ Add / ✏ Edit FAQ Modal */}
+                {/* Actions (reusable) */}
+                <ActionButtons
+                  onView={() => {
+                    setSelectedFaq(faq);
+                    setViewOpen(true);
+                  }}
+                  onEdit={() => {
+                    setUpdateId(faq.id);
+                    setModalOpen(true);
+                  }}
+                  onDelete={() => {
+                    setSelectedFaq(faq);
+                    setConfirmOpen(true);
+                  }}
+                />
+              </div>
+            ))
+          )}
+        </div>
+      </main>
+
       <AddNewItemModal
         open={modalOpen}
-        onClose={() => {
-          setModalOpen(false);
-          setUpdateId(null);
-          refetch();
-        }}
+        onClose={() => { setModalOpen(false); setUpdateId(null); refetch(); }}
         updateId={updateId}
         initialStep="faq"
       />
-
-      {/* ❌ Confirm Delete Modal (reusable) */}
       <DeleteConfirmDialog
         open={confirmOpen}
-        onOpenChange={(open) => {
-          setConfirmOpen(open);
-          if (!open) setSelectedFaq(null);
-        }}
+        onOpenChange={(open) => { setConfirmOpen(open); if (!open) setSelectedFaq(null); }}
         title="Delete FAQ"
         itemName={selectedFaq?.name}
         isDeleting={isDeleting}
         onConfirm={handleDeleteConfirm}
       />
-
-      {/* 👁 View FAQ Modal (keeps your original design) */}
       <Dialog open={viewOpen} onOpenChange={setViewOpen}>
         <DialogContent className="sm:max-w-2xl rounded-2xl p-6">
           <DialogHeader className="border-b pb-4">
@@ -186,19 +163,14 @@ export default function FAQsPage() {
               <strong>{selectedFaq?.name}</strong>
             </DialogTitle>
           </DialogHeader>
-
           <div className="mt-5">
-            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">
-              Full Answer
-            </h4>
+            <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Full Answer</h4>
             <p className="text-gray-700 prose prose-sm leading-relaxed text-sm whitespace-pre-line"
-              dangerouslySetInnerHTML={{
-                __html: selectedFaq?.answer || "",
-              }}
+              dangerouslySetInnerHTML={{ __html: selectedFaq?.answer || "" }}
             />
           </div>
         </DialogContent>
       </Dialog>
-    </div>
+    </>
   );
 }
