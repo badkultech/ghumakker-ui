@@ -57,7 +57,7 @@ export function ConfirmConversionModal({
                         Cancel
                     </Button>
                     <Button
-                        className="bg-green-500 hover:bg-green-600 text-white rounded-md w-full sm:w-auto cursor-pointer"
+                        className="bg-brand-gradient text-white rounded-md w-full sm:w-auto cursor-pointer hover:opacity-90 transition-opacity"
                         onClick={() => {
                             onConfirm();
                             onClose();
