@@ -17,6 +17,9 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
   const [details, setDetails] = useState("")
   const [reportTrip, { isLoading }] = useReportTripMutation();
 
+  const isOtherSelected = selected.includes("Other (please specify below)");
+  const showOtherError = isOtherSelected && !details.trim();
+
 
   const handleSelect = (opt: string) => {
     setSelected([opt]);   // always single
@@ -131,9 +134,16 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
             onChange={(e) => setDetails(e.target.value)}
             rows={4}
             maxLength={500}
-            placeholder="Additional details (optional)"
-            className="w-full border rounded-xl p-3 text-sm focus:ring-1 focus:ring-primary focus:border-primary outline-none"
+            placeholder={isOtherSelected ? "Please specify the reason (required)" : "Additional details (optional)"}
+            className={`w-full border rounded-xl p-3 text-sm focus:ring-1 outline-none transition-colors
+              ${showOtherError
+                ? "border-red-400 focus:ring-red-400 focus:border-red-400"
+                : "border-gray-200 focus:ring-primary focus:border-primary"
+              }`}
           />
+          {showOtherError && (
+            <p className="text-xs text-red-500 mt-1 ml-1">* This field is required when "Other" is selected</p>
+          )}
 
           {/* FOOTER BUTTONS */}
           <div className="flex gap-3 mt-6">
@@ -146,7 +156,7 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
 
             <button
               onClick={handleSubmit}
-              disabled={!selected.length}
+              disabled={!selected.length || (isOtherSelected && !details.trim())}
               className="flex-1 bg-brand-gradient text-white py-3 rounded-full text-sm disabled:opacity-50 cursor-pointer hover:opacity-90 transition-opacity"
             >
               {TRIP_DETAILS.REPORT_MODAL.SUBMIT}
