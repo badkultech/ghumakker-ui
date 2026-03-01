@@ -297,15 +297,7 @@ export default function MyQueriesPage() {
                                                                         <MessageSquare className="h-4 w-4 mr-1" />
                                                                         View
                                                                     </Button>
-                                                                    <Button
-                                                                        variant="ghost"
-                                                                        size="sm"
-                                                                        onClick={() => handleReport(question.id)}
-                                                                        className="text-red-600 bg-[#FFEEEE] hover:text-[#FE336A] hover:cursor-pointer hover:bg-red-50"
-                                                                    >
-                                                                        <Flag className="h-4 w-4 mr-1" />
-                                                                        Report
-                                                                    </Button>
+                                                                
                                                                 </div>
                                                             </div>
                                                             <p className="text-gray-700 bg-[#E4E4E4] rounded-lg p-3 border border-gray-200">
@@ -338,83 +330,6 @@ export default function MyQueriesPage() {
                 onClose={() => setShowConversationModal(false)}
                 selectedQuery={selectedQuery}
             />
-
-            {/* Confirm Report Modal */}
-            {showReportModal && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-lg max-w-xl w-full p-6 max-h-[90vh] overflow-y-auto">
-                        <div className="flex items-center justify-between mb-4">
-                            <h3 className="text-lg font-semibold">Confirm Report</h3>
-                            <button onClick={() => setShowReportModal(false)} className="text-gray-400 hover:text-gray-600">
-                                <X className="h-5 w-5" />
-                            </button>
-                        </div>
-                        <p className="text-sm text-gray-600 mb-6">
-                            Select all reasons that apply for reporting this query. This will help our team take appropriate action.
-                        </p>
-
-                        <div className="space-y-3 mb-6">
-                            {reportOptions.map((option) => (
-                                <div
-                                    key={option}
-                                    className={`
-                                                flex items-start gap-3 p-3 rounded-lg transition
-                                                hover:bg-gray-50 hover:border-[#FF804C]
-                                                ${reportReasons.includes(option)
-                                            ? " border border-[#FF804C]"   // selected state
-                                            : " border border-gray-200"
-                                        }
-                                                `}
-                                >
-                                    <GradientCheckbox
-                                        id={option}
-                                        checked={reportReasons.includes(option)}
-                                        onChange={() => toggleReportReason(option)}
-                                    />
-
-                                    <label
-                                        htmlFor={option}
-                                        className="text-sm text-gray-700 cursor-pointer flex-1"
-                                    >
-                                        {option}
-                                    </label>
-                                </div>
-
-                            ))}
-                        </div>
-
-                        <div className="mb-6">
-                            <label className="block text-sm font-medium text-gray-700 mb-2">Additional details (optional):</label>
-                            <Textarea
-                                value={reportDetails}
-                                onChange={(e) => setReportDetails(e.target.value)}
-                                placeholder="Please provide more details about why you're reporting this query."
-                                className="min-h-[100px]"
-                                maxLength={500}
-                            />
-                            <div className="text-right text-xs text-gray-500 mt-1">{reportDetails.length}/500 Words</div>
-                        </div>
-
-                        <div className="flex flex-col sm:flex-row gap-3 justify-end">
-                            <Button
-                                variant="ghost"
-                                onClick={() => setShowReportModal(false)}
-                                className=" flex-1  border border-[#E4E4E4]  text-[#6B6B6B]  bg-white hover:bg-[#F7F7F7] rounded-lg font-medium transition"
-                            >
-                                Cancel
-                            </Button>
-                            <Button
-                                onClick={handleSubmitReport}
-                                className="flex-1 bg-orange-500  hover:bg-orange-600  text-white rounded-lg font-medium transition "
-                            >
-                                Yes, Report
-                            </Button>
-
-                        </div>
-
-                    </div>
-                </div>
-            )}
         </div>
     )
 }
