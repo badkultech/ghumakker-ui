@@ -2,23 +2,33 @@
 
 import React, { useState } from "react";
 import {
-    Search, CalendarDays, Mountain, Waves, Trees,
-    Linkedin, Facebook, Instagram, ChevronDown, Settings
+    Search, CalendarDays,
+    Linkedin, Facebook, Instagram, ChevronDown
 } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
-const destinations = [
-    { label: "Mountain", icon: Mountain },
-    { label: "Beach", icon: Waves },
-    { label: "Jungle", icon: Trees },
+
+
+import { MoodTag } from "@/components/search-results/mood-tag";
+import { GradientButton } from "@/components/gradient-button";
+
+const moods = [
+    "Mountain", "Beach", "Jungle", "Desert", "Skygaze",
+    "Heritage", "Adventure", "Trekking", "Weekends",
+    "Women-Only", "Learning", "Camping", "Spiritual",
 ];
-
-const moods = ["Adventure", "Relaxation", "Cultural", "Wildlife", "Romantic", "Family"];
 
 export default function LandingPage() {
     const [activeTab, setActiveTab] = useState<"destination" | "moods">("destination");
     const [selectedDest, setSelectedDest] = useState("");
-    const [selectedMood, setSelectedMood] = useState("");
+    const [selectedMoods, setSelectedMoods] = useState<string[]>([]);
+
+    const toggleMood = (mood: string) => {
+        setSelectedMoods(prev =>
+            prev.includes(mood) ? prev.filter(m => m !== mood) : [...prev, mood]
+        );
+    };
 
     return (
         <div style={{ fontFamily: "'Poppins', sans-serif", minHeight: "100vh", display: "flex", flexDirection: "column", background: "#03061a", position: "relative" }}>
@@ -43,19 +53,24 @@ export default function LandingPage() {
                 }}
             >
                 {/* Left Logo */}
-                <div
-                    style={{
-                        width: 36,
-                        height: 36,
-                        borderRadius: "50%",
-                        border: "2px solid var(--color-brand-orange)",
-                        background: "#fff",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                    }}
-                >
-                    <Settings size={16} color="var(--color-brand-orange)" />
+                <div style={{
+                    width: 44,
+                    height: 44,
+                    borderRadius: "50%",
+                    background: "#5c5fd6",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    overflow: "hidden",
+                    flexShrink: 0,
+                }}>
+                    <Image
+                        src="/logo3.png"
+                        alt="Ghumakker"
+                        width={32}
+                        height={32}
+                        style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
+                    />
                 </div>
 
                 {/* Right Nav */}
@@ -253,28 +268,20 @@ export default function LandingPage() {
                             <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600, marginBottom: 12, textTransform: "uppercase", letterSpacing: "0.05em" }}>Select your travel mood</p>
                             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
                                 {moods.map((mood) => (
-                                    <button key={mood} onClick={() => setSelectedMood(mood)} style={{
-                                        padding: "7px 16px", borderRadius: 999, cursor: "pointer",
-                                        fontSize: 12, fontWeight: 600, border: "1.5px solid",
-                                        transition: "all 0.2s",
-                                        background: selectedMood === mood
-                                            ? "linear-gradient(90deg, var(--color-brand-yellow) 0%, var(--color-brand-orange) 33%, var(--color-brand-pink) 66%, var(--color-brand-red) 100%)"
-                                            : "#fff",
-                                        borderColor: selectedMood === mood ? "transparent" : "#e5e7eb",
-                                        color: selectedMood === mood ? "#fff" : "#4b5563",
-                                    }}>
-                                        {mood}
-                                    </button>
+                                    <MoodTag
+                                        key={mood}
+                                        name={mood}
+                                        icon={null}
+                                        isActive={selectedMoods.includes(mood)}
+                                        onClick={() => toggleMood(mood)}
+                                    />
                                 ))}
                             </div>
-                            <button style={{
-                                width: "100%", padding: "11px 0", borderRadius: 999, border: "none",
-                                cursor: "pointer", fontSize: 14, fontWeight: 600, color: "#fff",
-                                background: "linear-gradient(90deg, var(--color-brand-yellow) 0%, var(--color-brand-orange) 33%, var(--color-brand-pink) 66%, var(--color-brand-red) 100%)",
-                                display: "flex", alignItems: "center", justifyContent: "center", gap: 8,
-                            }}>
-                                <Search size={15} /> Search Trips
-                            </button>
+                            <GradientButton className="w-full rounded-full py-2.5 cursor-pointer">
+                                <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
+                                    <Search size={15} /> Search Trips
+                                </div>
+                            </GradientButton>
                         </div>
                     )}
                 </div>
