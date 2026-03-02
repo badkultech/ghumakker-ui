@@ -12,6 +12,7 @@ import { useGetUserNotificationsQuery, useMarkNotificationAsSeenMutation } from 
 import { formatDistanceToNow } from "date-fns";
 
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export function MainHeader({
   onMenuOpen = () => { },
@@ -106,7 +107,11 @@ export function MainHeader({
         </div>
 
         {/* RIGHT */}
-        <div className="ml-auto flex items-center gap-3 ">
+        <div className="ml-auto flex items-center gap-3">
+
+          {/* Theme Toggle — only for logged-in users */}
+          {isLoggedIn && <ThemeToggle />}
+
           {isLoggedIn ? (
             <NotificationsDropdown
               notifications={displayNotifications}
