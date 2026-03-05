@@ -22,6 +22,7 @@ import {
   MessageCircleQuestion,
   Users,
   TextSearch,
+  LayoutTemplate,
 } from 'lucide-react';
 import {
   LibraryIcon,
@@ -48,7 +49,7 @@ const nav: NavItem[] = [
     icon: CircleUser,
   },
   { label: 'Trip', href: ROUTES.ORGANIZER.TRIP_OVERVIEW, icon: TripIcon },
-  
+
   {
     label: 'Library',
     href: ROUTES.ORGANIZER.LIBRARY,
@@ -90,6 +91,7 @@ const nav: NavItem[] = [
   // { label: 'Team Members', href: ROUTES.ORGANIZER.TEAM, icon: UserRoundPlus },
   // { label: 'Support Center', href: ROUTES.ORGANIZER.SUPPORT, icon: Headphones },
   // { label: 'Billing', href: ROUTES.ORGANIZER.BILLING, icon: CreditCard },
+  { label: 'Home Layout', href: ROUTES.ORGANIZER.HOME_LAYOUT, icon: LayoutTemplate },
   { label: 'Settings', href: ROUTES.ORGANIZER.SETTINGS, icon: Settings },
 ];
 

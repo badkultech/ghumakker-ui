@@ -23,6 +23,9 @@ export default function HomeLayout({
 
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const [authStep, setAuthStep] = useState<"PHONE" | "OTP" | "REGISTER" | null>(null);
+    const [hideHeader, setHideHeader] = useState(false);
+    const [hideFooter, setHideFooter] = useState(false);
+    const [showLoginRegister, setShowLoginRegister] = useState(false);
 
     const onLogout = () => handleLogout(() => setIsMenuOpen(false));
     const openLoginModal = () => setAuthStep("PHONE");
@@ -55,24 +58,27 @@ export default function HomeLayout({
     }, [isLoggedIn, user, router, pathname]);
 
     return (
-        <HomeLayoutContext.Provider value={{ openLoginModal }}>
+        <HomeLayoutContext.Provider value={{ openLoginModal, hideHeader, setHideHeader, hideFooter, setHideFooter, showLoginRegister, setShowLoginRegister, onMenuOpen: () => setIsMenuOpen(true) }}>
             <div className="flex flex-col min-h-screen">
-                {/* Centralized Header */}
-                <MainHeader
-                    isLoggedIn={isLoggedIn}
-                    onLoginClick={openLoginModal}
-                    onMenuOpen={() => setIsMenuOpen(true)}
-                    variant="edge"
-                    logoText={logoText}
-                />
+                {/* Centralized Header — hidden when layout B/C active */}
+                {!hideHeader && (
+                    <MainHeader
+                        isLoggedIn={isLoggedIn}
+                        onLoginClick={openLoginModal}
+                        onMenuOpen={() => setIsMenuOpen(true)}
+                        variant="edge"
+                        logoText={logoText}
+                        showLoginRegister={showLoginRegister}
+                    />
+                )}
 
                 {/* Page Content */}
                 <div className="flex-1">
                     {children}
                 </div>
 
-                {/* Footer */}
-                <Footer />
+                {/* Footer — hidden when layout C active (has own footer) */}
+                {!hideFooter && <Footer />}
 
                 {/* Centralized Sidebar */}
                 <SidebarMenu

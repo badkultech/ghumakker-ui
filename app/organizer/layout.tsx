@@ -29,6 +29,7 @@ const PAGE_TITLE_MAP: [string, string][] = [
     ["/organizer/trip-overview", "My Trips"],
     ["/organizer/dashboard", "Dashboard"],
     ["/organizer/settings", "Settings"],
+    ["/organizer/home-layout", "Home Page Layout"],
     ["/organizer/billing", "Billing"],
     ["/organizer/team", "Team Members"],
     ["/organizer/support", "Support Center"],

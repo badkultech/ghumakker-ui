@@ -23,6 +23,7 @@ export function MainHeader({
   isLoggedIn: propIsLoggedIn,
   onLoginClick = () => { },
   variant = "edge",
+  showLoginRegister = false,
 }: {
   onMenuOpen?: () => void;
   notifications?: any[];
@@ -32,6 +33,7 @@ export function MainHeader({
   isLoggedIn?: boolean;
   onLoginClick?: () => void;
   variant?: "center" | "edge";
+  showLoginRegister?: boolean;
 }) {
   const router = useRouter();
   const { userData, accessToken } = useSelector(selectAuthState);
@@ -94,6 +96,18 @@ export function MainHeader({
               </button>
               <span className="text-base font-semibold text-gray-800">{logoText}</span>
             </div>
+          ) : showLoginRegister ? (
+            <div
+              onClick={() => router.push("/home")}
+              style={{
+                width: 40, height: 40, borderRadius: "50%", flexShrink: 0, cursor: "pointer",
+                background: "linear-gradient(135deg, var(--color-brand-yellow), var(--color-brand-red))",
+                display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
+              }}
+            >
+              <Image src={logoSrc} alt="Logo" width={26} height={26}
+                style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+            </div>
           ) : (
             <Image
               src={logoSrc}
@@ -117,9 +131,28 @@ export function MainHeader({
               notifications={displayNotifications}
               onUpdateNotifications={handleUpdateNotifications}
             />
+          ) : showLoginRegister ? (
+            // Layout C / landing style: separate Log in + Register buttons
+            <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+              <button
+                onClick={onLoginClick}
+                style={{ fontSize: 14, fontWeight: 500, color: "#444", background: "none", border: "none", cursor: "pointer" }}
+              >
+                Log in
+              </button>
+              <button
+                onClick={onLoginClick}
+                style={{
+                  fontSize: 13, fontWeight: 600, color: "#fff",
+                  background: "linear-gradient(90deg, var(--color-brand-yellow) 0%, var(--color-brand-orange) 33%, var(--color-brand-pink) 66%, var(--color-brand-red) 100%)",
+                  border: "none", padding: "8px 20px", borderRadius: 999, cursor: "pointer",
+                }}
+              >
+                Register
+              </button>
+            </div>
           ) : (
             <Button
-
               onClick={onLoginClick}
               className="font-semibold text-white hover:text-primary hover:bg-transparent px-2 cursor-pointer"
             >
