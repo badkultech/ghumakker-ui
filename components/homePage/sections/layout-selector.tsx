@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Settings2, Check } from "lucide-react";
 
-export type HeroLayout = "A" | "B" | "C";
+export type HeroLayout = "A" | "B" | "C" | "D" | "E" | "F" | "G";
 
 const LAYOUTS = [
     {
@@ -50,6 +50,81 @@ const LAYOUTS = [
                     <div style={{ height: 4, background: "rgba(255,255,255,0.9)", borderRadius: 2, width: "65%" }} />
                     <div style={{ height: 3, background: "rgba(255,255,255,0.5)", borderRadius: 2, width: "45%" }} />
                     <div style={{ height: 6, background: "rgba(255,255,255,0.2)", borderRadius: 999, width: "35%", border: "1px solid rgba(255,255,255,0.5)" }} />
+                </div>
+            </div>
+        ),
+    },
+    {
+        id: "D" as HeroLayout,
+        label: "Aurora Split",
+        desc: "Night sky bg · Text left · Card right · Purple",
+        preview: (
+            <div style={{ display: "flex", gap: 4, height: 36, borderRadius: 6, overflow: "hidden", background: "linear-gradient(135deg,#05081e,#0d1240)", position: "relative" }}>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 6px" }}>
+                    <div style={{ height: 4, width: "80%", background: "rgba(255,255,255,0.85)", borderRadius: 2, marginBottom: 3 }} />
+                    <div style={{ height: 3, width: "60%", background: "rgba(255,255,255,0.4)", borderRadius: 2 }} />
+                </div>
+                <div style={{ width: 44, background: "#fff", borderRadius: 4, padding: 4 }}>
+                    <div style={{ height: 4, background: "#e5e7eb", borderRadius: 2, marginBottom: 3 }} />
+                    <div style={{ height: 3, background: "#e5e7eb", borderRadius: 2, marginBottom: 3 }} />
+                    <div style={{ height: 5, background: "#6366f1", borderRadius: 2, opacity: 0.9 }} />
+                </div>
+            </div>
+        ),
+    },
+    {
+        id: "E" as HeroLayout,
+        label: "Card Left",
+        desc: "Image bg · Card left · Text right · Orange",
+        preview: (
+            <div style={{ display: "flex", gap: 4, height: 36, borderRadius: 6, overflow: "hidden", background: "#333", position: "relative" }}>
+                <div style={{ width: 44, background: "#fff", borderRadius: 4, padding: 4, zIndex: 1, margin: "auto 0 auto 6px" }}>
+                    <div style={{ height: 4, background: "#e5e7eb", borderRadius: 2, marginBottom: 3 }} />
+                    <div style={{ height: 3, background: "#e5e7eb", borderRadius: 2, marginBottom: 3 }} />
+                    <div style={{ height: 5, background: "#f59e0b", borderRadius: 2, opacity: 0.9 }} />
+                </div>
+                <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "0 6px", zIndex: 1 }}>
+                    <div style={{ height: 4, width: "80%", background: "rgba(255,255,255,0.85)", borderRadius: 2, marginBottom: 3 }} />
+                    <div style={{ height: 3, width: "60%", background: "rgba(255,255,255,0.4)", borderRadius: 2 }} />
+                </div>
+            </div>
+        ),
+    },
+    {
+        id: "F" as HeroLayout,
+        label: "Rounded Frame",
+        desc: "Normal header · Rounded hero left card · Dark footer",
+        preview: (
+            <div style={{ display: "flex", flexDirection: "column", height: 36, borderRadius: 6, overflow: "hidden", background: "#f3f4f6", border: "1px solid #e5e7eb" }}>
+                <div style={{ height: 4, background: "#fff", width: "100%", marginBottom: 1 }} />
+                <div style={{ display: "flex", gap: 3, flex: 1, borderRadius: 3, margin: "2px", overflow: "hidden", background: "#374151", position: "relative" }}>
+                    <div style={{ width: 14, background: "#fff", borderRadius: 1.5, padding: 1, zIndex: 1, margin: "auto 0 auto 3px" }}>
+                        <div style={{ height: 2, background: "#3b82f6", borderRadius: 1 }} />
+                    </div>
+                    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-end", padding: "0 3px", zIndex: 1 }}>
+                        <div style={{ height: 2.5, width: "80%", background: "rgba(255,255,255,0.8)", borderRadius: 1, marginBottom: 1.5 }} />
+                        <div style={{ height: 1.5, width: "60%", background: "rgba(255,255,255,0.4)", borderRadius: 1 }} />
+                    </div>
+                </div>
+                <div style={{ height: 3, background: "#000", width: "100%" }} />
+            </div>
+        ),
+    },
+    {
+        id: "G" as HeroLayout,
+        label: "Rounded Frame Aurora",
+        desc: "Normal header · Rounded hero left text · Main footer",
+        preview: (
+            <div style={{ display: "flex", flexDirection: "column", height: 36, borderRadius: 6, overflow: "hidden", background: "#f3f4f6", border: "1px solid #e5e7eb" }}>
+                <div style={{ height: 4, background: "#fff", width: "100%", marginBottom: 1 }} />
+                <div style={{ display: "flex", gap: 3, flex: 1, borderRadius: 3, margin: "2px", overflow: "hidden", background: "linear-gradient(135deg,#05081e,#0d1240)", position: "relative" }}>
+                    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "flex-start", padding: "0 3px", zIndex: 1 }}>
+                        <div style={{ height: 2.5, width: "80%", background: "rgba(255,255,255,0.8)", borderRadius: 1, marginBottom: 1.5 }} />
+                        <div style={{ height: 1.5, width: "60%", background: "rgba(255,255,255,0.4)", borderRadius: 1 }} />
+                    </div>
+                    <div style={{ width: 14, background: "#fff", borderRadius: 1.5, padding: 1, zIndex: 1, margin: "auto 0 auto 3px" }}>
+                        <div style={{ height: 2, background: "#8b5cf6", borderRadius: 1 }} />
+                    </div>
                 </div>
             </div>
         ),

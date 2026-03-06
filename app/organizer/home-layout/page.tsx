@@ -28,6 +28,30 @@ const LAYOUTS: {
             desc: "Your background photo fills the screen with overlaid text and search.",
             tags: ["Centered", "Photo BG", "With footer"],
         },
+        {
+            id: "D",
+            label: "Aurora Split",
+            desc: "Night sky background, hero text left, purple search card right with region & month picker.",
+            tags: ["Split", "Night BG", "Purple", "Region picker"],
+        },
+        {
+            id: "E",
+            label: "Card Left",
+            desc: "Image background, search card left, text right. Orange theme.",
+            tags: ["Mirrored", "Image BG", "Orange"],
+        },
+        {
+            id: "F",
+            label: "Rounded Frame Image",
+            desc: "Normal header, padded rounded hero section with image, card left and text right. Main footer.",
+            tags: ["Padded", "Rounded", "Image BG"],
+        },
+        {
+            id: "G",
+            label: "Rounded Frame Aurora",
+            desc: "Normal header, padded rounded hero section with aurora background, text left and card right.",
+            tags: ["Padded", "Rounded", "Aurora BG"],
+        },
     ];
 
 const STORAGE_KEY = "hero-layout";

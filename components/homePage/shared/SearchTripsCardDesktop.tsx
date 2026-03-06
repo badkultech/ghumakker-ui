@@ -117,11 +117,6 @@ export function SearchTripsCard({ onClose, defaultTab, className }: SearchTripsC
         className
       )}
     >
-      {/* Header */}
-      <h2 className="text-lg font-semibold text-center mb-2">
-        Search Trips
-      </h2>
-
       {/* Tabs */}
       <div className="flex bg-white shadow-md rounded-full p-1 mb-3 ">
         {["destination", "moods"].map(tab => (
