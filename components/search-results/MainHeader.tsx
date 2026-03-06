@@ -85,18 +85,9 @@ export function MainHeader({
         }
       >
         {/* LEFT */}
-        <div className="flex items-center gap-2">
-          {logoText ? (
-            <div className="flex items-center gap-2">
-              <button
-                onClick={() => router.back()}
-                className="p-1.5 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
-              >
-                <ArrowLeft className="w-5 h-5 text-gray-600" />
-              </button>
-              <span className="text-base font-semibold text-gray-800">{logoText}</span>
-            </div>
-          ) : showLoginRegister ? (
+        <div className="flex items-center gap-3">
+          {showLoginRegister ? (
+            // Circle logo only — no text
             <div
               onClick={() => router.push("/home")}
               style={{
@@ -108,7 +99,19 @@ export function MainHeader({
               <Image src={logoSrc} alt="Logo" width={26} height={26}
                 style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
             </div>
+          ) : logoText ? (
+            // Back-arrow + page title (non-home-section pages)
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => router.back()}
+                className="p-1.5 hover:bg-gray-100 rounded-full transition-colors cursor-pointer"
+              >
+                <ArrowLeft className="w-5 h-5 text-gray-600" />
+              </button>
+              <span className="text-base font-semibold text-gray-800">{logoText}</span>
+            </div>
           ) : (
+            // Default wide logo
             <Image
               src={logoSrc}
               alt="Logo"

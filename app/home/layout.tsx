@@ -60,15 +60,15 @@ export default function HomeLayout({
     return (
         <HomeLayoutContext.Provider value={{ openLoginModal, hideHeader, setHideHeader, hideFooter, setHideFooter, showLoginRegister, setShowLoginRegister, onMenuOpen: () => setIsMenuOpen(true) }}>
             <div className="flex flex-col min-h-screen">
-                {/* Centralized Header — hidden when layout B/C active */}
-                {!hideHeader && (
+                {/* Header — hidden only on /home root when layout B/C active */}
+                {(!hideHeader || pathname !== "/home") && (
                     <MainHeader
                         isLoggedIn={isLoggedIn}
                         onLoginClick={openLoginModal}
                         onMenuOpen={() => setIsMenuOpen(true)}
                         variant="edge"
                         logoText={logoText}
-                        showLoginRegister={showLoginRegister}
+                        showLoginRegister={true}
                     />
                 )}
 
@@ -77,8 +77,8 @@ export default function HomeLayout({
                     {children}
                 </div>
 
-                {/* Footer — hidden when layout C active (has own footer) */}
-                {!hideFooter && <Footer />}
+                {/* Footer — hidden only on /home root when layout C active (has own footer) */}
+                {(!hideFooter || pathname !== "/home") && <Footer />}
 
                 {/* Centralized Sidebar */}
                 <SidebarMenu
