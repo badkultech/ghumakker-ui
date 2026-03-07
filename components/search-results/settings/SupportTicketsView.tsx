@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { ChevronLeft, PlusCircle, CheckCircle } from "lucide-react";
+import { PlusCircle, CheckCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { AddNewTicketModal } from "@/components/organizer/support/AddNewTicketModal";
@@ -15,11 +15,7 @@ import { TicketIcon } from "@/components/library/SvgComponents/Icons";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";
 
-interface SupportTicketsViewProps {
-    onBack: () => void;
-}
-
-export default function SupportTicketsView({ onBack }: SupportTicketsViewProps) {
+export default function SupportTicketsView() {
     const organizationId = useOrganizationId();
     const userPublicId = useUserId();
 
@@ -59,15 +55,8 @@ export default function SupportTicketsView({ onBack }: SupportTicketsViewProps) 
         <div className="w-full">
             <div className="bg-card border border-border rounded-2xl p-6 md:p-10 min-h-[70vh] w-full">
 
-                {/* Back Button & Header Row */}
-                <div className="flex items-center justify-between mb-6">
-                    <button
-                        onClick={onBack}
-                        className="flex items-center gap-2 text-muted-foreground hover:text-foreground transition"
-                    >
-                        <ChevronLeft className="w-5 h-5" />
-                        <span className="text-sm font-medium">Back</span>
-                    </button>
+                {/* Header Row */}
+                <div className="flex items-center justify-end mb-6">
                     <Button
                         className="bg-primary hover:bg-primary/90 text-primary-foreground flex items-center gap-2 rounded-lg"
                         onClick={() => setIsModalOpen(true)}
