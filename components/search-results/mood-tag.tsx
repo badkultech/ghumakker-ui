@@ -47,7 +47,7 @@ interface MoodTagProps {
   name: string;
   icon: any
   isActive?: boolean;
-  onClick?: () => void;
+  onClick?: (e?: any) => void;
 }
 
 export function MoodTag({ name, isActive = false, onClick }: MoodTagProps) {
@@ -61,10 +61,10 @@ export function MoodTag({ name, isActive = false, onClick }: MoodTagProps) {
     <button
       onClick={onClick}
       className={cn(
-        "relative inline-flex items-center gap-2 px-4 py-2 rounded-full text-sm font-medium border transition-all duration-200 overflow-hidden cursor-pointer",
+        "relative inline-flex items-center gap-2 px-4 py-2 rounded-full text-[13px] font-semibold transition-all duration-200 overflow-hidden cursor-pointer border border-transparent",
         isActive
-          ? "text-white border-transparent shadow-md scale-[1.03]"
-          : "bg-white text-[#4d4d4d] border-[#e0e0e0] hover:border-[#c0c0c0]"
+          ? "text-white shadow-md scale-[1.02]"
+          : "bg-[#f4f5f6] text-[#1f2937] hover:bg-[#e5e7eb]"
       )}
     >
       {isActive && GradientBG && (

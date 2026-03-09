@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { Search, Menu } from "lucide-react";
 import { MoodTag } from "@/components/search-results/mood-tag";
 import { GradientButton } from "@/components/gradient-button";
@@ -15,11 +15,12 @@ import { selectAuthState } from "@/lib/slices/auth";
 import { useHomeLayout } from "@/app/home/HomeLayoutContext";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { NotificationsDropdown } from "@/components/search-results/NotificationsDropdown";
+import { LOGO_IMAGES } from "@/lib/constants/assets";
 
 const MOODS = [
-    "Mountain", "Beach", "Jungle", "Desert", "Skygaze",
-    "Heritage", "Adventure", "Trekking", "Weekends",
-    "Women-Only", "Learning", "Camping", "Spiritual",
+    "Mountain", "Beach", "Jungle", "Desert", "Skygaze", "Wellness",
+    "Heritage", "Adventure", "Trekking", "Motorsports", "Weekends", "Parties",
+    "Learning", "Camping", "Spiritual",
 ];
 const MONTH_MAP: Record<string, number> = {
     Jan: 1, Feb: 2, Mar: 3, Apr: 4, May: 5, Jun: 6, Jul: 7, Aug: 8, Sep: 9, Oct: 10, Nov: 11, Dec: 12,
@@ -54,6 +55,18 @@ export function HeroLayoutB() {
     const [selectedMonth, setSelectedMonth] = useState(SHORT_MONTHS[today.getMonth()]);
     const [year, setYear] = useState(today.getFullYear());
 
+    const [moodsOpen, setMoodsOpen] = useState(false);
+    const moodsRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const handler = (e: MouseEvent) => {
+            if (moodsRef.current && !moodsRef.current.contains(e.target as Node))
+                setMoodsOpen(false);
+        };
+        document.addEventListener("mousedown", handler);
+        return () => document.removeEventListener("mousedown", handler);
+    }, []);
+
     const toggleMood = (m: string) =>
         setSelectedMoods(prev => prev.includes(m) ? prev.filter(x => x !== m) : [...prev, m]);
 
@@ -73,9 +86,10 @@ export function HeroLayoutB() {
 
     return (
         <section style={{
-            position: "relative", minHeight: "100vh", overflow: "hidden",
+            position: "relative",
             display: "flex", flexDirection: "column", alignItems: "center",
             justifyContent: "center", textAlign: "center", padding: "120px 24px 60px",
+            minHeight: "100vh"
         }}>
 
             {/* ── Floating Header ── */}
@@ -92,7 +106,7 @@ export function HeroLayoutB() {
                     background: "linear-gradient(135deg, var(--color-brand-yellow), var(--color-brand-red))",
                     display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
                 }}>
-                    <Image src="/logo3.png" alt="Logo" width={26} height={26}
+                    <Image src={LOGO_IMAGES} alt="Logo" width={26} height={26}
                         style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
                 </div>
                 {/* Nav — logged in: hamburger + theme + notifications | logged out: Log in + Register */}
@@ -122,7 +136,7 @@ export function HeroLayoutB() {
             </div>
 
             {/* BG */}
-            <div style={{ position: "absolute", inset: 0, zIndex: 0 }}>
+            <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: -1, overflow: "hidden", pointerEvents: "none" }}>
                 {bgImage ? (
                     <Image src={bgImage} alt="bg" fill style={{ objectFit: "cover", opacity: 0.55 }} />
                 ) : (
@@ -207,22 +221,64 @@ export function HeroLayoutB() {
 
                 {/* Moods */}
                 {activeTab === "moods" && (
-                    <div>
-                        <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600, marginBottom: 12, textTransform: "uppercase", letterSpacing: "0.05em" }}>Select your travel mood</p>
-                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 16 }}>
-                            {MOODS.map(mood => (
-                                <MoodTag key={mood} name={mood} icon={null}
-                                    isActive={selectedMoods.includes(mood)} onClick={() => toggleMood(mood)} />
-                            ))}
-                        </div>
-                        <GradientButton onClick={handleSearch} className="w-full rounded-full py-2.5 cursor-pointer">
-                            <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 8 }}>
-                                <Search size={15} /> Search Trips
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <div style={{ flex: 1, minWidth: 0 }} ref={moodsRef}>
+                            <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600, marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>Moods</p>
+
+                            <div style={{ position: "relative" }}>
+                                <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+                                    {(selectedMoods.length > 0 ? selectedMoods : ["Mountain", "Beach", "Jungle"]).slice(0, 3).map(mood => (
+                                        <MoodTag key={mood} name={mood} icon={null}
+                                            isActive={selectedMoods.includes(mood)}
+                                            onClick={() => toggleMood(mood)} />
+                                    ))}
+
+                                    <button
+                                        onClick={(e) => { e.preventDefault(); setMoodsOpen(!moodsOpen); }}
+                                        style={{
+                                            padding: "4px 14px", borderRadius: 999, border: "1px solid #e0e0e0",
+                                            fontSize: 13, color: "#1f2937", background: "#f3f4f6", fontWeight: 600,
+                                            display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+                                            transition: "all 0.2s"
+                                        }}
+                                    >
+                                        +{Math.max(0, MOODS.length - Math.min(3, Math.max(3, selectedMoods.length)))}
+                                    </button>
+                                </div>
+
+                                {/* Dropdown */}
+                                {moodsOpen && (
+                                    <div style={{
+                                        position: "absolute", top: "calc(100% + 14px)", left: -10,
+                                        background: "#fff", borderRadius: 16, padding: "20px",
+                                        boxShadow: "0 10px 40px rgba(0,0,0,0.15)", zIndex: 50,
+                                        border: "1px solid #e5e7eb", minWidth: 380, width: "max-content", maxWidth: 420
+                                    }}>
+                                        <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
+                                            {MOODS.map(mood => (
+                                                <MoodTag key={mood} name={mood} icon={null}
+                                                    isActive={selectedMoods.includes(mood)}
+                                                    onClick={() => { toggleMood(mood); }} />
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
                             </div>
-                        </GradientButton>
+                        </div>
+
+                        <div style={{ width: 1, height: 36, background: "#e5e7eb", flexShrink: 0, marginTop: 20 }} />
+                        <div style={{ flexShrink: 0, marginTop: 20 }}>
+                            <MonthYearPicker month={selectedMonth} year={year}
+                                onChange={(m, y) => { setSelectedMonth(m); setYear(y); }} />
+                        </div>
+                        <button onClick={handleSearch} style={{
+                            width: 36, height: 36, borderRadius: "50%", border: "none", cursor: "pointer",
+                            background: "linear-gradient(90deg, var(--color-brand-yellow) 0%, var(--color-brand-orange) 33%, var(--color-brand-pink) 66%, var(--color-brand-red) 100%)",
+                            display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, marginTop: 20,
+                        }}><Search size={15} color="#fff" /></button>
                     </div>
                 )}
             </div>
-        </section>
+        </section >
     );
 }

@@ -44,10 +44,10 @@ export function MonthYearPicker({ month, year, onChange }: MonthYearPickerProps)
             <button
                 onClick={() => setOpen(p => !p)}
                 style={{
-                    display: "flex", alignItems: "center", gap: 6,
+                    display: "flex", alignItems: "center", gap: 8,
                     border: "1.5px solid #e5e7eb", borderRadius: 999,
-                    padding: "6px 12px", background: "#fff", cursor: "pointer",
-                    fontSize: 12, color: "#374151", whiteSpace: "nowrap",
+                    padding: "10px 16px", background: "#fff", cursor: "pointer",
+                    fontSize: 14, color: "#374151", whiteSpace: "nowrap",
                     fontFamily: "inherit",
                 }}
             >
