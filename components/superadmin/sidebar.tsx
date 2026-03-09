@@ -125,7 +125,15 @@ export function Sidebar({ showLogo = true, isOpen, onClose }: SidebarProps) {
       >
         {/* Header section */}
         <div className="flex items-center justify-between p-4 md:hidden">
-          {showLogo && <img src={LOGO_IMAGES} alt={APP_BRANDING} className="h-8 cursor-pointer" onClick={() => router.push("/home")} />}
+          {showLogo && (
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/home")}>
+              <div className="flex shrink-0 items-center justify-center overflow-hidden rounded-[10px] shadow-sm bg-brand-gradient"
+                style={{ width: 32, height: 32 }}
+              >
+                <img src={LOGO_IMAGES} alt={APP_BRANDING} width={18} height={18} style={{ objectFit: "contain" }} />
+              </div>
+            </div>
+          )}
           <button
             onClick={onClose}
             className="p-2 rounded-md hover:bg-gray-100"
@@ -135,8 +143,12 @@ export function Sidebar({ showLogo = true, isOpen, onClose }: SidebarProps) {
         </div>
 
         {showLogo && (
-          <div className="hidden md:block p-6 border-b border-gray-100">
-            <img src={LOGO_IMAGES} alt={APP_BRANDING} className="h-8 cursor-pointer" onClick={() => router.push("/home")} />
+          <div className="hidden md:flex items-center gap-2 p-3 border-b border-gray-100 cursor-pointer" onClick={() => router.push("/home")}>
+            <div className="flex shrink-0 items-center justify-center overflow-hidden rounded-[12px] shadow-sm bg-brand-gradient"
+              style={{ width: 36, height: 36 }}
+            >
+              <img src={LOGO_IMAGES} alt={APP_BRANDING} width={22} height={22} style={{ objectFit: "contain" }} />
+            </div>
           </div>
         )}
 
