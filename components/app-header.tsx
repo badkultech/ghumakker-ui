@@ -83,7 +83,7 @@ export function AppHeader({
             <Link href="/home" className="flex shrink-0 items-center justify-center overflow-hidden rounded-[12px] shadow-sm bg-brand-gradient"
               style={{ width: 36, height: 36 }}
             >
-              <img src={LOGO_IMAGES} alt={APP_BRANDING} width={22} height={22} style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+              <img src={LOGO_IMAGES} alt={APP_BRANDING} width={22} height={22} style={{ objectFit: "contain" }} />
             </Link>
           </div>
         )}

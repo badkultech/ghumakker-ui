@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { selectAuthState } from "@/lib/slices/auth";
 import { ROLES } from "@/lib/utils";
 
-type Theme = "traveler" | "organizer";
+type Theme = "traveler" | "organizer" | "ragir";
 
 interface ThemeContextType {
     theme: Theme;
@@ -31,6 +31,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
             setThemeState("traveler");
         } else if (savedTheme === "organizer") {
             setThemeState("organizer");
+        } else if (savedTheme === "ragir") {
+            setThemeState("ragir");
         } else {
             // Fallback to auto-detection if no preference saved
             const userType = userData?.userType;
@@ -40,8 +42,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
             if (isOrganizerUser || isOrganizerRoute) {
                 setThemeState("organizer");
             } else {
-                // Default to organizer (Blue) as requested "filhal"
-                setThemeState("organizer");
+                setThemeState("ragir"); // Default to ragir for home/traveler based on user's new request
             }
         }
     }, [userData, pathname]); // Re-run if user/path changes AND no saved preference (handled inside)
@@ -53,6 +54,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         const root = document.documentElement;
         if (theme === "traveler") {
             root.setAttribute("data-theme", "traveler");
+        } else if (theme === "ragir") {
+            root.setAttribute("data-theme", "ragir");
         } else {
             // Organizer is Blue, which matches :root now, or explicit organizer theme
             root.setAttribute("data-theme", "organizer");
@@ -61,7 +64,11 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     }, [theme, hasMounted]);
 
     const toggleTheme = () => {
-        setThemeState((prev) => (prev === "organizer" ? "traveler" : "organizer"));
+        setThemeState((prev) => {
+            if (prev === "organizer") return "ragir";
+            if (prev === "ragir") return "traveler";
+            return "organizer";
+        });
     };
 
     const setTheme = (newTheme: Theme) => {

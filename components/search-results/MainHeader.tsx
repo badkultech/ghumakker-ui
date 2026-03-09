@@ -93,7 +93,7 @@ export function MainHeader({
               className="flex items-center justify-center shrink-0 cursor-pointer overflow-hidden rounded-[12px] shadow-sm bg-brand-gradient"
               style={{ width: 36, height: 36 }}
             >
-              <Image src={logoSrc} alt="Logo" width={22} height={22} className="object-contain" style={{ filter: "brightness(0) invert(1)" }} />
+              <Image src={logoSrc} alt="Logo" width={22} height={22} className="object-contain" />
             </div>
           ) : logoText ? (
             // Back-arrow + page title (non-home-section pages)
@@ -117,7 +117,7 @@ export function MainHeader({
                   width={22}
                   height={22}
                   alt={APP_BRANDING}
-                  style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
+                  style={{ objectFit: "contain" }}
                 />
               </div>
               <span className="text-[1.3rem] font-bold text-gray-900 dark:text-white tracking-wide">{APP_BRANDING}</span>

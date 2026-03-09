@@ -274,3 +274,24 @@
   --login-bg-via: #FBCFE8;
   --login-bg-to: #FECACA;
 }
+
+[data-theme="ragir"] {
+  /* Ragir Theme (Vibrant Red/Yellow/Orange) */
+  --primary: oklch(0.62 0.23 25);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --color-brand-yellow: #FF002B;
+  /* Solid Red (Left) */
+  --color-brand-orange: #FF002B;
+  /* Solid Red (Middle-Left) */
+  --color-brand-pink: #FF3B1A;
+  /* Red-Orange (Middle-Right) */
+  --color-brand-red: #FF6A13;
+  /* Orange at the very end (Right) */
+  --color-error-orange: #FF002B;
+
+  /* Login Page Background Gradient (Reddish/Orange) */
+  --login-bg-from: #FFD0A1;
+  --login-bg-via: #FFABAB;
+  --login-bg-to: #FFC2B1;
+}

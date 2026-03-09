@@ -106,7 +106,7 @@ export function HeroLayoutB() {
                     className="flex shrink-0 items-center justify-center overflow-hidden rounded-[12px] shadow-sm cursor-pointer bg-brand-gradient"
                     style={{ width: 36, height: 36 }}
                 >
-                    <Image src={LOGO_IMAGES} alt="Logo" width={22} height={22} style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+                    <Image src={LOGO_IMAGES} alt="Logo" width={22} height={22} style={{ objectFit: "contain" }} />
                 </Link>
                 {/* Nav — logged in: hamburger + theme + notifications | logged out: Log in + Register */}
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>

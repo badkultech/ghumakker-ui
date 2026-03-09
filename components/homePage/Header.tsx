@@ -28,7 +28,7 @@ export default function Header(): React.JSX.Element {
               width={26}
               height={26}
               alt={APP_BRANDING}
-              style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
+              style={{ objectFit: "contain" }}
             />
           </div>
         </Link>

@@ -13,7 +13,7 @@ export function ThemeToggle() {
             size="sm"
             onClick={toggleTheme}
             className="rounded-full w-10 h-10 p-0 text-gray-500 hover:text-primary hover:bg-primary/10 transition-colors"
-            title={`Switch to ${theme === "organizer" ? "Traveler" : "Organizer"} Theme`}
+            title={`Switch Theme (Current: ${theme})`}
         >
             <Palette className="w-5 h-5 text-primary" />
         </Button>
