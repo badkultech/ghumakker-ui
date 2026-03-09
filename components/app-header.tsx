@@ -16,7 +16,8 @@ import { ManagerNotificationDropdown } from "./notificationDropdowns/managerNoti
 import { DefaultNotificationDropdown } from "./notificationDropdowns/defaultNotificationDropdown";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useRouter } from "next/navigation";
-import { LOGO_IMAGES, APP_BRANDING } from "@/lib/constants/assets";
+import Link from "next/link";
+import { LOGO_IMAGES, LOGO_SVG, APP_BRANDING } from "@/lib/constants/assets";
 import { ThemeToggle } from "./ThemeToggle"
 
 type AppHeaderProps = {
@@ -78,8 +79,12 @@ export function AppHeader({
 
         {/* Logo (optional, shown if showLogo=true) */}
         {showLogo && (
-          <div className="flex items-center">
-            <img src={LOGO_IMAGES} alt={APP_BRANDING} className="h-8" />
+          <div className="flex items-center gap-2 mr-2">
+            <Link href="/home" className="flex shrink-0 items-center justify-center overflow-hidden rounded-[12px] shadow-sm bg-brand-gradient"
+              style={{ width: 36, height: 36 }}
+            >
+              <img src={LOGO_IMAGES} alt={APP_BRANDING} width={22} height={22} style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+            </Link>
           </div>
         )}
 

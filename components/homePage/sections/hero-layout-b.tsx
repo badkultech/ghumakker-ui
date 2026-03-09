@@ -101,14 +101,13 @@ export function HeroLayoutB() {
                 boxShadow: "0 4px 20px rgba(0,0,0,0.2)", zIndex: 20,
             }}>
                 {/* Logo */}
-                <div style={{
-                    width: 40, height: 40, borderRadius: "50%", flexShrink: 0,
-                    background: "linear-gradient(135deg, var(--color-brand-yellow), var(--color-brand-red))",
-                    display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
-                }}>
-                    <Image src={LOGO_IMAGES} alt="Logo" width={26} height={26}
-                        style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
-                </div>
+                <Link
+                    href="/home"
+                    className="flex shrink-0 items-center justify-center overflow-hidden rounded-[12px] shadow-sm cursor-pointer bg-brand-gradient"
+                    style={{ width: 36, height: 36 }}
+                >
+                    <Image src={LOGO_IMAGES} alt="Logo" width={22} height={22} style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+                </Link>
                 {/* Nav — logged in: hamburger + theme + notifications | logged out: Log in + Register */}
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     {isLoggedIn ? (

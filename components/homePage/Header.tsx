@@ -19,14 +19,18 @@ export default function Header(): React.JSX.Element {
       className={` p-4 md:py-[1.2rem] md:px-[4rem] border-b border-gray-200`}
     >
       <nav className="flex justify-between items-center">
-        <Link href={ROUTES.COMMON.HOME} className="font-bold">
-          <Image
-            src={LOGO_SVG}
-            width={100}
-            height={100}
-            alt={APP_BRANDING}
-            className="block"
-          />
+        <Link href={ROUTES.COMMON.HOME} className="flex items-center gap-2 font-bold no-underline">
+          <div className="flex shrink-0 items-center justify-center overflow-hidden rounded-[14px] shadow-sm bg-brand-gradient"
+            style={{ width: 44, height: 44 }}
+          >
+            <Image
+              src={LOGO_SVG}
+              width={26}
+              height={26}
+              alt={APP_BRANDING}
+              style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
+            />
+          </div>
         </Link>
         <GradientButton className="w-fit py-2.75">
           <span className="group-hover:opacity-0 font-medium transition-all duration-300">

@@ -29,8 +29,8 @@ export function Footer() {
     || `© ${new Date().getFullYear()} ${APP_BRANDING}. All rights reserved.`;
 
   return (
-    <footer className="border-t bg-brand-gradient text-white">
-      <div className="container mx-auto px-6 py-4 flex items-center justify-between text-xs">
+    <footer className="bg-black text-white border-none">
+      <div className="container mx-auto px-6 py-3 flex items-center justify-between text-xs">
         <p>{footerText}</p>
 
         <div className="flex gap-3">

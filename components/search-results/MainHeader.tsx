@@ -1,6 +1,6 @@
 "use client";
 
-import { LOGO_IMAGES } from "@/lib/constants/assets";
+import { LOGO_IMAGES, LOGO_SVG, APP_BRANDING } from "@/lib/constants/assets";
 
 import { Menu, ArrowLeft } from "lucide-react";
 import Image from "next/image";
@@ -87,17 +87,13 @@ export function MainHeader({
         {/* LEFT */}
         <div className="flex items-center gap-3">
           {showLoginRegister ? (
-            // Circle logo only — no text
+            // Squircle logo only — no text
             <div
               onClick={() => router.push("/home")}
-              style={{
-                width: 40, height: 40, borderRadius: "50%", flexShrink: 0, cursor: "pointer",
-                background: "linear-gradient(135deg, var(--color-brand-yellow), var(--color-brand-red))",
-                display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden",
-              }}
+              className="flex items-center justify-center shrink-0 cursor-pointer overflow-hidden rounded-[12px] shadow-sm bg-brand-gradient"
+              style={{ width: 36, height: 36 }}
             >
-              <Image src={logoSrc} alt="Logo" width={26} height={26}
-                style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }} />
+              <Image src={logoSrc} alt="Logo" width={22} height={22} className="object-contain" style={{ filter: "brightness(0) invert(1)" }} />
             </div>
           ) : logoText ? (
             // Back-arrow + page title (non-home-section pages)
@@ -111,15 +107,21 @@ export function MainHeader({
               <span className="text-base font-semibold text-gray-800">{logoText}</span>
             </div>
           ) : (
-            // Default wide logo
-            <Image
-              src={logoSrc}
-              alt="Logo"
-              width={96}
-              height={28}
-              className="w-[110px] h-[28px] cursor-pointer"
-              onClick={() => router.push("/home")}
-            />
+            // Default squircle logo + text
+            <div className="flex items-center gap-2 cursor-pointer" onClick={() => router.push("/home")}>
+              <div className="flex shrink-0 items-center justify-center overflow-hidden rounded-[12px] shadow-sm bg-brand-gradient"
+                style={{ width: 36, height: 36 }}
+              >
+                <Image
+                  src={logoSrc}
+                  width={22}
+                  height={22}
+                  alt={APP_BRANDING}
+                  style={{ objectFit: "contain", filter: "brightness(0) invert(1)" }}
+                />
+              </div>
+              <span className="text-[1.3rem] font-bold text-gray-900 dark:text-white tracking-wide">{APP_BRANDING}</span>
+            </div>
           )}
         </div>
 
