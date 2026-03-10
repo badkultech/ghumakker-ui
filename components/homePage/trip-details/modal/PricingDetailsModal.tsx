@@ -163,7 +163,7 @@ export default function PricingDetailsModal({
                 </p>
               </div>
 
-              <span className="font-bold text-[#e07a5f]">
+              <span className="font-bold text-primary">
                 ₹
                 {getFinal(
                   simple.basePrice,
@@ -189,7 +189,7 @@ export default function PricingDetailsModal({
                         {opt.name} (Auto included)
                       </p>
                     </div>
-                    <span className="font-bold text-[#e07a5f]">
+                    <span className="font-bold text-primary">
                       ₹{getFinal(opt.price, opt.discount)}
                     </span>
                   </div>
@@ -210,7 +210,7 @@ export default function PricingDetailsModal({
                       {selectedOpt.name}
                     </p>
                   </div>
-                  <span className="font-bold text-[#e07a5f]">
+                  <span className="font-bold text-primary">
                     ₹
                     {getFinal(
                       selectedOpt.price,
@@ -230,7 +230,7 @@ export default function PricingDetailsModal({
               return (
                 <div key={i} className="flex justify-between border-b pb-3">
                   <p className="font-semibold">{add.name}</p>
-                  <span className="font-bold text-[#e07a5f]">
+                  <span className="font-bold text-primary">
                     ₹{(add.charge || add.price || 0).toLocaleString()}
                   </span>
                 </div>
@@ -238,7 +238,7 @@ export default function PricingDetailsModal({
             })}
 
           {/* ================= TOTAL ================= */}
-          <div className="flex justify-between pt-4 border-t font-bold text-[#e07a5f]">
+          <div className="flex justify-between pt-4 border-t font-bold text-primary">
             <p>Total Payable</p>
             <span>
               ₹{selectedPricing.finalPrice.toLocaleString()}
@@ -247,7 +247,7 @@ export default function PricingDetailsModal({
 
           {/* ================= EMI ================= */}
           <div className="flex items-center gap-2 text-sm pt-2">
-            <CheckCircle2 className="text-green-600" />
+            <CheckCircle2 className="text-primary" />
             {TRIP_DETAILS.PRICING_DETAILS_MODAL.EMI_AVAILABLE}
           </div>
 

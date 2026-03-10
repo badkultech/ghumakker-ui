@@ -111,7 +111,7 @@ export default function MobilePricingModal({
           {/* TOTAL */}
           <div className="flex justify-between border-b pb-3">
             <p className="text-sm font-medium">Total</p>
-            <span className="font-bold text-orange-500">
+            <span className="font-bold text-primary">
               ₹{finalPrice.toLocaleString()}
             </span>
           </div>
@@ -126,7 +126,7 @@ export default function MobilePricingModal({
                     {TRIP_DETAILS.PRICING_MODAL.BASE_PACKAGE}
                   </p>
                   {simple?.discountPercent > 0 ? (
-                    <p className="text-xs text-green-600">
+                    <p className="text-xs text-primary font-semibold mt-1">
                       {simple.discountPercent}% OFF
                     </p>
                   ) : (
@@ -158,7 +158,7 @@ export default function MobilePricingModal({
                   >
                     <p className="text-sm font-medium flex justify-between">
                       {cat.categoryName}
-                      <span className="text-green-600 text-xs">
+                      <span className="text-primary text-xs">
                         Auto included
                       </span>
                     </p>
@@ -196,7 +196,7 @@ export default function MobilePricingModal({
                             }))
                           }
                           className={`flex justify-between items-center border rounded-xl p-3 cursor-pointer ${checked
-                            ? "border-orange-400 bg-orange-50"
+                            ? "border-primary bg-primary/5"
                             : ""
                             }`}
                         >
@@ -228,7 +228,7 @@ export default function MobilePricingModal({
                     )
                   }
                   className={`flex justify-between items-center border rounded-xl p-3 cursor-pointer ${selectedAddOns.includes(a.name)
-                    ? "border-orange-400 bg-orange-50"
+                    ? "border-primary bg-primary/5"
                     : ""
                     }`}
                 >
@@ -242,9 +242,9 @@ export default function MobilePricingModal({
           )}
 
           {/* INFO */}
-          <div className="bg-orange-50 p-3 rounded-lg flex gap-2">
-            <CheckCircle2 className="text-orange-600" />
-            <p className="text-xs text-orange-900">
+          <div className="bg-primary/5 p-3 rounded-lg flex gap-2">
+            <CheckCircle2 className="text-primary" />
+            <p className="text-xs text-foreground">
               {TRIP_DETAILS.PRICING_MODAL.WARNING}
             </p>
           </div>
@@ -252,14 +252,14 @@ export default function MobilePricingModal({
           {/* BUTTON */}
           <button
             onClick={handleRequestInvite}
-            className="w-full py-3 rounded-lg flex items-center justify-center gap-2 bg-orange-500 text-white"
+            className="w-full py-3 rounded-lg flex items-center justify-center gap-2 bg-brand-gradient text-white"
           >
             <Send className="w-4 h-4" />
             {TRIP_DETAILS.PRICING_MODAL.REQUEST_INVITE}
           </button>
           <button
             onClick={handleAsk}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-orange-500 text-orange-500 font-medium"
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-primary text-primary font-medium hover:bg-primary/5"
           >
             <MessageCircle className="w-4 h-4" />
             {TRIP_DETAILS.SIDEBAR.SEND_QUERY}

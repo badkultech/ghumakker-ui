@@ -127,7 +127,7 @@ export default function DesktopSidebar({
             </p>
 
             {simple && simple.discountPercent > 0 && (
-              <p className="text-sm text-green-600">
+              <p className="text-sm text-primary font-semibold mt-1">
                 {simple.discountPercent}% OFF (₹{simple.basePrice})
               </p>
             )}
@@ -139,11 +139,13 @@ export default function DesktopSidebar({
 
             {/* Deposit Required Info */}
             {(pricing?.depositRequiredPercent || pricing?.depositRequiredAmount) && (
-              <div className="mt-2 text-sm text-blue-600 bg-blue-50 px-3 py-1.5 rounded-lg border border-blue-100 inline-block w-full">
-                <span className="font-semibold">Deposit Required: </span>
-                {pricing.depositRequiredPercent
-                  ? `${pricing.depositRequiredPercent}%`
-                  : `₹${pricing.depositRequiredAmount?.toLocaleString()}`}
+              <div className="mt-3 text-sm text-gray-900 bg-gray-50 px-4 py-3 rounded-xl flex justify-between items-center w-full">
+                <span className="font-medium">Deposit Required</span>
+                <span className="font-bold">
+                  {pricing.depositRequiredPercent
+                    ? `${pricing.depositRequiredPercent}%`
+                    : `₹${pricing.depositRequiredAmount?.toLocaleString()}`}
+                </span>
               </div>
             )}
 
@@ -166,7 +168,7 @@ export default function DesktopSidebar({
                     >
                       <p className="font-medium text-sm flex justify-between">
                         {cat.categoryName}
-                        <span className="text-green-600 text-xs">
+                        <span className="text-primary text-xs">
                           Included automatically
                         </span>
                       </p>
@@ -219,29 +221,11 @@ export default function DesktopSidebar({
                             <div className="flex items-start gap-3">
                               {/* CUSTOM RADIO (NO onClick here) */}
                               <div
-                                className="w-5 h-5 rounded-full flex items-center justify-center mt-1"
-                                style={
-                                  checked
-                                    ? {
-                                      border: "2px solid transparent",
-                                      background: `
-                  linear-gradient(white, white) padding-box,
-                  linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A) border-box
-                `,
-                                    }
-                                    : {
-                                      border: "2px solid #D1D5DB",
-                                      background: "white",
-                                    }
-                                }
+                                className={`w-5 h-5 rounded-full flex items-center justify-center mt-1 transition-all ${checked ? "bg-brand-gradient border-transparent" : "bg-white border-[2px] border-gray-300"}`}
                               >
                                 {checked && (
                                   <div
-                                    className="w-2.5 h-2.5 rounded-full"
-                                    style={{
-                                      background:
-                                        "linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A)",
-                                    }}
+                                    className="w-2.5 h-2.5 rounded-full bg-white"
                                   />
                                 )}
                               </div>
@@ -298,19 +282,7 @@ export default function DesktopSidebar({
                       <div className="flex items-start gap-3">
                         {/* CUSTOM CHECKBOX */}
                         <div
-                          className="w-5 h-5 rounded-md flex items-center justify-center mt-1"
-                          style={
-                            selectedAddOns.includes(add.name)
-                              ? {
-                                background:
-                                  "linear-gradient(90deg, #FEA901, #FD6E34, #FE336A, #FD401A)",
-                                border: "1px solid transparent",
-                              }
-                              : {
-                                background: "white",
-                                border: "1.5px solid #D1D5DB",
-                              }
-                          }
+                          className={`w-5 h-5 rounded-md flex items-center justify-center mt-1 transition-all ${selectedAddOns.includes(add.name) ? "bg-brand-gradient border-transparent" : "bg-white border-[1.5px] border-gray-300"}`}
                         >
                           {selectedAddOns.includes(add.name) && (
                             <svg
@@ -369,7 +341,7 @@ export default function DesktopSidebar({
 
           <button
             onClick={onAsk}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-blue-50 text-blue-600 font-medium cursor-pointer hover:bg-blue-100 transition-colors"
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-primary text-primary font-medium cursor-pointer hover:bg-primary/5 transition-colors"
           >
             <MessageCircle className="w-4 h-4" />
             {TRIP_DETAILS.SIDEBAR.SEND_QUERY}

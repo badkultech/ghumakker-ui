@@ -12,9 +12,9 @@ export function Footer() {
         <div className="flex flex-col md:flex-row md:justify-between gap-8">
           {/* Brand */}
           <div className="max-w-sm">
-            <h2 className="text-2xl font-bold text-[#ff6b35] italic mb-4">
-              <Image src={LOGO_IMAGES} alt={APP_BRANDING} width={96} height={36.98} className="w-[96px] h-[36.98px]" />
-            </h2>
+            <div className="flex shrink-0 items-center justify-center overflow-hidden rounded-[12px] shadow-sm bg-brand-gradient mb-4 w-[40px] h-[40px]">
+              <Image src={LOGO_IMAGES} alt={APP_BRANDING} width={24} height={24} style={{ objectFit: "contain" }} />
+            </div>
             <p className="text-sm text-gray-600 leading-relaxed">
               An all-in-one platform to plan, book, and share your adventures
               effortlessly. Discover destinations, connect with your group, and

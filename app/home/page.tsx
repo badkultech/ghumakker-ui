@@ -13,7 +13,7 @@ import { getHeroLayout, type HeroLayout } from "@/components/homePage/sections/l
 import { useHomeLayout } from "./HomeLayoutContext";
 
 export default function Home() {
-  const [layout, setLayout] = useState<HeroLayout>("A");
+  const [layout, setLayout] = useState<HeroLayout>("B");
   const { setHideHeader, setHideFooter, setShowLoginRegister } = useHomeLayout();
   const searchParams = useSearchParams();
 

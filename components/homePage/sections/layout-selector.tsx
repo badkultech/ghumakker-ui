@@ -134,8 +134,8 @@ const LAYOUTS = [
 const STORAGE_KEY = "hero-layout";
 
 export function getHeroLayout(): HeroLayout {
-    if (typeof window === "undefined") return "A";
-    return (localStorage.getItem(STORAGE_KEY) as HeroLayout) || "A";
+    if (typeof window === "undefined") return "B";
+    return (localStorage.getItem(STORAGE_KEY) as HeroLayout) || "B";
 }
 
 interface Props {
