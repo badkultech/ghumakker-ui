@@ -58,10 +58,18 @@ export function HeroLayoutB() {
     const [moodsOpen, setMoodsOpen] = useState(false);
     const moodsRef = useRef<HTMLDivElement>(null);
 
+    const [isDestDropdownOpen, setIsDestDropdownOpen] = useState(false);
+    const destRef = useRef<HTMLDivElement>(null);
+    const [activeOptionsType, setActiveOptionsType] = useState<"domestic" | "international" | null>("domestic");
+
     useEffect(() => {
         const handler = (e: MouseEvent) => {
-            if (moodsRef.current && !moodsRef.current.contains(e.target as Node))
+            if (moodsRef.current && !moodsRef.current.contains(e.target as Node)) {
                 setMoodsOpen(false);
+            }
+            if (destRef.current && !destRef.current.contains(e.target as Node)) {
+                setIsDestDropdownOpen(false);
+            }
         };
         document.addEventListener("mousedown", handler);
         return () => document.removeEventListener("mousedown", handler);
@@ -73,8 +81,10 @@ export function HeroLayoutB() {
     const handleSearch = () => {
         const params = new URLSearchParams();
         if (activeTab === "destination") {
-            params.append("destinationTags", selectedDest.trim()
-                ? selectedDest.trim().toLowerCase().replace(/\s+/g, "_") : "domestic");
+            const tag = selectedDest.trim()
+                ? selectedDest.trim().toLowerCase().replace(/\s+/g, "_")
+                : (activeOptionsType || "domestic");
+            params.append("destinationTags", tag);
         }
         if (activeTab === "moods") {
             selectedMoods.forEach(m => params.append("moods", m.replace("-", "_").toLowerCase()));
@@ -198,12 +208,79 @@ export function HeroLayoutB() {
                 {/* Destination */}
                 {activeTab === "destination" && (
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                        <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ flex: 1, minWidth: 0, position: "relative" }} ref={destRef}>
                             <p style={{ fontSize: 11, color: "#9ca3af", fontWeight: 600, marginBottom: 6, textTransform: "uppercase", letterSpacing: "0.05em" }}>Destination</p>
                             <input type="text" placeholder="Enter destination" value={selectedDest}
-                                onChange={e => setSelectedDest(e.target.value)}
+                                onChange={e => {
+                                    setSelectedDest(e.target.value);
+                                    setActiveOptionsType(null);
+                                }}
+                                onClick={() => setIsDestDropdownOpen(true)}
                                 onKeyDown={e => e.key === "Enter" && handleSearch()}
-                                style={{ width: "100%", border: "1.5px solid #e5e7eb", borderRadius: 999, padding: "7px 14px", fontSize: 13, color: "#374151", outline: "none", fontFamily: "inherit", boxSizing: "border-box" }} />
+                                style={{ width: "100%", border: "1.5px solid #e5e7eb", borderRadius: 999, padding: "7px 14px", fontSize: 13, color: "#374151", outline: "none", fontFamily: "inherit", boxSizing: "border-box", cursor: "pointer" }} />
+
+                            {/* Destination Dropdown */}
+                            {isDestDropdownOpen && (
+                                <div style={{
+                                    position: "absolute", top: "100%", left: 0, marginTop: 12,
+                                    background: "#fff", borderRadius: 16,
+                                    boxShadow: "0 8px 30px rgba(0,0,0,0.12)",
+                                    padding: "20px", width: "130%", minWidth: 340,
+                                    animation: "slideUp 0.15s ease", zIndex: 50,
+                                    border: "1px solid #f3f4f6"
+                                }}>
+                                    <div style={{ display: "flex", alignItems: "center", background: "#f9fafb", borderRadius: 12, padding: "10px 14px", border: "1.5px solid #f3f4f6", marginBottom: 16 }}>
+                                        <Search size={18} color="#9ca3af" />
+                                        <input type="text" placeholder="Search destinations" value={selectedDest}
+                                            onChange={e => {
+                                                setSelectedDest(e.target.value);
+                                                setActiveOptionsType(null);
+                                            }}
+                                            style={{ border: "none", background: "transparent", outline: "none", width: "100%", marginLeft: 10, fontSize: 14, color: "#374151", fontWeight: 500 }} />
+                                    </div>
+                                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 12, marginBottom: 16 }}>
+                                        <div style={{ flex: 1, height: 1, background: "#e5e7eb" }} />
+                                        <span style={{ fontSize: 11, fontWeight: 700, color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.06em" }}>OR</span>
+                                        <div style={{ flex: 1, height: 1, background: "#e5e7eb" }} />
+                                    </div>
+                                    <div style={{ display: "flex", gap: 14 }}>
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setActiveOptionsType("domestic");
+                                                setSelectedDest("");
+                                                setIsDestDropdownOpen(false);
+                                            }}
+                                            style={{
+                                                flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                                                border: activeOptionsType === "domestic" || selectedDest.toLowerCase() === "domestic" ? "2px solid var(--color-brand-orange)" : "2px solid #f3f4f6",
+                                                borderRadius: 14, padding: "20px 10px", cursor: "pointer", background: "#fff", transition: "all 0.2s"
+                                            }}>
+                                            <div style={{ position: "relative", width: 64, height: 64, marginBottom: 12 }}>
+                                                <Image src="/images/india-map.png" alt="Domestic" fill style={{ objectFit: "contain", opacity: 0.8 }} />
+                                            </div>
+                                            <span style={{ fontSize: 13, fontWeight: 700, color: "#374151" }}>Domestic</span>
+                                        </button>
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                setActiveOptionsType("international");
+                                                setSelectedDest("");
+                                                setIsDestDropdownOpen(false);
+                                            }}
+                                            style={{
+                                                flex: 1, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+                                                border: activeOptionsType === "international" || selectedDest.toLowerCase() === "international" ? "2px solid var(--color-brand-orange)" : "2px solid #f3f4f6",
+                                                borderRadius: 14, padding: "20px 10px", cursor: "pointer", background: "#fff", transition: "all 0.2s"
+                                            }}>
+                                            <div style={{ position: "relative", width: 64, height: 64, marginBottom: 12 }}>
+                                                <Image src="/images/world-map.png" alt="International" fill style={{ objectFit: "contain", opacity: 0.8 }} />
+                                            </div>
+                                            <span style={{ fontSize: 13, fontWeight: 700, color: "#374151" }}>International</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
                         </div>
                         <div style={{ width: 1, height: 36, background: "#e5e7eb", flexShrink: 0, marginTop: 20 }} />
                         <div style={{ flexShrink: 0, marginTop: 20 }}>

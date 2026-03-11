@@ -59,7 +59,7 @@ export function MonthYearPicker({ month, year, onChange }: MonthYearPickerProps)
             {/* Dropdown */}
             {open && (
                 <div style={{
-                    position: "absolute", bottom: "calc(100% + 8px)", left: "50%",
+                    position: "absolute", top: "calc(100% + 8px)", left: "50%",
                     transform: "translateX(-50%)",
                     background: "#fff", borderRadius: 14, padding: "14px 16px",
                     boxShadow: "0 8px 32px rgba(0,0,0,0.18)",
