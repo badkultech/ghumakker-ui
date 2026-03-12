@@ -295,3 +295,24 @@
   --login-bg-via: #FFABAB;
   --login-bg-to: #FFC2B1;
 }
+
+[data-theme="purple"] {
+  /* Purple Theme */
+  --primary: oklch(0.55 0.23 290);
+  --primary-foreground: oklch(0.985 0 0);
+
+  --color-brand-yellow: #A855F7;
+  /* Purple 500 */
+  --color-brand-orange: #9333EA;
+  /* Purple 600 */
+  --color-brand-pink: #7E22CE;
+  /* Purple 700 */
+  --color-brand-red: #6B21A8;
+  /* Purple 800 */
+  --color-error-orange: #A855F7;
+
+  /* Login Page Background Gradient (Purple) */
+  --login-bg-from: #E9D5FF;
+  --login-bg-via: #DDD6FE;
+  --login-bg-to: #C4B5FD;
+}

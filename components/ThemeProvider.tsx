@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { selectAuthState } from "@/lib/slices/auth";
 import { ROLES } from "@/lib/utils";
 
-type Theme = "traveler" | "organizer" | "ragir";
+type Theme = "traveler" | "organizer" | "ragir" | "purple";
 
 interface ThemeContextType {
     theme: Theme;
@@ -25,14 +25,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // Initial logic to determine theme
     useEffect(() => {
         setHasMounted(true);
-        const savedTheme = localStorage.getItem("ui-theme");
+        const savedTheme = localStorage.getItem("ui-theme") as Theme;
 
-        if (savedTheme === "traveler") {
-            setThemeState("traveler");
-        } else if (savedTheme === "organizer") {
-            setThemeState("organizer");
-        } else if (savedTheme === "ragir") {
-            setThemeState("ragir");
+        if (savedTheme && ["traveler", "organizer", "ragir", "purple"].includes(savedTheme)) {
+            setThemeState(savedTheme);
         } else {
             // Fallback to auto-detection if no preference saved
             const userType = userData?.userType;
@@ -52,20 +48,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         if (!hasMounted) return;
 
         const root = document.documentElement;
-        if (theme === "traveler") {
-            root.setAttribute("data-theme", "traveler");
-        } else if (theme === "ragir") {
-            root.setAttribute("data-theme", "ragir");
-        } else {
-            // Organizer is Blue, which matches :root now, or explicit organizer theme
-            root.setAttribute("data-theme", "organizer");
-        }
+        root.setAttribute("data-theme", theme);
         localStorage.setItem("ui-theme", theme);
     }, [theme, hasMounted]);
 
     const toggleTheme = () => {
         setThemeState((prev) => {
-            if (prev === "organizer") return "ragir";
+            if (prev === "organizer") return "purple";
+            if (prev === "purple") return "ragir";
             if (prev === "ragir") return "traveler";
             return "organizer";
         });
