@@ -15,7 +15,8 @@ import { selectAuthState } from "@/lib/slices/auth";
 import { useHomeLayout } from "@/app/home/HomeLayoutContext";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { NotificationsDropdown } from "@/components/search-results/NotificationsDropdown";
-import { LOGO_IMAGES } from "@/lib/constants/assets";
+import { LOGO_IMAGES, THEME_BG_IMAGES } from "@/lib/constants/assets";
+import { useTheme } from "@/components/ThemeProvider";
 
 const MOODS = [
     "Mountain", "Beach", "Jungle", "Desert", "Skygaze", "Wellness",
@@ -39,7 +40,8 @@ export function HeroLayoutB() {
 
     const heroTitle = landingPage?.heroTitle || DEFAULT_TITLE;
     const heroSubtitle = landingPage?.heroSubtitle || DEFAULT_SUBTITLE;
-    const bgImage = landingPage?.backgroundImage?.url || null;
+    const { theme } = useTheme();
+    const bgImage = landingPage?.backgroundImage?.url || THEME_BG_IMAGES[theme as keyof typeof THEME_BG_IMAGES] || null;
     const titleLines = heroTitle.split("\n");
 
     // Auth state
@@ -147,7 +149,10 @@ export function HeroLayoutB() {
             {/* BG */}
             <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: -1, overflow: "hidden", pointerEvents: "none" }}>
                 {bgImage ? (
-                    <Image src={bgImage} alt="bg" fill style={{ objectFit: "cover", opacity: 0.55 }} />
+                    <>
+                        <Image src={bgImage} alt="bg" fill style={{ objectFit: "cover" }} />
+                        <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.45)" }} />
+                    </>
                 ) : (
                     <>
                         <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg,#04071c 0%,#070e2c 30%,#0a1535 60%,#060a1c 100%)" }} />
@@ -172,13 +177,6 @@ export function HeroLayoutB() {
                         ))}
                     </>
                 )}
-                {/* Mountain silhouette */}
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0 }}>
-                    <svg viewBox="0 0 1440 260" preserveAspectRatio="none" style={{ display: "block", width: "100%", height: 260 }}>
-                        <path d="M0,260 L0,190 L90,125 L185,185 L305,85 L425,168 L525,68 L635,150 L715,48 L808,140 L908,62 L1008,148 L1108,73 L1218,158 L1335,90 L1440,148 L1440,260 Z" fill="#0a1028" opacity="0.7" />
-                        <path d="M0,260 L0,222 L125,168 L255,218 L365,158 L465,208 L565,150 L658,200 L755,146 L855,196 L955,160 L1055,206 L1165,166 L1285,215 L1385,180 L1440,207 L1440,260 Z" fill="#060919" opacity="0.6" />
-                    </svg>
-                </div>
             </div>
 
             {/* Hero text */}

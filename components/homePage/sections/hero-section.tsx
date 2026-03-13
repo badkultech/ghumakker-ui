@@ -5,6 +5,8 @@ import { SearchTripsCard } from "../shared/SearchTripsCardDesktop";
 import { SearchTripsCardMobile } from "../shared/SearchTripsCardMobile";
 import { useGetLandingPageQuery } from "@/lib/services/landing-page";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { useTheme } from "@/components/ThemeProvider";
+import { THEME_BG_IMAGES } from "@/lib/constants/assets";
 
 // Fallback values shown before API loads
 const DEFAULT_TITLE = "Travel Together.\nBuild Real Connections.";
@@ -19,7 +21,8 @@ export function HeroSection() {
     { skip: !organizationPublicId }
   );
 
-  const bgImage = landingPage?.backgroundImage?.url || DEFAULT_BG;
+  const { theme } = useTheme();
+  const bgImage = landingPage?.backgroundImage?.url || THEME_BG_IMAGES[theme as keyof typeof THEME_BG_IMAGES] || DEFAULT_BG;
   const heroTitle = landingPage?.heroTitle || DEFAULT_TITLE;
   const heroSubtitle = landingPage?.heroSubtitle || DEFAULT_SUBTITLE;
 
@@ -38,7 +41,7 @@ export function HeroSection() {
           priority
           className="object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-black/10 to-transparent" />
+        <div className="absolute inset-0 bg-black/45" />
       </div>
 
       {/* Content */}
@@ -48,7 +51,7 @@ export function HeroSection() {
 
             {/* LEFT COLUMN */}
             <div className="max-w-xl w-full">
-              <h1 className="text-3xl lg:text-5xl font-bold leading-tight text-black drop-shadow-sm">
+              <h1 className="text-3xl lg:text-5xl font-bold leading-tight text-white drop-shadow-lg">
                 {titleLines.map((line, i) => (
                   <span key={i}>
                     {line}
@@ -57,7 +60,7 @@ export function HeroSection() {
                 ))}
               </h1>
 
-              <p className="mt-4 text-sm text-gray-800 max-w-md drop-shadow-sm">
+              <p className="mt-4 text-sm text-gray-100 max-w-md drop-shadow-md">
                 {heroSubtitle}
               </p>
             </div>

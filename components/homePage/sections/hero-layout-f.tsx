@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useGetLandingPageQuery } from "@/lib/services/landing-page";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
+import { useTheme } from "@/components/ThemeProvider";
+import { THEME_BG_IMAGES } from "@/lib/constants/assets";
 
 const DEFAULT_TITLE = "Join Group Trips.\nMeet Like Minded\nTravelers!";
 const DEFAULT_SUBTITLE = "An all-in-one platform to discover the most incredible group trips, connect with like-minded travelers and be part of a thriving community.";
@@ -18,7 +20,8 @@ export function HeroLayoutF() {
 
     const heroTitle = landingPage?.heroTitle || DEFAULT_TITLE;
     const heroSubtitle = landingPage?.heroSubtitle || DEFAULT_SUBTITLE;
-    const bgImage = landingPage?.backgroundImage?.url || DEFAULT_BG;
+    const { theme } = useTheme();
+    const bgImage = landingPage?.backgroundImage?.url || THEME_BG_IMAGES[theme as keyof typeof THEME_BG_IMAGES] || DEFAULT_BG;
 
     return (
         <div style={{
@@ -52,7 +55,7 @@ export function HeroLayoutF() {
                     {/* Dark gradient overlay for text readability (darker on right) */}
                     <div style={{
                         position: "absolute", inset: 0,
-                        background: "linear-gradient(to left, rgba(0,0,0,0.6) 20%, rgba(0,0,0,0.1) 80%)",
+                        background: "linear-gradient(to left, rgba(0,0,0,0.7) 30%, rgba(0,0,0,0.4) 100%)",
                     }} />
 
                     {/* ── Content Grid: Card Left, Text Right ── */}

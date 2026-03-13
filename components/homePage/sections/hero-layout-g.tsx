@@ -4,6 +4,8 @@ import Image from "next/image";
 import { useGetLandingPageQuery } from "@/lib/services/landing-page";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDesktop";
+import { useTheme } from "@/components/ThemeProvider";
+import { THEME_BG_IMAGES } from "@/lib/constants/assets";
 
 const DEFAULT_TITLE = "Join Group Trips.\nMeet Like Minded\nTravelers!";
 const DEFAULT_SUBTITLE = "An all-in-one platform to discover the most incredible group trips, connect with like-minded travelers and be part of a thriving community.";
@@ -17,7 +19,8 @@ export function HeroLayoutG() {
 
     const heroTitle = landingPage?.heroTitle || DEFAULT_TITLE;
     const heroSubtitle = landingPage?.heroSubtitle || DEFAULT_SUBTITLE;
-    const bgImage = landingPage?.backgroundImage?.url || null;
+    const { theme } = useTheme();
+    const bgImage = landingPage?.backgroundImage?.url || THEME_BG_IMAGES[theme as keyof typeof THEME_BG_IMAGES] || null;
 
     return (
         <div style={{
