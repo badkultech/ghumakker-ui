@@ -9,6 +9,8 @@ import { MonthYearPicker } from "@/components/common/MonthYearPicker";
 import { useRouter } from "next/navigation";
 import { useGetLandingPageQuery } from "@/lib/services/landing-page";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { useTheme } from "@/components/ThemeProvider";
+import { THEME_BG_IMAGES } from "@/lib/constants/assets";
 
 const MOODS = [
     "Mountain", "Beach", "Jungle", "Desert", "Skygaze",
@@ -32,7 +34,8 @@ export function HeroLayoutC() {
 
     const heroTitle = landingPage?.heroTitle || DEFAULT_TITLE;
     const heroSubtitle = landingPage?.heroSubtitle || DEFAULT_SUBTITLE;
-    const bgImage = landingPage?.backgroundImage?.url || DEFAULT_BG;
+    const { theme } = useTheme();
+    const bgImage = landingPage?.backgroundImage?.url || THEME_BG_IMAGES[theme as keyof typeof THEME_BG_IMAGES] || DEFAULT_BG;
     const footerText = landingPage?.footerText || "© 2025 Copyright. All rights reserved.";
     const socialLinks = {
         linkedin: landingPage?.linkedinUrl || null,
@@ -82,7 +85,7 @@ export function HeroLayoutC() {
                 <Image src={bgImage} alt="bg" fill priority
                     style={{ objectFit: "cover", objectPosition: "center" }} />
                 {/* Overlay */}
-                <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.38)" }} />
+                <div style={{ position: "absolute", inset: 0, background: "rgba(0,0,0,0.45)" }} />
 
                 {/* Hero text */}
                 <div style={{ position: "relative", zIndex: 2, marginBottom: 28, maxWidth: 660 }}>
