@@ -147,7 +147,7 @@ export function HeroLayoutB() {
             </div>
 
             {/* BG */}
-            <div style={{ position: "fixed", top: 0, left: 0, right: 0, bottom: 0, zIndex: -1, overflow: "hidden", pointerEvents: "none" }}>
+            <div style={{ position: "absolute", inset: 0, zIndex: -1, overflow: "hidden", pointerEvents: "none" }}>
                 {bgImage ? (
                     <>
                         <Image src={bgImage} alt="bg" fill style={{ objectFit: "cover" }} />
