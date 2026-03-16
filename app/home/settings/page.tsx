@@ -22,6 +22,7 @@ import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 import { extractPhoneNumber, isValidPhoneLength } from "@/lib/constants/phone";
 import { useHomeLayout } from "../HomeLayoutContext";
+import { Footer } from "@/components/search-results/footer";
 
 export default function SettingsPage() {
   const searchParams = useSearchParams();
@@ -271,7 +272,7 @@ export default function SettingsPage() {
           </div>
         </div>
       </main>
-
+      <Footer />
       {/* MODALS */}
       <LogoutModal open={showLogoutModal} onClose={() => setShowLogoutModal(false)} onConfirm={handleConfirmLogout} />
       <DeactivateModal open={showDeactivateModal} onClose={() => setShowDeactivateModal(false)} onConfirm={handleDeactivateAccount} />

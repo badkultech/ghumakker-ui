@@ -12,6 +12,7 @@ import { useGetUserLeadsQuery, useSendNudgeMutation, useUnsendInviteMutation } f
 import { UserTripLead } from "@/lib/services/user-leads/types"
 import { toast } from "@/hooks/use-toast"
 import { useHomeLayout } from "../HomeLayoutContext"
+import { Footer } from "@/components/search-results/footer";
 
 export default function TripInvitationsPage() {
   const [showNudgeModal, setShowNudgeModal] = useState(false)
@@ -170,6 +171,7 @@ export default function TripInvitationsPage() {
           </div>
         )}
       </main>
+        <Footer/>
 
       {/* Nudge Modal */}
       {showNudgeModal && selectedLead && (

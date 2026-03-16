@@ -125,7 +125,7 @@ export function AppHeader({
           )}
 
           {/* Theme Toggle Button */}
-          <ThemeToggle />
+            <ThemeToggle />
 
           <ProfileDropdown />
         </div>
