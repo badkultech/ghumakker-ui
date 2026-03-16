@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Footer } from "@/components/search-results/footer";
 
 
-export function RagirHomeSections() {
+export function GhumakkerHomeSections() {
     return (
         <div className="w-full flex-1 font-['Poppins',sans-serif]">
             {/* FIND YOUR BEST DESTINATION SECTION */}

@@ -11,7 +11,7 @@ import { HeroLayoutF } from "@/components/homePage/sections/hero-layout-f";
 import { HeroLayoutG } from "@/components/homePage/sections/hero-layout-g";
 import { getHeroLayout, type HeroLayout } from "@/components/homePage/sections/layout-selector";
 import { useHomeLayout } from "./HomeLayoutContext";
-import { RagirHomeSections } from "@/components/homePage/sections/ragir-home-sections";
+import { GhumakkerHomeSections } from "@/components/homePage/sections/ghumakker-home-sections";
 
 export default function Home() {
   const [layout, setLayout] = useState<HeroLayout>("B");
@@ -41,18 +41,14 @@ export default function Home() {
   return (
     <main className="flex flex-col overflow-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <div className="flex-1 overflow-auto">
-        {layout === "B" && (
-            <>
-                <HeroLayoutB />
-                <RagirHomeSections />
-            </>
-        )}
+        {layout === "B" && <HeroLayoutB />}
         {layout === "A" && <HeroSection />}
         {layout === "C" && <HeroLayoutC />}
         {layout === "D" && <HeroLayoutD />}
         {layout === "E" && <HeroLayoutE />}
         {layout === "F" && <HeroLayoutF />}
         {layout === "G" && <HeroLayoutG />}
+        <GhumakkerHomeSections />
       </div>
     </main>
   );
