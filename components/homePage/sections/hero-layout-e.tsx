@@ -30,7 +30,7 @@ export function HeroLayoutE() {
     const { theme } = useTheme();
     const bgImage = landingPage?.backgroundImage?.url || THEME_BG_IMAGES[theme as keyof typeof THEME_BG_IMAGES] || DEFAULT_BG;
 
-    const { accessToken } = useSelector(selectAuthState);
+    const { accessToken, userData } = useSelector(selectAuthState);
     const isLoggedIn = !!accessToken;
     const { openLoginModal, onMenuOpen } = useHomeLayout();
 
@@ -70,7 +70,9 @@ export function HeroLayoutE() {
                     <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                         {isLoggedIn ? (
                             <>
-                                <ThemeToggle />
+                                {(userData?.userType === 'SYSTEM_ADMIN' || userData?.userType === 'ORGANIZATION_ADMIN') && (
+                                    <ThemeToggle />
+                                )}
                                 <NotificationsDropdown notifications={[]} onUpdateNotifications={() => { }} />
                                 <button onClick={onMenuOpen} style={{ background: "none", border: "none", cursor: "pointer", padding: 6, borderRadius: 8, display: "flex", alignItems: "center" }}>
                                     <Menu size={22} color="#374151" />

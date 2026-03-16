@@ -24,6 +24,7 @@ import { useUserId } from "@/hooks/useUserId"
 import { useGetUserQueriesQuery } from "@/lib/services/user"
 import ConversationModal from "@/components/modals/ConversationModal"
 import { useHomeLayout } from "../HomeLayoutContext"
+import { Footer } from "@/components/search-results/footer"
 
 type QuestionStatus = "responded" | "pending"
 
@@ -323,6 +324,7 @@ export default function MyQueriesPage() {
                     </>
                 )}
             </main>
+            <Footer />
 
             {/* Conversation Modal */}
             <ConversationModal

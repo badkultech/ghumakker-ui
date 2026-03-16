@@ -128,8 +128,10 @@ export function MainHeader({
         {/* RIGHT */}
         <div className="ml-auto flex items-center gap-3">
 
-          {/* Theme Toggle — only for logged-in users */}
-          {isLoggedIn && <ThemeToggle />}
+          {/* Theme Toggle — only for SuperAdmin and Organizer */}
+          {isLoggedIn && (userData?.userType === 'SYSTEM_ADMIN' || userData?.userType === 'ORGANIZATION_ADMIN') && (
+            <ThemeToggle />
+          )}
 
           {isLoggedIn ? (
             <NotificationsDropdown

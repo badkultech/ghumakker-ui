@@ -19,6 +19,7 @@ import { SearchTripsCardMobile } from "@/components/homePage/shared/SearchTripsC
 import { FloatingCompareBadge } from "@/components/homePage/shared/FloatingCompareBadge";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";
+import { Footer } from "@/components/search-results/footer";
 import { useGetMyWishlistQuery } from "@/lib/services/wishlist";
 
 const calculateDuration = (startDate: string, endDate: string) => {
@@ -472,6 +473,7 @@ export default function SearchResultsWithFilters() {
         </div>
       </Overlay>
       <FloatingCompareBadge />
+      <Footer />
     </>
   );
 }

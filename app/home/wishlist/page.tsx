@@ -10,6 +10,7 @@ import { useUserId } from "@/hooks/useUserId"
 import { useAuthActions } from "@/hooks/useAuthActions"
 import { FloatingCompareBadge } from "@/components/homePage/shared/FloatingCompareBadge";
 import { useHomeLayout } from "../HomeLayoutContext"
+import { Footer } from "@/components/search-results/footer"
 
 export default function WishlistPage() {
     const organizationId = useOrganizationId();
@@ -119,6 +120,7 @@ export default function WishlistPage() {
                 )}
             </main>
             <FloatingCompareBadge />
+            <Footer />
         </div>
     )
 }

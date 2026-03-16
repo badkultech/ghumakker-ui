@@ -15,6 +15,7 @@ import { SearchTripsCard } from "@/components/homePage/shared/SearchTripsCardDes
 import { SearchTripsCardMobile } from "@/components/homePage/shared/SearchTripsCardMobile";
 import { FloatingRoleActions } from "@/components/common/FloatingRoleActions";
 import { useAuthActions } from "@/hooks/useAuthActions";
+import { Footer } from "@/components/search-results/footer";
 
 interface TripData {
     id: string;
@@ -271,6 +272,7 @@ export default function CompareTripsPage() {
                     <SearchTripsCardMobile onClose={() => setShowSearchOverlay(false)} className="shadow-none border-none" />
                 </div>
             </Overlay>
+            <Footer />
         </div>
     );
 }

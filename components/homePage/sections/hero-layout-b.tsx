@@ -45,7 +45,7 @@ export function HeroLayoutB() {
     const titleLines = heroTitle.split("\n");
 
     // Auth state
-    const { accessToken } = useSelector(selectAuthState);
+    const { accessToken, userData } = useSelector(selectAuthState);
     const isLoggedIn = !!accessToken;
     const { openLoginModal, onMenuOpen } = useHomeLayout();
 
@@ -124,7 +124,9 @@ export function HeroLayoutB() {
                 <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                     {isLoggedIn ? (
                         <>
-                            <ThemeToggle />
+                            {(userData?.userType === 'SYSTEM_ADMIN' || userData?.userType === 'ORGANIZATION_ADMIN') && (
+                                <ThemeToggle />
+                            )}
                             <NotificationsDropdown notifications={[]} onUpdateNotifications={() => { }} />
                             <button
                                 onClick={onMenuOpen}
