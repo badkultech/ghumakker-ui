@@ -94,8 +94,16 @@ export const publicTripAPI = baseAPI.injectEndpoints({
       transformResponse: (response: any) => response.data ?? response,
       providesTags: [TAGS.trips],
     }),
+    getPopularTrips: builder.query<any, void>({
+      query: () => ({
+        url: `${ENDPOINTS.PUBLIC_TRIPS}/popular`,
+        method: "GET",
+      }),
+      transformResponse: (response: any) => response.data ?? response,
+      providesTags: [TAGS.trips],
+    }),
 
   }),
 });
 
-export const { useSearchPublicTripsQuery, useTripDetailsQuery, useGetExploreTripsQuery } = publicTripAPI;
+export const { useSearchPublicTripsQuery, useTripDetailsQuery, useGetExploreTripsQuery, useGetPopularTripsQuery } = publicTripAPI;
