@@ -64,6 +64,7 @@ export default function OrganizerProfilePage() {
               facebookUrl: data.facebookUrl || '',
               linkedinUrl: data.linkedinUrl || '',
               testimonials: data.testimonials || '',
+              subdomain: data.subdomain || '',
             }),
           );
           dispatch(setLogoFile(data.displayPicture || EMPTY_DOCUMENT));
@@ -160,6 +161,11 @@ export default function OrganizerProfilePage() {
                   {profile.organizerName}
                 </p>
                 <p className='text-gray-600'>{profile.tagline}</p>
+                {profile.subdomain && (
+                  <p className='text-primary text-sm font-medium mt-1'>
+                    {profile.subdomain}.ghumakker.com
+                  </p>
+                )}
               </div>
 
               <div className='ml-auto flex items-center space-x-4'>

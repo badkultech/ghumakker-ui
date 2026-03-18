@@ -92,6 +92,7 @@ export default function OrganizerProfileEditPage() {
               facebookUrl: data.facebookUrl || '',
               linkedinUrl: data.linkedinUrl || '',
               testimonials: data.testimonials || '',
+              subdomain: data.subdomain || '',
             }),
           );
           dispatch(setLogoFile(data.displayPicture || EMPTY_DOCUMENT));
@@ -141,6 +142,7 @@ export default function OrganizerProfileEditPage() {
         facebookUrl: profile.facebookUrl,
         linkedinUrl: profile.linkedinUrl,
         testimonials: profile.testimonials,
+        subdomain: profile.subdomain,
       };
 
       Object.entries(textFields).forEach(([key, value]) => {
@@ -294,6 +296,33 @@ export default function OrganizerProfileEditPage() {
             }}
             placeholder='Enter here'
           />
+        </div>
+
+        {/* Subdomain */}
+        <div>
+          <label className='block text-lg mb-1 font-medium'>
+            Subdomain
+          </label>
+          <div className='flex items-center gap-2'>
+            <Input
+              value={profile?.subdomain}
+              onChange={(e) => {
+                const val = e.target.value.toLowerCase().replace(/[^a-z0-9-]/g, '');
+                dispatch(
+                  setProfile({
+                    ...profile,
+                    subdomain: val,
+                  }),
+                );
+              }}
+              placeholder='e.g. my-agency'
+              className='flex-1'
+            />
+            <span className='text-gray-500 font-medium'>.ghumakker.com</span>
+          </div>
+          <p className='text-xs text-gray-400 mt-1'>
+            This will be your dedicated URL for travelers.
+          </p>
         </div>
 
         {/* Banner Upload */}
