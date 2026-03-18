@@ -6,11 +6,12 @@ import { Search } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Footer } from "@/components/search-results/footer";
-import { useGetExploreTripsQuery } from "@/lib/services/trip-search";
+import { useGetExploreTripsQuery, useGetPopularTripsQuery } from "@/lib/services/trip-search";
 import { LazyImage } from "@/components/ui/lazyImage";
 
 export function GhumakkerHomeSections() {
     const { data: exploreData, isLoading } = useGetExploreTripsQuery();
+    const { data: popularData, isLoading: isPopularLoading } = useGetPopularTripsQuery();
     const router = useRouter();
 
     const handleDestinationClick = (destination: string) => {
@@ -34,6 +35,24 @@ export function GhumakkerHomeSections() {
             image: item.document?.url || "/placeholder.jpg"
         }))
         : dummyExplore;
+
+    const dummyPopular = [
+        { title: "Bali, Indonesia", subtitle: "Best for: Relaxation & Adventure", price: "12,999", image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80" },
+        { title: "Paris, France", subtitle: "Best for: Couples & Art Lovers", price: "12,999", image: "https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=800&q=80" },
+        { title: "Tokyo, Japan", subtitle: "Best for: Food, Culture & Nightlife", price: "12,999", image: "https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80" },
+        { title: "Dubai, UAE", subtitle: "Best for: Shopping & Skyline Views", price: "12,999", image: "https://images.unsplash.com/photo-1512453979436-5a5338ce1180?auto=format&fit=crop&w=800&q=80" },
+        { title: "Santorini, Greece", subtitle: "Best for: Architecture & Sunsets", price: "12,999", image: "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80" },
+    ];
+
+    const popularTrips = (popularData && popularData.length > 0)
+        ? popularData.map((item: any) => ({
+            title: item.name || item.tripName || item.cityTags?.[0] || "Featured Trip",
+            searchTag: item.cityTags?.[0] || item.name || item.tripName || "domestic",
+            subtitle: item.moodTags?.length ? item.moodTags.join(" • ") : "Discover the magic",
+            price: item.startingPrice ? item.startingPrice.toLocaleString() : "12,999",
+            image: item.tripImage?.url || "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80"
+        }))
+        : dummyPopular.map(d => ({ ...d, searchTag: d.title.split(",")[0] }));
 
     const rotations = ["-4deg", "3deg", "-3deg", "4deg"];
     const translates = ["-10px", "10px", "-5px", "10px"];
@@ -82,36 +101,16 @@ export function GhumakkerHomeSections() {
 
                     {/* Scrollable Trips Row */}
                     <div className="flex overflow-x-auto gap-5 pb-8 snap-x snap-mandatory scrollbar-hide no-scrollbar -mx-6 px-6 sm:mx-0 sm:px-0">
-                        <TripCard
-                            title="Bali, Indonesia"
-                            subtitle="Best for: Relaxation & Adventure"
-                            price="12,999"
-                            image="https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&w=800&q=80"
-                        />
-                        <TripCard
-                            title="Paris, France"
-                            subtitle="Best for: Couples & Art Lovers"
-                            price="12,999"
-                            image="https://images.unsplash.com/photo-1499856871958-5b9627545d1a?auto=format&fit=crop&w=800&q=80"
-                        />
-                        <TripCard
-                            title="Tokyo, Japan"
-                            subtitle="Best for: Food, Culture & Nightlife"
-                            price="12,999"
-                            image="https://images.unsplash.com/photo-1536098561742-ca998e48cbcc?auto=format&fit=crop&w=800&q=80"
-                        />
-                        <TripCard
-                            title="Dubai, UAE"
-                            subtitle="Best for: Shopping & Skyline Views"
-                            price="12,999"
-                            image="https://images.unsplash.com/photo-1512453979436-5a5338ce1180?auto=format&fit=crop&w=800&q=80"
-                        />
-                        <TripCard
-                            title="Santorini, Greece"
-                            subtitle="Best for: Architecture & Sunsets"
-                            price="12,999"
-                            image="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&w=800&q=80"
-                        />
+                        {popularTrips.map((trip: any, idx: number) => (
+                            <TripCard
+                                key={trip.title + idx}
+                                title={trip.title}
+                                subtitle={trip.subtitle}
+                                price={trip.price}
+                                image={trip.image}
+                                onClick={() => handleDestinationClick(trip.searchTag)}
+                            />
+                        ))}
                     </div>
                 </div>
             </section>
@@ -149,9 +148,12 @@ function DestinationCard({ title, image, rotation, translateY, onClick }: { titl
 }
 
 
-function TripCard({ title, subtitle, price, image }: { title: string, subtitle: string, price: string, image: string }) {
+function TripCard({ title, subtitle, price, image, onClick }: { title: string, subtitle: string, price: string, image: string, onClick?: () => void }) {
     return (
-        <div className="relative w-64 md:w-[280px] h-[360px] shrink-0 rounded-[24px] overflow-hidden shadow-lg group cursor-pointer snap-start">
+        <div 
+            onClick={onClick}
+            className="relative w-64 md:w-[280px] h-[360px] shrink-0 rounded-[24px] overflow-hidden shadow-lg group cursor-pointer snap-start transition-transform duration-300 hover:scale-[1.02]"
+        >
             <Image
                 src={image}
                 alt={title}
