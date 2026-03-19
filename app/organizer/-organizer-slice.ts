@@ -16,6 +16,7 @@ export interface Profile {
   facebookUrl: string;
   linkedinUrl: string;
   testimonials: string;
+  subdomain?: string;
 }
 
 export interface TripFormData {
@@ -61,6 +62,7 @@ export const initialOrganizerSliceState: OrganizerSliceState = {
     facebookUrl: '',
     linkedinUrl: '',
     testimonials: '',
+    subdomain: '',
   },
   logoFile: EMPTY_DOCUMENT,
   bannerFile: EMPTY_DOCUMENT,
