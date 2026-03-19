@@ -13,6 +13,7 @@ export interface PartnerData {
   testimonials: string;
   testimonialScreenshot: UploadedFile;
   certifications: UploadedFile[];
+  homeLayout?: string;
 }
 
 export interface PartnerRequest {

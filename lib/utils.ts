@@ -179,6 +179,7 @@ export const ENDPOINTS = {
     TICKET_COMMENT: (ticketId: number | string) =>
       `/organizer/ticket/${ticketId}/comment`,
     DASHBOARD: (orgId: string) => `/org/${orgId}/dashboard`,
+    HOME_LAYOUT: (orgId: string) => `/org/${orgId}/home-layout`,
 
 
 

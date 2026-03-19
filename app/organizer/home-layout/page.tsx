@@ -3,6 +3,10 @@
 import { useState, useEffect } from "react";
 import { ExternalLink } from "lucide-react";
 import { getHeroLayout, type HeroLayout } from "@/components/homePage/sections/layout-selector";
+import { useUpdateHomeLayoutMutation, useGetOrganizerProfileQuery } from "@/lib/services/organizer";
+import { useSelector } from "react-redux";
+import { RootState } from "@/lib/slices/store";
+import { toast } from "sonner";
 
 const LAYOUTS: {
     id: HeroLayout;
@@ -10,49 +14,63 @@ const LAYOUTS: {
     desc: string;
     tags: string[];
 }[] = [
-        {
-            id: "A",
-            label: "Classic Split",
-            desc: "Background image with hero text and search card side by side.",
-            tags: ["Two column", "Image BG", "Search card"],
-        },
-        {
-            id: "B",
-            label: "Aurora Center",
-            desc: "Dark immersive aurora background with centered text and search.",
-            tags: ["Centered", "Aurora BG", "Dark theme"],
-        },
-        {
-            id: "C",
-            label: "Photo Hero",
-            desc: "Your background photo fills the screen with overlaid text and search.",
-            tags: ["Centered", "Photo BG", "With footer"],
-        },
-        {
-            id: "D",
-            label: "Aurora Split",
-            desc: "Night sky background, hero text left, purple search card right with region & month picker.",
-            tags: ["Split", "Night BG", "Purple", "Region picker"],
-        },
-        {
-            id: "E",
-            label: "Card Left",
-            desc: "Image background, search card left, text right. Orange theme.",
-            tags: ["Mirrored", "Image BG", "Orange"],
-        },
-        {
-            id: "F",
-            label: "Rounded Frame Image",
-            desc: "Normal header, padded rounded hero section with image, card left and text right. Main footer.",
-            tags: ["Padded", "Rounded", "Image BG"],
-        },
-        {
-            id: "G",
-            label: "Rounded Frame Aurora",
-            desc: "Normal header, padded rounded hero section with aurora background, text left and card right.",
-            tags: ["Padded", "Rounded", "Aurora BG"],
-        },
-    ];
+    {
+        id: "A",
+        label: "Classic Split",
+        desc: "Background image with hero text and search card side by side.",
+        tags: ["Two column", "Image BG", "Search card"],
+    },
+    {
+        id: "B",
+        label: "Aurora Center",
+        desc: "Dark immersive aurora background with centered text and search.",
+        tags: ["Centered", "Aurora BG", "Dark theme"],
+    },
+    {
+        id: "C",
+        label: "Photo Hero",
+        desc: "Your background photo fills the screen with overlaid text and search.",
+        tags: ["Centered", "Photo BG", "With footer"],
+    },
+    {
+        id: "D",
+        label: "Aurora Split",
+        desc: "Night sky background, hero text left, purple search card right with region & month picker.",
+        tags: ["Split", "Night BG", "Purple", "Region picker"],
+    },
+    {
+        id: "E",
+        label: "Card Left",
+        desc: "Image background, search card left, text right. Orange theme.",
+        tags: ["Mirrored", "Image BG", "Orange"],
+    },
+    {
+        id: "F",
+        label: "Rounded Frame Image",
+        desc: "Normal header, padded rounded hero section with image, card left and text right. Main footer.",
+        tags: ["Padded", "Rounded", "Image BG"],
+    },
+    {
+        id: "G",
+        label: "Rounded Frame Aurora",
+        desc: "Normal header, padded rounded hero section with aurora background, text left and card right.",
+        tags: ["Padded", "Rounded", "Aurora BG"],
+    },
+];
+
+const LAYOUT_MAPPING: Record<HeroLayout, string> = {
+    "A": "CLASSIC_SPLIT",
+    "B": "AURORA_CENTER",
+    "C": "PHOTO_HERO",
+    "D": "AURORA_SPLIT",
+    "E": "CARD_LEFT",
+    "F": "ROUNDED_FRAME_IMAGE",
+    "G": "ROUNDED_FRAME_AURORA",
+};
+
+const REVERSE_MAPPING: Record<string, HeroLayout> = Object.fromEntries(
+    Object.entries(LAYOUT_MAPPING).map(([k, v]) => [v, k as HeroLayout])
+);
 
 const STORAGE_KEY = "hero-layout";
 const SCALE = 0.22; // iframe scale factor
@@ -60,22 +78,53 @@ const IFRAME_W = 1280;
 const IFRAME_H = 720;
 
 export default function HomeLayoutPage() {
+    const { focusedOrganizationId: organizationId } = useSelector((state: RootState) => state.auth);
     const [selected, setSelected] = useState<HeroLayout>("A");
     const [saved, setSaved] = useState<HeroLayout>("A");
     const [justSaved, setJustSaved] = useState(false);
     const [loadedMap, setLoadedMap] = useState<Record<string, boolean>>({});
 
-    useEffect(() => {
-        const stored = getHeroLayout();
-        setSelected(stored);
-        setSaved(stored);
-    }, []);
+    const { data: profile } = useGetOrganizerProfileQuery(
+        { organizationId: organizationId as string },
+        { skip: !organizationId }
+    );
+    const [updateLayout, { isLoading: isUpdating }] = useUpdateHomeLayoutMutation();
 
-    const handleSave = () => {
-        localStorage.setItem(STORAGE_KEY, selected);
-        setSaved(selected);
-        setJustSaved(true);
-        setTimeout(() => setJustSaved(false), 2500);
+    useEffect(() => {
+        if (profile?.homeLayout) {
+            const mapped = REVERSE_MAPPING[profile.homeLayout] || "A";
+            setSelected(mapped);
+            setSaved(mapped);
+            localStorage.setItem(STORAGE_KEY, mapped);
+        } else {
+            const stored = getHeroLayout();
+            setSelected(stored);
+            setSaved(stored);
+        }
+    }, [profile]);
+
+    const handleSave = async () => {
+        if (!organizationId) {
+            toast.error("Organization ID not found");
+            return;
+        }
+
+        try {
+            const enumValue = LAYOUT_MAPPING[selected];
+            await updateLayout({
+                organizationId,
+                homeLayout: enumValue,
+            }).unwrap();
+
+            localStorage.setItem(STORAGE_KEY, selected);
+            setSaved(selected);
+            setJustSaved(true);
+            toast.success("Home page layout updated successfully!");
+            setTimeout(() => setJustSaved(false), 2500);
+        } catch (error) {
+            console.error("Failed to save layout:", error);
+            toast.error("Failed to update home page layout");
+        }
     };
 
     const hasChanges = selected !== saved;
@@ -194,18 +243,18 @@ export default function HomeLayoutPage() {
             <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
                 <button
                     onClick={handleSave}
-                    disabled={!hasChanges}
+                    disabled={!hasChanges || isUpdating}
                     style={{
                         padding: "10px 28px", borderRadius: 999, border: "none",
-                        cursor: hasChanges ? "pointer" : "not-allowed",
+                        cursor: (hasChanges && !isUpdating) ? "pointer" : "not-allowed",
                         fontSize: 14, fontWeight: 600, color: "#fff",
-                        background: hasChanges
+                        background: (hasChanges && !isUpdating)
                             ? "linear-gradient(90deg,#f59e0b,#f97316,#ec4899,#ef4444)"
                             : "#d1d5db",
                         transition: "all 0.2s",
                     }}
                 >
-                    {justSaved ? "✓ Saved!" : "Save Layout"}
+                    {isUpdating ? "Saving..." : justSaved ? "✓ Saved!" : "Save Layout"}
                 </button>
 
                 <a
