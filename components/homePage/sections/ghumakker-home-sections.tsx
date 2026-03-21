@@ -8,10 +8,12 @@ import { useRouter } from "next/navigation";
 import { Footer } from "@/components/search-results/footer";
 import { useGetExploreTripsQuery, useGetPopularTripsQuery } from "@/lib/services/trip-search";
 import { LazyImage } from "@/components/ui/lazyImage";
+import { useOrganizationId } from "@/hooks/useOrganizationId";
 
 export function GhumakkerHomeSections() {
-    const { data: exploreData, isLoading } = useGetExploreTripsQuery();
-    const { data: popularData, isLoading: isPopularLoading } = useGetPopularTripsQuery();
+    const organizationId = useOrganizationId();
+    const { data: exploreData, isLoading } = useGetExploreTripsQuery({ organizationPublicId: organizationId || undefined });
+    const { data: popularData, isLoading: isPopularLoading } = useGetPopularTripsQuery({ organizationPublicId: organizationId || undefined });
     const router = useRouter();
 
     const handleDestinationClick = (destination: string) => {

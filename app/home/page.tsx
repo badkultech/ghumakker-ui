@@ -14,6 +14,8 @@ import { useHomeLayout } from "./HomeLayoutContext";
 import { GhumakkerHomeSections } from "@/components/homePage/sections/ghumakker-home-sections";
 import { useLazyGetOrganizerProfileQuery } from "@/lib/services/organizer";
 import { useLazyResolveSubdomainQuery } from "@/lib/services/publicOpenApis";
+import { useDispatch } from "react-redux";
+import { setResolvedOrg } from "@/lib/slices/resolvedOrgSlice";
 
 export default function Home() {
   const [layout, setLayout] = useState<HeroLayout>("B");
@@ -21,6 +23,7 @@ export default function Home() {
   const searchParams = useSearchParams();
   const [resolveSubdomain] = useLazyResolveSubdomainQuery();
   const [getOrgProfile] = useLazyGetOrganizerProfileQuery();
+  const dispatch = useDispatch();
 
   const applyLayout = (l: HeroLayout) => {
     setLayout(l);
@@ -64,6 +67,7 @@ export default function Home() {
         const fourHours = 4 * 60 * 60 * 1000;
         if (Date.now() - timestamp < fourHours) {
           console.log("Using cached layout:", layout);
+          dispatch(setResolvedOrg({ orgId: organizationId, layout: layout }));
           applyLayout(layout);
           return;
         }
@@ -89,6 +93,9 @@ export default function Home() {
               timestamp: Date.now()
             }));
 
+            // Save to Redux
+            dispatch(setResolvedOrg({ orgId: resolveData.organizationId, layout: mappedLayout }));
+
             applyLayout(mappedLayout);
             return;
           }
@@ -103,7 +110,7 @@ export default function Home() {
 
     fetchLayout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams]);
+  }, [searchParams, dispatch]);
 
   return (
     <main className="flex flex-col overflow-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">

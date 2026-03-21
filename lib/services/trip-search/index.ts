@@ -55,6 +55,8 @@ export const publicTripAPI = baseAPI.injectEndpoints({
         if (criteria?.maxBudget)
           params.append("maxBudget", String(criteria.maxBudget));
 
+        if (criteria?.organizationPublicId)
+          params.append("organizationPublicId", String(criteria.organizationPublicId));
 
         return {
           url: `${ENDPOINTS.TRIP_SEARCH}?${params.toString()}`,
@@ -86,19 +88,31 @@ export const publicTripAPI = baseAPI.injectEndpoints({
 
       providesTags: [TAGS.trips],
     }),
-    getExploreTrips: builder.query<any, void>({
-      query: () => ({
-        url: `${ENDPOINTS.PUBLIC_TRIPS}/explore`,
-        method: "GET",
-      }),
+    getExploreTrips: builder.query<any, { organizationPublicId?: string } | void>({
+      query: (arg) => {
+        const params = new URLSearchParams();
+        if (arg && typeof arg === 'object' && arg.organizationPublicId) {
+          params.append("organizationPublicId", arg.organizationPublicId);
+        }
+        return {
+          url: `${ENDPOINTS.PUBLIC_TRIPS}/explore?${params.toString()}`,
+          method: "GET",
+        };
+      },
       transformResponse: (response: any) => response.data ?? response,
       providesTags: [TAGS.trips],
     }),
-    getPopularTrips: builder.query<any, void>({
-      query: () => ({
-        url: `${ENDPOINTS.PUBLIC_TRIPS}/popular`,
-        method: "GET",
-      }),
+    getPopularTrips: builder.query<any, { organizationPublicId?: string } | void>({
+      query: (arg) => {
+        const params = new URLSearchParams();
+        if (arg && typeof arg === 'object' && arg.organizationPublicId) {
+          params.append("organizationPublicId", arg.organizationPublicId);
+        }
+        return {
+          url: `${ENDPOINTS.PUBLIC_TRIPS}/popular?${params.toString()}`,
+          method: "GET",
+        };
+      },
       transformResponse: (response: any) => response.data ?? response,
       providesTags: [TAGS.trips],
     }),
