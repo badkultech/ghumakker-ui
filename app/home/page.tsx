@@ -12,29 +12,96 @@ import { HeroLayoutG } from "@/components/homePage/sections/hero-layout-g";
 import { getHeroLayout, type HeroLayout } from "@/components/homePage/sections/layout-selector";
 import { useHomeLayout } from "./HomeLayoutContext";
 import { GhumakkerHomeSections } from "@/components/homePage/sections/ghumakker-home-sections";
+import { useLazyGetOrganizerProfileQuery } from "@/lib/services/organizer";
+import { useLazyResolveSubdomainQuery } from "@/lib/services/publicOpenApis";
 
 export default function Home() {
   const [layout, setLayout] = useState<HeroLayout>("B");
   const { setHideHeader, setHideFooter, setShowLoginRegister } = useHomeLayout();
   const searchParams = useSearchParams();
+  const [resolveSubdomain] = useLazyResolveSubdomainQuery();
+  const [getOrgProfile] = useLazyGetOrganizerProfileQuery();
 
   const applyLayout = (l: HeroLayout) => {
     setLayout(l);
     setHideHeader(l === "B" || l === "D" || l === "E");
     setHideFooter(l === "C");
     setShowLoginRegister(l === "C");
-    // D: uses MainHeader (showLoginRegister=true via layout.tsx) + main Footer
   };
 
   useEffect(() => {
-    // URL param ?layout=B takes priority (used by Preview button)
-    const urlLayout = searchParams.get("layout") as HeroLayout | null;
-    const validLayouts: HeroLayout[] = ["A", "B", "C", "D", "E", "F", "G"];
-    if (urlLayout && validLayouts.includes(urlLayout)) {
-      applyLayout(urlLayout);
-    } else {
+    const fetchLayout = async () => {
+      const hostname = window.location.hostname;
+      const parts = hostname.split(".");
+      let subdomain = "";
+
+      // Handle travel360.localhost:3000
+      if (hostname.includes("localhost")) {
+        if (parts.length > 1 && parts[parts.length - 1] === "localhost") {
+          subdomain = parts[0];
+        }
+      }
+      // Handle travel360.ghumakker.com
+      else if (parts.length > 2) {
+        subdomain = parts[0];
+      }
+
+      console.log("Detected Subdomain:", subdomain);
+
+      // 2. Priority to layout parameter in URL (Preview mode)
+      const urlLayout = searchParams.get("layout") as HeroLayout | null;
+      const validLayouts: HeroLayout[] = ["A", "B", "C", "D", "E", "F", "G"];
+      if (urlLayout && validLayouts.includes(urlLayout)) {
+        applyLayout(urlLayout);
+        return;
+      }
+
+      // 3. Check Cache
+      const cacheKey = `ghumakker_layout_${subdomain}`;
+      const cached = localStorage.getItem(cacheKey);
+      if (cached) {
+        const { layout, organizationId, timestamp } = JSON.parse(cached);
+        const fourHours = 4 * 60 * 60 * 1000;
+        if (Date.now() - timestamp < fourHours) {
+          console.log("Using cached layout:", layout);
+          applyLayout(layout);
+          return;
+        }
+      }
+
+      // 4. Resolve subdomain if exists
+      if (subdomain && subdomain !== "www" && subdomain !== "localhost") {
+        try {
+          const resolveData = await resolveSubdomain(subdomain).unwrap();
+          if (resolveData?.organizationId) {
+            const profileData = await getOrgProfile({ organizationId: resolveData.organizationId }).unwrap();
+            const layoutMap: Record<string, HeroLayout> = {
+              "CLASSIC_SPLIT": "A",
+              "AURORA_CENTER": "B",
+              "PHOTO_HERO": "C",
+            };
+            const mappedLayout = layoutMap[profileData?.homeLayout || ""] || "B";
+            
+            // Save to cache
+            localStorage.setItem(cacheKey, JSON.stringify({
+              layout: mappedLayout,
+              organizationId: resolveData.organizationId,
+              timestamp: Date.now()
+            }));
+
+            applyLayout(mappedLayout);
+            return;
+          }
+        } catch (error) {
+          console.error("Layout resolution failed:", error);
+        }
+      }
+
+      // 5. Default layout
       applyLayout(getHeroLayout());
-    }
+    };
+
+    fetchLayout();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 

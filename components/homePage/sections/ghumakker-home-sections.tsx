@@ -150,7 +150,7 @@ function DestinationCard({ title, image, rotation, translateY, onClick }: { titl
 
 function TripCard({ title, subtitle, price, image, onClick }: { title: string, subtitle: string, price: string, image: string, onClick?: () => void }) {
     return (
-        <div 
+        <div
             onClick={onClick}
             className="relative w-64 md:w-[280px] h-[360px] shrink-0 rounded-[24px] overflow-hidden shadow-lg group cursor-pointer snap-start transition-transform duration-300 hover:scale-[1.02]"
         >
