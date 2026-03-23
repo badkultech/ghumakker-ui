@@ -63,13 +63,16 @@ export default function Home() {
       const cacheKey = `ghumakker_layout_${subdomain}`;
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
-        const { layout, organizationId, timestamp } = JSON.parse(cached);
-        const fourHours = 4 * 60 * 60 * 1000;
-        if (Date.now() - timestamp < fourHours) {
-          console.log("Using cached layout:", layout);
-          dispatch(setResolvedOrg({ orgId: organizationId, layout: layout }));
-          applyLayout(layout);
-          return;
+        try {
+          const { layout, organizationId, timestamp } = JSON.parse(cached);
+          const fourHours = 4 * 60 * 60 * 1000;
+          if (Date.now() - timestamp < fourHours && subdomain) {
+            dispatch(setResolvedOrg({ orgId: organizationId, layout: layout }));
+            applyLayout(layout);
+            return;
+          }
+        } catch (e) {
+          localStorage.removeItem(cacheKey);
         }
       }
 
@@ -77,29 +80,45 @@ export default function Home() {
       if (subdomain && subdomain !== "www" && subdomain !== "localhost") {
         try {
           const resolveData = await resolveSubdomain(subdomain).unwrap();
-          if (resolveData?.organizationId) {
-            const profileData = await getOrgProfile({ organizationId: resolveData.organizationId }).unwrap();
+          const orgId = resolveData?.organizationId || resolveData?.publicId;
+          
+          if (orgId) {
             const layoutMap: Record<string, HeroLayout> = {
               "CLASSIC_SPLIT": "A",
               "AURORA_CENTER": "B",
               "PHOTO_HERO": "C",
+              "AURORA_SPLIT": "D",
+              "CARD_LEFT": "E",
+              "ROUNDED_FRAME": "F",
+              "ROUNDED_FRAME_AURORA": "G",
             };
-            const mappedLayout = layoutMap[profileData?.homeLayout || ""] || "B";
-            
+
+            // 1. Try layout from resolveData first
+            const rawLayout = resolveData?.layout || "";
+            let mappedLayout = layoutMap[rawLayout.toUpperCase()] || layoutMap[rawLayout];
+
+            // 2. If not in resolveData, try fetching full profile
+            if (!mappedLayout) {
+              const profileData = await getOrgProfile({ organizationId: orgId }).unwrap();
+              const profileRawLayout = profileData?.homeLayout || "";
+              mappedLayout = layoutMap[profileRawLayout.toUpperCase()] || layoutMap[profileRawLayout] || "B";
+            }
+
             // Save to cache
             localStorage.setItem(cacheKey, JSON.stringify({
               layout: mappedLayout,
-              organizationId: resolveData.organizationId,
+              organizationId: orgId,
               timestamp: Date.now()
             }));
 
             // Save to Redux
-            dispatch(setResolvedOrg({ orgId: resolveData.organizationId, layout: mappedLayout }));
+            dispatch(setResolvedOrg({ orgId: orgId, layout: mappedLayout }));
 
             applyLayout(mappedLayout);
             return;
           }
         } catch (error) {
+          // Keep error log for critical failures
           console.error("Layout resolution failed:", error);
         }
       }

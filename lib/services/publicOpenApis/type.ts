@@ -1,3 +1,7 @@
 export interface ResolveSubdomainResponse {
-  organizationId: string;
+  organizationId?: string;
+  publicId?: string;
+  entityName?: string;
+  host?: string;
+  layout?: string;
 }

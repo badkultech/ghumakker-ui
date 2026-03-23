@@ -3,7 +3,11 @@ import { publicBaseAPI } from '..';
 import { ApiResponse } from '../common-types';
 
 export interface ResolveSubdomainResponse {
-  organizationId: string;
+  organizationId?: string;
+  publicId?: string;
+  entityName?: string;
+  host?: string;
+  layout?: string;
 }
 
 export const mockTestApi = publicBaseAPI.injectEndpoints({
@@ -18,8 +22,8 @@ export const mockTestApi = publicBaseAPI.injectEndpoints({
         url: ENDPOINTS.ORGANIZER.RESOLVE_SUBDOMAIN(subdomain),
         method: 'GET',
       }),
-      transformResponse: (response: ApiResponse<ResolveSubdomainResponse>) =>
-        response.data,
+      transformResponse: (response: any) =>
+        response?.data || response,
     }),
   }),
 });
