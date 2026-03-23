@@ -8,69 +8,52 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/lib/slices/store";
 import { toast } from "sonner";
 
+const THEMES = [
+    { id: "RED", label: "Red", themeId: "red" },
+    { id: "BLUE", label: "Blue", themeId: "blue" },
+    { id: "PURPLE", label: "Purple", themeId: "purple" },
+    { id: "ORANGE", label: "Orange", themeId: "orange" },
+] as const;
+
+const BASES = [
+    { id: "A", label: "Aurora Center", desc: "Dark aurora · Centered text · Search below" },
+    { id: "B", label: "Aurora Split", desc: "Night sky bg · Text left · Card right" },
+    { id: "C", label: "Card Left", desc: "Image bg · Card left · Text right" },
+] as const;
+
 const LAYOUTS: {
     id: HeroLayout;
     label: string;
     desc: string;
     tags: string[];
-}[] = [
-    {
-        id: "A",
-        label: "Classic Split",
-        desc: "Background image with hero text and search card side by side.",
-        tags: ["Two column", "Image BG", "Search card"],
-    },
-    {
-        id: "B",
-        label: "Aurora Center",
-        desc: "Dark immersive aurora background with centered text and search.",
-        tags: ["Centered", "Aurora BG", "Dark theme"],
-    },
-    {
-        id: "C",
-        label: "Photo Hero",
-        desc: "Your background photo fills the screen with overlaid text and search.",
-        tags: ["Centered", "Photo BG", "With footer"],
-    },
-    {
-        id: "D",
-        label: "Aurora Split",
-        desc: "Night sky background, hero text left, purple search card right with region & month picker.",
-        tags: ["Split", "Night BG", "Purple", "Region picker"],
-    },
-    {
-        id: "E",
-        label: "Card Left",
-        desc: "Image background, search card left, text right. Orange theme.",
-        tags: ["Mirrored", "Image BG", "Orange"],
-    },
-    {
-        id: "F",
-        label: "Rounded Frame Image",
-        desc: "Normal header, padded rounded hero section with image, card left and text right. Main footer.",
-        tags: ["Padded", "Rounded", "Image BG"],
-    },
-    {
-        id: "G",
-        label: "Rounded Frame Aurora",
-        desc: "Normal header, padded rounded hero section with aurora background, text left and card right.",
-        tags: ["Padded", "Rounded", "Aurora BG"],
-    },
-];
+}[] = BASES.flatMap(base => 
+    THEMES.map(theme => ({
+        id: `${base.id}_${theme.id}` as HeroLayout,
+        label: `${base.label} (${theme.label})`,
+        desc: base.desc,
+        tags: [base.label, theme.label],
+    }))
+);
 
-const LAYOUT_MAPPING: Record<HeroLayout, string> = {
-    "A": "CLASSIC_SPLIT",
-    "B": "AURORA_CENTER",
-    "C": "PHOTO_HERO",
-    "D": "AURORA_SPLIT",
-    "E": "CARD_LEFT",
-    "F": "ROUNDED_FRAME_IMAGE",
-    "G": "ROUNDED_FRAME_AURORA",
+const LAYOUT_MAPPING: Record<string, string> = {
+    ...Object.fromEntries(LAYOUTS.map(l => [l.id, l.id])),
+    "A": "A_BLUE",
+    "B": "B_BLUE",
+    "C": "C_BLUE",
+    "D": "B_PURPLE",
+    "E": "C_ORANGE",
 };
 
-const REVERSE_MAPPING: Record<string, HeroLayout> = Object.fromEntries(
-    Object.entries(LAYOUT_MAPPING).map(([k, v]) => [v, k as HeroLayout])
-);
+const REVERSE_MAPPING: Record<string, HeroLayout> = {
+    ...Object.fromEntries(LAYOUTS.map(l => [l.id, l.id])),
+    "CLASSIC_SPLIT": "A_BLUE",
+    "AURORA_CENTER": "A_BLUE",
+    "PHOTO_HERO": "B_PURPLE",
+    "AURORA_SPLIT": "B_PURPLE",
+    "CARD_LEFT": "C_ORANGE",
+    "ROUNDED_FRAME_IMAGE": "C_ORANGE",
+    "ROUNDED_FRAME_AURORA": "B_PURPLE",
+};
 
 const STORAGE_KEY = "hero-layout";
 const SCALE = 0.22; // iframe scale factor
@@ -79,8 +62,8 @@ const IFRAME_H = 720;
 
 export default function HomeLayoutPage() {
     const { focusedOrganizationId: organizationId } = useSelector((state: RootState) => state.auth);
-    const [selected, setSelected] = useState<HeroLayout>("A");
-    const [saved, setSaved] = useState<HeroLayout>("A");
+    const [selected, setSelected] = useState<HeroLayout>("A_BLUE");
+    const [saved, setSaved] = useState<HeroLayout>("A_BLUE");
     const [justSaved, setJustSaved] = useState(false);
     const [loadedMap, setLoadedMap] = useState<Record<string, boolean>>({});
 
@@ -92,7 +75,7 @@ export default function HomeLayoutPage() {
 
     useEffect(() => {
         if (profile?.homeLayout) {
-            const mapped = REVERSE_MAPPING[profile.homeLayout] || "A";
+            const mapped = REVERSE_MAPPING[profile.homeLayout] || "A_BLUE";
             setSelected(mapped);
             setSaved(mapped);
             localStorage.setItem(STORAGE_KEY, mapped);

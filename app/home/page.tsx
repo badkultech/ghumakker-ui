@@ -2,13 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
-import { HeroSection } from "@/components/homePage/sections/hero-section";
 import { HeroLayoutB } from "@/components/homePage/sections/hero-layout-b";
-import { HeroLayoutC } from "@/components/homePage/sections/hero-layout-c";
 import { HeroLayoutD } from "@/components/homePage/sections/hero-layout-d";
 import { HeroLayoutE } from "@/components/homePage/sections/hero-layout-e";
-import { HeroLayoutF } from "@/components/homePage/sections/hero-layout-f";
-import { HeroLayoutG } from "@/components/homePage/sections/hero-layout-g";
+import { useTheme } from "@/components/ThemeProvider";
 import { getHeroLayout, type HeroLayout } from "@/components/homePage/sections/layout-selector";
 import { useHomeLayout } from "./HomeLayoutContext";
 import { GhumakkerHomeSections } from "@/components/homePage/sections/ghumakker-home-sections";
@@ -18,8 +15,9 @@ import { useDispatch } from "react-redux";
 import { setResolvedOrg } from "@/lib/slices/resolvedOrgSlice";
 
 export default function Home() {
-  const [layout, setLayout] = useState<HeroLayout>("B");
+  const [layout, setLayout] = useState<HeroLayout>("A_BLUE");
   const { setHideHeader, setHideFooter, setShowLoginRegister } = useHomeLayout();
+  const { setTheme } = useTheme();
   const searchParams = useSearchParams();
   const [resolveSubdomain] = useLazyResolveSubdomainQuery();
   const [getOrgProfile] = useLazyGetOrganizerProfileQuery();
@@ -27,9 +25,24 @@ export default function Home() {
 
   const applyLayout = (l: HeroLayout) => {
     setLayout(l);
-    setHideHeader(l === "B" || l === "D" || l === "E");
-    setHideFooter(l === "C");
-    setShowLoginRegister(l === "C");
+    
+    // Auto-apply theme based on ID suffix
+    const themeSuffix = l.split("_")[1];
+    if (themeSuffix) {
+      const themeMap: Record<string, any> = {
+        "RED": "red",
+        "BLUE": "blue",
+        "PURPLE": "purple",
+        "ORANGE": "orange"
+      };
+      const themeId = themeMap[themeSuffix.toUpperCase()];
+      if (themeId) setTheme(themeId);
+    }
+
+    // All current layouts (A, B, C variants) hide the default header
+    setHideHeader(true);
+    setHideFooter(false);
+    setShowLoginRegister(false);
   };
 
   useEffect(() => {
@@ -49,11 +62,13 @@ export default function Home() {
         subdomain = parts[0];
       }
 
-      console.log("Detected Subdomain:", subdomain);
-
       // 2. Priority to layout parameter in URL (Preview mode)
       const urlLayout = searchParams.get("layout") as HeroLayout | null;
-      const validLayouts: HeroLayout[] = ["A", "B", "C", "D", "E", "F", "G"];
+      const validLayouts: HeroLayout[] = [
+        "A_RED", "A_BLUE", "A_PURPLE", "A_ORANGE",
+        "B_RED", "B_BLUE", "B_PURPLE", "B_ORANGE",
+        "C_RED", "C_BLUE", "C_PURPLE", "C_ORANGE"
+      ];
       if (urlLayout && validLayouts.includes(urlLayout)) {
         applyLayout(urlLayout);
         return;
@@ -64,11 +79,11 @@ export default function Home() {
       const cached = localStorage.getItem(cacheKey);
       if (cached) {
         try {
-          const { layout, organizationId, timestamp } = JSON.parse(cached);
+          const { layout: cachedLayout, organizationId, timestamp } = JSON.parse(cached);
           const fourHours = 4 * 60 * 60 * 1000;
           if (Date.now() - timestamp < fourHours && subdomain) {
-            dispatch(setResolvedOrg({ orgId: organizationId, layout: layout }));
-            applyLayout(layout);
+            dispatch(setResolvedOrg({ orgId: organizationId, layout: cachedLayout }));
+            applyLayout(cachedLayout);
             return;
           }
         } catch (e) {
@@ -84,24 +99,29 @@ export default function Home() {
           
           if (orgId) {
             const layoutMap: Record<string, HeroLayout> = {
-              "CLASSIC_SPLIT": "A",
-              "AURORA_CENTER": "B",
-              "PHOTO_HERO": "C",
-              "AURORA_SPLIT": "D",
-              "CARD_LEFT": "E",
-              "ROUNDED_FRAME": "F",
-              "ROUNDED_FRAME_AURORA": "G",
+              "CLASSIC_SPLIT": "A_BLUE",
+              "AURORA_CENTER": "A_BLUE",
+              "PHOTO_HERO": "B_PURPLE",
+              "AURORA_SPLIT": "B_PURPLE",
+              "CARD_LEFT": "C_ORANGE",
+              "ROUNDED_FRAME": "C_ORANGE",
+              "ROUNDED_FRAME_AURORA": "B_PURPLE",
+              "A": "A_BLUE",
+              "B": "B_BLUE",
+              "C": "C_BLUE",
+              "D": "B_PURPLE",
+              "E": "C_ORANGE",
             };
 
             // 1. Try layout from resolveData first
             const rawLayout = resolveData?.layout || "";
-            let mappedLayout = layoutMap[rawLayout.toUpperCase()] || layoutMap[rawLayout];
+            let mappedLayout = layoutMap[rawLayout.toUpperCase()] || (layoutMap[rawLayout] as HeroLayout);
 
             // 2. If not in resolveData, try fetching full profile
             if (!mappedLayout) {
               const profileData = await getOrgProfile({ organizationId: orgId }).unwrap();
               const profileRawLayout = profileData?.homeLayout || "";
-              mappedLayout = layoutMap[profileRawLayout.toUpperCase()] || layoutMap[profileRawLayout] || "B";
+              mappedLayout = layoutMap[profileRawLayout.toUpperCase()] || (layoutMap[profileRawLayout] as HeroLayout) || "A_BLUE";
             }
 
             // Save to cache
@@ -118,7 +138,6 @@ export default function Home() {
             return;
           }
         } catch (error) {
-          // Keep error log for critical failures
           console.error("Layout resolution failed:", error);
         }
       }
@@ -131,20 +150,16 @@ export default function Home() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams, dispatch]);
 
+  const baseLayout = layout.split("_")[0];
+
   return (
     <main className="flex flex-col overflow-auto [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
       <div className="flex-1 overflow-auto">
-        {layout === "B" && <HeroLayoutB />}
-        {layout === "A" && <HeroSection />}
-        {layout === "C" && <HeroLayoutC />}
-        {layout === "D" && <HeroLayoutD />}
-        {layout === "E" && <HeroLayoutE />}
-        {layout === "F" && <HeroLayoutF />}
-        {layout === "G" && <HeroLayoutG />}
+        {baseLayout === "A" && <HeroLayoutB />}
+        {baseLayout === "B" && <HeroLayoutD />}
+        {baseLayout === "C" && <HeroLayoutE />}
         <GhumakkerHomeSections />
       </div>
     </main>
   );
 }
-
-
