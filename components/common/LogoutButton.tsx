@@ -22,7 +22,7 @@ interface LogoutButtonProps {
 export const LogoutButton = ({
   variant = "button",
   className = "",
-  redirectPath = "/login",
+  redirectPath = "/home",
 }: LogoutButtonProps) => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const { handleLogout } = useAuthActions();

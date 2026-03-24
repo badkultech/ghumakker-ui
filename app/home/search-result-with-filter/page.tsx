@@ -105,8 +105,9 @@ export default function SearchResultsWithFilters() {
           : [],
       year: year ? Number(year) : undefined,
       month: month ? Number(month) : undefined,
+      organizationPublicId: organizationId || undefined,
     }));
-  }, [searchParams]);
+  }, [searchParams, organizationId]);
 
   // ---------- UI FILTER TAGS ----------
   let parsedMoods: string[] = moodsAll;

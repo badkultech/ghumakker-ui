@@ -2,18 +2,18 @@
 
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
+import { selectResolvedOrg } from "@/lib/slices/resolvedOrgSlice";
 
 /**
  * Returns organizationId:
- * - Public routes → ""
- * - logged in but not selected → ""
- * - Always returns a string
+ * - Resolved from subdomain (via Redux resolvedOrg)
+ * - Or focused in Auth state (Redux auth)
  */
 export const useOrganizationId = (): string => {
-
   const { focusedOrganizationId } = useSelector(selectAuthState);
+  const { resolvedOrgId } = useSelector(selectResolvedOrg);
 
-  return focusedOrganizationId ? String(focusedOrganizationId) : "";
+  return resolvedOrgId || (focusedOrganizationId ? String(focusedOrganizationId) : "");
 };
 
 /**

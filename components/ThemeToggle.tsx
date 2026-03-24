@@ -11,10 +11,10 @@ import {
 import { cn } from "@/lib/utils";
 
 const themes = [
-    { id: "ragir", color: "#FF002B", label: "Red" },
-    { id: "organizer", color: "#4361EE", label: "Blue" },
+    { id: "red", color: "#FF002B", label: "Red" },
+    { id: "blue", color: "#4361EE", label: "Blue" },
     { id: "purple", color: "#9333EA", label: "Purple" },
-    { id: "traveler", color: "#FEA901", label: "Orange" },
+    { id: "orange", color: "#FEA901", label: "Orange" },
 ] as const;
 
 export function ThemeToggle() {
@@ -41,7 +41,7 @@ export function ThemeToggle() {
                     {themes.map((t) => (
                         <button
                             key={t.id}
-                            onClick={() => setTheme(t.id)}
+                            onClick={() => setTheme(t.id as any)}
                             className={cn(
                                 "relative w-8 h-8 rounded-full transition-all duration-200 hover:scale-110 active:scale-95",
                                 theme === t.id && "scale-110"

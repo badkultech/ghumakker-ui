@@ -28,6 +28,7 @@ export type SearchCriteria = {
   maxAge?: number;
   minBudget?: number;
   maxBudget?: number;
+  organizationPublicId?: string;
 };
 
 

@@ -180,9 +180,7 @@ export const ENDPOINTS = {
       `/organizer/ticket/${ticketId}/comment`,
     DASHBOARD: (orgId: string) => `/org/${orgId}/dashboard`,
     HOME_LAYOUT: (orgId: string) => `/org/${orgId}/home-layout`,
-
-
-
+    RESOLVE_SUBDOMAIN: (subdomain: string) => `/public/host/${subdomain}`,
   },
 } as const;
 

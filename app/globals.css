@@ -230,7 +230,7 @@
   display: none;
 }
 
-[data-theme="organizer"] {
+[data-theme="blue"] {
   /* Organizer Theme - Cool Blues/Teals/Purples to distinguish from User/Traveler Orange */
 
   /* Primary - Deep Blue/Indigo */
@@ -258,7 +258,7 @@
   --login-bg-to: #E9D5FF;
 }
 
-[data-theme="traveler"] {
+[data-theme="orange"] {
   /* Traveler Theme (Original Orange) */
   --primary: oklch(0.7361 0.1685 41.9);
   --primary-foreground: oklch(0.985 0 0);
@@ -275,7 +275,7 @@
   --login-bg-to: #FECACA;
 }
 
-[data-theme="ragir"] {
+[data-theme="red"] {
   /* Ragir Theme (Vibrant Red/Yellow/Orange) */
   --primary: oklch(0.62 0.23 25);
   --primary-foreground: oklch(0.985 0 0);
