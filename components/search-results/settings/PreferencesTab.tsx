@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { ChevronDown, Check } from "lucide-react";
+import { GradientButton } from "@/components/gradient-button";
 import { useGetUserPreferenceQuery, useCreateUserPreferenceMutation, useUpdateUserPreferenceMutation } from "@/lib/services/user-preference";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useUserId } from "@/hooks/useUserId";
@@ -98,42 +99,44 @@ export default function PreferencesTab() {
     menuKey: OpenMenu;
   }) => (
     <div className="space-y-2">
-      <label className="text-sm text-muted-foreground">{title}</label>
+      <label className="text-[14px] font-bold text-gray-900 ml-1">{title}</label>
 
       {/* HEADER */}
-      <button
-        onClick={() =>
-          setOpenMenu(openMenu === menuKey ? null : menuKey)
-        }
-        className="w-full flex items-center justify-between px-4 py-4 bg-white border border-border rounded-xl hover:bg-muted transition"
-      >
-        <span className="text-sm font-medium">{value}</span>
-        <ChevronDown
-          className={`w-4 h-4 transition ${openMenu === menuKey ? "rotate-180" : ""
-            }`}
-        />
-      </button>
+      <div className="relative">
+        <button
+          onClick={() =>
+            setOpenMenu(openMenu === menuKey ? null : menuKey)
+          }
+          className="w-full flex items-center justify-between px-4 h-[54px] bg-white border border-[#E4E4E4] rounded-xl hover:bg-gray-50 transition"
+        >
+          <span className="text-[14px] font-medium text-gray-500">{value}</span>
+          <ChevronDown
+            className={`w-4 h-4 text-gray-400 transition ${openMenu === menuKey ? "rotate-180" : ""
+              }`}
+          />
+        </button>
 
-      {/* OPTIONS */}
-      {openMenu === menuKey && (
-        <div className="border border-border rounded-xl overflow-hidden bg-white">
-          {options.map((opt) => (
-            <button
-              key={opt}
-              onClick={() => {
-                onSelect(opt);
-                setOpenMenu(null);
-              }}
-              className="w-full px-4 py-3 flex items-center justify-between hover:bg-muted text-sm"
-            >
-              {opt}
-              {opt === value && (
-                <Check className="w-4 h-4 text-primary" />
-              )}
-            </button>
-          ))}
-        </div>
-      )}
+        {/* OPTIONS */}
+        {openMenu === menuKey && (
+          <div className="absolute top-full left-0 w-full mt-2 z-50 border border-[#E4E4E4] rounded-xl shadow-lg bg-white overflow-hidden">
+            {options.map((opt) => (
+              <button
+                key={opt}
+                onClick={() => {
+                  onSelect(opt);
+                  setOpenMenu(null);
+                }}
+                className="w-full px-4 py-3 flex items-center justify-between hover:bg-gray-50 text-sm text-gray-700"
+              >
+                {opt}
+                {opt === value && (
+                  <Check className="w-4 h-4 text-[#FF3D3D]" />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 
@@ -148,13 +151,16 @@ export default function PreferencesTab() {
   }
 
   return (
-    <div className="w-full">
-      <div className="bg-card border border-border rounded-2xl p-6 md:p-10 min-h-[70vh]">
-        <h2 className="text-lg font-semibold md:hidden mb-6">
-          Preferences
-        </h2>
+    <div className="max-w-[800px]">
+      {/* Header */}
+      
 
-        <div className="space-y-8 max-w-xl">
+      <div className="bg-white border border-[#E4E4E4] rounded-xl p-8 md:p-10 w-full max-w-[703px] h-full min-h-[854px] flex flex-col">
+        <div className="mb-8 border-b border-[#E4E4E4] pb-4">
+        <h2 className="text-2xl font-bold text-gray-900">App Preferences</h2>
+        <p className="text-gray-500 text-[14px] mt-1 font-medium">Set your language, timezone and currency for the best experience.</p>
+      </div>
+        <div className="space-y-8">
           <Menu
             title="Language"
             value={language}
@@ -191,18 +197,24 @@ export default function PreferencesTab() {
               setHasChanges(true);
             }}
           />
+        </div>
 
-          {/* Save Button */}
-          <button
+        {/* Action Buttons */}
+        <div className="flex flex-col md:flex-row justify-between items-center gap-4 mt-16 mt-auto">
+          <button 
+            type="button"
+            className="w-full md:min-w-[240px] py-4 bg-[#F6F6F6] text-gray-600 rounded-full font-bold text-[16px] hover:bg-gray-100 transition-colors"
+            onClick={() => window.location.reload()}
+          >
+            Discard
+          </button>
+          <GradientButton 
             onClick={savePreferences}
             disabled={!hasChanges || isSaving}
-            className={`w-full mt-6 px-6 py-3 rounded-xl font-medium transition-all cursor-pointer ${hasChanges && !isSaving
-              ? "bg-primary hover:bg-primary/90 text-white shadow-md hover:shadow-lg"
-              : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
+            className="w-full md:min-w-[240px] py-4 text-[16px] shadow-md hover:cursor-pointer"
           >
-            {isSaving ? "Saving..." : "Save Preferences"}
-          </button>
+            {isSaving ? "Saving..." : "Save Changes"}
+          </GradientButton>
         </div>
       </div>
     </div>

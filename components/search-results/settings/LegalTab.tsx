@@ -44,8 +44,8 @@ export default function LegalTab() {
 
   return (
     <div className="w-full max-w-2xl">
-      <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
-        <div className="mb-6">
+      <div className="bg-white border border-[#E4E4E4] rounded-xl p-8 md:p-10 w-full max-w-[703px] h-full min-h-[854px]">
+        <div className="mb-6 border-b border-[#E4E4E4] pb-4">
           <h2 className="text-xl font-bold text-gray-900 mb-1">Legal & Policies</h2>
           <p className="text-gray-500 text-xs">Review our terms, privacy practices, and cookie usage.</p>
         </div>
