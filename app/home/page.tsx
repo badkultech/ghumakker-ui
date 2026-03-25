@@ -114,27 +114,41 @@ export default function Home() {
             };
 
             // 1. Try layout from resolveData first
-            const rawLayout = resolveData?.layout || "";
-            let mappedLayout = layoutMap[rawLayout.toUpperCase()] || (layoutMap[rawLayout] as HeroLayout);
+            const rawLayout = (resolveData?.layout || "").toUpperCase();
+            let mappedLayout: HeroLayout | undefined;
+            
+            if (validLayouts.includes(rawLayout as HeroLayout)) {
+              mappedLayout = rawLayout as HeroLayout;
+            } else {
+              const key = resolveData?.layout || "";
+              mappedLayout = (layoutMap as any)[rawLayout] || (layoutMap as any)[key];
+            }
 
             // 2. If not in resolveData, try fetching full profile
             if (!mappedLayout) {
               const profileData = await getOrgProfile({ organizationId: orgId }).unwrap();
-              const profileRawLayout = profileData?.homeLayout || "";
-              mappedLayout = layoutMap[profileRawLayout.toUpperCase()] || (layoutMap[profileRawLayout] as HeroLayout) || "A_BLUE";
+              const profileRawLayout = (profileData?.homeLayout || "").toUpperCase();
+              
+              if (validLayouts.includes(profileRawLayout as HeroLayout)) {
+                mappedLayout = profileRawLayout as HeroLayout;
+              } else {
+                const profileKey = profileData?.homeLayout || "";
+                mappedLayout = (layoutMap as any)[profileRawLayout] || (layoutMap as any)[profileKey] || "A_BLUE";
+              }
             }
 
             // Save to cache
+            const finalLayout = mappedLayout || "A_BLUE";
             localStorage.setItem(cacheKey, JSON.stringify({
-              layout: mappedLayout,
+              layout: finalLayout,
               organizationId: orgId,
               timestamp: Date.now()
             }));
 
             // Save to Redux
-            dispatch(setResolvedOrg({ orgId: orgId, layout: mappedLayout }));
+            dispatch(setResolvedOrg({ orgId: orgId, layout: finalLayout }));
 
-            applyLayout(mappedLayout);
+            applyLayout(finalLayout);
             return;
           }
         } catch (error) {

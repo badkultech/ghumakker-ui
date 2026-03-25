@@ -1,79 +1,76 @@
-"use client";
-
-import React, { useState } from "react";
+import React from "react";
 import { 
   FileText, 
   ShieldCheck, 
   Cookie, 
   Receipt,
+  ChevronRight
 } from "lucide-react";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TermsOfService } from "./legal/TermsOfService";
-import { PrivacyPolicy } from "./legal/PrivacyPolicy";
-import { CookiePolicy } from "./legal/CookiePolicy";
-import { RefundPolicy } from "./legal/RefundPolicy";
+import { useRouter } from "next/navigation";
 
 export default function LegalTab() {
-  const [activePolicy, setActivePolicy] = useState("terms");
+  const router = useRouter();
+
+  const policies = [
+    {
+      id: "terms",
+      title: "Terms of Service",
+      description: "Last Update Jan 2026",
+      icon: FileText,
+      path: "/policies?tab=terms"
+    },
+    {
+      id: "privacy",
+      title: "Privacy Policy",
+      description: "How we handle your data",
+      icon: ShieldCheck,
+      path: "/policies?tab=privacy"
+    },
+    {
+      id: "cookie",
+      title: "Cookie Policy",
+      description: "Cookies we use and why",
+      icon: Cookie,
+      path: "/policies?tab=cookie"
+    },
+    {
+      id: "refund",
+      title: "Cancellation & Refund Policy",
+      description: "Understand our refund process",
+      icon: Receipt,
+      path: "/policies?tab=refund"
+    }
+  ];
 
   return (
-    <div className="w-full">
-      <div className="bg-white border border-border rounded-[2.5rem] overflow-hidden shadow-sm">
-        {/* Header Section from SS (Compact for Settings) */}
-        <div className="bg-gradient-to-r from-[#FF002B] via-[#FF3B1A] to-[#FF6A13] text-white p-8 md:p-12 relative overflow-hidden">
-          {/* Decorative Circle */}
-          <div className="absolute -right-10 top-1/2 -translate-y-1/2 opacity-20 hidden md:block">
-            <div className="w-48 h-48 rounded-full border-[16px] border-white ring-[32px] ring-white/10"></div>
-          </div>
+    <div className="w-full max-w-2xl">
+      <div className="bg-white border border-gray-100 rounded-3xl p-6 shadow-sm">
+        <div className="mb-6">
+          <h2 className="text-xl font-bold text-gray-900 mb-1">Legal & Policies</h2>
+          <p className="text-gray-500 text-xs">Review our terms, privacy practices, and cookie usage.</p>
+        </div>
 
-          <div className="relative z-10 flex flex-col items-center justify-center text-center gap-4">
-            <div className="flex flex-col items-center">
-              <div className="inline-block bg-white/20 backdrop-blur-md rounded-full px-3 py-1 text-[9px] font-bold uppercase tracking-widest mb-4 border border-white/20 text-white">
-                Legal Information
+        <div className="space-y-3">
+          {policies.map((policy) => (
+            <button
+              key={policy.id}
+              onClick={() => router.push(policy.path)}
+              className="w-full flex items-center justify-between p-4 rounded-xl border border-gray-100 bg-white hover:bg-gray-50 transition-all group"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-10 h-10 rounded-lg bg-gray-50 flex items-center justify-center text-gray-400 group-hover:bg-white group-hover:shadow-sm transition-colors shrink-0">
+                  <policy.icon className="w-5 h-5" />
+                </div>
+                <div className="text-left">
+                  <h3 className="font-bold text-gray-900 text-sm">{policy.title}</h3>
+                  <p className="text-gray-400 text-xs leading-none mt-1">{policy.description}</p>
+                </div>
               </div>
-              <h2 className="text-3xl md:text-4xl font-black mb-3 tracking-tight">Policies & Terms</h2>
-              <p className="text-white/80 text-xs md:text-sm max-w-xl leading-relaxed font-medium">
-                Everything you need to know about how Ghumakker works, protects your data, and handles your bookings.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* Navigation Tabs (Floating White Box like SS) */}
-        <div className="px-4 relative z-20 -mt-10 mb-6">
-           <div className="max-w-4xl mx-auto bg-white rounded-3xl shadow-[0_10px_40px_-15px_rgba(0,0,0,0.15)] border border-gray-100 p-2">
-            <Tabs value={activePolicy} className="w-full" onValueChange={setActivePolicy}>
-                <TabsList className="bg-transparent h-auto p-0 flex flex-nowrap w-full justify-center gap-1 overflow-x-auto no-scrollbar">
-                    <PolicyTabTrigger value="terms" label="Terms of Service" icon={FileText} />
-                    <PolicyTabTrigger value="privacy" label="Privacy Policy" icon={ShieldCheck} />
-                    <PolicyTabTrigger value="cookie" label="Cookie Policy" icon={Cookie} />
-                    <PolicyTabTrigger value="refund" label="Refunds" icon={Receipt} />
-                </TabsList>
-            </Tabs>
-           </div>
-        </div>
-
-        {/* Content Area (Scrollable) */}
-        <div className="p-8 md:p-12 max-h-[600px] overflow-y-auto scrollbar-thin scrollbar-thumb-gray-200 scrollbar-track-transparent">
-            {activePolicy === "terms" && <TermsOfService />}
-            {activePolicy === "privacy" && <PrivacyPolicy />}
-            {activePolicy === "cookie" && <CookiePolicy />}
-            {activePolicy === "refund" && <RefundPolicy />}
+              <ChevronRight className="w-4 h-4 text-gray-300 group-hover:text-gray-900 transition-colors" />
+            </button>
+          ))}
         </div>
       </div>
     </div>
   );
-}
-
-function PolicyTabTrigger({ value, label, icon: Icon }: { value: string, label: string, icon: any }) {
-    return (
-        <TabsTrigger 
-            value={value} 
-            className="flex-1 max-w-[180px] py-3 px-4 rounded-xl data-[state=active]:bg-black data-[state=active]:text-white transition-all text-gray-500 font-bold gap-2 text-[10px] md:text-xs"
-        >
-            <Icon className="w-3.5 h-3.5" />
-            <span className="hidden xs:inline">{label}</span>
-            <span className="xs:hidden">{label.split(' ')[0]}</span>
-        </TabsTrigger>
-    );
 }

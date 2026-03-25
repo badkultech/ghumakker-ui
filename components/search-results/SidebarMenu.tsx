@@ -7,6 +7,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { LogoutButton } from "../common/LogoutButton";
 import { useState, useEffect } from "react";
 import ScreenLoader from "@/components/common/ScreenLoader";
+import { useTheme } from "@/components/ThemeProvider";
 
 interface BaseMenuItem {
   icon: LucideIcon;
@@ -27,7 +28,6 @@ interface User {
 
 type UserMenuItem = LinkMenuItem;
 
-
 export function SidebarMenu({
   isOpen,
   onClose,
@@ -45,11 +45,21 @@ export function SidebarMenu({
 }) {
   const [isNavigating, setIsNavigating] = useState(false);
   const pathname = usePathname();
+  const { theme } = useTheme();
 
   // Reset loading state when pathname changes (navigation completes)
   useEffect(() => {
     setIsNavigating(false);
   }, [pathname]);
+
+  const themeGradients = {
+    red: "from-[#FF003C] to-[#FF7000] shadow-red-500/10",
+    blue: "from-[#0070FF] to-[#00C2FF] shadow-blue-500/10",
+    purple: "from-[#8E2DE2] to-[#4A00E0] shadow-purple-500/10",
+    orange: "from-[#FF7000] to-[#FFB800] shadow-orange-500/10",
+  };
+
+  const currentGradient = themeGradients[theme as keyof typeof themeGradients] || themeGradients.red;
 
   return (
     <>
@@ -77,85 +87,86 @@ export function SidebarMenu({
           </div>
 
           {/* Body */}
-          <div className="p-4 space-y-1 overflow-y-auto h-[calc(100vh-70px)]">
+          <div className="p-4 flex flex-col h-[calc(100vh-70px)]">
+            <div className="flex-1 overflow-y-auto space-y-1 pb-4">
+              {/* Only show user profile & user menu when logged in */}
+              {isLoggedIn && (
+                <>
+                  {/* User Profile */}
+                  <div className="flex items-center gap-3 px-4 py-3">
+                    <Avatar className="w-10 h-10">
+                      <AvatarImage src={user?.profileImage || ""} />
+                      <AvatarFallback>
+                        {user?.name?.[0] || "U"}
+                      </AvatarFallback>
+                    </Avatar>
 
-
-            {/* Only show user profile & user menu when logged in */}
-            {isLoggedIn && (
-              <>
-                {/* User Profile */}
-                <div className="flex items-center gap-3 px-4 py-3">
-                  <Avatar className="w-10 h-10">
-                    <AvatarImage src={user?.profileImage || ""} />
-                    <AvatarFallback>
-                      {user?.name?.[0] || "U"}
-                    </AvatarFallback>
-                  </Avatar>
-
-                  <div>
-                    <p className="text-sm font-semibold text-foreground">
-                      {user?.name || "User"}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {user?.email}
-                    </p>
-
+                    <div>
+                      <p className="text-sm font-semibold text-foreground">
+                        {user?.name || "User"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {user?.email}
+                      </p>
+                    </div>
                   </div>
-                </div>
 
-                {/* User Menu Items */}
-                {userMenuItems.map((item) => {
-                  let href = item.href;
-                  if (item.label === "My Dashboard" && user?.userType) {
-                    if (["SYSTEM_ADMIN", "SUPER_ADMIN"].includes(user.userType)) {
-                      href = "/superadmin";
-                    } else if (["ORGANIZER", "ORGANIZATION_ADMIN"].includes(user.userType)) {
-                      href = "/organizer/dashboard";
-                    } else {
-                      href = "/home";
+                  {/* User Menu Items */}
+                  {userMenuItems.map((item) => {
+                    let href = item.href;
+                    if (item.label === "My Dashboard" && user?.userType) {
+                      if (["SYSTEM_ADMIN", "SUPER_ADMIN"].includes(user.userType)) {
+                        href = "/superadmin";
+                      } else if (["ORGANIZER", "ORGANIZATION_ADMIN"].includes(user.userType)) {
+                        href = "/organizer/dashboard";
+                      } else {
+                        href = "/home";
+                      }
                     }
-                  }
 
-                  return (
-                    <Link
-                      key={item.label}
-                      href={href}
-                      onClick={() => {
-                        onClose();
-                        if (pathname !== href) {
-                          setIsNavigating(true);
-                        }
-                      }}
-                      className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted transition-colors group cursor-pointer"
-                    >
-                      <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
-                      <span className="text-sm font-medium text-foreground">
-                        {item.label}
-                      </span>
-                    </Link>
-                  );
-                })}
+                    return (
+                      <Link
+                        key={item.label}
+                        href={href}
+                        onClick={() => {
+                          onClose();
+                          if (pathname !== href) {
+                            setIsNavigating(true);
+                          }
+                        }}
+                        className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-muted transition-colors group cursor-pointer"
+                      >
+                        <item.icon className="w-5 h-5 text-muted-foreground group-hover:text-foreground" />
+                        <span className="text-sm font-medium text-foreground">
+                          {item.label}
+                        </span>
+                      </Link>
+                    );
+                  })}
+                </>
+              )}
 
-                <div className="my-4 border-t border-border" />
+              {/* If NOT logged in → show Login/Register button */}
+              {!isLoggedIn && (
+                <button
+                  onClick={() => {
+                    onClose();
+                    window.location.href = "/login";
+                  }}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
+                >
+                  Login / Register
+                </button>
+              )}
+            </div>
 
+            {isLoggedIn && (
+              <div className="pt-4">
                 {/* Logout Button */}
                 <LogoutButton
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 border border-primary text-primary rounded-full hover:bg-primary/5 transition-colors text-sm"
+                  className={`w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r ${currentGradient} text-white hover:text-white rounded-2xl hover:opacity-90 transition-all text-base font-bold shadow-lg`}
                 />
-              </>
-            )}
-
-            {/* If NOT logged in → show Login/Register button */}
-            {!isLoggedIn && (
-              <button
-                onClick={() => {
-                  onClose();
-                  window.location.href = "/login";
-                }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-primary-foreground rounded-full hover:bg-primary/90 transition-colors"
-              >
-                Login / Register
-              </button>
+              </div>
             )}
           </div>
         </div>

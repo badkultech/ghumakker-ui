@@ -80,7 +80,7 @@ export function HeroLayoutE() {
                             </>
                         ) : (
                             <>
-                                <Link href="/home" style={{ fontSize: 14, fontWeight: 500, color: "#444", textDecoration: "none" }}>Log in</Link>
+                                <Link href="/home" onClick={e => { e.preventDefault(); openLoginModal(); }} style={{ fontSize: 14, fontWeight: 500, color: "#444", textDecoration: "none" }}>Log in</Link>
                                 <Link href="/home" onClick={e => { e.preventDefault(); openLoginModal(); }} style={{
                                     fontSize: 13, fontWeight: 600, color: "#fff", textDecoration: "none",
                                     background: "linear-gradient(90deg, var(--color-brand-yellow), var(--color-brand-red))",
