@@ -99,18 +99,18 @@ export default function Home() {
           
           if (orgId) {
             const layoutMap: Record<string, HeroLayout> = {
-              "CLASSIC_SPLIT": "A_BLUE",
-              "AURORA_CENTER": "A_BLUE",
-              "PHOTO_HERO": "B_PURPLE",
-              "AURORA_SPLIT": "B_PURPLE",
-              "CARD_LEFT": "C_ORANGE",
-              "ROUNDED_FRAME": "C_ORANGE",
-              "ROUNDED_FRAME_AURORA": "B_PURPLE",
-              "A": "A_BLUE",
-              "B": "B_BLUE",
-              "C": "C_BLUE",
-              "D": "B_PURPLE",
-              "E": "C_ORANGE",
+              "CLASSIC_AURORA_RED": "A_RED",
+              "CLASSIC_AURORA_BLUE": "A_BLUE",
+              "CLASSIC_AURORA_PURPLE": "A_PURPLE",
+              "CLASSIC_AURORA_ORANGE": "A_ORANGE",
+              "MODERN_SPLIT_RED": "B_RED",
+              "MODERN_SPLIT_BLUE": "B_BLUE",
+              "MODERN_SPLIT_PURPLE": "B_PURPLE",
+              "MODERN_SPLIT_ORANGE": "B_ORANGE",
+              "IMMERSIVE_HERO_RED": "C_RED",
+              "IMMERSIVE_HERO_BLUE": "C_BLUE",
+              "IMMERSIVE_HERO_PURPLE": "C_PURPLE",
+              "IMMERSIVE_HERO_ORANGE": "C_ORANGE",
             };
 
             // 1. Try layout from resolveData first

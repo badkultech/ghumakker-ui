@@ -16,9 +16,9 @@ const THEMES = [
 ] as const;
 
 const BASES = [
-    { id: "A", label: "Aurora Center", desc: "Dark aurora · Centered text · Search below" },
-    { id: "B", label: "Aurora Split", desc: "Night sky bg · Text left · Card right" },
-    { id: "C", label: "Card Left", desc: "Image bg · Card left · Text right" },
+    { id: "A", label: "Classic Aurora", desc: "Dark aurora · Centered text · Search below" },
+    { id: "B", label: "Modern Split", desc: "Night sky bg · Text left · Card right" },
+    { id: "C", label: "Immersive Hero", desc: "Image bg · Card left · Text right" },
 ] as const;
 
 const LAYOUTS: {
@@ -36,23 +36,39 @@ const LAYOUTS: {
 );
 
 const LAYOUT_MAPPING: Record<string, string> = {
-    ...Object.fromEntries(LAYOUTS.map(l => [l.id, l.id])),
-    "A": "A_BLUE",
-    "B": "B_BLUE",
-    "C": "C_BLUE",
-    "D": "B_PURPLE",
-    "E": "C_ORANGE",
+    "A_RED": "CLASSIC_AURORA_RED",
+    "A_BLUE": "CLASSIC_AURORA_BLUE",
+    "A_PURPLE": "CLASSIC_AURORA_PURPLE",
+    "A_ORANGE": "CLASSIC_AURORA_ORANGE",
+    "B_RED": "MODERN_SPLIT_RED",
+    "B_BLUE": "MODERN_SPLIT_BLUE",
+    "B_PURPLE": "MODERN_SPLIT_PURPLE",
+    "B_ORANGE": "MODERN_SPLIT_ORANGE",
+    "C_RED": "IMMERSIVE_HERO_RED",
+    "C_BLUE": "IMMERSIVE_HERO_BLUE",
+    "C_PURPLE": "IMMERSIVE_HERO_PURPLE",
+    "C_ORANGE": "IMMERSIVE_HERO_ORANGE",
+    "A": "CLASSIC_AURORA_BLUE",
+    "B": "MODERN_SPLIT_BLUE",
+    "C": "IMMERSIVE_HERO_BLUE",
 };
 
 const REVERSE_MAPPING: Record<string, HeroLayout> = {
+    // Exact matches
     ...Object.fromEntries(LAYOUTS.map(l => [l.id, l.id])),
-    "CLASSIC_SPLIT": "A_BLUE",
-    "AURORA_CENTER": "A_BLUE",
-    "PHOTO_HERO": "B_PURPLE",
-    "AURORA_SPLIT": "B_PURPLE",
-    "CARD_LEFT": "C_ORANGE",
-    "ROUNDED_FRAME_IMAGE": "C_ORANGE",
-    "ROUNDED_FRAME_AURORA": "B_PURPLE",
+    // Descriptive matches
+    "CLASSIC_AURORA_RED": "A_RED",
+    "CLASSIC_AURORA_BLUE": "A_BLUE",
+    "CLASSIC_AURORA_PURPLE": "A_PURPLE",
+    "CLASSIC_AURORA_ORANGE": "A_ORANGE",
+    "MODERN_SPLIT_RED": "B_RED",
+    "MODERN_SPLIT_BLUE": "B_BLUE",
+    "MODERN_SPLIT_PURPLE": "B_PURPLE",
+    "MODERN_SPLIT_ORANGE": "B_ORANGE",
+    "IMMERSIVE_HERO_RED": "C_RED",
+    "IMMERSIVE_HERO_BLUE": "C_BLUE",
+    "IMMERSIVE_HERO_PURPLE": "C_PURPLE",
+    "IMMERSIVE_HERO_ORANGE": "C_ORANGE",
 };
 
 const STORAGE_KEY = "hero-layout";
@@ -188,16 +204,6 @@ export default function HomeLayoutPage() {
                             {/* Info section */}
                             <div style={{ padding: "12px 14px 14px" }}>
                                 <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 5 }}>
-                                    <span style={{
-                                        fontSize: 11, fontWeight: 700, color: "#fff",
-                                        background: isSelected
-                                            ? "linear-gradient(135deg,#f59e0b,#ef4444)"
-                                            : "#9ca3af",
-                                        padding: "2px 8px", borderRadius: 99,
-                                        transition: "background 0.18s",
-                                    }}>
-                                        {layout.id}
-                                    </span>
                                     <span style={{ fontSize: 14, fontWeight: 700, color: "#111" }}>{layout.label}</span>
                                     {isSelected && (
                                         <span style={{ marginLeft: "auto", fontSize: 11, fontWeight: 600, color: "#f59e0b" }}>
@@ -257,7 +263,7 @@ export default function HomeLayoutPage() {
 
                 {!hasChanges && saved && (
                     <span style={{ fontSize: 13, color: "#9ca3af" }}>
-                        Layout <strong>{saved}</strong> is currently active
+                        This layout is currently active
                     </span>
                 )}
             </div>
