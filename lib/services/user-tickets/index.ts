@@ -13,6 +13,7 @@ export interface TicketCommentDTO {
     id: number;
     comment: string;
     responder?: UserDTO;
+    createdDate?: string;
 }
 
 export interface TicketDTO {
