@@ -236,38 +236,57 @@ export default function SettingsPage() {
   return (
     <div className="bg-background w-full">
       {/* MAIN CONTENT AREA */}
-      <main className="max-w-[1400px] mx-auto px-4 md:px-8 py-6 md:py-10">
+      <main className="max-w-[1400px] mx-auto px-4 md:px-8">
         <div className="flex flex-col md:flex-row gap-6 md:gap-10">
 
           {/* SIDEBAR */}
-          <Sidebar activeTab={activeTab} setActiveTab={setActiveTab} />
+          <Sidebar 
+            activeTab={activeTab} 
+            setActiveTab={setActiveTab} 
+            userProfile={data ? {
+              firstName: data.firstName,
+              lastName: data.lastName,
+              email: data.email,
+              profileImageUrl: data.profileImageUrl
+            } : undefined}
+          />
 
           {/* TAB CONTENT */}
           <div className="flex-1">
             {activeTab === "profile" && (
-              <ProfileTab formData={formData} setFormData={setFormData}
-                profileImageUrl={profileImageUrl}
-                onImageSelect={(file) => {
-                  setProfileImage(file);
-                  setProfileImageUrl(URL.createObjectURL(file));
-                }}
-                onSaveProfile={handleSaveProfile} isSaving={isSaving} />
+              <div className="md:pt-10 md:pb-10">
+                <ProfileTab 
+                  formData={formData} 
+                  setFormData={setFormData}
+                  profileImageUrl={profileImageUrl}
+                  onImageSelect={(file) => {
+                    setProfileImage(file);
+                    setProfileImageUrl(URL.createObjectURL(file));
+                  }}
+                  onSaveProfile={handleSaveProfile} 
+                  isSaving={isSaving} 
+                />
+              </div>
             )}
 
             {activeTab === "communications" && (
-              <CommunicationsTab />
+              <div className="md:pt-10 md:pb-10">
+                <CommunicationsTab />
+              </div>
             )}
 
-            {activeTab === "preferences" && <PreferencesTab />}
-            {activeTab === "support" && <SupportTab />}
-            {activeTab === "legal" && <LegalTab />}
+            {activeTab === "preferences" && <div className="md:pt-10 md:pb-10"><PreferencesTab /></div>}
+            {activeTab === "support" && <div className="md:pt-10 md:pb-10"><SupportTab /></div>}
+            {activeTab === "legal" && <div className="md:pt-10 md:pb-10"><LegalTab /></div>}
 
             {activeTab === "security" && (
-              <SecurityTab
-                setShowLogoutModal={setShowLogoutModal}
-                setShowDeactivateModal={setShowDeactivateModal}
-                setShowDeleteModal={setShowDeleteModal}
-              />
+              <div className="md:pt-10 md:pb-10">
+                <SecurityTab
+                  setShowLogoutModal={setShowLogoutModal}
+                  setShowDeactivateModal={setShowDeactivateModal}
+                  setShowDeleteModal={setShowDeleteModal}
+                />
+              </div>
             )}
           </div>
         </div>
