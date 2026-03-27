@@ -8,6 +8,7 @@ import { showApiError, showSuccess } from "@/lib/utils/toastHelpers";
 import { useSelector } from "react-redux";
 import { selectAuthState } from "@/lib/slices/auth";
 import { PHONE_CONFIG, formatPhoneWithCountryCode, isValidPhoneLength } from "@/lib/constants/phone";
+import Link from "next/link";
 
 type Props = {
     onClose: () => void;
@@ -114,8 +115,12 @@ export function PhoneEntryModal({ onClose, onOtpSent }: Props) {
                     disabled={isSendingOtp}
                     className="w-full flex items-center justify-center gap-2"
                 >
-                    Generate OTP <ArrowRight />
+                    {isSendingOtp ? "Sending..." : "Generate OTP"} <ArrowRight />
                 </GradientButton>
+
+                <p className="text-center text-[12px] text-gray-400 mt-6 leading-relaxed">
+                    By continuing, you agree to our <Link href="/policies?tab=terms" target="_blank" className="font-bold text-gray-500 hover:text-primary transition-colors underline">Terms of Service</Link> and <Link href="/policies?tab=privacy" target="_blank" className="font-bold text-gray-500 hover:text-primary transition-colors underline">Privacy Policy</Link>.
+                </p>
             </div>
         </div>
     );

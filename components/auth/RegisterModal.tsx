@@ -2,6 +2,7 @@
 
 import { X } from "lucide-react";
 import { GradientButton } from "@/components/gradient-button";
+import Link from "next/link";
 
 type Props = {
     phone: string;
@@ -41,9 +42,11 @@ export function RegisterModal({ phone, onClose }: Props) {
                         <option>Other</option>
                     </select>
 
-                    <label className="flex items-center gap-2 text-sm">
-                        <input type="checkbox" />
-                        I agree to the <b>Terms</b> and <b>Privacy Policy</b>
+                    <label className="flex items-center gap-2 text-sm text-gray-600 cursor-pointer">
+                        <input type="checkbox" className="accent-primary" />
+                        <span>
+                            I agree to the <Link href="/policies?tab=terms" target="_blank" className="font-bold text-gray-900 hover:text-primary transition-colors">Terms</Link> and <Link href="/policies?tab=privacy" target="_blank" className="font-bold text-gray-900 hover:text-primary transition-colors">Privacy Policy</Link>
+                        </span>
                     </label>
 
                     <GradientButton className="w-full">

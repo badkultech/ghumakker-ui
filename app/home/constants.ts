@@ -20,8 +20,8 @@ export const footerLinks = {
     ],
     support: [
         { label: "Contact us", href: "https://badkultechnology.com/contact" },
-        { label: "Terms and Conditions", href: "/terms" },
-        { label: "Privacy Policy", href: "/privacy" },
+        { label: "Terms and Conditions", href: "/policies?tab=terms" },
+        { label: "Privacy Policy", href: "/policies?tab=privacy" },
     ],
 };
 

@@ -95,7 +95,7 @@ function PoliciesContent() {
       </div>
 
       {/* Content Section */}
-      <main className="flex-1 container mx-auto max-w-6xl px-4 pt-32 pb-20">
+      <main className="flex-1 container mx-auto max-w-6xl px-4 pt-16 pb-16">
         <Card className="border-none shadow-sm rounded-[2.5rem] overflow-hidden bg-[#F8F9FA]">
           <CardContent className="p-8 sm:p-14">
               <div className="w-full">

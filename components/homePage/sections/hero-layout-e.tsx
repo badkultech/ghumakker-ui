@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { Menu } from "lucide-react";
+import { Menu, ChevronsDown } from "lucide-react";
 import { useGetLandingPageQuery } from "@/lib/services/landing-page";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useTheme } from "@/components/ThemeProvider";
@@ -127,6 +127,16 @@ export function HeroLayoutE() {
                             {heroSubtitle}
                         </p>
                     </div>
+                </div>
+
+                {/* Explore More */}
+                <div 
+                    onClick={() => window.scrollTo({ top: window.innerHeight, behavior: "smooth" })}
+                    className="absolute bottom-8 left-1/2 -translate-x-1/2 flex items-center gap-3 text-white cursor-pointer z-10 animate-bounce transition-opacity hover:opacity-100 opacity-80 group"
+                >
+                    <ChevronsDown size={18} className="text-white/70 group-hover:text-white" />
+                    <span className="text-[11px] font-black uppercase tracking-[0.2em] whitespace-nowrap">Explore More</span>
+                    <ChevronsDown size={18} className="text-white/70 group-hover:text-white" />
                 </div>
             </div>
         </div>
