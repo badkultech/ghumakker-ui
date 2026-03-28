@@ -49,6 +49,8 @@ export default function TripDetailsPage() {
     options: Record<string, any>;
     addOns: string[];
     finalPrice: number;
+    numTravelers: number;
+    mode: "BOOK" | "INVITE";
   };
 
 
@@ -63,6 +65,8 @@ export default function TripDetailsPage() {
     options: {},
     addOns: [],
     finalPrice: 0,
+    numTravelers: 1,
+    mode: "BOOK",
   });
   const [showInviteFriends, setShowInviteFriends] = useState(false);
   const [showSendInvitation, setShowSendInvitation] = useState(false);
@@ -363,6 +367,9 @@ export default function TripDetailsPage() {
 
               pricing={pricing}
               images={sidebarImages}
+              minGroupSize={trip?.minGroupSize}
+              maxGroupSize={trip?.maxGroupSize}
+              reservedSeats={trip?.reservedSeats}
               onRequestInvite={(data) =>
                 requireAuth(() => {
                   setSelectedPricing(data);

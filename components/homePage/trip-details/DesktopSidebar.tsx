@@ -10,12 +10,16 @@ interface DesktopSidebarProps {
   pricing: any;
   images: { url: string }[];
   onRequestInvite: (data: {
-    options: any;
+    options: Record<string, any>;
     addOns: string[];
     finalPrice: number;
+    numTravelers: number;
+    mode: "BOOK" | "INVITE";
   }) => void;
   onImageClick?: () => void;
-
+  minGroupSize?: number;
+  maxGroupSize?: number;
+  reservedSeats?: number;
 }
 
 export default function DesktopSidebar({
@@ -24,10 +28,15 @@ export default function DesktopSidebar({
   images,
   onImageClick,
   onRequestInvite,
+  minGroupSize = 1,
+  maxGroupSize = 20,
+  reservedSeats = 0,
 }: DesktopSidebarProps) {
   const simple = pricing?.simplePricingRequest;
   const dynamic = pricing?.dynamicPricingRequest;
   const addOns = pricing?.addOns || [];
+
+  const [numTravelers, setNumTravelers] = useState(1);
 
   const [selectedOptions, setSelectedOptions] = useState<any>({});
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
@@ -78,10 +87,14 @@ export default function DesktopSidebar({
     (pricing?.tripPricingType === "SIMPLE" ? simpleFinal : dynamicTotal) +
     addOnTotal;
 
-  const finalPrice = applyGst(baseTotal);
-
+  const finalPricePerPerson = applyGst(baseTotal);
+  const finalTotalPrice = finalPricePerPerson * numTravelers;
 
   const isButtonEnabled = true;
+
+  const seatCount = reservedSeats || 12; // Fallback for demo
+  const maxSeats = maxGroupSize || 25; // Fallback for demo
+  const seatPercentage = (seatCount / maxSeats) * 100;
 
   return (
     <div className="hidden lg:block lg:col-span-1">
@@ -112,43 +125,81 @@ export default function DesktopSidebar({
         </div>
 
         {/* Card */}
-        <div className="bg-white rounded-2xl border p-5 space-y-4">
-          <div>
-            <p className="text-xs text-gray-500">
+        <div className="bg-white rounded-2xl border p-6 space-y-5 shadow-sm">
+          <div className="space-y-1">
+            <p className="text-sm text-gray-400 font-medium">
               {TRIP_DETAILS.SIDEBAR.STARTING_FROM}
             </p>
 
-            <p className="text-3xl font-bold">
-              ₹{(finalPrice || 0).toLocaleString()}
-              <span className="text-sm text-gray-500 font-normal">
-                {" "}
-                {TRIP_DETAILS.SIDEBAR.PER_PERSON}
+            <p className="text-4xl font-extrabold text-gray-900 leading-tight">
+              ₹{(finalTotalPrice || 0).toLocaleString()}
+              <span className="text-sm text-gray-500 font-normal ml-1">
+                ({numTravelers} {numTravelers === 1 ? 'person' : 'persons'})
               </span>
             </p>
 
             {simple && simple.discountPercent > 0 && (
-              <p className="text-sm text-primary font-semibold mt-1">
-                {simple.discountPercent}% OFF (₹{simple.basePrice})
+              <p className="text-[15px] text-[#FF4D4D] font-bold">
+                {simple.discountPercent}% OFF (₹{(simple.basePrice * numTravelers)?.toLocaleString()})
               </p>
             )}
+
             {includesGst && (
-              <p className="text-xs text-gray-500">
+              <p className="text-[10px] text-gray-400 uppercase tracking-wider">
                 *Price includes 18% GST
               </p>
             )}
+          </div>
 
-            {/* Deposit Required Info */}
-            {(pricing?.depositRequiredPercent || pricing?.depositRequiredAmount) && (
-              <div className="mt-3 text-sm text-gray-900 bg-gray-50 px-4 py-3 rounded-xl flex justify-between items-center w-full">
-                <span className="font-medium">Deposit Required</span>
-                <span className="font-bold">
-                  {pricing.depositRequiredPercent
-                    ? `${pricing.depositRequiredPercent}%`
-                    : `₹${pricing.depositRequiredAmount?.toLocaleString()}`}
-                </span>
-              </div>
-            )}
 
+          {/* Deposit Required Info */}
+          {(pricing?.depositRequiredPercent || pricing?.depositRequiredAmount) && (
+            <div className="bg-gray-50 px-5 py-4 rounded-2xl flex justify-between items-center w-full border border-gray-100">
+              <span className="text-sm font-semibold text-gray-700">Deposit Required</span>
+              <span className="text-base font-extrabold text-gray-900">
+                {pricing.depositRequiredPercent
+                  ? `${pricing.depositRequiredPercent}%`
+                  : `₹${pricing.depositRequiredAmount?.toLocaleString()}`}
+              </span>
+            </div>
+          )}
+
+
+          {/* Traveler Selector */}
+          <div className="py-4 border-y border-gray-100 flex items-center justify-between">
+            <div className="flex flex-col">
+              <span className="text-sm font-semibold text-gray-900">Travelers</span>
+              <span className="text-xs text-gray-500">Number of persons</span>
+            </div>
+            <div className="flex items-center gap-4 bg-gray-50 p-1.5 rounded-xl border border-gray-200">
+              <button
+                onClick={() => setNumTravelers(Math.max(1, numTravelers - 1))}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+              >
+                -
+              </button>
+              <span className="text-base font-bold w-4 text-center">{numTravelers}</span>
+              <button
+                onClick={() => setNumTravelers(numTravelers + 1)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-gray-600 hover:bg-gray-50 transition-colors shadow-sm cursor-pointer"
+              >
+                +
+              </button>
+            </div>
+          </div>
+
+          {/* Seats filling fast */}
+          <div className="space-y-2">
+            <div className="flex justify-between items-center text-sm">
+              <span className="font-semibold text-gray-700">Seats filling fast</span>
+              <span className="font-bold text-gray-900">{seatCount}/{maxSeats}</span>
+            </div>
+            <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-brand-gradient rounded-full transition-all duration-500"
+                style={{ width: `${seatPercentage}%` }}
+              />
+            </div>
           </div>
 
           {/* DYNAMIC ONLY */}
@@ -186,7 +237,7 @@ export default function DesktopSidebar({
                         </div>
 
                         <p className="font-semibold text-sm">
-                          ₹{getOptionFinalPrice(opt.price, opt.discount)}
+                          ₹{(getOptionFinalPrice(opt.price, opt.discount) * numTravelers).toLocaleString()}
                         </p>
                       </div>
                     </div>
@@ -244,7 +295,7 @@ export default function DesktopSidebar({
                             </div>
 
                             <p className="font-semibold text-sm">
-                              ₹{getOptionFinalPrice(opt.price, opt.discount)}
+                              ₹{(getOptionFinalPrice(opt.price, opt.discount) * numTravelers).toLocaleString()}
                             </p>
                           </label>
 
@@ -304,7 +355,7 @@ export default function DesktopSidebar({
                       </div>
 
                       <p className="font-semibold text-sm">
-                        ₹{add.charge}
+                        ₹{(add.charge * numTravelers).toLocaleString()}
                       </p>
                     </label>
 
@@ -321,31 +372,56 @@ export default function DesktopSidebar({
             </div>
           )}
 
-          <button
-            disabled={!isButtonEnabled}
-            onClick={() =>
-              onRequestInvite({
-                options: selectedOptions,
-                addOns: selectedAddOns,
-                finalPrice,
-              })
-            }
-            className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-medium cursor-pointer ${isButtonEnabled
-              ? "bg-brand-gradient text-white shadow-lg hover:opacity-90 transition-opacity"
-              : "bg-gray-200 text-gray-400 cursor-not-allowed"
-              }`}
-          >
-            <Send className="w-4 h-4" />
-            {TRIP_DETAILS.SIDEBAR.REQUEST_INVITE}
-          </button>
+          <div className="space-y-3 pt-2">
+            <button
+              disabled={!isButtonEnabled}
+              onClick={() =>
+                onRequestInvite({
+                  options: selectedOptions,
+                  addOns: selectedAddOns,
+                  finalPrice: finalTotalPrice,
+                  numTravelers,
+                  mode: "BOOK",
+                })
+              }
+              className={`w-full flex items-center justify-center gap-3 py-4 rounded-2xl font-bold text-lg cursor-pointer shadow-lg transition-all active:scale-[0.98] ${isButtonEnabled
+                ? "bg-brand-gradient text-white hover:opacity-90"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                }`}
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M21.3751 13.1253C20.6251 16.8753 17.7978 20.4057 13.8291 21.1951C9.86042 21.9846 5.83311 20.1385 3.84055 16.6167C1.848 13.0949 2.33991 8.69208 5.06059 5.69685C7.78128 2.70161 12.3751 1.87529 16.1251 3.37529" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+<path d="M8.625 11.625L12.375 15.375L21.375 5.625" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+</svg>
+              Book Now
+            </button>
 
-          <button
-            onClick={onAsk}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border border-primary text-primary font-medium cursor-pointer hover:bg-primary/5 transition-colors"
-          >
-            <MessageCircle className="w-4 h-4" />
-            {TRIP_DETAILS.SIDEBAR.SEND_QUERY}
-          </button>
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() =>
+                  onRequestInvite({
+                    options: selectedOptions,
+                    addOns: selectedAddOns,
+                    finalPrice: finalTotalPrice,
+                    numTravelers,
+                    mode: "INVITE",
+                  })
+                }
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border-2 border-primary/20 text-primary font-bold text-sm cursor-pointer hover:bg-primary/5 transition-all active:scale-[0.98]"
+              >
+                <Send className="w-4 h-4" />
+                {TRIP_DETAILS.SIDEBAR.REQUEST_INVITE}
+              </button>
+
+              <button
+                onClick={onAsk}
+                className="w-full flex items-center justify-center gap-2 py-3.5 rounded-2xl border-2 border-primary/20 text-primary font-bold text-sm cursor-pointer hover:bg-primary/5 transition-all active:scale-[0.98]"
+              >
+                <MessageCircle className="w-4 h-4" />
+                {TRIP_DETAILS.SIDEBAR.SEND_QUERY}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>

@@ -18,6 +18,8 @@ export default function PricingDetailsModal({
     options: Record<string, any>;
     addOns: string[];
     finalPrice: number;
+    numTravelers: number;
+    mode: "BOOK" | "INVITE";
   };
   tripId: string;
   onClose: () => void;
@@ -85,7 +87,8 @@ export default function PricingDetailsModal({
       }
 
       // Build pricing summary message for display
-      let pricingDetails = `Final price: ₹${selectedPricing.finalPrice}`;
+      const prefix = selectedPricing.mode === "BOOK" ? "Booking" : "Inquiry";
+      let pricingDetails = `${prefix} for ₹${selectedPricing.finalPrice} (${selectedPricing.numTravelers} travelers)`;
 
       if (pricing?.tripPricingType === "DYNAMIC") {
         const selectedOpts = Object.entries(selectedPricing.options)
@@ -116,8 +119,8 @@ export default function PricingDetailsModal({
       }).unwrap();
 
       toast({
-        title: "Request Sent Successfully! ✅",
-        description: "Our team will contact you soon.",
+        title: "Booking Request Sent! ✅",
+        description: "Our team will contact you soon to finalize your trip.",
       });
 
       onClose();
@@ -139,16 +142,21 @@ export default function PricingDetailsModal({
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
       <div className="bg-white rounded-2xl max-w-md w-full max-h-[90vh] overflow-y-auto">
         {/* HEADER */}
-        <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between">
+        <div className="sticky top-0 bg-white border-b px-6 py-4 flex justify-between z-10">
           <h3 className="font-bold">
-            {TRIP_DETAILS.PRICING_DETAILS_MODAL.TITLE}
+            {selectedPricing.mode === "BOOK" ? "Confirm Your Booking" : "Request Trip Invite"}
           </h3>
-          <button onClick={onClose}>
+          <button onClick={onClose} className="cursor-pointer">
             <X />
           </button>
         </div>
 
         <div className="p-6 space-y-4">
+          {/* ================= TRAVELERS ================= */}
+          <div className="flex justify-between border-b pb-3">
+            <p className="font-semibold text-gray-700">Travelers</p>
+            <span className="font-bold text-gray-900">{selectedPricing.numTravelers} Persons</span>
+          </div>
           {/* ================= SIMPLE ================= */}
           {pricing?.tripPricingType === "SIMPLE" && simple && (
             <div className="flex justify-between border-b pb-3">
@@ -165,10 +173,10 @@ export default function PricingDetailsModal({
 
               <span className="font-bold text-primary">
                 ₹
-                {getFinal(
+                {(getFinal(
                   simple.basePrice,
                   simple.discountPercent
-                ).toLocaleString()}
+                ) * selectedPricing.numTravelers).toLocaleString()}
               </span>
             </div>
           )}
@@ -190,7 +198,7 @@ export default function PricingDetailsModal({
                       </p>
                     </div>
                     <span className="font-bold text-primary">
-                      ₹{getFinal(opt.price, opt.discount)}
+                      ₹{(getFinal(opt.price, opt.discount) * selectedPricing.numTravelers).toLocaleString()}
                     </span>
                   </div>
                 );
@@ -212,10 +220,10 @@ export default function PricingDetailsModal({
                   </div>
                   <span className="font-bold text-primary">
                     ₹
-                    {getFinal(
+                    {(getFinal(
                       selectedOpt.price,
                       selectedOpt.discount
-                    )}
+                    ) * selectedPricing.numTravelers).toLocaleString()}
                   </span>
                 </div>
               );
@@ -231,7 +239,7 @@ export default function PricingDetailsModal({
                 <div key={i} className="flex justify-between border-b pb-3">
                   <p className="font-semibold">{add.name}</p>
                   <span className="font-bold text-primary">
-                    ₹{(add.charge || add.price || 0).toLocaleString()}
+                    ₹{((add.charge || add.price || 0) * selectedPricing.numTravelers).toLocaleString()}
                   </span>
                 </div>
               );
@@ -276,9 +284,9 @@ export default function PricingDetailsModal({
             <button
               onClick={handleRequestInvite}
               disabled={isLoading}
-              className="flex-1 bg-brand-gradient text-white py-3 rounded-lg disabled:opacity-50 cursor-pointer shadow-lg hover:opacity-90 transition-opacity"
+              className="flex-1 bg-brand-gradient text-white py-3 rounded-lg disabled:opacity-50 cursor-pointer shadow-lg hover:opacity-90 font-bold transition-all active:scale-[0.98]"
             >
-              {isLoading ? "Requesting..." : TRIP_DETAILS.PRICING_DETAILS_MODAL.REQUEST_INVITE}
+              {isLoading ? "Processing..." : selectedPricing.mode === "BOOK" ? "Book Now" : "Request Invite"}
             </button>
 
           </div>

@@ -14,9 +14,11 @@ export default function MobilePricingModal({
   onAsk: () => void;
   onClose: () => void;
   onRequestInvite: (data: {
-    options: any;
+    options: Record<string, any>;
     addOns: string[];
     finalPrice: number;
+    numTravelers: number;
+    mode: "BOOK" | "INVITE";
   }) => void;
 }) {
   const simple = options?.simplePricingRequest;
@@ -25,6 +27,7 @@ export default function MobilePricingModal({
 
   const [selectedOptions, setSelectedOptions] = useState<any>({});
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
+  const [numTravelers, setNumTravelers] = useState(1);
 
   const getFinal = (price: number, discount: number) =>
     Math.round(price - (price * discount) / 100);
@@ -69,23 +72,27 @@ export default function MobilePricingModal({
     addOnTotal;
 
   /* ---------------- GST (18%) ---------------- */
-  const finalPrice = useMemo(() => {
+  const finalPricePerPerson = useMemo(() => {
     if (options?.includesGst) {
       return Math.round(rawFinalPrice + rawFinalPrice * 0.18);
     }
     return Math.round(rawFinalPrice);
   }, [rawFinalPrice, options?.includesGst]);
 
+  const finalTotalPrice = finalPricePerPerson * numTravelers;
+
   /* ---------------- BUTTON ENABLE ---------------- */
   // Mobile me kabhi disable nahi hoga
   const isButtonEnabled = true;
 
   /* ---------------- SUBMIT ---------------- */
-  const handleRequestInvite = () => {
+  const handleResponse = (mode: "BOOK" | "INVITE") => {
     onRequestInvite({
       options: selectedOptions,
       addOns: selectedAddOns,
-      finalPrice,
+      finalPrice: finalTotalPrice,
+      numTravelers,
+      mode,
     });
   };
   const handleAsk = () => {
@@ -110,10 +117,33 @@ export default function MobilePricingModal({
         <div className="p-6 space-y-4">
           {/* TOTAL */}
           <div className="flex justify-between border-b pb-3">
-            <p className="text-sm font-medium">Total</p>
+            <p className="text-sm font-medium">Total Price</p>
             <span className="font-bold text-primary">
-              ₹{finalPrice.toLocaleString()}
+              ₹{finalTotalPrice.toLocaleString()}
             </span>
+          </div>
+
+          {/* Traveler Selector */}
+          <div className="flex items-center justify-between border-b pb-3">
+            <div>
+              <p className="text-sm font-medium">Travelers</p>
+              <p className="text-xs text-gray-500">Number of persons</p>
+            </div>
+            <div className="flex items-center gap-3 bg-gray-50 p-1 rounded-xl border">
+              <button
+                onClick={() => setNumTravelers(Math.max(1, numTravelers - 1))}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-gray-600 shadow-sm"
+              >
+                -
+              </button>
+              <span className="text-base font-bold w-4 text-center">{numTravelers}</span>
+              <button
+                onClick={() => setNumTravelers(numTravelers + 1)}
+                className="w-8 h-8 flex items-center justify-center rounded-lg bg-white border border-gray-200 text-gray-600 shadow-sm"
+              >
+                +
+              </button>
+            </div>
           </div>
 
           {/* SIMPLE */}
@@ -138,7 +168,7 @@ export default function MobilePricingModal({
               </div>
 
               <span className="font-semibold">
-                ₹{simpleTotal.toLocaleString()}
+                ₹{(simpleTotal * numTravelers).toLocaleString()}
               </span>
             </div>
           )}
@@ -166,7 +196,7 @@ export default function MobilePricingModal({
                     <div className="flex justify-between">
                       <p className="text-sm">{opt.name}</p>
                       <span className="font-semibold">
-                        ₹{getFinal(opt.price, opt.discount)}
+                        ₹{(getFinal(opt.price, opt.discount) * numTravelers).toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -202,7 +232,7 @@ export default function MobilePricingModal({
                         >
                           <p className="text-sm">{opt.name}</p>
                           <span className="font-semibold">
-                            ₹{getFinal(opt.price, opt.discount)}
+                            ₹{(getFinal(opt.price, opt.discount) * numTravelers).toLocaleString()}
                           </span>
                         </label>
                       );
@@ -234,7 +264,7 @@ export default function MobilePricingModal({
                 >
                   <p className="text-sm">{a.name}</p>
                   <span className="font-semibold">
-                    ₹{(a.charge || a.price || 0).toLocaleString()}
+                    ₹{((a.charge || a.price || 0) * numTravelers).toLocaleString()}
                   </span>
                 </label>
               ))}
@@ -250,20 +280,36 @@ export default function MobilePricingModal({
           </div>
 
           {/* BUTTON */}
-          <button
-            onClick={handleRequestInvite}
-            className="w-full py-3 rounded-lg flex items-center justify-center gap-2 bg-brand-gradient text-white"
-          >
-            <Send className="w-4 h-4" />
-            {TRIP_DETAILS.PRICING_MODAL.REQUEST_INVITE}
-          </button>
-          <button
-            onClick={handleAsk}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-primary text-primary font-medium hover:bg-primary/5"
-          >
-            <MessageCircle className="w-4 h-4" />
-            {TRIP_DETAILS.SIDEBAR.SEND_QUERY}
-          </button>
+          {/* BUTTONS */}
+          <div className="space-y-3">
+            <button
+              onClick={() => handleResponse("BOOK")}
+              className="w-full py-4 rounded-xl flex items-center justify-center gap-3 bg-brand-gradient text-white font-bold text-lg shadow-lg transition-all active:scale-[0.98]"
+            >
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M21.3751 13.1253C20.6251 16.8753 17.7978 20.4057 13.8291 21.1951C9.86042 21.9846 5.83311 20.1385 3.84055 16.6167C1.848 13.0949 2.33991 8.69208 5.06059 5.69685C7.78128 2.70161 12.3751 1.87529 16.1251 3.37529" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                <path d="M8.625 11.625L12.375 15.375L21.375 5.625" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+              Book Now
+            </button>
+
+            <div className="grid grid-cols-2 gap-3">
+              <button
+                onClick={() => handleResponse("INVITE")}
+                className="w-full py-3 rounded-xl border-2 border-primary/20 text-primary font-bold text-sm flex items-center justify-center gap-2"
+              >
+                <Send className="w-4 h-4" />
+                {TRIP_DETAILS.PRICING_MODAL.REQUEST_INVITE}
+              </button>
+              <button
+                onClick={handleAsk}
+                className="w-full flex items-center justify-center gap-2 py-3 rounded-xl border-2 border-primary/20 text-primary font-bold text-sm"
+              >
+                <MessageCircle className="w-4 h-4" />
+                {TRIP_DETAILS.SIDEBAR.SEND_QUERY}
+              </button>
+            </div>
+          </div>
         </div>
       </div>
     </div>
