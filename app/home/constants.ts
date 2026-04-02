@@ -1,10 +1,11 @@
 import {
     Bell, Bookmark, MessageCircleQuestion,
-    Scale, Settings, Facebook, Instagram, Youtube, Linkedin, LayoutDashboard
+    Scale, Settings, Facebook, Instagram, Youtube, Linkedin, LayoutDashboard, Ticket
 } from "lucide-react";
 
 export const userMenuItems = [
     { icon: LayoutDashboard, label: "My Dashboard", href: "#" },
+    { icon: Ticket, label: "My Orders", href: "/home/my-orders" },
     { icon: Bell, label: "Trip Invitations Sent", href: "/home/invitations" },
     { icon: MessageCircleQuestion, label: "My Queries", href: "/home/my-queries" },
     { icon: Bookmark, label: "Saved Trips", href: "/home/wishlist" },

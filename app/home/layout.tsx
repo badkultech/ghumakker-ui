@@ -38,6 +38,7 @@ export default function HomeLayout({
         "/home/settings": "Settings",
         "/home/compare-trips": "Compare Trips",
         "/home/leaders": "Trip Leaders",
+        "/home/my-orders": "My Orders",
     };
 
     // Current page ka title (prefix match के लिए)

@@ -169,10 +169,10 @@ export default function BookingConfirmationPage() {
                 <span>Receipt</span>
               </button>
               <Link 
-                href="/home/my-trips" 
+                href="/home/my-orders" 
                 className="flex-[1.5] h-14 rounded-2xl bg-gradient-to-r from-[#FF3333] to-[#FF6633] text-white font-black text-sm flex items-center justify-center gap-2.5 hover:opacity-90 transition-all shadow-xl shadow-red-500/20 active:scale-[0.98]"
               >
-                <span>View My Trips</span>
+                <span>View My Orders</span>
                 <ArrowRight size={18} strokeWidth={2.5} />
               </Link>
             </div>
