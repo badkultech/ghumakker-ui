@@ -1,8 +1,10 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { X, CheckCircle2 } from "lucide-react";
 import { TRIP_DETAILS } from "@/lib/constants/strings";
 import { useCreatePublicTripLeadWithPricingMutation } from "@/lib/services/organizer/trip/leads";
+import { useCreateTripBookingMutation } from "@/lib/services/organizer/trip/bookings";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { toast } from "@/hooks/use-toast";
@@ -11,6 +13,7 @@ export default function PricingDetailsModal({
   pricing,
   selectedPricing,
   tripId,
+  tripDbId,
   onClose,
 }: {
   pricing: any;
@@ -22,6 +25,7 @@ export default function PricingDetailsModal({
     mode: "BOOK" | "INVITE";
   };
   tripId: string;
+  tripDbId: any;
   onClose: () => void;
 }) {
   const simple = pricing?.simplePricingRequest;
@@ -31,7 +35,189 @@ export default function PricingDetailsModal({
   const organizationId = useOrganizationId();
   const { userData } = useAuthActions();
 
-  const [createLead, { isLoading }] = useCreatePublicTripLeadWithPricingMutation();
+  // Load Razorpay script on mount
+  useEffect(() => {
+    if (typeof window !== "undefined" && !document.getElementById("razorpay-sdk")) {
+      const script = document.createElement("script");
+      script.id = "razorpay-sdk";
+      script.src = "https://checkout.razorpay.com/v1/checkout.js";
+      script.async = true;
+      script.onload = () => console.log("Razorpay SDK loaded successfully.");
+      script.onerror = () => console.error("Razorpay SDK failed to load.");
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  const [createLead, { isLoading: isLeadLoading }] = useCreatePublicTripLeadWithPricingMutation();
+  const [createBooking, { isLoading: isBookingLoading }] = useCreateTripBookingMutation();
+
+  const isLoading = isLeadLoading || isBookingLoading;
+
+  const handleBookNow = async () => {
+    try {
+      console.log("Creating booking intent...");
+      
+      console.log("Full Pricing Object:", pricing);
+      console.log("Dynamic Pricing DTOs:", dynamic?.pricingCategoryDtos);
+
+      // 1. Map selected options to schema IDs
+      const selectedOptions: any[] = [];
+      const missingIds: string[] = [];
+
+      if (dynamic?.pricingCategoryDtos) {
+        dynamic.pricingCategoryDtos.forEach((cat: any) => {
+          if (cat.pricingCategoryType === "SINGLE") {
+            const opt = cat.pricingCategoryOptionDTOs?.[0];
+            const catId = cat.id || cat.pricingCategoryId || cat.publicId;
+            const optId = opt?.id || opt?.pricingCategoryOptionId || opt?.publicId;
+            
+            console.log(`Checking category ${cat.categoryName}: catId=${catId}, optId=${optId}`);
+
+            if (catId && optId) {
+              selectedOptions.push({
+                pricingCategoryId: catId,
+                pricingCategoryOptionId: optId
+              });
+            } else {
+              missingIds.push(`${cat.categoryName} (SINGLE)`);
+            }
+          } else {
+            const selectedOpt = selectedPricing.options[cat.categoryName];
+            const catId = cat.id || cat.pricingCategoryId || cat.publicId;
+            const optId = selectedOpt?.id || selectedOpt?.pricingCategoryOptionId || selectedOpt?.publicId;
+
+            console.log(`Checking category ${cat.categoryName}: catId=${catId}, optId=${optId}`);
+
+            if (catId && optId) {
+              selectedOptions.push({
+                pricingCategoryId: catId,
+                pricingCategoryOptionId: optId
+              });
+            } else if (selectedOpt) {
+              missingIds.push(`${cat.categoryName} (MULTI)`);
+            }
+          }
+        });
+      }
+
+      // 2. Map add-ons to schema IDs
+      const addOnIds = selectedPricing.addOns.map(name => {
+        const fullAddon = addOns.find((a: any) => a.name === name);
+        const addonId = fullAddon?.id || fullAddon?.addOnId || fullAddon?.publicId;
+        if (!addonId) missingIds.push(`Addon: ${name}`);
+        return { addOnId: addonId };
+      }).filter(a => a.addOnId);
+
+      // 3. Trip ID (Numeric if possible from prop)
+      const finalTripId = tripDbId || pricing?.tripId || tripId;
+
+      const bookingPayload = {
+        tripId: finalTripId,
+        groupSize: selectedPricing.numTravelers,
+        selectedOptions,
+        addOns: addOnIds
+      };
+
+      console.log(`OrganizationID: ${organizationId}`);
+      console.log("Final Booking JSON Payload:", JSON.stringify(bookingPayload, null, 2));
+
+      if (missingIds.length > 0) {
+        console.error("Missing IDs for these items:", missingIds);
+        toast({
+          title: "Technical Issue",
+          description: `Some IDs are missing in the data: ${missingIds.join(", ")}. Checking logs.`,
+          variant: "destructive",
+        });
+      }
+
+      // 4. Call Booking API
+      const bookingData = await createBooking({
+        organizationId,
+        tripPublicId: tripId, // Use prop (UUID) for URL
+        body: bookingPayload
+      }).unwrap();
+
+      console.log("Booking created successfully:", JSON.stringify(bookingData, null, 2));
+      
+      const savedBookingId = bookingData?.bookingId;
+      const savedBookingRef = bookingData?.bookingRef;
+      const savedTotalAmount = bookingData?.totalAmount;
+
+      if (!savedBookingId) {
+        throw new Error("Booking response was successful but missing bookingId.");
+      }
+
+      // 4. Handle Redirection / Razorpay
+      const rzpKey = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+
+      if (!rzpKey || rzpKey === "rzp_test_placeholder") {
+        console.warn("Razorpay Key ID missing. Redirecting to confirmation page directly (Test Mode).");
+        toast({
+          title: "Booking Created! 🚀",
+          description: "Redirecting to confirmation page...",
+        });
+        
+        setTimeout(() => {
+          onClose();
+          window.location.href = `/home/booking-confirmation/${savedBookingId}`;
+        }, 1500);
+        return;
+      }
+
+      // 5. Initiate Razorpay
+      if (!(window as any).Razorpay) {
+        console.error("Razorpay SDK not loaded.");
+        toast({
+          title: "Booking Success, but Payment SDK failed",
+          description: "Redirecting to your booking details...",
+        });
+        window.location.href = `/home/booking-confirmation/${savedBookingId}`;
+        return;
+      }
+
+      const options = {
+        key: rzpKey,
+        amount: Math.round((savedTotalAmount || 0) * 100), // Amount in paise
+        currency: "INR",
+        name: "Ghumakker",
+        description: `Trip Booking: ${savedBookingRef}`,
+        image: "/logo.svg",
+        handler: function (response: any) {
+          toast({
+            title: "Payment Successful! 🎉",
+            description: `Booking #${savedBookingRef} confirmed.`,
+          });
+          onClose();
+          window.location.href = `/home/booking-confirmation/${savedBookingId}`;
+        },
+        prefill: {
+          name: `${userData?.firstName} ${userData?.lastName ?? ""}`,
+          email: userData?.email || "",
+          contact: userData?.mobileNumber || "",
+        },
+        notes: {
+          booking_id: savedBookingId,
+          booking_ref: savedBookingRef,
+          trip_id: tripId,
+        },
+        theme: {
+          color: "#FF3E3E",
+        },
+      };
+
+      const rzp1 = new (window as any).Razorpay(options);
+      rzp1.open();
+
+    } catch (err: any) {
+      console.error("Booking creation failed (Full Details):", JSON.stringify(err, null, 2));
+      console.error("Original Error Object:", err);
+      toast({
+        title: "Booking Failed ❌",
+        description: err?.data?.message || "Something went wrong while creating your booking. Check console logs.",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleRequestInvite = async () => {
     try {
@@ -282,7 +468,7 @@ export default function PricingDetailsModal({
             </button>
 
             <button
-              onClick={handleRequestInvite}
+              onClick={selectedPricing.mode === "BOOK" ? handleBookNow : handleRequestInvite}
               disabled={isLoading}
               className="flex-1 bg-brand-gradient text-white py-3 rounded-lg disabled:opacity-50 cursor-pointer shadow-lg hover:opacity-90 font-bold transition-all active:scale-[0.98]"
             >
