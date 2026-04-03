@@ -48,4 +48,5 @@ export const TAGS = {
   UserPreference: 'UserPreference',
   UserNotificationPreference: 'UserNotificationPreference',
   UserLeads: 'UserLeads',
+  orders: 'orders',
 } as const;
