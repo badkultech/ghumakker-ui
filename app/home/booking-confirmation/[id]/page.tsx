@@ -5,30 +5,46 @@ import { Check, Download, ArrowRight, Calendar, Clock, Users, MapPin, User, Rece
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Footer } from "@/components/search-results/footer";
+import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { useGetMyOrdersQuery } from "@/lib/services/user-orders";
+import { Loader2, AlertCircle } from "lucide-react";
 
 export default function BookingConfirmationPage() {
   const { id } = useParams();
+  const organizationId = useOrganizationId();
+  
+  const { data: orders, isLoading } = useGetMyOrdersQuery(
+    { organizationPublicId: organizationId || "" },
+    { skip: !organizationId }
+  );
 
-  // Mock data for the confirmation page
-  // In a real app, this would be fetched from an API using the 'id'
-  const bookingDetails = {
-    bookingId: "GH-2025-48291",
-    tripName: "Himachal Backpacking: Manali, Kasol & Jibhi",
-    organizer: "Mountain Trails",
-    travelDates: "15 Dec – 22 Dec 2025",
-    duration: "6 Nights / 7 Days",
-    travelers: "1 Person",
-    pickupCity: "Mumbai",
-    pricing: {
-      tripCost: 12999,
-      discount: 1430,
-      serviceFee: 499,
-      gst: 899,
-      totalAmount: 12967,
-      transactionId: "rzp_TXN_abc123xyz",
-      transactionDate: "20 Mar 2026, 11:42 AM"
-    }
-  };
+  const booking = orders?.find(o => o.bookingRef === id);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F3F5F7]">
+        <div className="text-center">
+            <Loader2 className="w-10 h-10 text-primary animate-spin mx-auto mb-4" />
+            <p className="text-gray-500 font-bold">Loading confirmation details...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (!booking) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-[#F3F5F7] px-4">
+        <div className="max-w-md w-full bg-white p-12 rounded-[40px] text-center border border-gray-100 shadow-xl">
+            <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-6" />
+            <h1 className="text-2xl font-black text-gray-900 mb-4">Booking Not Found</h1>
+            <p className="text-gray-400 font-medium mb-8">We couldn't find a booking with reference ID: <span className="text-gray-900 font-bold">{id}</span></p>
+            <Link href="/home/my-orders" className="inline-block w-full h-14 bg-brand-gradient rounded-2xl text-white font-black flex items-center justify-center transition-all hover:scale-[1.02]">
+                Back to My Orders
+            </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-[#F3F5F7] py-8 px-4">
@@ -58,7 +74,7 @@ export default function BookingConfirmationPage() {
             <div className="inline-flex items-center gap-2.5 bg-[#4FC767]/80 backdrop-blur-sm px-5 py-2 rounded-xl border border-white/20 shadow-sm">
               <span className="text-sm">📋</span>
               <span className="text-[11px] font-black tracking-widest uppercase">
-                Booking ID: #{bookingDetails.bookingId}
+                Booking ID: #{booking.bookingRef}
               </span>
             </div>
           </div>
@@ -74,7 +90,7 @@ export default function BookingConfirmationPage() {
                 <div className="bg-[#F8F9FA] p-4 rounded-2xl flex flex-col gap-1.5 border border-gray-100/50">
                   <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Trip Name</span>
                   <span className="text-sm font-bold text-gray-900 leading-tight">
-                    {bookingDetails.tripName}
+                    {booking.tripName}
                   </span>
                 </div>
 
@@ -82,32 +98,34 @@ export default function BookingConfirmationPage() {
                 <div className="bg-[#F8F9FA] p-4 rounded-2xl flex flex-col gap-1.5 border border-gray-100/50">
                   <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Organizer</span>
                   <span className="text-sm font-bold text-gray-900 leading-tight">
-                    {bookingDetails.organizer}
+                    {booking.startPoint} to {booking.endPoint}
                   </span>
                 </div>
 
                 {/* Travel Dates */}
                 <div className="bg-[#F8F9FA] p-4 rounded-2xl flex flex-col gap-1.5 border border-gray-100/50">
                   <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Travel Dates</span>
-                  <span className="text-sm font-bold text-gray-900 leading-tight">{bookingDetails.travelDates}</span>
+                  <span className="text-sm font-bold text-gray-900 leading-tight">
+                    {new Date(booking.startDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short' })} – {new Date(booking.endDate).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}
+                  </span>
                 </div>
 
-                {/* Duration */}
+                {/* Status */}
                 <div className="bg-[#F8F9FA] p-4 rounded-2xl flex flex-col gap-1.5 border border-gray-100/50">
-                  <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Duration</span>
-                  <span className="text-sm font-bold text-gray-900 leading-tight">{bookingDetails.duration}</span>
+                  <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Booking Status</span>
+                  <span className="text-sm font-bold text-[#2EB335] leading-tight">{booking.status}</span>
                 </div>
 
-                {/* Travelers */}
+                {/* Location */}
                 <div className="bg-[#F8F9FA] p-4 rounded-2xl flex flex-col gap-1.5 border border-gray-100/50">
-                  <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Travelers</span>
-                  <span className="text-sm font-bold text-gray-900 leading-tight">{bookingDetails.travelers}</span>
+                  <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Location</span>
+                  <span className="text-sm font-bold text-gray-900 leading-tight truncate">{booking.location || booking.cityTags?.join(", ")}</span>
                 </div>
 
-                {/* Pickup City */}
+                {/* Ordered on */}
                 <div className="bg-[#F8F9FA] p-4 rounded-2xl flex flex-col gap-1.5 border border-gray-100/50">
-                  <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Pickup City</span>
-                  <span className="text-sm font-bold text-gray-900 leading-tight">{bookingDetails.pickupCity}</span>
+                  <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Ordered On</span>
+                  <span className="text-sm font-bold text-gray-900 leading-tight">{new Date(booking.orderedOn).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                 </div>
               </div>
             </div>
@@ -118,45 +136,27 @@ export default function BookingConfirmationPage() {
                 Payment Receipt
               </h2>
               <div className="space-y-3">
-                <div className="flex justify-between items-center bg-gray-50/50 px-3 py-1.5 rounded-lg border border-gray-100/50">
-                  <span className="text-xs font-semibold text-gray-500">Trip Cost (1 × ₹12,999)</span>
-                  <span className="text-xs font-black text-gray-900 leading-none">₹{bookingDetails.pricing.tripCost.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center bg-red-50/30 px-3 py-1.5 rounded-lg border border-red-100/20">
-                  <span className="text-xs font-semibold text-gray-500">11% Offer Discount</span>
-                  <span className="text-xs font-black text-red-500 leading-none">-₹{bookingDetails.pricing.discount.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center px-3 py-1">
-                  <span className="text-xs font-semibold text-gray-500">Platform Service Fee</span>
-                  <span className="text-xs font-black text-gray-900 leading-none">₹{bookingDetails.pricing.serviceFee.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between items-center px-3 py-1">
-                  <span className="text-xs font-semibold text-gray-500">GST (18%)</span>
-                  <span className="text-xs font-black text-gray-900 leading-none">₹{bookingDetails.pricing.gst.toLocaleString()}</span>
-                </div>
-                
-                <div className="pt-4 border-t border-gray-100 flex justify-between items-end">
-                  <span className="text-sm text-gray-700 font-extrabold leading-none">Total Amount</span>
-                  <span className="text-2xl font-black text-gray-900 leading-none tracking-tighter">
-                    ₹{bookingDetails.pricing.totalAmount.toLocaleString()}
+                <div className="flex justify-between items-center bg-gray-50/50 px-3 py-4 rounded-xl border border-gray-100">
+                  <span className="text-sm font-bold text-gray-600">Amount Paid</span>
+                  <span className="text-xl font-black text-gray-900 leading-none tracking-tighter">
+                    ₹{booking.amountPaid.toLocaleString()}
                   </span>
                 </div>
-
+                
                 <div className="pt-6 flex justify-between items-center border-t border-dashed border-gray-200">
                   <div className="space-y-0.5">
-                    <h3 className="text-sm font-black text-gray-900 tracking-tight leading-none uppercase">RAZORPAY</h3>
-                    <p className="text-[9px] text-gray-400 font-bold tracking-widest uppercase leading-none">Secure Gateway</p>
+                    <h3 className="text-sm font-black text-gray-900 tracking-tight leading-none uppercase">Payment Reference</h3>
+                    <p className="text-[9px] text-gray-400 font-extrabold tracking-widest uppercase leading-none mt-1">Transaction Completed</p>
                   </div>
                   <div className="text-right flex flex-col items-end gap-1">
-                    <p className="text-[9px] text-gray-400 font-black tracking-widest uppercase leading-none">Pay Now</p>
-                    <p className="text-xl font-black text-gray-900 tracking-tighter leading-none">₹{bookingDetails.pricing.totalAmount.toLocaleString()}</p>
+                    <p className="text-[9px] text-gray-400 font-black tracking-widest uppercase leading-none">Reference ID</p>
+                    <p className="text-sm font-black text-gray-900 tracking-tighter leading-none">{booking.bookingRef}</p>
                   </div>
                 </div>
 
                 <div className="pt-6 text-center">
                     <p className="text-[9px] text-gray-400 font-bold leading-relaxed tracking-wide px-4">
-                      Payment via Razorpay • Transaction ID: {bookingDetails.pricing.transactionId} <br/>
-                      {bookingDetails.pricing.transactionDate}
+                      Payment was successfully processed on {new Date(booking.orderedOn).toLocaleString('en-GB', { day: '2-digit', month: 'short', year: 'numeric', hour: '2-digit', minute: '2-digit' })}
                     </p>
                 </div>
               </div>

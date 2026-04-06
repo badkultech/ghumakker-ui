@@ -394,6 +394,7 @@ export default function TripDetailsPage() {
           pricing={pricing}
           selectedPricing={selectedPricing}
           tripId={trip?.publicId}
+          tripDbId={trip?.tripId}
           onClose={() => setShowPricingDetails(false)}
         />
       )}
