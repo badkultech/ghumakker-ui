@@ -23,10 +23,10 @@ export const userOrdersAPI = baseAPI.injectEndpoints({
     endpoints: (builder) => ({
         getMyOrders: builder.query<
             UserOrderDTO[],
-            { organizationPublicId: string; status?: string }
+            { organizationPublicId: string; userPublicId: string; status?: string }
         >({
-            query: ({ organizationPublicId, status }) => ({
-                url: `/org/${organizationPublicId}/my-orders`,
+            query: ({ organizationPublicId, userPublicId, status }) => ({
+                url: `/org/${organizationPublicId}/user/${userPublicId}/my-orders`,
                 method: "GET",
                 params: status ? { status } : {},
             }),

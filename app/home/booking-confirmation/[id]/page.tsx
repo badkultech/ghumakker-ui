@@ -6,16 +6,21 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import { Footer } from "@/components/search-results/footer";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { useUserId } from "@/hooks/useUserId";
 import { useGetMyOrdersQuery } from "@/lib/services/user-orders";
 import { Loader2, AlertCircle } from "lucide-react";
 
 export default function BookingConfirmationPage() {
   const { id } = useParams();
   const organizationId = useOrganizationId();
+  const userId = useUserId();
   
   const { data: orders, isLoading } = useGetMyOrdersQuery(
-    { organizationPublicId: organizationId || "" },
-    { skip: !organizationId }
+    { 
+      organizationPublicId: organizationId || "",
+      userPublicId: userId || "",
+    },
+    { skip: !organizationId || !userId }
   );
 
   const booking = orders?.find(o => o.bookingRef === id);
