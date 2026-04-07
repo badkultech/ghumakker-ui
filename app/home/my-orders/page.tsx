@@ -19,17 +19,21 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/search-results/footer";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { useUserId } from "@/hooks/useUserId";
 import { useGetMyOrdersQuery } from "@/lib/services/user-orders";
 
 export default function MyOrdersPage() {
   const [activeTab, setActiveTab] = useState<"UPCOMING" | "COMPLETED" | "CANCELLED">("UPCOMING");
   
   const organizationId = useOrganizationId();
+  const userId = useUserId();
+
   const { data: orders, isLoading, isError } = useGetMyOrdersQuery(
     { 
       organizationPublicId: organizationId || "",
+      userPublicId: userId || "",
     },
-    { skip: !organizationId }
+    { skip: !organizationId || !userId }
   );
 
   const bookings = Array.isArray(orders) ? orders.map(order => ({
