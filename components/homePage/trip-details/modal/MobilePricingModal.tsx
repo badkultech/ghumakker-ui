@@ -9,6 +9,8 @@ export default function MobilePricingModal({
   onClose,
   onRequestInvite,
   onAsk,
+  totalSeats,
+  bookedSeats,
 }: {
   options: any;
   onAsk: () => void;
@@ -20,6 +22,8 @@ export default function MobilePricingModal({
     numTravelers: number;
     mode: "BOOK" | "INVITE";
   }) => void;
+  totalSeats?: number;
+  bookedSeats?: number;
 }) {
   const simple = options?.simplePricingRequest;
   const dynamic = options?.dynamicPricingRequest;
@@ -28,6 +32,10 @@ export default function MobilePricingModal({
   const [selectedOptions, setSelectedOptions] = useState<any>({});
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [numTravelers, setNumTravelers] = useState(1);
+
+  const seatCount = bookedSeats ?? 12;
+  const maxSeats = totalSeats ?? 25;
+  const seatPercentage = (seatCount / maxSeats) * 100;
 
   const getFinal = (price: number, discount: number) =>
     Math.round(price - (price * discount) / 100);
@@ -81,9 +89,10 @@ export default function MobilePricingModal({
 
   const finalTotalPrice = finalPricePerPerson * numTravelers;
 
+  const isSoldOut = seatCount >= maxSeats;
+
   /* ---------------- BUTTON ENABLE ---------------- */
-  // Mobile me kabhi disable nahi hoga
-  const isButtonEnabled = true;
+  const isButtonEnabled = !isSoldOut;
 
   /* ---------------- SUBMIT ---------------- */
   const handleResponse = (mode: "BOOK" | "INVITE") => {
@@ -143,6 +152,20 @@ export default function MobilePricingModal({
               >
                 +
               </button>
+            </div>
+          </div>
+
+          {/* Seats filling fast */}
+          <div className="space-y-2 border-b pb-4">
+            <div className="flex justify-between items-center text-sm font-semibold">
+              <span className="text-gray-700">Seats filling fast</span>
+              <span className="text-gray-900">{seatCount}/{maxSeats}</span>
+            </div>
+            <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-brand-gradient rounded-full transition-all duration-500"
+                style={{ width: `${seatPercentage}%` }}
+              />
             </div>
           </div>
 
@@ -284,13 +307,19 @@ export default function MobilePricingModal({
           <div className="space-y-3">
             <button
               onClick={() => handleResponse("BOOK")}
-              className="w-full py-4 rounded-xl flex items-center justify-center gap-3 bg-brand-gradient text-white font-bold text-lg shadow-lg transition-all active:scale-[0.98]"
+              disabled={!isButtonEnabled}
+              className={`w-full py-4 rounded-xl flex items-center justify-center gap-3 font-bold text-lg shadow-lg transition-all active:scale-[0.98] ${isButtonEnabled
+                ? "bg-brand-gradient text-white"
+                : "bg-gray-200 text-gray-400 cursor-not-allowed"
+                }`}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M21.3751 13.1253C20.6251 16.8753 17.7978 20.4057 13.8291 21.1951C9.86042 21.9846 5.83311 20.1385 3.84055 16.6167C1.848 13.0949 2.33991 8.69208 5.06059 5.69685C7.78128 2.70161 12.3751 1.87529 16.1251 3.37529" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                <path d="M8.625 11.625L12.375 15.375L21.375 5.625" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-              </svg>
-              Book Now
+              {!isSoldOut && (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21.3751 13.1253C20.6251 16.8753 17.7978 20.4057 13.8291 21.1951C9.86042 21.9846 5.83311 20.1385 3.84055 16.6167C1.848 13.0949 2.33991 8.69208 5.06059 5.69685C7.78128 2.70161 12.3751 1.87529 16.1251 3.37529" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8.625 11.625L12.375 15.375L21.375 5.625" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
+              {isSoldOut ? "Sold Out" : "Book Now"}
             </button>
 
             <div className="grid grid-cols-2 gap-3">

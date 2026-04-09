@@ -7,6 +7,7 @@ import { useCreatePublicTripLeadWithPricingMutation } from "@/lib/services/organ
 import { useCreateTripBookingMutation } from "@/lib/services/organizer/trip/bookings";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { useUserId } from "@/hooks/useUserId";
 import { toast } from "@/hooks/use-toast";
 
 export default function PricingDetailsModal({
@@ -33,6 +34,7 @@ export default function PricingDetailsModal({
   const addOns = pricing?.addOns || [];
 
   const organizationId = useOrganizationId();
+  const userId = useUserId();
   const { userData } = useAuthActions();
 
   // Load Razorpay script on mount
@@ -134,6 +136,7 @@ export default function PricingDetailsModal({
       const bookingData = await createBooking({
         organizationId,
         tripPublicId: tripId, // Use prop (UUID) for URL
+        userPublicId: userId || userData?.userPublicId || "",
         body: bookingPayload
       }).unwrap();
 
