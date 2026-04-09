@@ -9,10 +9,10 @@ export const tripBookingsAPI = baseAPI.injectEndpoints({
     // 🔹 Create trip booking
     createTripBooking: builder.mutation<
       TripBookingResponse,
-      { organizationId: string; tripPublicId: string; body: TripBookingRequest }
+      { organizationId: string; tripPublicId: string; userPublicId: string; body: TripBookingRequest }
     >({
-      query: ({ organizationId, tripPublicId, body }) => ({
-        url: ENDPOINTS.ORGANIZER.TRIP_BOOKINGS(organizationId, tripPublicId),
+      query: ({ organizationId, tripPublicId, userPublicId, body }) => ({
+        url: ENDPOINTS.ORGANIZER.TRIP_BOOKINGS(organizationId, tripPublicId, userPublicId),
         method: "POST",
         body,
       }),
