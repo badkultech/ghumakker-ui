@@ -369,7 +369,8 @@ export default function TripDetailsPage() {
               images={sidebarImages}
               minGroupSize={trip?.minGroupSize}
               maxGroupSize={trip?.maxGroupSize}
-              reservedSeats={trip?.reservedSeats}
+              totalSeats={trip?.totalSeats}
+              bookedSeats={trip?.bookedSeats}
               onRequestInvite={(data) =>
                 requireAuth(() => {
                   setSelectedPricing(data);
@@ -464,6 +465,8 @@ export default function TripDetailsPage() {
             })
           }
           options={pricing}
+          totalSeats={trip?.totalSeats}
+          bookedSeats={trip?.bookedSeats}
           onClose={() => setShowMobilePricing(false)}
           onRequestInvite={(data) => {
             requireAuth(() => {

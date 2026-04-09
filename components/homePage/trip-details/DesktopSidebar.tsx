@@ -20,6 +20,8 @@ interface DesktopSidebarProps {
   minGroupSize?: number;
   maxGroupSize?: number;
   reservedSeats?: number;
+  totalSeats?: number;
+  bookedSeats?: number;
 }
 
 export default function DesktopSidebar({
@@ -28,9 +30,10 @@ export default function DesktopSidebar({
   images,
   onImageClick,
   onRequestInvite,
-  minGroupSize = 1,
   maxGroupSize = 20,
   reservedSeats = 0,
+  totalSeats,
+  bookedSeats,
 }: DesktopSidebarProps) {
   const simple = pricing?.simplePricingRequest;
   const dynamic = pricing?.dynamicPricingRequest;
@@ -90,11 +93,12 @@ export default function DesktopSidebar({
   const finalPricePerPerson = applyGst(baseTotal);
   const finalTotalPrice = finalPricePerPerson * numTravelers;
 
-  const isButtonEnabled = true;
-
-  const seatCount = reservedSeats || 12; // Fallback for demo
-  const maxSeats = maxGroupSize || 25; // Fallback for demo
+  const seatCount = bookedSeats ?? reservedSeats ?? 12; 
+  const maxSeats = totalSeats ?? maxGroupSize ?? 25; 
   const seatPercentage = (seatCount / maxSeats) * 100;
+  const isSoldOut = seatCount >= maxSeats;
+
+  const isButtonEnabled = !isSoldOut;
 
   return (
     <div className="hidden lg:block lg:col-span-1">
@@ -389,11 +393,13 @@ export default function DesktopSidebar({
                 : "bg-gray-200 text-gray-400 cursor-not-allowed"
                 }`}
             >
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M21.3751 13.1253C20.6251 16.8753 17.7978 20.4057 13.8291 21.1951C9.86042 21.9846 5.83311 20.1385 3.84055 16.6167C1.848 13.0949 2.33991 8.69208 5.06059 5.69685C7.78128 2.70161 12.3751 1.87529 16.1251 3.37529" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-<path d="M8.625 11.625L12.375 15.375L21.375 5.625" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-</svg>
-              Book Now
+              {!isSoldOut && (
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M21.3751 13.1253C20.6251 16.8753 17.7978 20.4057 13.8291 21.1951C9.86042 21.9846 5.83311 20.1385 3.84055 16.6167C1.848 13.0949 2.33991 8.69208 5.06059 5.69685C7.78128 2.70161 12.3751 1.87529 16.1251 3.37529" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M8.625 11.625L12.375 15.375L21.375 5.625" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
+              )}
+              {isSoldOut ? "Sold Out" : "Book Now"}
             </button>
 
             <div className="grid grid-cols-2 gap-3">
