@@ -162,7 +162,7 @@ export default function PricingDetailsModal({
         
         setTimeout(() => {
           onClose();
-          window.location.href = `/home/booking-confirmation/${savedBookingId}`;
+          window.location.href = `/home/booking-confirmation/${savedBookingRef}`;
         }, 1500);
         return;
       }
@@ -174,7 +174,7 @@ export default function PricingDetailsModal({
           title: "Booking Success, but Payment SDK failed",
           description: "Redirecting to your booking details...",
         });
-        window.location.href = `/home/booking-confirmation/${savedBookingId}`;
+        window.location.href = `/home/booking-confirmation/${savedBookingRef}`;
         return;
       }
 
@@ -191,7 +191,7 @@ export default function PricingDetailsModal({
             description: `Booking #${savedBookingRef} confirmed.`,
           });
           onClose();
-          window.location.href = `/home/booking-confirmation/${savedBookingId}`;
+          window.location.href = `/home/booking-confirmation/${savedBookingRef}`;
         },
         prefill: {
           name: `${userData?.firstName} ${userData?.lastName ?? ""}`,
@@ -209,6 +209,16 @@ export default function PricingDetailsModal({
       };
 
       const rzp1 = new (window as any).Razorpay(options);
+
+      rzp1.on("payment.failed", function (response: any) {
+        console.error("Payment Failed:", response.error);
+        toast({
+          title: "Payment Failed ❌",
+          description: response.error.description || "The payment could not be processed. Please try again.",
+          variant: "destructive",
+        });
+      });
+
       rzp1.open();
 
     } catch (err: any) {

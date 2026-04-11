@@ -187,10 +187,22 @@ export default function MyOrdersPage() {
                         </div>
                         
                         <div className="flex gap-3">
-                          <Button variant="outline" className="rounded-2xl h-12 px-6 border-gray-200 font-black text-sm flex items-center gap-2 hover:bg-gray-50 hover:border-gray-300">
+                          <button 
+                            onClick={() => {
+                              const iframe = document.createElement('iframe');
+                              iframe.style.display = 'none';
+                              iframe.src = `/home/booking-confirmation/${booking.id}?download=true`;
+                              document.body.appendChild(iframe);
+                              // Cleanup after print dialog opens
+                              setTimeout(() => {
+                                document.body.removeChild(iframe);
+                              }, 5000);
+                            }}
+                            className="inline-flex items-center justify-center rounded-2xl h-12 px-6 border border-gray-200 bg-white font-black text-sm gap-2 hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm active:scale-[0.98]"
+                          >
                             <Download className="w-4 h-4" />
                             <span className="hidden sm:inline">Ticket</span>
-                          </Button>
+                          </button>
                           <Link href={`/home/booking-confirmation/${booking.id}`}>
                             <Button className="rounded-2xl h-12 px-8 bg-brand-gradient text-white font-black text-sm hover:scale-[1.02] transition-all active:scale-[0.98] shadow-xl shadow-red-500/10">
                               View Receipt

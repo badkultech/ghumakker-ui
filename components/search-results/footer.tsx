@@ -31,7 +31,7 @@ function ThemedGhumakkerLogo() {
 
 export function Footer() {
   return (
-    <footer className="bg-orange-50/30 border-t border-orange-100 mt-auto">
+    <footer className="bg-orange-50/30 border-t border-orange-100 mt-auto print:hidden">
       <div className="max-w-[1400px] mx-auto px-4 md:px-8 py-8 md:py-10">
         <div className="flex flex-col md:flex-row md:justify-between gap-8">
           {/* Brand */}
