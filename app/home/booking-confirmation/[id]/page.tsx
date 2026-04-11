@@ -25,6 +25,17 @@ export default function BookingConfirmationPage() {
 
   const booking = orders?.find(o => o.bookingRef === id);
 
+  // Handle auto-download trigger
+  React.useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (searchParams.get('download') === 'true' && !isLoading && booking) {
+      const timer = setTimeout(() => {
+        window.print();
+      }, 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [isLoading, booking]);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[#F3F5F7]">
@@ -168,8 +179,11 @@ export default function BookingConfirmationPage() {
             </div>
 
             {/* Actions Section */}
-            <div className="pt-4 flex flex-col sm:flex-row gap-4">
-              <button className="flex-1 h-14 rounded-2xl bg-[#F8F9FA] border border-gray-200 text-gray-800 font-black text-sm flex items-center justify-center gap-2.5 hover:bg-gray-100 transition-all active:scale-[0.98]">
+            <div className="pt-4 flex flex-col sm:flex-row gap-4 print:hidden">
+              <button 
+                onClick={() => window.print()}
+                className="flex-1 h-14 rounded-2xl bg-[#F8F9FA] border border-gray-200 text-gray-800 font-black text-sm flex items-center justify-center gap-2.5 hover:bg-gray-100 transition-all active:scale-[0.98]"
+              >
                 <Download size={18} strokeWidth={2.5} />
                 <span>Receipt</span>
               </button>

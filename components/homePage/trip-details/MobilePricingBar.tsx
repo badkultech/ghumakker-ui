@@ -3,11 +3,13 @@ import { TRIP_DETAILS } from "@/lib/constants/strings";
 interface MobilePricingBarProps {
   onOpen: () => void;
   pricing: any;
+  bookedTripDetail?: any;
 }
 
 export default function MobilePricingBar({
   onOpen,
   pricing,
+  bookedTripDetail,
 }: MobilePricingBarProps) {
   const simple = pricing?.simplePricingRequest;
   const dynamic = pricing?.dynamicPricingRequest;
@@ -86,10 +88,10 @@ export default function MobilePricingBar({
 
         {/* BUTTON */}
         <button
-          onClick={onOpen}
+          onClick={bookedTripDetail ? () => window.location.href = `/home/booking-confirmation/${bookedTripDetail.bookingRef || bookedTripDetail.id}` : onOpen}
           className="bg-brand-gradient text-white px-6 py-3 rounded-lg font-medium shadow-lg"
         >
-          {TRIP_DETAILS.MOBILE_BAR.VIEW_OPTIONS}
+          {bookedTripDetail ? "View My Booking" : TRIP_DETAILS.MOBILE_BAR.VIEW_OPTIONS}
         </button>
       </div>
     </div>

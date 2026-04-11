@@ -39,6 +39,7 @@ import { useUpdateTripStatusMutation } from "@/lib/services/organizer/trip/my-tr
 import { useToast } from "@/hooks/use-toast";
 import { useHomeLayout } from "@/app/home/HomeLayoutContext";
 import { Footer } from "@/components/search-results/footer";
+import { useGetMyOrdersQuery } from "@/lib/services/user-orders";
 
 
 export default function TripDetailsPage() {
@@ -108,6 +109,12 @@ export default function TripDetailsPage() {
   const [addToWishlist] = useAddTripToWishlistMutation();
   const [removeFromWishlist] = useRemoveTripFromWishlistMutation();
   const [isFavorite, setIsFavorite] = useState(isInWishlist || false);
+
+  // Check if user has booked this trip
+  const { data: myOrders } = useGetMyOrdersQuery(
+    { organizationPublicId: organizationId || "", userPublicId: userId || "" },
+    { skip: !organizationId || !userId }
+  );
 
   // Update favorite state when API response changes
   useEffect(() => {
@@ -204,6 +211,12 @@ export default function TripDetailsPage() {
   const faq = payload.faqResponse;
   const pricing = payload.tripPricingDTO;
   const organizer = payload.organizerProfileResponse;
+
+  const bookedTripDetail = myOrders?.find(
+    (order: any) =>
+      order.tripName?.trim().toLowerCase() === trip?.name?.trim().toLowerCase() &&
+      order.status !== "CANCELLED"
+  );
 
   const currentDay = itinerary?.dayDetailResponseList?.[activeDay];
   const rawActivities = currentDay?.tripItems || [];
@@ -371,6 +384,7 @@ export default function TripDetailsPage() {
               maxGroupSize={trip?.maxGroupSize}
               totalSeats={trip?.totalSeats}
               bookedSeats={trip?.bookedSeats}
+              bookedTripDetail={bookedTripDetail}
               onRequestInvite={(data) =>
                 requireAuth(() => {
                   setSelectedPricing(data);
@@ -387,6 +401,7 @@ export default function TripDetailsPage() {
       <MobilePricingBar
         pricing={pricing}
         onOpen={() => setShowMobilePricing(true)}
+        bookedTripDetail={bookedTripDetail}
       />
 
       {/* MODALS */}
