@@ -13,6 +13,7 @@ export interface UserOrderDTO {
     location: string | null;
     orderedOn: string;
     amountPaid: number;
+    groupSize: number;
     cityTags: string[];
     startPoint: string;
     endPoint: string;

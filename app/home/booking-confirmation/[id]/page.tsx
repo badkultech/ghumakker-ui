@@ -143,6 +143,14 @@ export default function BookingConfirmationPage() {
                   <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Ordered On</span>
                   <span className="text-sm font-bold text-gray-900 leading-tight">{new Date(booking.orderedOn).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
                 </div>
+
+                {/* Travelers */}
+                <div className="bg-[#F8F9FA] p-4 rounded-2xl flex flex-col gap-1.5 border border-gray-100/50">
+                  <span className="text-[9px] text-gray-400 font-extrabold uppercase tracking-widest leading-none">Travelers</span>
+                  <span className="text-sm font-bold text-gray-900 leading-tight">
+                    {booking.groupSize} {booking.groupSize === 1 ? "Person" : "Persons"}
+                  </span>
+                </div>
               </div>
             </div>
 

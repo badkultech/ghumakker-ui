@@ -42,7 +42,7 @@ export default function MyOrdersPage() {
     image: order.tripImage || "https://images.unsplash.com/photo-1626621341517-bbf3d9990a23?auto=format&fit=crop&q=80&w=600",
     dates: `${new Date(order.startDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })} – ${new Date(order.endDate).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })}`,
     price: order.amountPaid,
-    travelers: 1, // Defaulting if not in summary
+    travelers: order.groupSize, 
     status: order.status,
     location: order.location || order.cityTags?.join(", ") || "Diverse Location",
     organizer: order.startPoint + " to " + order.endPoint,

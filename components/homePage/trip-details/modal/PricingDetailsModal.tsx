@@ -150,20 +150,15 @@ export default function PricingDetailsModal({
         throw new Error("Booking response was successful but missing bookingId.");
       }
 
-      // 4. Handle Redirection / Razorpay
       const rzpKey = process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
 
       if (!rzpKey || rzpKey === "rzp_test_placeholder") {
-        console.warn("Razorpay Key ID missing. Redirecting to confirmation page directly (Test Mode).");
+        console.error("Razorpay Key ID missing or using placeholder.");
         toast({
-          title: "Booking Created! 🚀",
-          description: "Redirecting to confirmation page...",
+          title: "Payment Error ❌",
+          description: "Razorpay Key ID is not configured. Please contact support.",
+          variant: "destructive",
         });
-        
-        setTimeout(() => {
-          onClose();
-          window.location.href = `/home/booking-confirmation/${savedBookingRef}`;
-        }, 1500);
         return;
       }
 
@@ -171,10 +166,10 @@ export default function PricingDetailsModal({
       if (!(window as any).Razorpay) {
         console.error("Razorpay SDK not loaded.");
         toast({
-          title: "Booking Success, but Payment SDK failed",
-          description: "Redirecting to your booking details...",
+          title: "Payment Initialization Failed ❌",
+          description: "Could not load the payment gateway. Please check your internet or try again.",
+          variant: "destructive",
         });
-        window.location.href = `/home/booking-confirmation/${savedBookingRef}`;
         return;
       }
 
