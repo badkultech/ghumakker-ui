@@ -17,6 +17,8 @@ export interface Trip {
   moodTags: string[];
   cityTags: string[];
   highlights: string;
+  country: string;
+  totalSeats: number;
   groupLeaderId: number;
   groupLeader?: GroupLeaderResponse;
   groupLeaders?: {

@@ -194,22 +194,27 @@ export default function PricingPage() {
         if (discountUnit === "flat") {
           if (Number(discount) < 0) {
             e.discount = "Discount must be positive";
+          } else if (price && Number(discount) > Number(price)) {
+            e.discount = "Discount cannot exceed the base price";
           }
         }
 
         // If discount is present and > 0, Valid Until is required
-        if (Number(discount) > 0) {
-          if (discountUntil === "") {
+        const discountVal = Number(discount);
+        if (discountVal > 0) {
+          if (!discountUntil) {
             e.discountUntil = "Valid until date is required";
           } else {
-            const selected = new Date(discountUntil)
-            const now = new Date()
+            const selected = new Date(discountUntil);
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            selected.setHours(0, 0, 0, 0);
 
-            if (trip?.data?.startDate) {
+            if (selected < now) {
+              e.discountUntil = "Valid until date cannot be in the past";
+            } else if (trip?.data?.startDate) {
               const startDate = new Date(trip.data.startDate);
-              // reset time to midnight for comparison
               startDate.setHours(0, 0, 0, 0);
-              selected.setHours(0, 0, 0, 0);
 
               if (selected > startDate) {
                 e.discountUntil = `Valid until must be on or before trip start (${trip.data.startDate})`;
