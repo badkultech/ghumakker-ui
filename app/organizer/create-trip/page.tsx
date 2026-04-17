@@ -37,12 +37,14 @@ export default function Page() {
       minAge: 18,
       maxAge: 50,
       tripHighlights: "",
+      country: "",
+      totalSeats: 20,
     }));
     dispatch(setSelectedTags([]));
-    dispatch(setCityTags(cityTags));
+    dispatch(setCityTags([]));
     dispatch(setLeaders([]));
     dispatch(setSelectedGroupLeaderId(""));
-  }, [isViewMode]);
+  }, [isViewMode, dispatch]);
 
   return (
     <main>
