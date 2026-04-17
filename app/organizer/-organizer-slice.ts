@@ -29,6 +29,8 @@ export interface TripFormData {
   minAge: number;
   maxAge: number;
   tripHighlights: string;
+  country: string;
+  totalSeats: number;
 }
 
 export interface OrganizerSliceState {
@@ -86,6 +88,8 @@ export const initialOrganizerSliceState: OrganizerSliceState = {
     minAge: 18,
     maxAge: 50,
     tripHighlights: '',
+    country: '',
+    totalSeats: 20,
   },
   cityTags: [],
 };

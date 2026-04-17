@@ -69,6 +69,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
   const [tripSaving, setTripSaving] = useState(false);
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [saveDraftDisabled, setSaveDraftDisabled] = useState(false);
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const [allTags, setAllTags] = useState<string[]>([]);
 
@@ -142,6 +143,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
   }, [formData, selectedTags, cityTags, leaders]);
 
   useEffect(() => {
+    setIsInitialized(false);
     if (!tripId || !organizationId) return;
 
     // Fetching trip data
@@ -149,13 +151,14 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
       organizationId,
       tripId,
     });
-  }, [tripId, organizationId]);
+  }, [tripId, organizationId, triggerGetTrip]);
 
 
   useEffect(() => {
-    if (!tripData?.data) return;
+    if (!tripData?.data || isInitialized) return;
 
     const trip = tripData.data;
+    setIsInitialized(true);
     const safeParseTags = (arr: any): string[] => {
       if (!arr) return [];
       if (Array.isArray(arr) && typeof arr[0] === "string" && !arr[0].includes(`[`)) {
@@ -179,8 +182,8 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
       setFormData({
         ...formData,
         tripTitle: trip.name ?? "",
-        startDate: `${trip.startDate} ${trip.startTime}`,
-        endDate: `${trip.endDate} ${trip.endTime}`,
+        startDate: (trip.startDate && trip.startTime) ? `${trip.startDate} ${trip.startTime}` : (formData.startDate ?? ""),
+        endDate: (trip.endDate && trip.endTime) ? `${trip.endDate} ${trip.endTime}` : (formData.endDate ?? ""),
         totalDays: (() => {
           if (trip.startDate && trip.endDate) {
             const s = new Date(trip.startDate);
@@ -191,11 +194,13 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
           }
           return trip.totalDays ?? 1;
         })(),
-        minGroupSize: trip.minGroupSize,
-        maxGroupSize: trip.maxGroupSize,
-        minAge: trip.minAge,
-        maxAge: trip.maxAge,
-        tripHighlights: trip.highlights,
+        minGroupSize: trip.minGroupSize ?? 2,
+        maxGroupSize: trip.maxGroupSize ?? 20,
+        minAge: trip.minAge ?? 18,
+        maxAge: trip.maxAge ?? 50,
+        tripHighlights: trip.highlights ?? "",
+        country: trip.country ?? "",
+        totalSeats: trip.totalSeats || trip.maxGroupSize || 20,
       })
     );
 
@@ -233,7 +238,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
       { key: "endDate", label: "End Date", value: formData.endDate },
       { key: "moodTags", label: "Mood Tags", value: selectedTags },
       { key: "cityTags", label: "City Tags", value: cityTags },
-
+      { key: "country", label: "Country", value: formData.country },
     ]);
 
     const newErrors: any = { ...baseErrors };
@@ -315,11 +320,17 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
       data.append('startTime', startTime);
       data.append('endTime', endTime);
       data.append('totalDays', formData.totalDays.toString());
+      data.append('tripDays', formData.totalDays.toString());
       data.append('minGroupSize', formData.minGroupSize.toString());
       data.append('maxGroupSize', formData.maxGroupSize.toString());
       data.append('minAge', formData.minAge.toString());
       data.append('maxAge', formData.maxAge.toString());
       data.append('highlights', formData.tripHighlights);
+      data.append('country', formData.country || 'India'); // Fallback to India if not specified, though it should be set from suggestions
+      data.append('totalSeats', (formData.totalSeats || formData.maxGroupSize || 20).toString()); 
+      data.append('bookedSeats', '0');
+      data.append('startYear', startDateObj.getFullYear().toString());
+      data.append('startMonth', (startDateObj.getMonth() + 1).toString());
       selectedTags.forEach(tag => {
         data.append("moodTags[]", tag);
       });
@@ -361,7 +372,8 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
 
   const handleInputChange = (field: string, value: string | number) => {
     // Handle input change
-    dispatch(setFormData({ ...formData, [field]: value }));
+    const updateObj: any = { ...formData, [field]: value };
+    dispatch(setFormData(updateObj));
   };
 
   const handleNumberChange = (field: string, increment: boolean) => {
@@ -377,12 +389,13 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
     else if (field === "maxAge") {
       newValue = Math.max(0, Math.min(100, newValue));
     }
-    else if (field === "minGroupSize" || field === "maxGroupSize") {
-      newValue = Math.max(0, Math.min(100, newValue));
+    else if (field === "minGroupSize" || field === "maxGroupSize" || field === "totalSeats") {
+      newValue = Math.max(0, Math.min(200, newValue));
     }
 
 
-    dispatch(setFormData({ ...formData, [field]: newValue }));
+    const updateObj: any = { ...formData, [field]: newValue };
+    dispatch(setFormData(updateObj));
   };
 
 
@@ -475,7 +488,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                   type='text'
                   placeholder='Enter trip title'
                   maxLength={70}
-                  value={formData.tripTitle}
+                  value={formData.tripTitle ?? ""}
                   onChange={(e) => {
                     {
                       handleInputChange('tripTitle', e.target.value);
@@ -506,7 +519,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                   Start Date<RequiredStar />
                 </Label>
                 <CustomDateTimePicker
-                  value={formData.startDate}
+                  value={formData.startDate ?? ""}
                   stepMinutes={15}
                   minDate={getTodayStr()}
                   onChange={(val) => {
@@ -530,7 +543,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                 </Label>
                 <div className='relative'>
                   <Input
-                    value={formData.totalDays}
+                    value={formData.totalDays ?? 1}
                     type="number"
                     min={1}
                     disabled={!!tripId}
@@ -553,7 +566,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                   End Date (Auto-Calculated)
                 </Label>
                 <CustomDateTimePicker
-                  value={formData.endDate}
+                  value={formData.endDate ?? ""}
                   disabled={true} // DISABLED
                   onChange={() => { }} // No-op
                   placeholder="End Date will appear here"
@@ -580,7 +593,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                 </Label>
                 <div className='relative'>
                   <Input
-                    value={formData.minGroupSize.toString().padStart(2, '0')}
+                    value={(formData.minGroupSize ?? 2).toString().padStart(2, '0')}
                     min={2}
                     max={100}
                     onChange={(e) => {
@@ -620,7 +633,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                 </Label>
                 <div className='relative'>
                   <Input
-                    value={formData.maxGroupSize.toString().padStart(2, '0')}
+                    value={(formData.maxGroupSize ?? 20).toString().padStart(2, '0')}
                     min={formData.minGroupSize}
                     max={100}
                     onChange={(e) => {
@@ -664,7 +677,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                 </Label>
                 <div className='relative'>
                   <Input
-                    value={formData.minAge.toString().padStart(2, '0')}
+                    value={(formData.minAge ?? 18).toString().padStart(2, '0')}
                     min={18}
                     max={100}
                     onChange={(e) => {
@@ -709,7 +722,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                 </Label>
                 <div className='relative'>
                   <Input
-                    value={formData.maxAge.toString().padStart(2, '0')}
+                    value={(formData.maxAge ?? 50).toString().padStart(2, '0')}
                     min={formData.minAge}
                     max={100}
                     onChange={(e) => {
@@ -748,6 +761,47 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                 )}
               </div>
             </div>
+
+            <div className='grid grid-cols-1 md:grid-cols-2 gap-6 mt-6'>
+              <div>
+                <Label className='text-sm font-medium text-gray-700 mb-2 block'>
+                  Total Trip Seats <RequiredStar />
+                </Label>
+                <div className='relative'>
+                  <Input
+                    value={(formData.totalSeats ?? 20).toString().padStart(2, '0')}
+                    min={1}
+                    max={200}
+                    onChange={(e) => {
+                      let val = Number(e.target.value);
+                      if (val > 200) val = 200;
+                      handleInputChange('totalSeats', val);
+                      clearError("totalSeats");
+                    }}
+                    className='pr-8 text-center'
+                  />
+
+                  <div className='absolute right-2 top-1/2 -translate-y-1/2 flex flex-col'>
+                    <button
+                      onClick={() => handleNumberChange('totalSeats', true)}
+                      className="h-4 flex items-center justify-center hover:bg-gray-100 rounded text-xs cursor-pointer"
+                    >
+                      <span className="scale-[0.9]">▲</span>
+                    </button>
+                    <button
+                      onClick={() => handleNumberChange('totalSeats', false)}
+                      className="h-4 flex items-center justify-center hover:bg-gray-100 rounded text-xs cursor-pointer"
+                    >
+                      <span className="scale-[0.9]">▼</span>
+                    </button>
+                  </div>
+                </div>
+                {errors.totalSeats && (
+                  <p className="text-red-500 text-sm mt-1">{errors.totalSeats}</p>
+                )}
+              </div>
+            </div>
+
 
             {/* Mood Tags */}
             <div className='mb-6 mt-6'>
@@ -844,6 +898,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                             });
 
                             dispatch(setCityInput(""));
+                            dispatch(setFormData({ ...formData, country: row.raw.country }));
                             setShowDestinationSuggestions(false);
                           }}
                           className="px-4 py-3 cursor-pointer hover:bg-gray-50 transition border-b last:border-b-0"
@@ -902,6 +957,26 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
               </div>
             </div>
 
+            {/* Country */}
+            <div className='mb-6'>
+              <Label className='block text-gray-600 mb-2 font-medium'>
+                Country <RequiredStar />
+              </Label>
+              <Input
+                type='text'
+                placeholder='Enter country (e.g. India, Sri Lanka)'
+                value={formData.country ?? ""}
+                onChange={(e) => {
+                  handleInputChange('country', e.target.value);
+                  clearError("country");
+                }}
+                className='w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary'
+              />
+              {errors.country && (
+                <p className="text-red-500 text-sm mt-1">{errors.country}</p>
+              )}
+            </div>
+
 
             {/* Highlights */}
             <div className='mb-8'>
@@ -910,7 +985,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
               </Label>
               <div className='border border-gray-200 rounded-2xl'>
                 <RichTextEditor
-                  value={formData.tripHighlights}
+                  value={formData.tripHighlights ?? ""}
                   onChange={(val) => {
                     handleInputChange('tripHighlights', val ?? '');
                   }}
@@ -1025,7 +1100,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
               className={`
                           px-8 py-2 rounded-full font-medium text-white 
                           bg-brand-gradient shadow
-                          flex items-center gap-2 transition
+                          flex items-center gap-2 transition cursor-pointer
                           ${tripSaving || createTripLoading || updateTripLoading
                   ? "opacity-50 cursor-not-allowed"
                   : "hover:opacity-90"

@@ -10,7 +10,7 @@ export const tripAPI = baseAPI.injectEndpoints({
     // ✅ Create a new Trip
     createTrip: builder.mutation<
       TripResponse,
-      { organizationId: string; data: FormData }
+      { organizationId: string; data: any }
     >({
       query: ({ organizationId, data }) => ({
         url: `${ENDPOINTS.ORGANIZER.TRIP(organizationId)}`,
@@ -44,7 +44,7 @@ export const tripAPI = baseAPI.injectEndpoints({
     // ✅ Update Trip
     updateTrip: builder.mutation<
       TripResponse,
-      { organizationId: string; tripId: string; data: FormData }
+      { organizationId: string; tripId: string; data: any }
     >({
       query: ({ organizationId, tripId, data }) => ({
         url: `${ENDPOINTS.ORGANIZER.TRIP(organizationId)}/${tripId}`,
