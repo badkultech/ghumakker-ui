@@ -145,6 +145,16 @@ export const organizerSlice = createSlice({
     },
     setCityTags: (state, action: PayloadAction<string[]>) => {
       state.cityTags = action.payload;
+    },
+    updateFormData: (state, action: PayloadAction<Partial<TripFormData>>) => {
+      state.formData = { ...state.formData, ...action.payload };
+    },
+    clearTripForm: (state) => {
+      state.formData = initialOrganizerSliceState.formData;
+      state.cityTags = [];
+      state.selectedTags = [];
+      state.leaders = [];
+      state.selectedGroupLeaderId = "";
     }
 
   },
@@ -166,6 +176,8 @@ export const {
   setCityInput,
   setFormData,
   setCityTags,
+  updateFormData,
+  clearTripForm,
 } = organizerSlice.actions;
 // dataContextSlice.sta
 

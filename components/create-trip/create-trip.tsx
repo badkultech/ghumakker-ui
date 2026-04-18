@@ -34,6 +34,7 @@ import {
   setLeaders,
   setSelectedGroupLeaderId,
   setSelectedTags,
+  updateFormData,
 } from '@/app/organizer/-organizer-slice';
 import { useSaveGroupLeaderMutation } from '@/lib/services/organizer/trip/library/leader';
 import { useOrganizationId } from '@/hooks/useOrganizationId';
@@ -75,7 +76,9 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
 
   useEffect(() => {
     if (cityTags.length > 0 && allTags.length === 0) {
-      setAllTags(Array.from(new Set([...allTags, ...cityTags])));
+      setAllTags(cityTags);
+    } else if (cityTags.length === 0 && allTags.length > 0) {
+      setAllTags([]);
     }
   }, [cityTags]);
 
@@ -327,7 +330,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
       data.append('maxAge', formData.maxAge.toString());
       data.append('highlights', formData.tripHighlights);
       data.append('country', formData.country || 'India'); // Fallback to India if not specified, though it should be set from suggestions
-      data.append('totalSeats', (formData.totalSeats || formData.maxGroupSize || 20).toString()); 
+      data.append('totalSeats', (formData.totalSeats || formData.maxGroupSize || 20).toString());
       data.append('bookedSeats', '0');
       data.append('startYear', startDateObj.getFullYear().toString());
       data.append('startMonth', (startDateObj.getMonth() + 1).toString());
@@ -371,9 +374,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
   };
 
   const handleInputChange = (field: string, value: string | number) => {
-    // Handle input change
-    const updateObj: any = { ...formData, [field]: value };
-    dispatch(setFormData(updateObj));
+    dispatch(updateFormData({ [field]: value }));
   };
 
   const handleNumberChange = (field: string, increment: boolean) => {
@@ -393,9 +394,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
       newValue = Math.max(0, Math.min(200, newValue));
     }
 
-
-    const updateObj: any = { ...formData, [field]: newValue };
-    dispatch(setFormData(updateObj));
+    dispatch(updateFormData({ [field]: newValue }));
   };
 
 
@@ -464,9 +463,11 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
       end.setHours(23, 59, 59, 0);
     }
 
-    dispatch(setFormData({ ...formData, endDate: end.toISOString() }));
-
-  }, [formData.startDate, formData.totalDays]);
+    const newEndDate = end.toISOString();
+    if (formData.endDate !== newEndDate) {
+      dispatch(updateFormData({ endDate: newEndDate }));
+    }
+  }, [formData.startDate, formData.totalDays, formData.endDate, dispatch]);
 
 
   return (
@@ -898,7 +899,7 @@ export function CreateTrip({ tripId, isViewMode = false }: Props) {
                             });
 
                             dispatch(setCityInput(""));
-                            dispatch(setFormData({ ...formData, country: row.raw.country }));
+                            dispatch(updateFormData({ country: row.raw.country }));
                             setShowDestinationSuggestions(false);
                           }}
                           className="px-4 py-3 cursor-pointer hover:bg-gray-50 transition border-b last:border-b-0"
