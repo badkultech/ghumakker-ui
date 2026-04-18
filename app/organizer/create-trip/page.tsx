@@ -11,7 +11,8 @@ import {
   setFormData,
   setLeaders,
   setSelectedGroupLeaderId,
-  setSelectedTags
+  setSelectedTags,
+  clearTripForm
 } from '../-organizer-slice';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -26,25 +27,8 @@ export default function Page() {
 
   useEffect(() => {
     if (isViewMode) return;
-
-    dispatch(setFormData({
-      tripTitle: "",
-      startDate: "",
-      endDate: "",
-      totalDays: 1,
-      minGroupSize: 2,
-      maxGroupSize: 20,
-      minAge: 18,
-      maxAge: 50,
-      tripHighlights: "",
-      country: "",
-      totalSeats: 20,
-    }));
-    dispatch(setSelectedTags([]));
-    dispatch(setCityTags([]));
-    dispatch(setLeaders([]));
-    dispatch(setSelectedGroupLeaderId(""));
-  }, [isViewMode, dispatch]);
+    dispatch(clearTripForm());
+  }, [dispatch, isViewMode]);
 
   return (
     <main>
