@@ -164,8 +164,10 @@ export const ENDPOINTS = {
       `/org/${organizationId}/trip/${tripPublicId}/queries`,
     TRIP_BOOKINGS: (organizationId: string, tripPublicId: string, userPublicId: string) =>
       `/org/${organizationId}/trip/${tripPublicId}/user/${userPublicId}/bookings`,
-    TRIP_PUBLIC_QUERIES: (tripPublicId: string) =>
-      `/public/trips/${tripPublicId}/query`,
+    TRIP_PUBLIC_QUERIES: (tripPublicId: string, userPublicId?: string) =>
+      userPublicId && userPublicId !== "undefined"
+        ? `/public/trips/${tripPublicId}/query/user/${userPublicId}`
+        : `/public/trips/${tripPublicId}/query`,
     TRIP_ORG_QUERIES: (organizationId: string) =>
       `/org/${organizationId}/org-trip-queries`,
 
