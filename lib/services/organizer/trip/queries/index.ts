@@ -127,18 +127,20 @@ export const tripQueryAPI = baseAPI.injectEndpoints({
         organizationId: string;
         tripPublicId: string;
         queryId: number;
+        userPublicId: string;
         comment: string;
       }
     >({
-      query: ({ organizationId, tripPublicId, queryId, comment }) => {
+      query: ({ organizationId, tripPublicId, queryId, userPublicId, comment }) => {
         const formData = new FormData();
         formData.append("comment", comment);
 
         return {
-          url: ENDPOINTS.ORGANIZER.TRIP_QUERY_COMMENTS(
+          url: ENDPOINTS.ORGANIZER.TRIP_QUERY_CREATE_COMMENT(
             organizationId,
             tripPublicId,
-            queryId
+            queryId,
+            userPublicId
           ),
           method: "POST",
           body: formData,

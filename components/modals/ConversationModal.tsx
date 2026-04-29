@@ -5,6 +5,7 @@ import QueryResponseForm from "@/components/queries/QueryResponseForm";
 import { useToast } from "@/hooks/use-toast";
 import { useGetTripQueryCommentsQuery, useCreateTripQueryCommentMutation } from "@/lib/services/organizer/trip/queries";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
+import { useUserId } from "@/hooks/useUserId";
 
 interface Question {
     id: string;
@@ -35,6 +36,7 @@ export default function ConversationModal({
 }: ConversationModalProps) {
     const { toast } = useToast();
     const organizationId = useOrganizationId();
+    const focusedUserId = useUserId();
 
     // Fetch comments for the selected query
     const { data: comments, isLoading: isLoadingComments, error: commentsError } = useGetTripQueryCommentsQuery(
@@ -61,6 +63,7 @@ export default function ConversationModal({
                 organizationId,
                 tripPublicId: selectedQuery.tripPublicId,
                 queryId: Number(selectedQuery.id),
+                userPublicId: focusedUserId,
                 comment: text,
             }).unwrap();
 

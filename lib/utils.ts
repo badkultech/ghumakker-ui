@@ -176,6 +176,12 @@ export const ENDPOINTS = {
       tripPublicId: string,
       queryId: number,
     ) => `/org/${organizationId}/trip/${tripPublicId}/queries/${queryId}/comments`,
+    TRIP_QUERY_CREATE_COMMENT: (
+      organizationId: string,
+      tripPublicId: string,
+      queryId: number,
+      userPublicId: string,
+    ) => `/org/${organizationId}/trip/${tripPublicId}/queries/${queryId}/user/${userPublicId}/comments`,
     TRIP_ORG_LEADS: (organizationId: string) =>
       `/org/${organizationId}/org-trip-leads`,
     TICKETS: (userId: string, organizationId: string) => `/org/${organizationId}/user/${userId}/ticket`,
