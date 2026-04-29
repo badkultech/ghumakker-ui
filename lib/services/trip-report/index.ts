@@ -5,8 +5,10 @@ import { ReportTripRequest } from "./types";
 export const tripReportAPI = baseAPI.injectEndpoints({
   endpoints: (builder) => ({
     reportTrip: builder.mutation<any, ReportTripRequest>({
-      query: ({ tripPublicId, ...body }) => ({
-        url: `/public/trip/${tripPublicId}/report`,
+      query: ({ tripPublicId, userPublicId, ...body }) => ({
+        url: userPublicId && userPublicId !== "undefined"
+          ? `/public/trip/${tripPublicId}/report/user/${userPublicId}`
+          : `/public/trip/${tripPublicId}/report`,
         method: "POST",
         body,
       }),
