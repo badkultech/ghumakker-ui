@@ -57,15 +57,15 @@ export const tripQueryAPI = baseAPI.injectEndpoints({
     // Create a PUBLIC trip query (no user / no auth)
     createPublicTripQuery: builder.mutation<
       TripQueryResponse,
-      { tripPublicId: string; question: string; category: string }
+      { tripPublicId: string; userPublicId?: string; question: string; category: string }
     >({
-      query: ({ tripPublicId, question, category }) => {
+      query: ({ tripPublicId, userPublicId, question, category }) => {
         const formData = new FormData();
         formData.append("question", question);
         formData.append("category", category);
 
         return {
-          url: ENDPOINTS.ORGANIZER.TRIP_PUBLIC_QUERIES(tripPublicId),
+          url: ENDPOINTS.ORGANIZER.TRIP_PUBLIC_QUERIES(tripPublicId, userPublicId),
           method: "POST",
           body: formData,
         };
@@ -127,18 +127,20 @@ export const tripQueryAPI = baseAPI.injectEndpoints({
         organizationId: string;
         tripPublicId: string;
         queryId: number;
+        userPublicId: string;
         comment: string;
       }
     >({
-      query: ({ organizationId, tripPublicId, queryId, comment }) => {
+      query: ({ organizationId, tripPublicId, queryId, userPublicId, comment }) => {
         const formData = new FormData();
         formData.append("comment", comment);
 
         return {
-          url: ENDPOINTS.ORGANIZER.TRIP_QUERY_COMMENTS(
+          url: ENDPOINTS.ORGANIZER.TRIP_QUERY_CREATE_COMMENT(
             organizationId,
             tripPublicId,
-            queryId
+            queryId,
+            userPublicId
           ),
           method: "POST",
           body: formData,

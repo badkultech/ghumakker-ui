@@ -164,8 +164,10 @@ export const ENDPOINTS = {
       `/org/${organizationId}/trip/${tripPublicId}/queries`,
     TRIP_BOOKINGS: (organizationId: string, tripPublicId: string, userPublicId: string) =>
       `/org/${organizationId}/trip/${tripPublicId}/user/${userPublicId}/bookings`,
-    TRIP_PUBLIC_QUERIES: (tripPublicId: string) =>
-      `/public/trips/${tripPublicId}/query`,
+    TRIP_PUBLIC_QUERIES: (tripPublicId: string, userPublicId?: string) =>
+      userPublicId && userPublicId !== "undefined"
+        ? `/public/trips/${tripPublicId}/query/user/${userPublicId}`
+        : `/public/trips/${tripPublicId}/query`,
     TRIP_ORG_QUERIES: (organizationId: string) =>
       `/org/${organizationId}/org-trip-queries`,
 
@@ -174,6 +176,12 @@ export const ENDPOINTS = {
       tripPublicId: string,
       queryId: number,
     ) => `/org/${organizationId}/trip/${tripPublicId}/queries/${queryId}/comments`,
+    TRIP_QUERY_CREATE_COMMENT: (
+      organizationId: string,
+      tripPublicId: string,
+      queryId: number,
+      userPublicId: string,
+    ) => `/org/${organizationId}/trip/${tripPublicId}/queries/${queryId}/user/${userPublicId}/comments`,
     TRIP_ORG_LEADS: (organizationId: string) =>
       `/org/${organizationId}/org-trip-leads`,
     TICKETS: (userId: string, organizationId: string) => `/org/${organizationId}/user/${userId}/ticket`,

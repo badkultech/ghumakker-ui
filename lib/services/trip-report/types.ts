@@ -11,4 +11,5 @@ export interface ReportTripRequest {
   reportType: ReportType;
   comments?: string;
   userId?: number;
+  userPublicId?: string;
 }

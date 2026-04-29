@@ -10,6 +10,8 @@ import {
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { useEffect, useRef } from "react";
 import { sanitizeHtml } from "@/lib/utils/sanitizeHtml";
+import { useUserId } from "@/hooks/useUserId";
+
 export default function QueryDetail({
   query,
   loggedInUserId,
@@ -22,6 +24,8 @@ export default function QueryDetail({
     queryId: query.id,
   });
 
+  const focusedUserId = useUserId();
+
   const [createComment] = useCreateTripQueryCommentMutation();
 
   const handleSendResponse = async (text: string) => {
@@ -29,6 +33,7 @@ export default function QueryDetail({
       organizationId: organizationId,
       tripPublicId: query.tripPublicId,
       queryId: query.id,
+      userPublicId: focusedUserId,
       comment: text,
     });
   };

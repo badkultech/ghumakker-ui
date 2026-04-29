@@ -11,7 +11,7 @@ import { useGetTravelerProfileQuery } from "@/lib/services/user";
 import { useAuthActions } from "@/hooks/useAuthActions";
 import { useOrganizationId } from "@/hooks/useOrganizationId";
 import { PHONE_CONFIG, extractPhoneNumber, formatPhoneWithCountryCode } from "@/lib/constants/phone";
-
+import { useUserId } from "@/hooks/useUserId";
 
 export default function AskQuestionModal({
   onClose,
@@ -29,6 +29,7 @@ export default function AskQuestionModal({
   dates?: string;
 }) {
   const { isLoggedIn, userData } = useAuthActions();
+  const focusedUserId = useUserId();
 
   const [form, setForm] = useState({
     name: "",
@@ -52,10 +53,10 @@ export default function AskQuestionModal({
   const { data: travelerProfile } = useGetTravelerProfileQuery(
     {
       organizationId: organizationId,
-      userPublicId: userData?.userPublicId!,
+      userPublicId: focusedUserId && focusedUserId !== "undefined" ? focusedUserId : (userData?.userPublicId || userData?.sub || ""),
     },
     {
-      skip: !isLoggedIn || !userData?.userPublicId,
+      skip: !isLoggedIn || (!focusedUserId && !userData?.userPublicId && !userData?.sub),
     }
   );
 
@@ -80,6 +81,7 @@ export default function AskQuestionModal({
     try {
       await createQuery({
         tripPublicId,
+        userPublicId: focusedUserId && focusedUserId !== "undefined" ? focusedUserId : (userData?.userPublicId || userData?.sub || ""),
         question: form.query,
         category: form.category.toUpperCase(),
       }).unwrap();

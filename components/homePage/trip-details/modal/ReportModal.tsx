@@ -3,6 +3,8 @@ import { X } from "lucide-react"
 import { TRIP_DETAILS } from "@/lib/constants/strings"
 import { useReportTripMutation } from "@/lib/services/trip-report"
 import { toast } from "@/hooks/use-toast"
+import { useUserId } from "@/hooks/useUserId";
+import { useAuthActions } from "@/hooks/useAuthActions";
 
 const options = [
   "Spam or irrelevant content",
@@ -16,6 +18,8 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
   const [selected, setSelected] = useState<string[]>([])
   const [details, setDetails] = useState("")
   const [reportTrip, { isLoading }] = useReportTripMutation();
+  const focusedUserId = useUserId();
+  const { userData } = useAuthActions();
 
   const isOtherSelected = selected.includes("Other (please specify below)");
   const showOtherError = isOtherSelected && !details.trim();
@@ -47,6 +51,7 @@ export default function ReportModal({ onClose, tripPublicId }: { onClose: () => 
         tripPublicId,
         reportType: mapToEnum(selected[0]),
         comments: details,
+        userPublicId: focusedUserId && focusedUserId !== "undefined" ? focusedUserId : (userData?.userPublicId || userData?.sub || ""),
       }).unwrap();
 
       const currentCount = Number(localStorage.getItem(`report_count_${tripPublicId}`) || 0);
